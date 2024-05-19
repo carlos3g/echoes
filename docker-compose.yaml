@@ -1,0 +1,50 @@
+services:
+  api:
+    restart: unless-stopped
+    env_file: .env
+    container_name: echoes-api
+    build:
+      context: .
+    command: pnpm run start:dev
+    tty: true
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    depends_on:
+      - postgres
+    ports:
+      - '${API_PORT}:3000'
+    networks:
+      - echoesnetwork
+
+  postgres:
+    image: postgres:10-alpine
+    restart: unless-stopped
+    container_name: echoes-postgres
+    env_file: .env
+    environment:
+      POSTGRES_MULTIPLE_DATABASES: ${DB_DATABASE},${DB_DATABASE}_test
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_SCHEMA: ${DB_SCHEMA}
+    ports:
+      - '${DB_PORT}:5432'
+    volumes:
+      - ./echoes-db:/var/lib/postgresql/data
+    networks:
+      - echoesnetwork
+
+volumes:
+  echoes-db:
+    driver: local
+  node_modules:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./node_modules
+
+networks:
+  echoesnetwork:
+    driver: bridge

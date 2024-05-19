@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/commitlintrc.json",
+  "**/*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+  "**/*.{md,json}": ["prettier --write"]
+}
