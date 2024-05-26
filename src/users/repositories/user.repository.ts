@@ -1,8 +1,12 @@
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import type { UserRepositoryContract } from '@app/users/contracts';
-import type { UserRepositoryCreateInput, UserRepositoryFindUniqueOrThrowInput } from '@app/users/dtos';
+import type {
+  UserRepositoryCreateInput,
+  UserRepositoryFindUniqueOrThrowInput,
+  UserRepositoryUpdateInput,
+} from '@app/users/dtos';
+import type { User } from '@app/users/entities/user.entity';
 import { Injectable } from '@nestjs/common';
-import type { User } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -21,6 +25,13 @@ export class UserRepository implements UserRepositoryContract {
         ...input,
         uuid: uuidv4(),
       },
+    });
+  }
+
+  public update(input: UserRepositoryUpdateInput): Promise<User> {
+    return this.prismaManager.getClient().user.update({
+      where: input.where,
+      data: input.data,
     });
   }
 }

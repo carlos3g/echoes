@@ -1,17 +1,23 @@
+import { ForgotPasswordInput } from '@app/auth/dtos/forgot-password-input';
 import { RefreshTokenInput } from '@app/auth/dtos/refresh-token-input';
+import { ResetPasswordInput } from '@app/auth/dtos/reset-password-input';
 import { SignInInput } from '@app/auth/dtos/sign-in-input';
 import { SignUpInput } from '@app/auth/dtos/sign-up-input';
+import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
 import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case';
+import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
   public constructor(
     private readonly signUpUseCase: SignUpUseCase,
     private readonly signInUseCase: SignInUseCase,
-    private readonly refreshTokenUseCase: RefreshTokenUseCase
+    private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
+    private readonly resetPasswordUseCase: ResetPasswordUseCase
   ) {}
 
   @Post('sign-in')
@@ -30,5 +36,21 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   public async refreshToken(@Body() input: RefreshTokenInput) {
     return this.refreshTokenUseCase.handler(input);
+  }
+
+  // see: https://stackoverflow.com/a/1102817/13274020
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  public async forgotPassword(@Body() input: ForgotPasswordInput) {
+    return this.forgotPasswordUseCase.handler(input);
+  }
+
+  @Post('reset-password/:token')
+  @HttpCode(HttpStatus.OK)
+  public async resetPassword(@Body() input: ResetPasswordInput, @Param('token') token: string) {
+    return this.resetPasswordUseCase.handler({
+      ...input,
+      token,
+    });
   }
 }

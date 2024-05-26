@@ -4,7 +4,7 @@ import { BaseExceptionFilter } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
 import type { Response } from 'express';
 
-// See: https://www.prisma.io/blog/nestjs-prisma-error-handling-7D056s1kOop2
+// see: https://www.prisma.io/blog/nestjs-prisma-error-handling-7D056s1kOop2
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   public catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {

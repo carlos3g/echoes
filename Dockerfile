@@ -1,5 +1,5 @@
-# See: https://hackernoon.com/5-steps-for-dockerizing-nestjs-with-prisma
-# See: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+# see: https://hackernoon.com/5-steps-for-dockerizing-nestjs-with-prisma
+# see: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
 FROM node:20
 WORKDIR /usr/src/app

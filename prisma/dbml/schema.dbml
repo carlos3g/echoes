@@ -11,4 +11,14 @@ Table users {
   emailVerifiedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  PasswordChangeRequest password_change_request [not null]
 }
+
+Table password_change_request {
+  token String [pk]
+  user users [not null]
+  userId Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Ref: password_change_request.userId > users.id [delete: Cascade]
