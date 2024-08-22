@@ -1,7 +1,7 @@
 export class PasswordChangeRequest {
-  public token: string;
+  public token!: string;
 
-  public userId: number;
+  public userId!: number;
 
-  public createdAt: Date;
+  public createdAt!: Date;
 }

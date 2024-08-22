@@ -12,7 +12,7 @@ export class SignInUseCase implements UseCaseHandler {
     private readonly authService: AuthServiceContract
   ) {}
 
-  public async handler(input: SignInInput): Promise<unknown> {
+  public async handle(input: SignInInput): Promise<unknown> {
     const user = await this.userRepository.findUniqueOrThrow({
       where: {
         email: input.email,

@@ -11,7 +11,7 @@ export class SignUpUseCase implements UseCaseHandler {
     private readonly hashService: HashServiceContract
   ) {}
 
-  public async handler(input: SignUpInput) {
+  public async handle(input: SignUpInput) {
     await this.userRepository.create({
       email: input.email,
       password: this.hashService.hash(input.password),

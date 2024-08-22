@@ -1,17 +1,20 @@
+import { Exclude } from 'class-transformer';
+
 export class User {
-  public id: number;
+  @Exclude()
+  public id!: number;
 
-  public uuid: string;
+  public uuid!: string;
 
-  public name: string;
+  public name!: string;
 
-  public email: string;
+  public email!: string;
 
-  public password: string;
+  public password!: string;
 
-  public emailVerifiedAt: Date | null;
+  public emailVerifiedAt!: Date | null;
 
-  public createdAt: Date;
+  public createdAt!: Date;
 
-  public updatedAt: Date;
+  public updatedAt!: Date;
 }

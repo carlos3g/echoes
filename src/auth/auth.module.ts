@@ -13,8 +13,10 @@ import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-cas
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
+import type { EnvVariables } from '@app/shared/types';
 import { UsersModule } from '@app/users/users.module';
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 
@@ -23,9 +25,12 @@ import { AuthController } from './auth.controller';
   imports: [
     UsersModule,
     PrismaModule,
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET,
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService<EnvVariables>) => ({
+        global: true,
+        secret: configService.get('JWT_SECRET'),
+      }),
     }),
   ],
   providers: [

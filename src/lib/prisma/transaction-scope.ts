@@ -1,4 +1,4 @@
-import type { TransactionScope } from '@app/lib/prisma/interfaces';
+import type { TransactionScope } from '@app/lib/prisma/interfaces/transaction-scope.interface';
 import { PRISMA_CLIENT_KEY, PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { ClsService } from 'nestjs-cls';

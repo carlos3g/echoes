@@ -12,7 +12,7 @@ export class ResetPasswordUseCase implements UseCaseHandler {
     private readonly passwordChangeRequestRepository: PasswordChangeRequestRepositoryContract
   ) {}
 
-  public async handler(input: ResetPasswordInput): Promise<unknown> {
+  public async handle(input: ResetPasswordInput): Promise<unknown> {
     const user = await this.userRepository.findUniqueOrThrow({
       where: {
         email: input.email,

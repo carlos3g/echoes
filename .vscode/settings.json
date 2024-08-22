@@ -17,5 +17,10 @@
     "strokeColor": "#82b366"
   },
   "hediet.vscode-drawio.resizeImages": null,
-  "hediet.vscode-drawio.theme": "atlas"
+  "hediet.vscode-drawio.theme": "atlas",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  }
 }

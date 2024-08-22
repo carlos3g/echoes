@@ -1,3 +1,6 @@
+import '@app/lib/prisma/helpers/big-int-polyfill';
+
+import { HealthModule } from '@app/health/health.module';
 import { PrismaClientExceptionFilter } from '@app/lib/prisma/exceptions/prisma-client-exception.filter';
 import { PrismaService } from '@app/lib/prisma/services/prisma.service';
 import { Module } from '@nestjs/common';
@@ -13,6 +16,7 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
     AuthModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [

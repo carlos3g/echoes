@@ -13,7 +13,7 @@ export class ForgotPasswordUseCase implements UseCaseHandler {
     private readonly passwordChangeRequestRepository: PasswordChangeRequestRepositoryContract
   ) {}
 
-  public async handler(input: ForgotPasswordInput): Promise<unknown> {
+  public async handle(input: ForgotPasswordInput): Promise<unknown> {
     const user = await this.userRepository.findUniqueOrThrow({
       where: {
         email: input.email,
@@ -24,6 +24,12 @@ export class ForgotPasswordUseCase implements UseCaseHandler {
     const hashedToken = this.hashService.hash(token);
 
     // TODO: send email
+    // eslint-disable-next-line no-console
+    console.log({ token });
+
+    await this.passwordChangeRequestRepository.deleteMany({
+      where: { userId: user.id },
+    });
 
     await this.passwordChangeRequestRepository.create({
       userId: user.id,

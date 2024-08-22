@@ -1,5 +1,7 @@
 import type {
+  BatchOutput,
   PasswordChangeRequestRepositoryCreateInput,
+  PasswordChangeRequestRepositoryDeleteManyInput,
   PasswordChangeRequestRepositoryFindFirstOrThrowInput,
   PasswordChangeRequestRepositoryFindUniqueOrThrowInput,
 } from '@app/auth/dtos/password-change-request-repository-dtos';
@@ -15,6 +17,8 @@ abstract class PasswordChangeRequestRepositoryContract {
   public abstract findFirstOrThrow(
     input: PasswordChangeRequestRepositoryFindFirstOrThrowInput
   ): Promise<PasswordChangeRequest>;
+
+  public abstract deleteMany(input: PasswordChangeRequestRepositoryDeleteManyInput): Promise<BatchOutput>;
 }
 
 export { PasswordChangeRequestRepositoryContract };

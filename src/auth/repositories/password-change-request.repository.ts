@@ -1,6 +1,8 @@
 import type { PasswordChangeRequestRepositoryContract } from '@app/auth/contracts';
 import type {
+  BatchOutput,
   PasswordChangeRequestRepositoryCreateInput,
+  PasswordChangeRequestRepositoryDeleteManyInput,
   PasswordChangeRequestRepositoryFindFirstOrThrowInput,
   PasswordChangeRequestRepositoryFindUniqueOrThrowInput,
 } from '@app/auth/dtos/password-change-request-repository-dtos';
@@ -29,5 +31,9 @@ export class PasswordChangeRequestRepository implements PasswordChangeRequestRep
         ...input,
       },
     });
+  }
+
+  public deleteMany(input: PasswordChangeRequestRepositoryDeleteManyInput): Promise<BatchOutput> {
+    return this.prismaManager.getClient().passwordChangeRequest.deleteMany({ where: input.where });
   }
 }

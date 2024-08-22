@@ -1,5 +1,5 @@
 interface UseCaseHandler {
-  handler(input: unknown): Promise<unknown>;
+  handle(input: unknown): Promise<unknown>;
 }
 
 export type { UseCaseHandler };

@@ -20,9 +20,11 @@ model User {
   email                 String                  @unique
   password              String
   emailVerifiedAt       DateTime?               @map("email_verified_at")
+  passwordChangeRequest PasswordChangeRequest[]
+  tags                  Tag[]
   createdAt             DateTime                @default(now()) @map("created_at")
   updatedAt             DateTime                @updatedAt @map("updated_at")
-  PasswordChangeRequest PasswordChangeRequest[]
+  userOnFavoritable     UserOnFavoritable[]
 
   @@map("users")
 }
@@ -34,4 +36,106 @@ model PasswordChangeRequest {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("password_change_request")
+}
+
+model Quote {
+  id                Int                 @id @default(autoincrement())
+  uuid              String              @unique
+  body              String
+  author            Author?             @relation(fields: [authorId], references: [id])
+  authorId          Int?
+  sources           Source[]
+  categories        Categorie[]
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  tagOnTaggable     TagOnTaggable[]
+  userOnFavoritable UserOnFavoritable[]
+
+  @@map("quotes")
+}
+
+model Source {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique
+  title     String
+  quote     Quote    @relation(fields: [quoteId], references: [id])
+  quoteId   Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("sources")
+}
+
+model Categorie {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique
+  title     String
+  quotes    Quote[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Author {
+  id                Int                 @id @default(autoincrement())
+  uuid              String              @unique
+  name              String
+  birthDate         DateTime            @map("birth_date")
+  deathDate         DateTime?           @map("death_date")
+  bio               String
+  quotes            Quote[]
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  tagOnTaggable     TagOnTaggable[]
+  userOnFavoritable UserOnFavoritable[]
+
+  @@map("authors")
+}
+
+model Tag {
+  id            Int             @id @default(autoincrement())
+  uuid          String          @unique
+  title         String
+  user          User            @relation(fields: [userId], references: [id])
+  userId        Int
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  tagOnTaggable TagOnTaggable[]
+
+  @@map("tags")
+}
+
+enum TaggableType {
+  Author
+  Quote
+}
+
+model TagOnTaggable {
+  tag          Tag          @relation(fields: [tagId], references: [id])
+  tagId        Int
+  author       Author?      @relation(fields: [taggableId], references: [id], map: "author_taggableId")
+  quote        Quote?       @relation(fields: [taggableId], references: [id], map: "quote_taggableId")
+  taggableId   Int          @map("taggable_id")
+  taggableType TaggableType @map("taggable_type")
+
+  @@unique([tagId, taggableId, taggableType])
+  @@map("tag_on_taggable")
+}
+
+enum FavoritableType {
+  Author
+  Quote
+}
+
+model UserOnFavoritable {
+  user            User            @relation(fields: [userId], references: [id])
+  userId          Int
+  author          Author?         @relation(fields: [favoritableId], references: [id], map: "author_favoritableId")
+  quote           Quote?          @relation(fields: [favoritableId], references: [id], map: "quote_favoritableId")
+  favoritableId   Int             @map("favoritable_id")
+  favoritableType FavoritableType @map("favoritable_type")
+
+  @@unique([userId, favoritableId, favoritableType])
+  @@map("tag_on_favoritable")
 }

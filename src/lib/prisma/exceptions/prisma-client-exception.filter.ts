@@ -1,3 +1,4 @@
+import { PrismaClientErrorCode } from '@app/lib/prisma/enums';
 import type { ArgumentsHost } from '@nestjs/common';
 import { Catch, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
@@ -11,24 +12,22 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    switch (exception.code) {
-      case 'P2002': {
+    switch (exception.code as PrismaClientErrorCode) {
+      case PrismaClientErrorCode.UniqueConstraintFailed: {
         const entity: string = (exception?.meta as { target: string[] })?.target[0];
 
         response.status(HttpStatus.CONFLICT).json({
           statusCode: HttpStatus.CONFLICT,
           message: `${entity} já existe`,
-          errors: [],
         });
-        return;
+        break;
       }
-      case 'P2025': {
+      case PrismaClientErrorCode.RecordNotFound: {
         response.status(HttpStatus.NOT_FOUND).json({
           statusCode: HttpStatus.NOT_FOUND,
           message: exception.message,
-          errors: [],
         });
-        return;
+        break;
       }
       default:
         // default 500 error code
