@@ -1,8 +1,8 @@
-import { PrismaTransactionScope } from '@app/lib/prisma/transaction-scope';
+import { PrismaTransactionScopeService } from '@app/lib/prisma/services/transaction-scope.service';
 import { Inject } from '@nestjs/common';
 
 interface ThisType {
-  transactionScope: PrismaTransactionScope;
+  transactionScope: PrismaTransactionScopeService;
 }
 
 interface OriginalMethod {
@@ -11,7 +11,7 @@ interface OriginalMethod {
 
 export function Transaction(): MethodDecorator {
   // see: https://stackoverflow.com/a/60608920/13274020
-  const injectService = Inject(PrismaTransactionScope);
+  const injectService = Inject(PrismaTransactionScopeService);
 
   return (target: object, propertyKey: string | symbol, propertyDescriptor: PropertyDescriptor) => {
     injectService(target, 'transactionScope');

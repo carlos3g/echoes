@@ -16,11 +16,11 @@ export class PrismaManagerService {
     return this.cls.get(PRISMA_CLIENT_KEY);
   }
 
-  public getClient(): PrismaClient {
-    return this.getTransaction() || this.prisma;
-  }
-
   public getNativeClient(): PrismaClient {
     return this.prisma;
+  }
+
+  public getClient(): PrismaClient {
+    return this.getTransaction() || this.prisma;
   }
 }

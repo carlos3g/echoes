@@ -1,4 +1,4 @@
-import type { User } from '@app/users/entities/user.entity';
+import type { User } from '@app/user/entities/user.entity';
 
 abstract class AuthServiceContract {
   public abstract generateAuthTokens(user: User): {

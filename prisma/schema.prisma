@@ -45,7 +45,7 @@ model Quote {
   author            Author?             @relation(fields: [authorId], references: [id])
   authorId          Int?
   sources           Source[]
-  categories        Categorie[]
+  categories        Category[]
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @updatedAt @map("updated_at")
   tagOnTaggable     TagOnTaggable[]
@@ -66,7 +66,7 @@ model Source {
   @@map("sources")
 }
 
-model Categorie {
+model Category {
   id        Int      @id @default(autoincrement())
   uuid      String   @unique
   title     String

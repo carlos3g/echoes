@@ -1,13 +1,13 @@
 import { AuthServiceContract, HashServiceContract } from '@app/auth/contracts';
 import type { SignInInput } from '@app/auth/dtos/sign-in-input';
 import type { UseCaseHandler } from '@app/shared/interfaces';
-import { UserRepositoryContract } from '@app/users/contracts';
+import { PrismaUserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class SignInUseCase implements UseCaseHandler {
   public constructor(
-    private readonly userRepository: UserRepositoryContract,
+    private readonly userRepository: PrismaUserRepositoryContract,
     private readonly hashService: HashServiceContract,
     private readonly authService: AuthServiceContract
   ) {}

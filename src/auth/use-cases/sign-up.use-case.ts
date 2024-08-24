@@ -1,13 +1,14 @@
 import { HashServiceContract } from '@app/auth/contracts';
 import type { SignUpInput } from '@app/auth/dtos/sign-up-input';
 import type { UseCaseHandler } from '@app/shared/interfaces';
-import { UserRepositoryContract } from '@app/users/contracts';
+import { createUuidV4 } from '@app/shared/utils';
+import { PrismaUserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SignUpUseCase implements UseCaseHandler {
   public constructor(
-    private readonly userRepository: UserRepositoryContract,
+    private readonly userRepository: PrismaUserRepositoryContract,
     private readonly hashService: HashServiceContract
   ) {}
 
@@ -16,6 +17,7 @@ export class SignUpUseCase implements UseCaseHandler {
       email: input.email,
       password: this.hashService.hash(input.password),
       name: input.name,
+      uuid: createUuidV4(),
     });
 
     return {

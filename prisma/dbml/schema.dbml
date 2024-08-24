@@ -107,7 +107,7 @@ Table tag_on_favoritable {
   }
 }
 
-Table CategorieToQuote {
+Table CategoryToQuote {
   categoriesId Int [ref: > categories.id]
   quotesId Int [ref: > quotes.id]
 }

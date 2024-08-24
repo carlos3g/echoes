@@ -14,7 +14,7 @@ import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import type { EnvVariables } from '@app/shared/types';
-import { UsersModule } from '@app/users/users.module';
+import { UserModule } from '@app/user/user.module';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
@@ -23,7 +23,7 @@ import { AuthController } from './auth.controller';
 @Module({
   controllers: [AuthController],
   imports: [
-    UsersModule,
+    UserModule,
     PrismaModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -43,6 +43,10 @@ import { AuthController } from './auth.controller';
     RefreshTokenUseCase,
     ForgotPasswordUseCase,
     ResetPasswordUseCase,
+  ],
+  exports: [
+    { provide: AuthServiceContract, useClass: AuthService },
+    { provide: JwtServiceContract, useClass: JwtService },
   ],
 })
 export class AuthModule {}

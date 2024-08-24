@@ -1,6 +1,6 @@
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { PrismaService } from '@app/lib/prisma/services/prisma.service';
-import { PrismaTransactionScope } from '@app/lib/prisma/transaction-scope';
+import { PrismaTransactionScopeService } from '@app/lib/prisma/services/transaction-scope.service';
 import { Module } from '@nestjs/common';
 import { ClsModule } from 'nestjs-cls';
 
@@ -12,7 +12,7 @@ import { ClsModule } from 'nestjs-cls';
       },
     }),
   ],
-  providers: [PrismaManagerService, PrismaService, PrismaTransactionScope],
-  exports: [PrismaManagerService, PrismaService, PrismaTransactionScope],
+  providers: [PrismaManagerService, PrismaService, PrismaTransactionScopeService],
+  exports: [PrismaManagerService, PrismaService, PrismaTransactionScopeService],
 })
 export class PrismaModule {}

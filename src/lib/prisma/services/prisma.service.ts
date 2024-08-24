@@ -16,6 +16,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   public async clearDatabase() {
     const modelKeys = Prisma.dmmf.datamodel.models.map((model) => model.dbName);
 
-    return Promise.all(modelKeys.map((table) => this.$executeRawUnsafe(`DELETE FROM ${table};`)));
+    const tablesSeparatedByComma = modelKeys.join(',');
+
+    // see: https://stackoverflow.com/a/39693913/13274020
+    return this.$executeRawUnsafe(`TRUNCATE TABLE ${tablesSeparatedByComma} CASCADE;`);
   }
 }

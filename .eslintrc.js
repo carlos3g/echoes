@@ -1,3 +1,6 @@
+/**
+ * @type {import("eslint").Linter.Config}
+ */
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -11,6 +14,8 @@ module.exports = {
     'airbnb-typescript/base',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
     'plugin:prettier/recommended',
     'prettier',
   ],
@@ -20,6 +25,16 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: ['.eslintrc.js'],
+  overrides: [
+    {
+      files: ['**/*.spec.ts', '**/*.e2e-spec.ts'],
+      plugins: ['jest'],
+      rules: {
+        '@typescript-eslint/unbound-method': 0,
+        'jest/unbound-method': 2,
+      },
+    },
+  ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
