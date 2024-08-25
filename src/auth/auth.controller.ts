@@ -1,6 +1,7 @@
+import { Public } from '@app/auth/decorators/public.decorator';
 import { ForgotPasswordInput } from '@app/auth/dtos/forgot-password-input';
 import { RefreshTokenInput } from '@app/auth/dtos/refresh-token-input';
-import { ResetPasswordInput } from '@app/auth/dtos/reset-password-input';
+import { ResetPasswordRequest } from '@app/auth/dtos/reset-password-request';
 import { SignInInput } from '@app/auth/dtos/sign-in-input';
 import { SignUpInput } from '@app/auth/dtos/sign-up-input';
 import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
@@ -10,6 +11,7 @@ import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
 import { Body, Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 
+@Public()
 @Controller('auth')
 export class AuthController {
   public constructor(
@@ -47,7 +49,7 @@ export class AuthController {
 
   @Post('reset-password/:token')
   @HttpCode(HttpStatus.OK)
-  public async resetPassword(@Body() input: ResetPasswordInput, @Param('token') token: string) {
+  public async resetPassword(@Body() input: ResetPasswordRequest, @Param('token') token: string) {
     return this.resetPasswordUseCase.handle({
       ...input,
       token,

@@ -22,6 +22,20 @@ export interface PasswordChangeRequestRepositoryFindFirstOrThrowInput {
   }>;
 }
 
+export interface PasswordChangeRequestRepositoryFindFirstValidOrThrowInput {
+  where: Partial<{
+    token: string;
+    userId: number;
+  }>;
+}
+
+export interface PasswordChangeRequestRepositoryUpdateInput {
+  where: AtLeastOne<{
+    token: string;
+  }>;
+  data: Partial<{ usedAt: Date }>;
+}
+
 export interface PasswordChangeRequestRepositoryDeleteManyInput {
   where: AtLeastOne<{
     token: string;

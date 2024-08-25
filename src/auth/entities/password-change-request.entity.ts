@@ -7,5 +7,7 @@ export class PasswordChangeRequest {
 
   public userId!: number;
 
+  public usedAt!: Date | null;
+
   public createdAt!: Date;
 }

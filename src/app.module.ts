@@ -10,11 +10,13 @@ import { SourceModule } from '@app/source/source.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),

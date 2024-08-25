@@ -20,6 +20,7 @@ Table password_change_request {
   token String [pk]
   user users [not null]
   userId BigInt [not null]
+  usedAt DateTime
   createdAt DateTime [default: `now()`, not null]
 }
 

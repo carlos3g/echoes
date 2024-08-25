@@ -3,7 +3,9 @@ import type {
   PasswordChangeRequestRepositoryCreateInput,
   PasswordChangeRequestRepositoryDeleteManyInput,
   PasswordChangeRequestRepositoryFindFirstOrThrowInput,
+  PasswordChangeRequestRepositoryFindFirstValidOrThrowInput,
   PasswordChangeRequestRepositoryFindUniqueOrThrowInput,
+  PasswordChangeRequestRepositoryUpdateInput,
 } from '@app/auth/dtos/password-change-request-repository-dtos';
 import type { PasswordChangeRequest } from '@app/auth/entities/password-change-request.entity';
 
@@ -18,7 +20,15 @@ abstract class PasswordChangeRequestRepositoryContract {
     input: PasswordChangeRequestRepositoryFindFirstOrThrowInput
   ): Promise<PasswordChangeRequest>;
 
+  public abstract findFirstValidOrThrow(
+    input: PasswordChangeRequestRepositoryFindFirstValidOrThrowInput
+  ): Promise<PasswordChangeRequest>;
+
+  public abstract update(input: PasswordChangeRequestRepositoryUpdateInput): Promise<PasswordChangeRequest>;
+
   public abstract deleteMany(input: PasswordChangeRequestRepositoryDeleteManyInput): Promise<BatchOutput>;
+
+  public abstract deleteUsed(): Promise<BatchOutput>;
 }
 
 export { PasswordChangeRequestRepositoryContract };

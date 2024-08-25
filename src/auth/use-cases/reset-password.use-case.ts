@@ -4,6 +4,7 @@ import type { ResetPasswordInput } from '@app/auth/dtos/reset-password-input';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class ResetPasswordUseCase implements UseCaseHandler {
@@ -20,7 +21,7 @@ export class ResetPasswordUseCase implements UseCaseHandler {
       },
     });
 
-    const passwordChangeRequest = await this.passwordChangeRequestRepository.findFirstOrThrow({
+    const passwordChangeRequest = await this.passwordChangeRequestRepository.findFirstValidOrThrow({
       where: {
         userId: user.id,
       },
@@ -29,6 +30,15 @@ export class ResetPasswordUseCase implements UseCaseHandler {
     if (!this.hashService.compare(input.token, passwordChangeRequest.token)) {
       throw new UnauthorizedException();
     }
+
+    await this.passwordChangeRequestRepository.update({
+      where: {
+        token: passwordChangeRequest.token,
+      },
+      data: {
+        usedAt: DateTime.now().toJSDate(),
+      },
+    });
 
     await this.userRepository.update({
       where: {

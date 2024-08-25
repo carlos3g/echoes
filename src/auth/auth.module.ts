@@ -6,6 +6,7 @@ import { AuthGuard } from '@app/auth/guards/auth.guard';
 import { PrismaPasswordChangeRequestRepository } from '@app/auth/repositories/prisma-password-change-request.repository';
 import { AuthService } from '@app/auth/services/auth.service';
 import { BCryptService } from '@app/auth/services/bcrypt.service';
+import { DeleteUsedPasswordChangeRequestTask } from '@app/auth/tasks/delete-used-password-change-request.task';
 import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
 import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case';
 import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
@@ -47,6 +48,7 @@ import { AuthController } from './auth.controller';
     RefreshTokenUseCase,
     ForgotPasswordUseCase,
     ResetPasswordUseCase,
+    DeleteUsedPasswordChangeRequestTask,
   ],
   exports: [
     { provide: AuthServiceContract, useClass: AuthService },

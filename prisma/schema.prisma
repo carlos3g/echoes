@@ -30,10 +30,11 @@ model User {
 }
 
 model PasswordChangeRequest {
-  token     String   @id
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    BigInt   @db.BigInt
-  createdAt DateTime @default(now()) @map("created_at")
+  token     String    @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt    @db.BigInt
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
 
   @@map("password_change_request")
 }
