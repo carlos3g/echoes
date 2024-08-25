@@ -32,7 +32,7 @@ export interface TagRepositoryFindManyPaginatedInput {
   where?: {
     userId: number;
   };
-  options: Required<Paginate>;
+  options?: Paginate;
 }
 
 export interface TagRepositoryDeleteInput {

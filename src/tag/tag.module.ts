@@ -3,17 +3,19 @@ import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contrac
 import { PrismaTagRepository } from '@app/tag/repositories/prisma-tag.repository';
 import { TagService } from '@app/tag/services/tag.service';
 import { TagController } from '@app/tag/tag.controller';
+import { ListTagPaginatedUseCase } from '@app/tag/use-cases/list-tag-paginated.use-case';
 import { Module } from '@nestjs/common';
 
 @Module({
   imports: [PrismaModule],
   controllers: [TagController],
   providers: [
-    TagService,
     {
       provide: TagRepositoryContract,
       useClass: PrismaTagRepository,
     },
+    TagService,
+    ListTagPaginatedUseCase,
   ],
   exports: [TagRepositoryContract],
 })

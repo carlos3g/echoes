@@ -26,8 +26,8 @@ export interface CategoryRepositoryFindManyInput {
 }
 
 export interface CategoryRepositoryFindManyPaginatedInput {
-  where?: { title: string };
-  options: Required<Paginate>;
+  where?: { title?: string };
+  options?: Paginate;
 }
 
 export interface CategoryRepositoryDeleteInput {

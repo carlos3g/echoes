@@ -31,7 +31,7 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
 
   public async findManyPaginated(input: AuthorRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Author>> {
     const { ...where } = input.where || {};
-    const { perPage, page } = input.options;
+    const { perPage = 20, page = 1 } = input.options || {};
 
     const paginate = createPaginator({ perPage });
 

@@ -30,7 +30,7 @@ export class PrismaSourceRepository implements SourceRepositoryContract {
 
   public async findManyPaginated(input: SourceRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Source>> {
     const { ...where } = input.where || {};
-    const { perPage, page } = input.options;
+    const { perPage = 20, page = 1 } = input.options || {};
 
     const paginate = createPaginator({ perPage });
 

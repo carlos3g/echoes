@@ -31,7 +31,7 @@ export class PrismaCategoryRepository implements CategoryRepositoryContract {
 
   public async findManyPaginated(input: CategoryRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Category>> {
     const { ...where } = input.where || {};
-    const { perPage, page } = input.options;
+    const { perPage = 20, page = 1 } = input.options || {};
 
     const paginate = createPaginator({ perPage });
 

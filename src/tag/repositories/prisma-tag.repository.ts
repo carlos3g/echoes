@@ -31,7 +31,7 @@ export class PrismaTagRepository implements TagRepositoryContract {
 
   public async findManyPaginated(input: TagRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Tag>> {
     const { ...where } = input.where || {};
-    const { perPage, page } = input.options;
+    const { perPage = 20, page = 1 } = input.options || {};
 
     const paginate = createPaginator({ perPage });
 

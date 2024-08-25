@@ -30,9 +30,9 @@ export interface QuoteRepositoryFindManyInput {
 
 export interface QuoteRepositoryFindManyPaginatedInput {
   where?: {
-    authorId: number;
+    authorId?: number;
   };
-  options: Required<Paginate>;
+  options?: Paginate;
 }
 
 export interface QuoteRepositoryDeleteInput {

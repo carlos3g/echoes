@@ -36,7 +36,7 @@ export interface AuthorRepositoryFindManyPaginatedInput {
     birthDate?: Date;
     deathDate?: Date;
   };
-  options: Required<Paginate>;
+  options?: Paginate;
 }
 
 export interface AuthorRepositoryDeleteInput {

@@ -32,7 +32,7 @@ export interface SourceRepositoryFindManyPaginatedInput {
   where?: {
     quoteId: number;
   };
-  options: Required<Paginate>;
+  options?: Paginate;
 }
 
 export interface SourceRepositoryDeleteInput {
