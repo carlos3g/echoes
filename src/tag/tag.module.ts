@@ -1,4 +1,3 @@
-import { AuthModule } from '@app/auth/auth.module';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { PrismaTagRepository } from '@app/tag/repositories/prisma-tag.repository';
@@ -7,7 +6,7 @@ import { TagController } from '@app/tag/tag.controller';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule],
   controllers: [TagController],
   providers: [
     TagService,

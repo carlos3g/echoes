@@ -1,13 +1,14 @@
-import { HashServiceContract, PasswordChangeRequestRepositoryContract } from '@app/auth/contracts';
+import { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
+import { PasswordChangeRequestRepositoryContract } from '@app/auth/contracts/password-change-request-repository.contract';
 import type { ResetPasswordInput } from '@app/auth/dtos/reset-password-input';
 import type { UseCaseHandler } from '@app/shared/interfaces';
-import { PrismaUserRepositoryContract } from '@app/user/contracts/user-repository.contract';
+import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class ResetPasswordUseCase implements UseCaseHandler {
   public constructor(
-    private readonly userRepository: PrismaUserRepositoryContract,
+    private readonly userRepository: UserRepositoryContract,
     private readonly hashService: HashServiceContract,
     private readonly passwordChangeRequestRepository: PasswordChangeRequestRepositoryContract
   ) {}

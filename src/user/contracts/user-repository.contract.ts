@@ -5,7 +5,7 @@ import type {
 } from '@app/user/dtos/user-repository-dtos';
 import type { User } from '@app/user/entities/user.entity';
 
-abstract class PrismaUserRepositoryContract {
+abstract class UserRepositoryContract {
   public abstract create(input: UserRepositoryCreateInput): Promise<User>;
 
   public abstract update(input: UserRepositoryUpdateInput): Promise<User>;
@@ -13,4 +13,4 @@ abstract class PrismaUserRepositoryContract {
   public abstract findUniqueOrThrow(input: UserRepositoryFindUniqueOrThrowInput): Promise<User>;
 }
 
-export { PrismaUserRepositoryContract };
+export { UserRepositoryContract };

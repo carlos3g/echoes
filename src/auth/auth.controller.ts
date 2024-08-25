@@ -1,6 +1,6 @@
 import { ForgotPasswordInput } from '@app/auth/dtos/forgot-password-input';
 import { RefreshTokenInput } from '@app/auth/dtos/refresh-token-input';
-import { ResetPasswordRequest } from '@app/auth/dtos/reset-password-request';
+import { ResetPasswordInput } from '@app/auth/dtos/reset-password-input';
 import { SignInInput } from '@app/auth/dtos/sign-in-input';
 import { SignUpInput } from '@app/auth/dtos/sign-up-input';
 import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
@@ -47,7 +47,7 @@ export class AuthController {
 
   @Post('reset-password/:token')
   @HttpCode(HttpStatus.OK)
-  public async resetPassword(@Body() input: ResetPasswordRequest, @Param('token') token: string) {
+  public async resetPassword(@Body() input: ResetPasswordInput, @Param('token') token: string) {
     return this.resetPasswordUseCase.handle({
       ...input,
       token,

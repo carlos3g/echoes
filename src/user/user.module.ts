@@ -1,5 +1,5 @@
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
-import { PrismaUserRepositoryContract } from '@app/user/contracts/user-repository.contract';
+import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import { PrismaUserRepository } from '@app/user/repositories/prisma-user.repository';
 import { Module } from '@nestjs/common';
 import { UserService } from './services/user.service';
@@ -11,13 +11,13 @@ import { UserController } from './user.controller';
   providers: [
     UserService,
     {
-      provide: PrismaUserRepositoryContract,
+      provide: UserRepositoryContract,
       useClass: PrismaUserRepository,
     },
   ],
   exports: [
     {
-      provide: PrismaUserRepositoryContract,
+      provide: UserRepositoryContract,
       useClass: PrismaUserRepository,
     },
   ],

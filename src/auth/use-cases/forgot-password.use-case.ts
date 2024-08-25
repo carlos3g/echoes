@@ -1,14 +1,15 @@
-import { HashServiceContract, PasswordChangeRequestRepositoryContract } from '@app/auth/contracts';
+import { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
+import { PasswordChangeRequestRepositoryContract } from '@app/auth/contracts/password-change-request-repository.contract';
 import type { ForgotPasswordInput } from '@app/auth/dtos/forgot-password-input';
 import type { UseCaseHandler } from '@app/shared/interfaces';
-import { PrismaUserRepositoryContract } from '@app/user/contracts/user-repository.contract';
+import { createUuidV4 } from '@app/shared/utils';
+import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import { Injectable } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ForgotPasswordUseCase implements UseCaseHandler {
   public constructor(
-    private readonly userRepository: PrismaUserRepositoryContract,
+    private readonly userRepository: UserRepositoryContract,
     private readonly hashService: HashServiceContract,
     private readonly passwordChangeRequestRepository: PasswordChangeRequestRepositoryContract
   ) {}
@@ -20,7 +21,7 @@ export class ForgotPasswordUseCase implements UseCaseHandler {
       },
     });
 
-    const token = uuid();
+    const token = createUuidV4();
     const hashedToken = this.hashService.hash(token);
 
     // TODO: send email

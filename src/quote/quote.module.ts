@@ -1,4 +1,3 @@
-import { AuthModule } from '@app/auth/auth.module';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
 import { QuoteController } from '@app/quote/quote.controller';
@@ -7,7 +6,7 @@ import { QuoteService } from '@app/quote/services/quote.service';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule],
   controllers: [QuoteController],
   providers: [
     QuoteService,

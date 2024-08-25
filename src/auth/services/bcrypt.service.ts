@@ -1,4 +1,4 @@
-import type { HashServiceContract } from '@app/auth/contracts';
+import type { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 

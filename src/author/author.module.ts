@@ -1,4 +1,3 @@
-import { AuthModule } from '@app/auth/auth.module';
 import { AuthorController } from '@app/author/author.controller';
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
 import { PrismaAuthorRepository } from '@app/author/repositories/prisma-author.repository';
@@ -7,7 +6,7 @@ import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule],
   controllers: [AuthorController],
   providers: [
     AuthorService,

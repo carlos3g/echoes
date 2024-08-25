@@ -1,4 +1,3 @@
-import { AuthModule } from '@app/auth/auth.module';
 import { CategoryController } from '@app/category/category.controller';
 import { CategoryRepositoryContract } from '@app/category/contracts/category-repository.contract';
 import { PrismaCategoryRepository } from '@app/category/repositories/prisma-category.repository';
@@ -7,7 +6,7 @@ import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule],
   controllers: [CategoryController],
   providers: [
     CategoryService,

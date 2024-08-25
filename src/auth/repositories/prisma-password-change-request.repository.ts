@@ -1,6 +1,6 @@
-import type { PasswordChangeRequestRepositoryContract } from '@app/auth/contracts';
+import { prismaPasswordChangeRequestToPasswordChangeRequestAdapter } from '@app/auth/adapters';
+import type { PasswordChangeRequestRepositoryContract } from '@app/auth/contracts/password-change-request-repository.contract';
 import type {
-  BatchOutput,
   PasswordChangeRequestRepositoryCreateInput,
   PasswordChangeRequestRepositoryDeleteManyInput,
   PasswordChangeRequestRepositoryFindFirstOrThrowInput,
@@ -10,30 +10,36 @@ import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.se
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class PasswordChangeRequestRepository implements PasswordChangeRequestRepositoryContract {
+export class PrismaPasswordChangeRequestRepository implements PasswordChangeRequestRepositoryContract {
   public constructor(private readonly prismaManager: PrismaManagerService) {}
 
   public async findUniqueOrThrow(input: PasswordChangeRequestRepositoryFindUniqueOrThrowInput) {
-    return this.prismaManager.getClient().passwordChangeRequest.findUniqueOrThrow({
+    const entity = await this.prismaManager.getClient().passwordChangeRequest.findUniqueOrThrow({
       where: input.where,
     });
+
+    return prismaPasswordChangeRequestToPasswordChangeRequestAdapter(entity);
   }
 
   public async findFirstOrThrow(input: PasswordChangeRequestRepositoryFindFirstOrThrowInput) {
-    return this.prismaManager.getClient().passwordChangeRequest.findFirstOrThrow({
+    const entity = await this.prismaManager.getClient().passwordChangeRequest.findFirstOrThrow({
       where: input.where,
     });
+
+    return prismaPasswordChangeRequestToPasswordChangeRequestAdapter(entity);
   }
 
   public async create(input: PasswordChangeRequestRepositoryCreateInput) {
-    return this.prismaManager.getClient().passwordChangeRequest.create({
+    const entity = await this.prismaManager.getClient().passwordChangeRequest.create({
       data: {
         ...input,
       },
     });
+
+    return prismaPasswordChangeRequestToPasswordChangeRequestAdapter(entity);
   }
 
-  public deleteMany(input: PasswordChangeRequestRepositoryDeleteManyInput): Promise<BatchOutput> {
+  public deleteMany(input: PasswordChangeRequestRepositoryDeleteManyInput) {
     return this.prismaManager.getClient().passwordChangeRequest.deleteMany({ where: input.where });
   }
 }

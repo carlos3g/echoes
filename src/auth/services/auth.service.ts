@@ -1,8 +1,8 @@
-import type { AuthServiceContract } from '@app/auth/contracts';
-import { JwtServiceContract } from '@app/auth/contracts';
-import type { JwtPayload } from '@app/auth/dtos/jwt-payload';
+import type { AuthServiceContract } from '@app/auth/contracts/auth-service.contract';
+import { JwtServiceContract } from '@app/auth/contracts/jwt-service.contract';
+import type { JwtPayload } from '@app/auth/types/jwt-payload';
 import type { EnvVariables } from '@app/shared/types';
-import { PrismaUserRepositoryContract } from '@app/user/contracts/user-repository.contract';
+import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type { User } from '@app/user/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -11,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 export class AuthService implements AuthServiceContract {
   public constructor(
     private readonly jwtService: JwtServiceContract,
-    private readonly userRepository: PrismaUserRepositoryContract,
+    private readonly userRepository: UserRepositoryContract,
     private readonly configService: ConfigService<EnvVariables>
   ) {}
 

@@ -1,4 +1,5 @@
-import { AuthServiceContract, JwtServiceContract } from '@app/auth/contracts';
+import { AuthServiceContract } from '@app/auth/contracts/auth-service.contract';
+import { JwtServiceContract } from '@app/auth/contracts/jwt-service.contract';
 import type { RefreshTokenInput } from '@app/auth/dtos/refresh-token-input';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import type { EnvVariables } from '@app/shared/types';
