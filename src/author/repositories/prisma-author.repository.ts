@@ -10,10 +10,10 @@ import type {
 } from '@app/author/dtos/author-repository-dtos';
 import type { Author } from '@app/author/entities/author.entity';
 import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
-import { createPaginator } from '@app/lib/prisma/helpers/pagination';
+import { paginate } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { Injectable } from '@nestjs/common';
-import type { Prisma, Author as PrismaAuthor } from '@prisma/client';
+import type { Author as PrismaAuthor } from '@prisma/client';
 
 type FindManyReturn = PrismaAuthor;
 
@@ -33,9 +33,7 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
     const { ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const paginate = createPaginator({ perPage });
-
-    const result = await paginate<FindManyReturn, Prisma.AuthorFindManyArgs>(
+    const result = await paginate<FindManyReturn, 'Author'>(
       this.prismaManager.getClient().author,
       {
         where: {
@@ -43,7 +41,7 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
         },
         orderBy: [{ createdAt: 'desc' }],
       },
-      { page }
+      { page, perPage }
     );
 
     return {

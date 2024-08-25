@@ -9,11 +9,10 @@ import type {
   CategoryRepositoryUpdateInput,
 } from '@app/category/dtos/category-repository-dtos';
 import type { Category } from '@app/category/entities/category.entity';
-import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
-import { createPaginator } from '@app/lib/prisma/helpers/pagination';
+import { paginate, type PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { Injectable } from '@nestjs/common';
-import type { Prisma, Category as PrismaCategory } from '@prisma/client';
+import type { Category as PrismaCategory } from '@prisma/client';
 
 type FindManyReturn = PrismaCategory;
 
@@ -33,9 +32,7 @@ export class PrismaCategoryRepository implements CategoryRepositoryContract {
     const { ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const paginate = createPaginator({ perPage });
-
-    const result = await paginate<FindManyReturn, Prisma.CategoryFindManyArgs>(
+    const result = await paginate<FindManyReturn, 'Category'>(
       this.prismaManager.getClient().category,
       {
         where: {
@@ -43,7 +40,7 @@ export class PrismaCategoryRepository implements CategoryRepositoryContract {
         },
         orderBy: [{ createdAt: 'desc' }],
       },
-      { page }
+      { page, perPage }
     );
 
     return {

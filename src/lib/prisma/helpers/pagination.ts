@@ -1,4 +1,7 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import type { Prisma, PrismaClient } from '@prisma/client';
+
 export interface PaginatedResult<T> {
   data: T[];
   meta: {
@@ -11,35 +14,48 @@ export interface PaginatedResult<T> {
   };
 }
 
-export type PaginateOptions = { page?: number | string; perPage?: number | string };
-export type PaginateFunction = <T, K>(model: any, args?: K, options?: PaginateOptions) => Promise<PaginatedResult<T>>;
+// see: https://github.com/prisma/prisma/issues/6980
+type ModelDelegates = {
+  [K in Prisma.ModelName]: PrismaClient[Uncapitalize<K>];
+};
 
-export const createPaginator = (defaultOptions: PaginateOptions): PaginateFunction => {
-  return async (model, args: any = { where: undefined }, options) => {
-    const page = Number(options?.page || defaultOptions?.page) || 1;
-    const perPage = Number(options?.perPage || defaultOptions?.perPage) || 10;
+export type PaginateOptions = { page?: number; perPage?: number };
+export type PaginateFunction = <T, K extends Prisma.ModelName>(
+  model: ModelDelegates[K],
+  args?: Parameters<ModelDelegates[K]['findMany']>[0],
+  options?: PaginateOptions
+) => Promise<PaginatedResult<T>>;
 
-    const skip = page > 0 ? perPage * (page - 1) : 0;
-    const [total, data] = await Promise.all([
-      model.count({ where: args.where }),
-      model.findMany({
-        ...args,
-        take: perPage,
-        skip,
-      }),
-    ]);
-    const lastPage = Math.ceil(total / perPage);
+export const calcSkip = (page: number, perPage: number): number => {
+  return page > 0 ? perPage * (page - 1) : 0;
+};
 
-    return {
-      data,
-      meta: {
-        total,
-        lastPage,
-        currentPage: page,
-        perPage,
-        prev: page > 1 ? page - 1 : null,
-        next: page < lastPage ? page + 1 : null,
-      },
-    };
+export const getMeta = (total: number, page: number, perPage: number) => {
+  const lastPage = Math.ceil(total / perPage);
+
+  return {
+    total,
+    lastPage,
+    currentPage: page,
+    perPage,
+    prev: page > 1 ? page - 1 : null,
+    next: page < lastPage ? page + 1 : null,
   };
+};
+
+export const paginate: PaginateFunction = async (model, args, options) => {
+  const { page = 1, perPage = 20 } = options || {};
+
+  const [total, data] = await Promise.all([
+    // @ts-expect-error
+    model.count({ where: args?.where }),
+    // @ts-expect-error
+    model.findMany({
+      ...args,
+      take: perPage,
+      skip: calcSkip(page, perPage),
+    }),
+  ]);
+
+  return { data, meta: getMeta(total as number, page, perPage) };
 };

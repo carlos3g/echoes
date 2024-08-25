@@ -1,5 +1,5 @@
 import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
-import { createPaginator } from '@app/lib/prisma/helpers/pagination';
+import { paginate } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { prismaSourceToSourceAdapter } from '@app/source/adapters';
 import type { SourceRepositoryContract } from '@app/source/contracts/source-repository.contract';
@@ -12,7 +12,7 @@ import type {
 } from '@app/source/dtos/source-repository-dtos';
 import type { Source } from '@app/source/entities/source.entity';
 import { Injectable } from '@nestjs/common';
-import type { Prisma, Source as PrismaSource } from '@prisma/client';
+import type { Source as PrismaSource } from '@prisma/client';
 
 type FindManyReturn = PrismaSource;
 
@@ -32,9 +32,7 @@ export class PrismaSourceRepository implements SourceRepositoryContract {
     const { ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const paginate = createPaginator({ perPage });
-
-    const result = await paginate<FindManyReturn, Prisma.SourceFindManyArgs>(
+    const result = await paginate<FindManyReturn, 'Source'>(
       this.prismaManager.getClient().source,
       {
         where: {
@@ -42,7 +40,7 @@ export class PrismaSourceRepository implements SourceRepositoryContract {
         },
         orderBy: [{ createdAt: 'desc' }],
       },
-      { page }
+      { page, perPage }
     );
 
     return {

@@ -1,5 +1,4 @@
-import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
-import { createPaginator } from '@app/lib/prisma/helpers/pagination';
+import { paginate, type PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { prismaTagToTagAdapter } from '@app/tag/adapters';
 import type { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
@@ -13,7 +12,7 @@ import type {
 } from '@app/tag/dtos/tag-repository-dtos';
 import type { Tag } from '@app/tag/entities/tag.entity';
 import { Injectable } from '@nestjs/common';
-import type { Prisma, Tag as PrismaTag } from '@prisma/client';
+import type { Tag as PrismaTag } from '@prisma/client';
 
 type FindManyReturn = PrismaTag;
 
@@ -33,9 +32,7 @@ export class PrismaTagRepository implements TagRepositoryContract {
     const { ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const paginate = createPaginator({ perPage });
-
-    const result = await paginate<FindManyReturn, Prisma.TagFindManyArgs>(
+    const result = await paginate<FindManyReturn, 'Tag'>(
       this.prismaManager.getClient().tag,
       {
         where: {
@@ -43,7 +40,7 @@ export class PrismaTagRepository implements TagRepositoryContract {
         },
         orderBy: [{ createdAt: 'desc' }],
       },
-      { page }
+      { page, perPage }
     );
 
     return {

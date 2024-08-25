@@ -1,5 +1,4 @@
-import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
-import { createPaginator } from '@app/lib/prisma/helpers/pagination';
+import { paginate, type PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { prismaQuoteToQuoteAdapter } from '@app/quote/adapters';
 import type { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
@@ -13,7 +12,7 @@ import type {
 } from '@app/quote/dtos/quote-repository-dtos';
 import type { Quote } from '@app/quote/entities/quote.entity';
 import { Injectable } from '@nestjs/common';
-import type { Prisma, Quote as PrismaQuote } from '@prisma/client';
+import type { Quote as PrismaQuote } from '@prisma/client';
 
 type FindManyReturn = PrismaQuote;
 
@@ -33,9 +32,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
     const { ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const paginate = createPaginator({ perPage });
-
-    const result = await paginate<FindManyReturn, Prisma.QuoteFindManyArgs>(
+    const result = await paginate<FindManyReturn, 'Quote'>(
       this.prismaManager.getClient().quote,
       {
         where: {
@@ -43,7 +40,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
         },
         orderBy: [{ createdAt: 'desc' }],
       },
-      { page }
+      { page, perPage }
     );
 
     return {
