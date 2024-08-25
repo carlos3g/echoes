@@ -10,7 +10,7 @@ export class QuoteFactory extends FactoryContract<Entity> {
   public definition(): FactoryEntityDefinition<Entity> {
     return {
       uuid: () => createUuidV4(),
-      authorId: () => faker.number.int(),
+      authorId: () => faker.number.bigInt(),
       body: () => faker.lorem.paragraphs(3),
     };
   }

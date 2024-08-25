@@ -23,7 +23,7 @@ describe('PrismaSourceRepository', () => {
     it('should create new source', async () => {
       const quote = await prisma.quote.create({ data: quoteFactory() });
 
-      const payload = { ...sourceFactory(), quoteId: quote.id };
+      const payload = { ...sourceFactory(), quoteId: Number(quote.id) };
 
       const result = await sourceRepository.create(payload);
 
@@ -45,6 +45,8 @@ describe('PrismaSourceRepository', () => {
 
       expect(result).toMatchObject({
         ...createdSource,
+        id: Number(createdSource.id),
+        quoteId: Number(createdSource.quoteId),
         uuid: createdSource.uuid,
       });
     });
@@ -62,6 +64,8 @@ describe('PrismaSourceRepository', () => {
 
       expect(result).toMatchObject({
         ...createdSource,
+        id: Number(createdSource.id),
+        quoteId: Number(createdSource.quoteId),
         uuid: createdSource.uuid,
       });
     });

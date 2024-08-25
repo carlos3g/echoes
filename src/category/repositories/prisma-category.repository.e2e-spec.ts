@@ -41,6 +41,7 @@ describe('PrismaCategoryRepository', () => {
 
       expect(result).toMatchObject({
         ...createdCategory,
+        id: Number(createdCategory.id),
         uuid: createdCategory.uuid,
       });
     });
@@ -56,6 +57,7 @@ describe('PrismaCategoryRepository', () => {
 
       expect(result).toMatchObject({
         ...createdCategory,
+        id: Number(createdCategory.id),
         uuid: createdCategory.uuid,
       });
     });

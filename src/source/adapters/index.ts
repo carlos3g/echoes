@@ -5,5 +5,5 @@ export const prismaSourceToSourceAdapter = (input: PrismaSource) =>
   new Source({
     ...input,
     id: Number(input.id),
-    quoteId: input.quoteId && Number(input.quoteId),
+    quoteId: Number(input.quoteId),
   });

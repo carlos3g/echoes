@@ -23,7 +23,7 @@ describe('PrismaTagRepository', () => {
     it('should create new source', async () => {
       const user = await prisma.user.create({ data: userFactory() });
 
-      const payload = { ...tagFactory(), userId: user.id };
+      const payload = { ...tagFactory(), userId: Number(user.id) };
 
       const result = await tagRepository.create(payload);
 
@@ -45,6 +45,8 @@ describe('PrismaTagRepository', () => {
 
       expect(result).toMatchObject({
         ...createdSource,
+        id: Number(createdSource.id),
+        userId: Number(createdSource.userId),
         uuid: createdSource.uuid,
       });
     });
@@ -62,6 +64,8 @@ describe('PrismaTagRepository', () => {
 
       expect(result).toMatchObject({
         ...createdSource,
+        id: Number(createdSource.id),
+        userId: Number(createdSource.userId),
         uuid: createdSource.uuid,
       });
     });

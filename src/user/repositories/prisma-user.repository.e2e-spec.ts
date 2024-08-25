@@ -40,6 +40,7 @@ describe('PrismaUserRepository', () => {
 
       expect(result).toMatchObject({
         ...createdUser,
+        id: Number(createdUser.id),
         uuid: createdUser.uuid,
       });
     });
@@ -55,6 +56,7 @@ describe('PrismaUserRepository', () => {
 
       expect(result).toMatchObject({
         ...createdUser,
+        id: Number(createdUser.id),
         uuid: createdUser.uuid,
       });
     });

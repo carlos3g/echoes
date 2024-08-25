@@ -41,6 +41,7 @@ describe('PrismaQuoteRepository', () => {
 
       expect(result).toMatchObject({
         ...createdQuote,
+        id: Number(createdQuote.id),
         uuid: createdQuote.uuid,
       });
     });
@@ -56,6 +57,7 @@ describe('PrismaQuoteRepository', () => {
 
       expect(result).toMatchObject({
         ...createdQuote,
+        id: Number(createdQuote.id),
         uuid: createdQuote.uuid,
       });
     });

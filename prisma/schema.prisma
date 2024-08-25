@@ -14,7 +14,7 @@ generator dbml {
 }
 
 model User {
-  id                    Int                     @id @default(autoincrement())
+  id                    BigInt                  @id @default(autoincrement()) @db.BigInt
   uuid                  String                  @unique
   name                  String
   email                 String                  @unique
@@ -32,18 +32,18 @@ model User {
 model PasswordChangeRequest {
   token     String   @id
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    BigInt   @db.BigInt
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("password_change_request")
 }
 
 model Quote {
-  id                Int                 @id @default(autoincrement())
+  id                BigInt              @id @default(autoincrement()) @db.BigInt
   uuid              String              @unique
   body              String
   author            Author?             @relation(fields: [authorId], references: [id])
-  authorId          Int?
+  authorId          BigInt?             @db.BigInt
   sources           Source[]
   categories        Category[]
   createdAt         DateTime            @default(now()) @map("created_at")
@@ -55,11 +55,11 @@ model Quote {
 }
 
 model Source {
-  id        Int      @id @default(autoincrement())
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
   uuid      String   @unique
   title     String
   quote     Quote    @relation(fields: [quoteId], references: [id])
-  quoteId   Int
+  quoteId   BigInt   @db.BigInt
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -67,7 +67,7 @@ model Source {
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
   uuid      String   @unique
   title     String
   quotes    Quote[]
@@ -78,7 +78,7 @@ model Category {
 }
 
 model Author {
-  id                Int                 @id @default(autoincrement())
+  id                BigInt              @id @default(autoincrement()) @db.BigInt
   uuid              String              @unique
   name              String
   birthDate         DateTime            @map("birth_date")
@@ -94,11 +94,11 @@ model Author {
 }
 
 model Tag {
-  id            Int             @id @default(autoincrement())
+  id            BigInt          @id @default(autoincrement()) @db.BigInt
   uuid          String          @unique
   title         String
   user          User            @relation(fields: [userId], references: [id])
-  userId        Int
+  userId        BigInt          @db.BigInt
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @updatedAt @map("updated_at")
   tagOnTaggable TagOnTaggable[]
@@ -113,10 +113,10 @@ enum TaggableType {
 
 model TagOnTaggable {
   tag          Tag          @relation(fields: [tagId], references: [id])
-  tagId        Int
+  tagId        BigInt       @db.BigInt
   author       Author?      @relation(fields: [taggableId], references: [id], map: "author_taggableId")
   quote        Quote?       @relation(fields: [taggableId], references: [id], map: "quote_taggableId")
-  taggableId   Int          @map("taggable_id")
+  taggableId   BigInt       @map("taggable_id") @db.BigInt
   taggableType TaggableType @map("taggable_type")
 
   @@unique([tagId, taggableId, taggableType])
@@ -130,10 +130,10 @@ enum FavoritableType {
 
 model UserOnFavoritable {
   user            User            @relation(fields: [userId], references: [id])
-  userId          Int
+  userId          BigInt          @db.BigInt
   author          Author?         @relation(fields: [favoritableId], references: [id], map: "author_favoritableId")
   quote           Quote?          @relation(fields: [favoritableId], references: [id], map: "quote_favoritableId")
-  favoritableId   Int             @map("favoritable_id")
+  favoritableId   BigInt          @map("favoritable_id") @db.BigInt
   favoritableType FavoritableType @map("favoritable_type")
 
   @@unique([userId, favoritableId, favoritableType])
