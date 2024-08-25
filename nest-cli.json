@@ -6,7 +6,7 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "**/*.html",
+        "include": "**/*.pug",
         "outDir": "dist/src",
         "watchAssets": true
       }

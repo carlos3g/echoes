@@ -15,11 +15,6 @@ import { Module } from '@nestjs/common';
       useClass: PrismaAuthorRepository,
     },
   ],
-  exports: [
-    {
-      provide: AuthorRepositoryContract,
-      useClass: PrismaAuthorRepository,
-    },
-  ],
+  exports: [AuthorRepositoryContract],
 })
 export class AuthorModule {}

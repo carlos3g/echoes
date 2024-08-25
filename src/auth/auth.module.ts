@@ -12,6 +12,7 @@ import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case'
 import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
+import { EmailModule } from '@app/email/email.module';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import type { EnvVariables } from '@app/shared/types';
 import { UserModule } from '@app/user/user.module';
@@ -24,8 +25,6 @@ import { AuthController } from './auth.controller';
 @Module({
   controllers: [AuthController],
   imports: [
-    UserModule,
-    PrismaModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService<EnvVariables>) => ({
@@ -33,6 +32,9 @@ import { AuthController } from './auth.controller';
         secret: configService.get('JWT_SECRET'),
       }),
     }),
+    UserModule,
+    PrismaModule,
+    EmailModule,
   ],
   providers: [
     {
@@ -50,9 +52,6 @@ import { AuthController } from './auth.controller';
     ResetPasswordUseCase,
     DeleteUsedPasswordChangeRequestTask,
   ],
-  exports: [
-    { provide: AuthServiceContract, useClass: AuthService },
-    { provide: JwtServiceContract, useClass: JwtService },
-  ],
+  exports: [AuthServiceContract, JwtServiceContract],
 })
 export class AuthModule {}

@@ -10,6 +10,9 @@ import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-cas
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
 import { Body, Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
+
+const TWO_MINUTES_IN_MS = 2 * 60 * 1000;
 
 @Public()
 @Controller('auth')
@@ -41,6 +44,12 @@ export class AuthController {
   }
 
   // see: https://stackoverflow.com/a/1102817/13274020
+  @Throttle({
+    default: {
+      limit: 3,
+      ttl: TWO_MINUTES_IN_MS,
+    },
+  })
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   public async forgotPassword(@Body() input: ForgotPasswordInput) {

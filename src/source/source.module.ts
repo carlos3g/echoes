@@ -15,11 +15,6 @@ import { Module } from '@nestjs/common';
       useClass: PrismaSourceRepository,
     },
   ],
-  exports: [
-    {
-      provide: SourceRepositoryContract,
-      useClass: PrismaSourceRepository,
-    },
-  ],
+  exports: [SourceRepositoryContract],
 })
 export class SourceModule {}

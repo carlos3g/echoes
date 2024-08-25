@@ -1,0 +1,12 @@
+doctype html
+mjml
+  mj-head
+    include components/head.pug
+    block head
+  mj-body
+    include components/header.pug
+
+    mj-wrapper(mj-class="p-8")
+      mj-section
+        mj-column
+          block content

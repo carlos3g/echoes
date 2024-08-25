@@ -15,11 +15,6 @@ import { Module } from '@nestjs/common';
       useClass: PrismaCategoryRepository,
     },
   ],
-  exports: [
-    {
-      provide: CategoryRepositoryContract,
-      useClass: PrismaCategoryRepository,
-    },
-  ],
+  exports: [CategoryRepositoryContract],
 })
 export class CategoryModule {}

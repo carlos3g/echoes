@@ -1,3 +1,4 @@
+import type { EnvVariables } from '@app/shared/types';
 import type { User } from '@app/user/entities/user.entity';
 
 declare namespace NodeJS {

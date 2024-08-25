@@ -15,11 +15,6 @@ import { Module } from '@nestjs/common';
       useClass: PrismaQuoteRepository,
     },
   ],
-  exports: [
-    {
-      provide: QuoteRepositoryContract,
-      useClass: PrismaQuoteRepository,
-    },
-  ],
+  exports: [QuoteRepositoryContract],
 })
 export class QuoteModule {}

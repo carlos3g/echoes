@@ -14,4 +14,10 @@ export interface EnvVariables {
   DB_PASSWORD: string;
   DB_SCHEMA: string;
   DB_URL: string;
+
+  MAIL_FROM: string;
+  MAIL_HOST: string;
+  MAIL_PORT: string;
+  MAIL_USER: string;
+  MAIL_PASS: string;
 }

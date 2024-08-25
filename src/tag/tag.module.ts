@@ -15,11 +15,6 @@ import { Module } from '@nestjs/common';
       useClass: PrismaTagRepository,
     },
   ],
-  exports: [
-    {
-      provide: TagRepositoryContract,
-      useClass: PrismaTagRepository,
-    },
-  ],
+  exports: [TagRepositoryContract],
 })
 export class TagModule {}

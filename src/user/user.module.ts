@@ -15,11 +15,6 @@ import { UserController } from './user.controller';
       useClass: PrismaUserRepository,
     },
   ],
-  exports: [
-    {
-      provide: UserRepositoryContract,
-      useClass: PrismaUserRepository,
-    },
-  ],
+  exports: [UserRepositoryContract],
 })
 export class UserModule {}
