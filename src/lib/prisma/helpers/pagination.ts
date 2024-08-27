@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import type { Prisma, PrismaClient } from '@prisma/client';
+import type { ModelDelegates } from '@app/lib/prisma/types';
+import type { Prisma } from '@prisma/client';
 
 export interface PaginatedResult<T> {
   data: T[];
@@ -13,11 +14,6 @@ export interface PaginatedResult<T> {
     next: number | null;
   };
 }
-
-// see: https://github.com/prisma/prisma/issues/6980
-type ModelDelegates = {
-  [K in Prisma.ModelName]: PrismaClient[Uncapitalize<K>];
-};
 
 export type PaginateOptions = { page?: number; perPage?: number };
 export type PaginateFunction = <T, K extends Prisma.ModelName>(
