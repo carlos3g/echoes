@@ -50,7 +50,7 @@ model Quote {
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @updatedAt @map("updated_at")
   tagOnTaggable     TagOnTaggable[]
-  userOnFavoritable UserOnFavoritable[]
+  userOnFavoritable UserOnFavoritable[] @relation("UserOnQuote")
 
   @@map("quotes")
 }
@@ -89,7 +89,7 @@ model Author {
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @updatedAt @map("updated_at")
   tagOnTaggable     TagOnTaggable[]
-  userOnFavoritable UserOnFavoritable[]
+  userOnFavoritable UserOnFavoritable[] @relation("UserOnAuthor")
 
   @@map("authors")
 }
@@ -132,11 +132,11 @@ enum FavoritableType {
 model UserOnFavoritable {
   user            User            @relation(fields: [userId], references: [id])
   userId          BigInt          @db.BigInt
-  author          Author?         @relation(fields: [favoritableId], references: [id], map: "author_favoritableId")
-  quote           Quote?          @relation(fields: [favoritableId], references: [id], map: "quote_favoritableId")
+  author          Author?         @relation("UserOnAuthor", fields: [favoritableId], references: [id], map: "author_favoritableId")
+  quote           Quote?          @relation("UserOnQuote", fields: [favoritableId], references: [id], map: "quote_favoritableId")
   favoritableId   BigInt          @map("favoritable_id") @db.BigInt
   favoritableType FavoritableType @map("favoritable_type")
 
   @@unique([userId, favoritableId, favoritableType])
-  @@map("tag_on_favoritable")
+  @@map("user_on_favoritable")
 }

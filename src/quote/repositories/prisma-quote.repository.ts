@@ -5,6 +5,7 @@ import type { QuoteRepositoryContract } from '@app/quote/contracts/quote-reposit
 import type {
   QuoteRepositoryCreateInput,
   QuoteRepositoryDeleteInput,
+  QuoteRepositoryFindManyFavoritedByUserInput,
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
@@ -60,6 +61,10 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
     });
 
     return entities.map(prismaQuoteToQuoteAdapter);
+  }
+
+  public findManyFavoritedByUser(input: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]> {
+    throw new Error('Method not implemented.');
   }
 
   public async create(input: QuoteRepositoryCreateInput) {

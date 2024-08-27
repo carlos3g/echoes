@@ -28,6 +28,12 @@ export interface QuoteRepositoryFindManyInput {
   };
 }
 
+export interface QuoteRepositoryFindManyFavoritedByUserInput {
+  where: {
+    userId: number;
+  };
+}
+
 export interface QuoteRepositoryFindManyPaginatedInput {
   where?: {
     authorId?: number;

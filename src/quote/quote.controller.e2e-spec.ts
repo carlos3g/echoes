@@ -1,16 +1,28 @@
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
 import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
+import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
+import type { User } from '@app/user/entities/user.entity';
 import { HttpStatus } from '@nestjs/common';
-import { authorFactory, quoteFactory } from '@test/factories';
+import { getAccessToken } from '@test/auth';
+import { authorFactory, quoteFactory, userFactory } from '@test/factories';
 import { app, server } from '@test/server';
 import * as request from 'supertest';
 
+let userRepository: UserRepositoryContract;
 let quoteRepository: QuoteRepositoryContract;
 let authorRepository: AuthorRepositoryContract;
+let user: User;
+let token: string;
 
 beforeAll(() => {
+  userRepository = app.get<UserRepositoryContract>(UserRepositoryContract);
   quoteRepository = app.get<QuoteRepositoryContract>(QuoteRepositoryContract);
   authorRepository = app.get<AuthorRepositoryContract>(AuthorRepositoryContract);
+});
+
+beforeEach(async () => {
+  user = await userRepository.create(userFactory());
+  token = await getAccessToken(app, { email: user.email });
 });
 
 describe('(GET) /quotes', () => {
@@ -97,5 +109,15 @@ describe('(GET) /quotes/:uuid', () => {
       id: expect.any(Number) as number,
       authorId: expect.any(Number) as number,
     });
+  });
+});
+
+describe.skip('(GET) /quotes/:uuid/favorite', () => {
+  it('should be able to view a quote', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+
+    const response = await request(server).get(`/quotes/${quote.uuid}/favorite`).auth(token, { type: 'bearer' }).send();
+
+    expect(response.status).toBe(HttpStatus.OK);
   });
 });

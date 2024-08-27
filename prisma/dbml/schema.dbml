@@ -13,7 +13,7 @@ Table users {
   tags tags [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  userOnFavoritable tag_on_favoritable [not null]
+  userOnFavoritable user_on_favoritable [not null]
 }
 
 Table password_change_request {
@@ -35,7 +35,7 @@ Table quotes {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   tagOnTaggable tag_on_taggable [not null]
-  userOnFavoritable tag_on_favoritable [not null]
+  userOnFavoritable user_on_favoritable [not null]
 }
 
 Table sources {
@@ -68,7 +68,7 @@ Table authors {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   tagOnTaggable tag_on_taggable [not null]
-  userOnFavoritable tag_on_favoritable [not null]
+  userOnFavoritable user_on_favoritable [not null]
 }
 
 Table tags {
@@ -95,7 +95,7 @@ Table tag_on_taggable {
   }
 }
 
-Table tag_on_favoritable {
+Table user_on_favoritable {
   user users [not null]
   userId BigInt [not null]
   author authors
@@ -137,8 +137,8 @@ Ref: tag_on_taggable.taggableId > authors.id
 
 Ref: tag_on_taggable.taggableId > quotes.id
 
-Ref: tag_on_favoritable.userId > users.id
+Ref: user_on_favoritable.userId > users.id
 
-Ref: tag_on_favoritable.favoritableId > authors.id
+Ref: user_on_favoritable.favoritableId > authors.id
 
-Ref: tag_on_favoritable.favoritableId > quotes.id
+Ref: user_on_favoritable.favoritableId > quotes.id

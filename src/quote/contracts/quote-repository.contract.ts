@@ -2,6 +2,7 @@ import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import type {
   QuoteRepositoryCreateInput,
   QuoteRepositoryDeleteInput,
+  QuoteRepositoryFindManyFavoritedByUserInput,
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
@@ -17,6 +18,8 @@ abstract class QuoteRepositoryContract {
   public abstract findUniqueOrThrow(input: QuoteRepositoryFindUniqueOrThrowInput): Promise<Quote>;
 
   public abstract findManyPaginated(input: QuoteRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Quote>>;
+
+  public abstract findManyFavoritedByUser(input?: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]>;
 
   public abstract findMany(input?: QuoteRepositoryFindManyInput): Promise<Quote[]>;
 

@@ -3,9 +3,33 @@ import { PrismaQuoteRepository } from '@app/quote/repositories/prisma-quote.repo
 import { faker } from '@faker-js/faker';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { quoteFactory } from '@test/factories';
+import { FavoritableType } from '@prisma/client';
+import { quoteFactory, userFactory } from '@test/factories';
 import { prisma } from '@test/server';
 import * as _ from 'lodash';
+
+const createQuotesFavorited = async (args: { userId: number; count: number }) => {
+  const { userId, count } = args;
+
+  const quotes = await prisma.quote.createManyAndReturn({
+    data: _.range(count).map(quoteFactory),
+  });
+
+  const promises = quotes.map((quote) =>
+    prisma.quote.update({
+      data: {
+        userOnFavoritable: {
+          create: { userId, favoritableType: FavoritableType.Quote },
+        },
+      },
+      where: { uuid: quote.uuid },
+    })
+  );
+
+  await Promise.all(promises);
+
+  return quotes;
+};
 
 describe('PrismaQuoteRepository', () => {
   let quoteRepository: PrismaQuoteRepository;
@@ -76,6 +100,50 @@ describe('PrismaQuoteRepository', () => {
       const result = await quoteRepository.findMany();
 
       expect(result).toHaveLength(30);
+    });
+  });
+
+  describe.skip('findManyFavoritedByUser', () => {
+    it('should find quotes favorited by a specific user', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      await prisma.quote.createMany({
+        data: _.range(5).map(quoteFactory),
+      });
+
+      const quotes = await createQuotesFavorited({
+        userId: Number(user.id),
+        count: 5,
+      });
+
+      const result = await quoteRepository.findManyFavoritedByUser({
+        where: { userId: Number(user.id) },
+      });
+
+      const favoritedQuotesUuid = quotes.map((quote) => quote.uuid);
+
+      expect(result).toHaveLength(5);
+      result.forEach((quote) => {
+        expect(favoritedQuotesUuid).toContain(quote.uuid);
+      });
+    });
+
+    it('should return an empty array if the user has no favorited quotes', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      await prisma.quote.createMany({
+        data: _.range(5).map(quoteFactory),
+      });
+
+      const result = await quoteRepository.findManyFavoritedByUser({
+        where: { userId: Number(user.id) },
+      });
+
+      expect(result).toEqual([]);
     });
   });
 
