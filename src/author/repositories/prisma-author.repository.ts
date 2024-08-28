@@ -3,6 +3,8 @@ import type { AuthorRepositoryContract } from '@app/author/contracts/author-repo
 import type {
   AuthorRepositoryCreateInput,
   AuthorRepositoryDeleteInput,
+  AuthorRepositoryFindManyByTagInput,
+  AuthorRepositoryFindManyFavoritedByUserInput,
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
@@ -61,6 +63,14 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
     });
 
     return entities.map(prismaAuthorToAuthorAdapter);
+  }
+
+  public findManyFavoritedByUser(input: AuthorRepositoryFindManyFavoritedByUserInput): Promise<Author[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  public findManyByTag(input?: AuthorRepositoryFindManyByTagInput): Promise<Author[]> {
+    throw new Error('Method not implemented.');
   }
 
   public async create(input: AuthorRepositoryCreateInput) {

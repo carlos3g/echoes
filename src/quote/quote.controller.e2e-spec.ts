@@ -121,3 +121,5 @@ describe.skip('(GET) /quotes/:uuid/favorite', () => {
     expect(response.status).toBe(HttpStatus.OK);
   });
 });
+
+describe.skip('(GET) /quotes/:uuid/tag', () => {});

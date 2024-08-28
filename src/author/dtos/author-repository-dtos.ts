@@ -39,6 +39,18 @@ export interface AuthorRepositoryFindManyPaginatedInput {
   options?: Paginate;
 }
 
+export interface AuthorRepositoryFindManyFavoritedByUserInput {
+  where: {
+    userId: number;
+  };
+}
+
+export interface AuthorRepositoryFindManyByTagInput {
+  where: {
+    userId: number;
+  };
+}
+
 export interface AuthorRepositoryDeleteInput {
   where: AtLeastOne<{
     id?: number;

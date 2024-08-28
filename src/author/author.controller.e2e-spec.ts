@@ -117,3 +117,7 @@ describe('(GET) /authors/:uuid', () => {
     });
   });
 });
+
+describe.skip('(GET) /authors/:uuid/favorite', () => {});
+
+describe.skip('(GET) /authors/:uuid/tag', () => {});

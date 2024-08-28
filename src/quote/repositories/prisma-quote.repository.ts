@@ -5,6 +5,7 @@ import type { QuoteRepositoryContract } from '@app/quote/contracts/quote-reposit
 import type {
   QuoteRepositoryCreateInput,
   QuoteRepositoryDeleteInput,
+  QuoteRepositoryFindManyByTagInput,
   QuoteRepositoryFindManyFavoritedByUserInput,
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
@@ -64,6 +65,10 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
   }
 
   public findManyFavoritedByUser(input: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  public findManyByTag(input?: QuoteRepositoryFindManyByTagInput): Promise<Quote[]> {
     throw new Error('Method not implemented.');
   }
 

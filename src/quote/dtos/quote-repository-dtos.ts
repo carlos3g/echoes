@@ -34,6 +34,12 @@ export interface QuoteRepositoryFindManyFavoritedByUserInput {
   };
 }
 
+export interface QuoteRepositoryFindManyByTagInput {
+  where: {
+    userId: number;
+  };
+}
+
 export interface QuoteRepositoryFindManyPaginatedInput {
   where?: {
     authorId?: number;

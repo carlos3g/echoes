@@ -147,6 +147,8 @@ describe('PrismaQuoteRepository', () => {
     });
   });
 
+  describe.skip('findManyByTag', () => {});
+
   describe('findManyPaginated', () => {
     it('should find many quotes paginated', async () => {
       await prisma.quote.createMany({

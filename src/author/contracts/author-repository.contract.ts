@@ -1,6 +1,8 @@
 import type {
   AuthorRepositoryCreateInput,
   AuthorRepositoryDeleteInput,
+  AuthorRepositoryFindManyByTagInput,
+  AuthorRepositoryFindManyFavoritedByUserInput,
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
@@ -19,6 +21,10 @@ abstract class AuthorRepositoryContract {
   public abstract findManyPaginated(input: AuthorRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Author>>;
 
   public abstract findMany(input?: AuthorRepositoryFindManyInput): Promise<Author[]>;
+
+  public abstract findManyFavoritedByUser(input?: AuthorRepositoryFindManyFavoritedByUserInput): Promise<Author[]>;
+
+  public abstract findManyByTag(input?: AuthorRepositoryFindManyByTagInput): Promise<Author[]>;
 
   public abstract delete(input: AuthorRepositoryDeleteInput): Promise<void>;
 }

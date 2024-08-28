@@ -99,6 +99,10 @@ describe('PrismaAuthorRepository', () => {
     });
   });
 
+  describe.skip('findManyFavoritedByUser', () => {});
+
+  describe.skip('findManyByTag', () => {});
+
   describe('update', () => {
     it('should update an existing author', async () => {
       const createdAuthor = await prisma.author.create({
