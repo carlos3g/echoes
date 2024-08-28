@@ -1,6 +1,7 @@
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type { User } from '@app/user/entities/user.entity';
+import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 import { getAccessToken } from '@test/auth';
 import { tagFactory, userFactory } from '@test/factories';
@@ -77,6 +78,27 @@ describe('(GET) /tags', () => {
           userId: expect.any(Number) as number,
         }),
       ]),
+    });
+  });
+});
+
+describe('(POST) /tags', () => {
+  it('should respond unauthorized if not authenticated', async () => {
+    const response = await request(server).get('/tags').send();
+
+    expect(response.status).toEqual(HttpStatus.UNAUTHORIZED);
+  });
+
+  it('should create a tag', async () => {
+    const title = faker.lorem.word();
+
+    const response = await request(server).post('/tags').auth(token, { type: 'bearer' }).send({
+      title,
+    });
+
+    expect(response.status).toBe(HttpStatus.CREATED);
+    expect(response.body).toMatchObject({
+      title,
     });
   });
 });
