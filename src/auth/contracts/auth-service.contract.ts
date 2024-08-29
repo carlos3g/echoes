@@ -7,6 +7,8 @@ abstract class AuthServiceContract {
   };
 
   public abstract getUserByToken(token: string): Promise<User>;
+
+  public abstract createPasswordChangeRequest(args: { userId: number }): Promise<{ token: string }>;
 }
 
 export { AuthServiceContract };

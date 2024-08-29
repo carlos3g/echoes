@@ -52,6 +52,6 @@ import { AuthController } from './auth.controller';
     ResetPasswordUseCase,
     DeleteUsedPasswordChangeRequestTask,
   ],
-  exports: [AuthServiceContract, JwtServiceContract],
+  exports: [AuthServiceContract, JwtServiceContract, HashServiceContract],
 })
 export class AuthModule {}
