@@ -44,6 +44,43 @@ services:
     networks:
       - echoesnetwork
 
+  minio:
+    image: 'minio/minio:latest'
+    ports:
+      - '${FORWARD_MINIO_PORT:-9000}:9000'
+      - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - 'echoes-minio:/data/minio'
+    networks:
+      - echoesnetwork
+    command: 'minio server /data/minio --console-address ":8900"'
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - '-f'
+        - 'http://localhost:9000/minio/health/live'
+      retries: 3
+      timeout: 5s
+
+  # see: https://stackoverflow.com/a/66485256/13274020
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      /usr/bin/mc mb myminio/avatars;
+      /usr/bin/mc policy set public myminio/avatars;
+      exit 0;
+      "
+    networks:
+      - echoesnetwork
+
 volumes:
   echoes-db:
     driver: local
@@ -53,6 +90,8 @@ volumes:
       type: none
       o: bind
       device: ./node_modules
+  echoes-minio:
+    driver: local
 
 networks:
   echoesnetwork:

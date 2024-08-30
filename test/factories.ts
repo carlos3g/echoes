@@ -3,6 +3,7 @@ import type { Category } from '@app/category/entities/category.entity';
 import type { Quote } from '@app/quote/entities/quote.entity';
 import { createUuidV4 } from '@app/shared/utils';
 import type { Source } from '@app/source/entities/source.entity';
+import type { FileEntity } from '@app/storage/entities/file.entity';
 import type { Tag } from '@app/tag/entities/tag.entity';
 import type { User } from '@app/user/entities/user.entity';
 import { faker } from '@faker-js/faker';
@@ -35,10 +36,15 @@ export const tagFactory = (): Omit<Tag, 'id' | 'createdAt' | 'updatedAt' | 'user
   title: faker.lorem.sentences(2),
 });
 
-export const userFactory = (): Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'quoteId'> => ({
+export const userFactory = (): Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'quoteId' | 'avatarId'> => ({
   uuid: createUuidV4(),
   name: faker.person.fullName(),
   email: faker.internet.email(),
   password: faker.internet.password(),
   emailVerifiedAt: faker.date.recent(),
+});
+
+export const fileFactory = (): Omit<FileEntity, 'id'> => ({
+  bucket: faker.lorem.word(),
+  key: faker.system.commonFileName(),
 });

@@ -36,7 +36,7 @@ describe('PrismaCategoryRepository', () => {
       });
 
       const result = await categoryRepository.findUniqueOrThrow({
-        where: { uuid: createdCategory.uuid },
+        where: { id: Number(createdCategory.id) },
       });
 
       expect(result).toMatchObject({

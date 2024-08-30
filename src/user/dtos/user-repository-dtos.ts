@@ -5,6 +5,7 @@ export interface UserRepositoryCreateInput {
   name: string;
   email: string;
   password: string;
+  avatarId?: number | null;
 }
 
 export interface UserRepositoryUpdateInput {
@@ -13,7 +14,7 @@ export interface UserRepositoryUpdateInput {
     uuid: string;
     email: string;
   }>;
-  data: Partial<{ name: string; email: string; password: string }>;
+  data: Partial<{ name: string; email: string; password: string; avatarId?: number | null }>;
 }
 
 export interface UserRepositoryFindUniqueOrThrowInput {

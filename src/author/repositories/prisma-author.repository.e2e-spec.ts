@@ -36,7 +36,7 @@ describe('PrismaAuthorRepository', () => {
       });
 
       const result = await authorRepository.findUniqueOrThrow({
-        where: { uuid: createdAuthor.uuid },
+        where: { id: Number(createdAuthor.id) },
       });
 
       expect(result).toMatchObject({

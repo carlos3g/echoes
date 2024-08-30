@@ -18,6 +18,9 @@ export class User {
 
   public emailVerifiedAt!: Date | null;
 
+  @Exclude()
+  public avatarId!: number | null;
+
   public createdAt!: Date;
 
   public updatedAt!: Date;

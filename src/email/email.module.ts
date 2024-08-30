@@ -14,11 +14,11 @@ import * as path from 'path';
       useFactory: (configService: ConfigService<EnvVariables>) => ({
         transport: {
           pool: false,
-          host: configService.get<string>('MAIL_HOST'),
-          port: Number(configService.get<string>('MAIL_PORT')),
+          host: configService.get('MAIL_HOST'),
+          port: Number(configService.get('MAIL_PORT')),
           auth: {
-            user: configService.get<string>('MAIL_USER'),
-            pass: configService.get<string>('MAIL_PASS'),
+            user: configService.get('MAIL_USER'),
+            pass: configService.get('MAIL_PASS'),
           },
         },
         template: {

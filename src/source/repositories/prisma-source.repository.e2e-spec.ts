@@ -40,7 +40,7 @@ describe('PrismaSourceRepository', () => {
       });
 
       const result = await sourceRepository.findUniqueOrThrow({
-        where: { uuid: createdSource.uuid },
+        where: { id: Number(createdSource.id) },
       });
 
       expect(result).toMatchObject({

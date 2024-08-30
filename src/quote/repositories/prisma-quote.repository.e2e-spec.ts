@@ -60,7 +60,7 @@ describe('PrismaQuoteRepository', () => {
       });
 
       const result = await quoteRepository.findUniqueOrThrow({
-        where: { uuid: createdQuote.uuid },
+        where: { id: Number(createdQuote.id) },
       });
 
       expect(result).toMatchObject({

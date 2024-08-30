@@ -40,7 +40,7 @@ describe('PrismaTagRepository', () => {
       });
 
       const result = await tagRepository.findUniqueOrThrow({
-        where: { uuid: createdSource.uuid },
+        where: { id: Number(createdSource.id) },
       });
 
       expect(result).toMatchObject({

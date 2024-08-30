@@ -8,6 +8,7 @@ import { PrismaClientExceptionFilter } from '@app/lib/prisma/exceptions/prisma-c
 import { PrismaService } from '@app/lib/prisma/services/prisma.service';
 import { QuoteModule } from '@app/quote/quote.module';
 import { SourceModule } from '@app/source/source.module';
+import { StorageModule } from '@app/storage/storage.module';
 import { TagModule } from '@app/tag/tag.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -33,6 +34,7 @@ import { UserModule } from './user/user.module';
     SourceModule,
     EmailModule,
     TagModule,
+    StorageModule,
   ],
   controllers: [],
   providers: [

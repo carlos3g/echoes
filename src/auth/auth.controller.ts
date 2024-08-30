@@ -3,16 +3,29 @@ import { ForgotPasswordInput } from '@app/auth/dtos/forgot-password-input';
 import { RefreshTokenInput } from '@app/auth/dtos/refresh-token-input';
 import { ResetPasswordRequest } from '@app/auth/dtos/reset-password-request';
 import { SignInInput } from '@app/auth/dtos/sign-in-input';
-import { SignUpInput } from '@app/auth/dtos/sign-up-input';
+import { SignUpRequest } from '@app/auth/dtos/sign-up-request';
 import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
 import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case';
 import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
-import { Body, Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseFilePipeBuilder,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Throttle } from '@nestjs/throttler';
 
 const TWO_MINUTES_IN_MS = 2 * 60 * 1000;
+const MAX_AVATAR_SIZE_IN_BYTES = 2 * 1024 * 1024;
+const AVATAR_VALID_MIME_TYPES = 'image/*';
 
 @Public()
 @Controller('auth')
@@ -33,8 +46,25 @@ export class AuthController {
 
   @Post('sign-up')
   @HttpCode(HttpStatus.OK)
-  public async signUp(@Body() input: SignUpInput) {
-    return this.signUpUseCase.handle(input);
+  @UseInterceptors(FileInterceptor('avatar'))
+  public async signUp(
+    @Body() input: SignUpRequest,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: AVATAR_VALID_MIME_TYPES,
+        })
+        .addMaxSizeValidator({
+          maxSize: MAX_AVATAR_SIZE_IN_BYTES,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+          fileIsRequired: false,
+        })
+    )
+    avatar?: Express.Multer.File
+  ) {
+    return this.signUpUseCase.handle({ ...input, avatar });
   }
 
   @Post('refresh')
