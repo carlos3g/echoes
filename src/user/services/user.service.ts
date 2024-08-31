@@ -1,6 +1,6 @@
 import { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
 import { Transaction } from '@app/lib/prisma/decorators/transaction.decorator';
-import { createUuidV4 } from '@app/shared/utils';
+import { convertImageToWebp, createUuidV4 } from '@app/shared/utils';
 import { FileRepositoryContract } from '@app/storage/contracts/file-repository.contract';
 import { StorageServiceContract } from '@app/storage/contracts/storage-service.contract';
 import type { FileEntity } from '@app/storage/entities/file.entity';
@@ -8,6 +8,7 @@ import { UserRepositoryContract } from '@app/user/contracts/user-repository.cont
 import type { CreateUserInput, UpdateUserInput } from '@app/user/dtos/user-service-dtos';
 import type { User } from '@app/user/entities/user.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class UserService {
@@ -99,10 +100,17 @@ export class UserService {
     // TODO: move this to a config file
     const bucket = 'avatars';
 
+    const { buffer, fileName } = await convertImageToWebp({
+      buffer: avatar.buffer,
+      fileName: avatar.originalname,
+    });
+
+    const timeInSeconds = DateTime.now().toSeconds();
+
     const { key } = await this.storageService.set({
       bucket,
-      key: avatar.originalname,
-      value: avatar.buffer,
+      key: `${timeInSeconds}${fileName}`,
+      value: buffer,
     });
 
     return this.fileRepository.create({ bucket, key });

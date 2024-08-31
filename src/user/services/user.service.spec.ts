@@ -1,5 +1,6 @@
 import { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
 import { PrismaTransactionScopeService } from '@app/lib/prisma/services/transaction-scope.service';
+import { convertImageToWebp } from '@app/shared/utils';
 import { FileRepositoryContract } from '@app/storage/contracts/file-repository.contract';
 import { StorageServiceContract } from '@app/storage/contracts/storage-service.contract';
 import type { FileEntity } from '@app/storage/entities/file.entity';
@@ -11,6 +12,14 @@ import { BadRequestException } from '@nestjs/common';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { UserService } from './user.service';
+
+jest.mock('@app/shared/utils', () => ({
+  createUuidV4: jest.fn().mockImplementation(() => faker.string.uuid()),
+  convertImageToWebp: jest.fn().mockImplementation((args: { fileName: string; buffer: Buffer }) => ({
+    fileName: args.fileName,
+    buffer: args.buffer,
+  })),
+}));
 
 const makeUserRepositoryMock = () => ({
   findUniqueOrThrow: jest.fn(),
@@ -109,11 +118,12 @@ describe('UserService', () => {
 
       expect(storageService.set).toHaveBeenCalledWith({
         bucket: 'avatars',
-        key: avatar.originalname,
+        key: expect.any(String) as string,
         value: avatar.buffer,
       });
       expect(hashService.hash).toHaveBeenCalledWith(input.password);
       expect(fileRepository.create).toHaveBeenCalled();
+      expect(convertImageToWebp).toHaveBeenCalled();
       expect(userRepository.create).toHaveBeenCalledWith({
         email: input.email,
         password: hashedPassword,
@@ -223,6 +233,7 @@ describe('UserService', () => {
       expect(userRepository.findUniqueOrThrow).toHaveBeenCalledWith({ where: { id: userId } });
       expect(storageService.delete).toHaveBeenCalledWith({ bucket: oldAvatar.bucket, key: oldAvatar.key });
       expect(fileRepository.delete).toHaveBeenCalledWith({ where: { id: oldAvatar.id } });
+      expect(convertImageToWebp).toHaveBeenCalled();
       expect(userRepository.update).toHaveBeenCalledWith({
         where: { id: userId },
         data: { avatarId: newAvatar.id },
