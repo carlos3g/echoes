@@ -229,7 +229,7 @@ describe('(PATCH) /me/avatar', () => {
       .patch('/auth/me/avatar')
       .auth(token, { type: 'bearer' })
       .set('Content-Type', 'multipart/form-data')
-      .attach('avatar', './test/fixtures/fixture.png')
+      .attach('avatar', './test/fixtures/avatar-valid.png')
       .expect(HttpStatus.OK);
 
     const updatedUser = await userRepository.findUniqueOrThrow({

@@ -5,6 +5,7 @@ import { RefreshTokenInput } from '@app/auth/dtos/refresh-token-input';
 import { ResetPasswordRequest } from '@app/auth/dtos/reset-password-request';
 import { SignInInput } from '@app/auth/dtos/sign-in-input';
 import { SignUpRequest } from '@app/auth/dtos/sign-up-request';
+import { AvatarDimensionsValidationPipe } from '@app/auth/pipes/avatar-dimensions-validation.pipe';
 import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
 import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case';
 import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
@@ -64,6 +65,7 @@ export class AuthController {
         .addMaxSizeValidator({
           maxSize: MAX_AVATAR_SIZE_IN_BYTES,
         })
+        .addValidator(new AvatarDimensionsValidationPipe())
         .build({
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
           fileIsRequired: false,
@@ -124,6 +126,7 @@ export class AuthController {
         .addMaxSizeValidator({
           maxSize: MAX_AVATAR_SIZE_IN_BYTES,
         })
+        .addValidator(new AvatarDimensionsValidationPipe())
         .build({
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         })
