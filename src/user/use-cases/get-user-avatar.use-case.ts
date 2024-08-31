@@ -24,7 +24,7 @@ export class GetUserAvatarUseCase implements UseCaseHandler {
 
     response.set({
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      'Content-Type': 'image/jpg',
+      'Content-Type': 'image/webp',
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'Content-Length': buffer.length,
     });

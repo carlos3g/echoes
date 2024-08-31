@@ -3,6 +3,7 @@ import { prismaFileToFileAdapter } from '@app/storage/adapters';
 import type { FileRepositoryContract } from '@app/storage/contracts/file-repository.contract';
 import type {
   FileRepositoryCreateInput,
+  FileRepositoryDeleteInput,
   FileRepositoryFindUniqueOrThrowInput,
 } from '@app/storage/dtos/file-repository-dtos';
 import { Injectable } from '@nestjs/common';
@@ -25,5 +26,11 @@ export class PrismaFileRepository implements FileRepositoryContract {
     });
 
     return prismaFileToFileAdapter(entity);
+  }
+
+  public async delete(input: FileRepositoryDeleteInput): Promise<void> {
+    const { where } = input;
+
+    await this.prismaManager.getClient().file.delete({ where });
   }
 }

@@ -5,6 +5,7 @@ import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { fileFactory } from '@test/factories';
 import { prisma } from '@test/server';
+import * as _ from 'lodash';
 
 describe('PrismaFileRepository', () => {
   let fileRepository: PrismaFileRepository;
@@ -46,6 +47,33 @@ describe('PrismaFileRepository', () => {
 
     it('should throw an error if file not found', async () => {
       await expect(fileRepository.findUniqueOrThrow({ where: { id: faker.number.int() } })).rejects.toThrow();
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete an existing file', async () => {
+      const createdFile = await prisma.file.create({
+        data: fileFactory(),
+      });
+
+      await fileRepository.delete({
+        where: { id: Number(createdFile.id) },
+      });
+
+      await expect(prisma.file.findUniqueOrThrow({ where: { id: Number(createdFile.id) } })).rejects.toThrow();
+    });
+
+    it('should delete only the file passed', async () => {
+      await prisma.file.createMany({
+        data: _.range(5).map(fileFactory),
+      });
+      const createdFile = await prisma.file.create({
+        data: fileFactory(),
+      });
+
+      await fileRepository.delete({ where: { id: Number(createdFile.id) } });
+
+      await expect(prisma.file.count()).resolves.toBe(5);
     });
   });
 });

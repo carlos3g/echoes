@@ -10,3 +10,9 @@ export interface FileRepositoryFindUniqueOrThrowInput {
     id: number;
   }>;
 }
+
+export interface FileRepositoryDeleteInput {
+  where: AtLeastOne<{
+    id: number;
+  }>;
+}

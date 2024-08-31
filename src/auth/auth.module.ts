@@ -12,6 +12,7 @@ import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case'
 import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
+import { UpdateAvatarUseCase } from '@app/auth/use-cases/update-avatar.use-case';
 import { EmailModule } from '@app/email/email.module';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import type { EnvVariables } from '@app/shared/types';
@@ -51,6 +52,7 @@ import { AuthController } from './auth.controller';
     ForgotPasswordUseCase,
     ResetPasswordUseCase,
     DeleteUsedPasswordChangeRequestTask,
+    UpdateAvatarUseCase,
   ],
   exports: [AuthServiceContract, JwtServiceContract, HashServiceContract],
 })

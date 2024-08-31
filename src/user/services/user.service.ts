@@ -1,4 +1,5 @@
 import { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
+import { Transaction } from '@app/lib/prisma/decorators/transaction.decorator';
 import { createUuidV4 } from '@app/shared/utils';
 import { FileRepositoryContract } from '@app/storage/contracts/file-repository.contract';
 import { StorageServiceContract } from '@app/storage/contracts/storage-service.contract';
@@ -45,6 +46,36 @@ export class UserService {
         password: hashedPassword,
       },
     });
+  }
+
+  @Transaction()
+  public async updateAvatar(input: { userId: number; avatar: Express.Multer.File }): Promise<User> {
+    const { userId, avatar } = input;
+
+    const oldUser = await this.userRepository.findUniqueOrThrow({ where: { id: userId } });
+
+    const updatedFile = await this.uploadAvatar({ avatar });
+
+    const updatedUser = await this.userRepository.update({
+      where: { id: userId },
+      data: { avatarId: updatedFile.id },
+    });
+
+    await this.deleteAvatar({ user: oldUser });
+
+    return updatedUser;
+  }
+
+  public async deleteAvatar(input: { user: User }): Promise<User | void> {
+    const { user } = input;
+
+    if (!user.avatarId) {
+      return;
+    }
+
+    const file = await this.fileRepository.findUniqueOrThrow({ where: { id: user.avatarId } });
+    await this.storageService.delete({ bucket: file.bucket, key: file.key });
+    await this.fileRepository.delete({ where: { id: user.avatarId } });
   }
 
   public async getAvatar(input: { user: User }): Promise<Buffer> {

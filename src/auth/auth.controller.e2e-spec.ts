@@ -1,14 +1,19 @@
 import { AuthServiceContract } from '@app/auth/contracts/auth-service.contract';
+import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import { UserService } from '@app/user/services/user.service';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
+import { getAccessToken } from '@test/auth';
+import { userFactory } from '@test/factories';
 import { app, server } from '@test/server';
 import * as request from 'supertest';
 
+let userRepository: UserRepositoryContract;
 let userService: UserService;
 let authService: AuthServiceContract;
 
 beforeAll(() => {
+  userRepository = app.get<UserRepositoryContract>(UserRepositoryContract);
   userService = app.get<UserService>(UserService);
   authService = app.get<AuthServiceContract>(AuthServiceContract);
 });
@@ -194,5 +199,44 @@ describe('(POST) /auth/reset-password/:token', () => {
     });
 
     expect(response.status).toEqual(HttpStatus.NOT_FOUND);
+  });
+});
+
+describe('(GET) /auth/me', () => {
+  it('should return logged user data', async () => {
+    const { id: _, avatarId: __, ...rest } = await userRepository.create(userFactory());
+    const token = await getAccessToken(app, { email: rest.email });
+
+    const response = await request(server).get('/auth/me').auth(token, { type: 'bearer' }).send();
+
+    expect(response.status).toEqual(HttpStatus.OK);
+    expect(response.body).toMatchObject({
+      ...rest,
+      createdAt: rest.createdAt.toISOString(),
+      updatedAt: rest.updatedAt.toISOString(),
+      emailVerifiedAt: rest.emailVerifiedAt?.toISOString(),
+    });
+    expect(response.body).not.toHaveProperty('id');
+  });
+});
+
+describe('(PATCH) /me/avatar', () => {
+  it('should update the avatar', async () => {
+    const { id: userId, avatarId: oldAvatarId, ...rest } = await userRepository.create(userFactory());
+    const token = await getAccessToken(app, { email: rest.email });
+
+    await request(app.getHttpServer())
+      .patch('/auth/me/avatar')
+      .auth(token, { type: 'bearer' })
+      .set('Content-Type', 'multipart/form-data')
+      .attach('avatar', './test/fixtures/fixture.png')
+      .expect(HttpStatus.OK);
+
+    const updatedUser = await userRepository.findUniqueOrThrow({
+      where: { id: userId },
+    });
+
+    expect(oldAvatarId).toBeNull();
+    expect(updatedUser.avatarId).toEqual(expect.any(Number) as number);
   });
 });

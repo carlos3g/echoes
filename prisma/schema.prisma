@@ -26,7 +26,7 @@ model User {
   updatedAt             DateTime                @updatedAt @map("updated_at")
   userOnFavoritable     UserOnFavoritable[]
   avatarId              BigInt?                 @unique @map("avatar_id") @db.BigInt
-  avatar                File?                   @relation("UsersAvatars", fields: [avatarId], references: [id])
+  avatar                File?                   @relation("UsersAvatars", fields: [avatarId], references: [id], onDelete: Cascade)
 
   @@map("users")
 }
