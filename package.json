@@ -74,6 +74,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "helmet": "^7.1.0",
+    "jdenticon": "^3.3.0",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "mjml": "^4.15.3",

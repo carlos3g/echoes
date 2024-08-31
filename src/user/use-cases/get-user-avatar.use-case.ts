@@ -3,6 +3,7 @@ import { UserRepositoryContract } from '@app/user/contracts/user-repository.cont
 import type { GetUserAvatarInput } from '@app/user/dtos/get-user-avatar-input';
 import { UserService } from '@app/user/services/user.service';
 import { HttpStatus, Injectable } from '@nestjs/common';
+import * as jdenticon from 'jdenticon';
 
 @Injectable()
 export class GetUserAvatarUseCase implements UseCaseHandler {
@@ -20,7 +21,7 @@ export class GetUserAvatarUseCase implements UseCaseHandler {
       },
     });
 
-    const buffer = await this.userService.getAvatar({ user });
+    const buffer = !user.avatarId ? this.getAvatarFallback(user.email) : await this.userService.getAvatar({ user });
 
     response.set({
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -30,5 +31,9 @@ export class GetUserAvatarUseCase implements UseCaseHandler {
     });
 
     response.status(HttpStatus.OK).send(buffer);
+  }
+
+  private getAvatarFallback(value: string): Buffer {
+    return jdenticon.toPng(value, 1080);
   }
 }
