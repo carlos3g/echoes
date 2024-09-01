@@ -1,9 +1,5 @@
 import type { AtLeastOne } from '@app/shared/types';
 
-export interface BatchOutput {
-  count: number;
-}
-
 export interface PasswordChangeRequestRepositoryCreateInput {
   token: string;
   userId: number;

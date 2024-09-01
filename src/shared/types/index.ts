@@ -5,6 +5,7 @@ export interface EnvVariables {
   TZ: string;
 
   API_PORT: string;
+  API_DNS: string;
   JWT_SECRET: string;
 
   DB_HOST: string;

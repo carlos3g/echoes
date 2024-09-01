@@ -9,8 +9,10 @@ import { SignUpRequest } from '@app/auth/dtos/sign-up-request';
 import { UpdateMeRequest } from '@app/auth/dtos/update-me-request';
 import { AvatarDimensionsValidationPipe } from '@app/auth/pipes/avatar-dimensions-validation.pipe';
 import { ChangePasswordUseCase } from '@app/auth/use-cases/change-password.use-case';
+import { ConfirmEmailUseCase } from '@app/auth/use-cases/confirm-email.use-case';
 import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
 import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case';
+import { ResendEmailConfirmationUseCase } from '@app/auth/use-cases/resend-email-confirmation.use-case';
 import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
@@ -47,7 +49,9 @@ export class AuthController {
     private readonly resetPasswordUseCase: ResetPasswordUseCase,
     private readonly updateAvatarUseCase: UpdateAvatarUseCase,
     private readonly updateMeUseCase: UpdateMeUseCase,
-    private readonly changePasswordUseCase: ChangePasswordUseCase
+    private readonly changePasswordUseCase: ChangePasswordUseCase,
+    private readonly confirmEmailUseCase: ConfirmEmailUseCase,
+    private readonly resendEmailConfirmationUseCase: ResendEmailConfirmationUseCase
   ) {}
 
   @Public()
@@ -152,5 +156,23 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   public async changePassword(@Body() input: ChangePasswordRequest, @UserDecorator() user: User) {
     return this.changePasswordUseCase.handle({ ...input, user });
+  }
+
+  @Post('email/confirm/:token')
+  @HttpCode(HttpStatus.OK)
+  public async confirmEmail(@Param('token') token: string, @UserDecorator() user: User) {
+    return this.confirmEmailUseCase.handle({ token, user });
+  }
+
+  @Throttle({
+    default: {
+      limit: 3,
+      ttl: TWO_MINUTES_IN_MS,
+    },
+  })
+  @Post('email/resend')
+  @HttpCode(HttpStatus.OK)
+  public async resendEmailConfirmation(@UserDecorator() user: User) {
+    return this.resendEmailConfirmationUseCase.handle({ user });
   }
 }

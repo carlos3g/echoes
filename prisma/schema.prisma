@@ -14,19 +14,20 @@ generator dbml {
 }
 
 model User {
-  id                    BigInt                  @id @default(autoincrement()) @db.BigInt
-  uuid                  String                  @unique
-  name                  String
-  email                 String                  @unique
-  password              String
-  emailVerifiedAt       DateTime?               @map("email_verified_at")
-  passwordChangeRequest PasswordChangeRequest[]
-  tags                  Tag[]
-  createdAt             DateTime                @default(now()) @map("created_at")
-  updatedAt             DateTime                @updatedAt @map("updated_at")
-  userOnFavoritable     UserOnFavoritable[]
-  avatarId              BigInt?                 @unique @map("avatar_id") @db.BigInt
-  avatar                File?                   @relation("UsersAvatars", fields: [avatarId], references: [id], onDelete: Cascade)
+  id                      BigInt                   @id @default(autoincrement()) @db.BigInt
+  uuid                    String                   @unique
+  name                    String
+  email                   String                   @unique
+  password                String
+  emailVerifiedAt         DateTime?                @map("email_verified_at")
+  passwordChangeRequests  PasswordChangeRequest[]
+  emailConfirmationTokens EmailConfirmationToken[]
+  tags                    Tag[]
+  createdAt               DateTime                 @default(now()) @map("created_at")
+  updatedAt               DateTime                 @updatedAt @map("updated_at")
+  userOnFavoritable       UserOnFavoritable[]
+  avatarId                BigInt?                  @unique @map("avatar_id") @db.BigInt
+  avatar                  File?                    @relation("UsersAvatars", fields: [avatarId], references: [id], onDelete: Cascade)
 
   @@map("users")
 }
@@ -39,6 +40,18 @@ model PasswordChangeRequest {
   createdAt DateTime  @default(now()) @map("created_at")
 
   @@map("password_change_request")
+}
+
+model EmailConfirmationToken {
+  token     String    @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt    @db.BigInt
+  usedAt    DateTime? @map("used_at")
+  expiresAt DateTime  @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("email_confirmation_token")
 }
 
 model Quote {

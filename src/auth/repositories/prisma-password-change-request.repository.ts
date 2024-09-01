@@ -1,7 +1,6 @@
 import { prismaPasswordChangeRequestToPasswordChangeRequestAdapter } from '@app/auth/adapters';
 import type { PasswordChangeRequestRepositoryContract } from '@app/auth/contracts/password-change-request-repository.contract';
 import type {
-  BatchOutput,
   PasswordChangeRequestRepositoryCreateInput,
   PasswordChangeRequestRepositoryDeleteManyInput,
   PasswordChangeRequestRepositoryFindFirstOrThrowInput,
@@ -11,6 +10,7 @@ import type {
 } from '@app/auth/dtos/password-change-request-repository-dtos';
 import type { PasswordChangeRequest } from '@app/auth/entities/password-change-request.entity';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
+import type { BatchOutput } from '@app/lib/prisma/types';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

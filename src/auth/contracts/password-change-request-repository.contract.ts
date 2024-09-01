@@ -1,5 +1,4 @@
 import type {
-  BatchOutput,
   PasswordChangeRequestRepositoryCreateInput,
   PasswordChangeRequestRepositoryDeleteManyInput,
   PasswordChangeRequestRepositoryFindFirstOrThrowInput,
@@ -8,6 +7,7 @@ import type {
   PasswordChangeRequestRepositoryUpdateInput,
 } from '@app/auth/dtos/password-change-request-repository-dtos';
 import type { PasswordChangeRequest } from '@app/auth/entities/password-change-request.entity';
+import type { BatchOutput } from '@app/lib/prisma/types';
 
 abstract class PasswordChangeRequestRepositoryContract {
   public abstract create(input: PasswordChangeRequestRepositoryCreateInput): Promise<PasswordChangeRequest>;

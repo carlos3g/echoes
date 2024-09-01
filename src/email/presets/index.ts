@@ -15,3 +15,30 @@ export const forgotPasswordTokenPreset = (input: {
     context,
   };
 };
+
+export const emailConfirmationTokenPreset = (input: {
+  to: string;
+  context: {
+    link: string;
+  };
+}): EmailServiceSendInput => {
+  const { context, to } = input;
+
+  return {
+    subject: 'Confirmação de email',
+    template: 'email-confirmation-token',
+    to,
+    context,
+  };
+};
+
+export const emailConfirmedPreset = (input: { to: string }): EmailServiceSendInput => {
+  const { to } = input;
+
+  return {
+    subject: 'Email Confirmado',
+    template: 'email-confirmed',
+    to,
+    context: {},
+  };
+};
