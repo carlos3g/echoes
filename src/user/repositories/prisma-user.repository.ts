@@ -39,4 +39,18 @@ export class PrismaUserRepository implements UserRepositoryContract {
 
     return prismaUserToUserAdapter(entity);
   }
+
+  public async findUniqueByEmail(email: string): Promise<User | null> {
+    const entity = await this.prismaManager.getClient().user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!entity) {
+      return null;
+    }
+
+    return prismaUserToUserAdapter(entity);
+  }
 }

@@ -61,6 +61,22 @@ describe('PrismaUserRepository', () => {
       });
     });
 
+    it('should find a user by email', async () => {
+      const createdUser = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const result = await userRepository.findUniqueOrThrow({
+        where: { email: createdUser.email },
+      });
+
+      expect(result).toMatchObject({
+        ...createdUser,
+        id: Number(createdUser.id),
+        uuid: createdUser.uuid,
+      });
+    });
+
     it('should throw an error if user not found', async () => {
       await expect(userRepository.findUniqueOrThrow({ where: { uuid: 'non-existent-uuid' } })).rejects.toThrow();
     });
@@ -80,6 +96,26 @@ describe('PrismaUserRepository', () => {
       });
 
       expect(result.name).toBe(newName);
+    });
+  });
+
+  describe('findUniqueByEmail', () => {
+    it('should find a user by email', async () => {
+      const createdUser = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const result = await userRepository.findUniqueByEmail(createdUser.email);
+
+      expect(result).toMatchObject({
+        ...createdUser,
+        id: Number(createdUser.id),
+        uuid: createdUser.uuid,
+      });
+    });
+
+    it('should return null if user not found', async () => {
+      await expect(userRepository.findUniqueByEmail(faker.internet.email())).resolves.toBeNull();
     });
   });
 });

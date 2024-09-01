@@ -17,6 +17,6 @@ export class SignUpRequest {
 
   @ApiProperty({ minLength: 8 })
   @Length(8)
-  @Match('password')
+  @Match('password', { message: 'Passwords do not match' })
   public passwordConfirmation!: string;
 }

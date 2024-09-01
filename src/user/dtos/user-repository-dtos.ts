@@ -14,7 +14,13 @@ export interface UserRepositoryUpdateInput {
     uuid: string;
     email: string;
   }>;
-  data: Partial<{ name: string; email: string; password: string; avatarId?: number | null }>;
+  data: Partial<{
+    name: string;
+    email: string;
+    password: string;
+    avatarId?: number | null;
+    emailVerifiedAt?: Date | null;
+  }>;
 }
 
 export interface UserRepositoryFindUniqueOrThrowInput {

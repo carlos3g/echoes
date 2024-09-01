@@ -11,6 +11,8 @@ abstract class UserRepositoryContract {
   public abstract update(input: UserRepositoryUpdateInput): Promise<User>;
 
   public abstract findUniqueOrThrow(input: UserRepositoryFindUniqueOrThrowInput): Promise<User>;
+
+  public abstract findUniqueByEmail(email: string): Promise<User | null>;
 }
 
 export { UserRepositoryContract };

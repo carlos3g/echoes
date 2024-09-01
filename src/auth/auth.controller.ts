@@ -1,17 +1,21 @@
 import { Public } from '@app/auth/decorators/public.decorator';
 import { UserDecorator } from '@app/auth/decorators/user.decorator';
+import { ChangePasswordRequest } from '@app/auth/dtos/change-password-request';
 import { ForgotPasswordInput } from '@app/auth/dtos/forgot-password-input';
 import { RefreshTokenInput } from '@app/auth/dtos/refresh-token-input';
 import { ResetPasswordRequest } from '@app/auth/dtos/reset-password-request';
 import { SignInInput } from '@app/auth/dtos/sign-in-input';
 import { SignUpRequest } from '@app/auth/dtos/sign-up-request';
+import { UpdateMeRequest } from '@app/auth/dtos/update-me-request';
 import { AvatarDimensionsValidationPipe } from '@app/auth/pipes/avatar-dimensions-validation.pipe';
+import { ChangePasswordUseCase } from '@app/auth/use-cases/change-password.use-case';
 import { ForgotPasswordUseCase } from '@app/auth/use-cases/forgot-password.use-case';
 import { RefreshTokenUseCase } from '@app/auth/use-cases/refresh-token.use-case';
 import { ResetPasswordUseCase } from '@app/auth/use-cases/reset-password.use-case';
 import { SignInUseCase } from '@app/auth/use-cases/sign-in.use-case';
 import { SignUpUseCase } from '@app/auth/use-cases/sign-up.use-case';
 import { UpdateAvatarUseCase } from '@app/auth/use-cases/update-avatar.use-case';
+import { UpdateMeUseCase } from '@app/auth/use-cases/update-me.use-case';
 import { User } from '@app/user/entities/user.entity';
 import {
   Body,
@@ -41,7 +45,9 @@ export class AuthController {
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
     private readonly resetPasswordUseCase: ResetPasswordUseCase,
-    private readonly updateAvatarUseCase: UpdateAvatarUseCase
+    private readonly updateAvatarUseCase: UpdateAvatarUseCase,
+    private readonly updateMeUseCase: UpdateMeUseCase,
+    private readonly changePasswordUseCase: ChangePasswordUseCase
   ) {}
 
   @Public()
@@ -113,6 +119,12 @@ export class AuthController {
     return user;
   }
 
+  @Patch('me')
+  @HttpCode(HttpStatus.OK)
+  public async updateMe(@Body() input: UpdateMeRequest, @UserDecorator() user: User) {
+    return this.updateMeUseCase.handle({ ...input, user });
+  }
+
   @Patch('me/avatar')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('avatar'))
@@ -134,5 +146,11 @@ export class AuthController {
     avatar: Express.Multer.File
   ) {
     return this.updateAvatarUseCase.handle({ user, avatar });
+  }
+
+  @Patch('change-password')
+  @HttpCode(HttpStatus.OK)
+  public async changePassword(@Body() input: ChangePasswordRequest, @UserDecorator() user: User) {
+    return this.changePasswordUseCase.handle({ ...input, user });
   }
 }

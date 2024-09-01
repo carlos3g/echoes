@@ -220,7 +220,7 @@ describe('(GET) /auth/me', () => {
   });
 });
 
-describe('(PATCH) /me/avatar', () => {
+describe('(PATCH) /auth/me/avatar', () => {
   it('should update the avatar', async () => {
     const { id: userId, avatarId: oldAvatarId, ...rest } = await userRepository.create(userFactory());
     const token = await getAccessToken(app, { email: rest.email });
@@ -238,5 +238,98 @@ describe('(PATCH) /me/avatar', () => {
 
     expect(oldAvatarId).toBeNull();
     expect(updatedUser.avatarId).toEqual(expect.any(Number) as number);
+  });
+});
+
+describe('(PATCH) /auth/me', () => {
+  it('should update personal information successfully', async () => {
+    const { email } = await userService.create(userFactory());
+    const token = await getAccessToken(app, { email });
+
+    const updateData = {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+    };
+
+    const response = await request(app.getHttpServer())
+      .patch('/auth/me')
+      .auth(token, { type: 'bearer' })
+      .send(updateData);
+
+    expect(response.status).toEqual(HttpStatus.OK);
+    expect(response.body).toHaveProperty('name', updateData.name);
+    expect(response.body).toHaveProperty('email', updateData.email);
+  });
+
+  it('should return error for duplicate email', async () => {
+    const { email } = await userService.create(userFactory());
+    const token = await getAccessToken(app, { email });
+
+    const secondUser = await userService.create(userFactory());
+
+    const response = await request(app.getHttpServer())
+      .patch('/auth/me')
+      .auth(token, { type: 'bearer' })
+      .send({ email: secondUser.email });
+
+    expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
+    expect(response.body).toHaveProperty('message', 'Email already in use');
+  });
+});
+
+describe('(PATCH) /auth/me/change-password', () => {
+  it('should change password successfully', async () => {
+    const currentPassword = faker.internet.password();
+    const { email } = await userService.create({ ...userFactory(), password: currentPassword });
+    const token = await getAccessToken(app, { email });
+    const password = faker.internet.password();
+
+    const response = await request(app.getHttpServer())
+      .patch('/auth/change-password')
+      .auth(token, { type: 'bearer' })
+      .send({
+        currentPassword,
+        password,
+        passwordConfirmation: password,
+      });
+
+    expect(response.status).toEqual(HttpStatus.OK);
+  });
+
+  it('should return error for non-matching new password and confirmation', async () => {
+    const currentPassword = faker.internet.password({ length: 8 });
+    const { email } = await userService.create({ ...userFactory(), password: currentPassword });
+    const token = await getAccessToken(app, { email });
+
+    const response = await request(app.getHttpServer())
+      .patch('/auth/change-password')
+      .auth(token, { type: 'bearer' })
+      .send({
+        currentPassword,
+        password: faker.internet.password({ length: 8 }),
+        passwordConfirmation: faker.internet.password({ length: 8 }),
+      });
+
+    expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
+    expect(response.body).toHaveProperty('message', ['Passwords do not match']);
+  });
+
+  it('should return error for invalid current password', async () => {
+    const currentPassword = faker.internet.password({ length: 8 });
+    const { email } = await userService.create({ ...userFactory(), password: currentPassword });
+    const token = await getAccessToken(app, { email });
+    const password = faker.internet.password({ length: 8 });
+
+    const response = await request(app.getHttpServer())
+      .patch('/auth/change-password')
+      .auth(token, { type: 'bearer' })
+      .send({
+        currentPassword: faker.internet.password({ length: 8 }),
+        password,
+        passwordConfirmation: password,
+      });
+
+    expect(response.status).toEqual(HttpStatus.UNAUTHORIZED);
+    expect(response.body).toHaveProperty('message', 'Invalid current password');
   });
 });

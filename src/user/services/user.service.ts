@@ -5,7 +5,8 @@ import { FileRepositoryContract } from '@app/storage/contracts/file-repository.c
 import { StorageServiceContract } from '@app/storage/contracts/storage-service.contract';
 import type { FileEntity } from '@app/storage/entities/file.entity';
 import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
-import type { CreateUserInput, UpdateUserInput } from '@app/user/dtos/user-service-dtos';
+import type { CreateUserInput } from '@app/user/dtos/user-service-dtos';
+import { UpdateUserInput } from '@app/user/dtos/user-service-dtos';
 import type { User } from '@app/user/entities/user.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DateTime } from 'luxon';
@@ -33,18 +34,48 @@ export class UserService {
     });
   }
 
+  @Transaction()
   public async update(input: UpdateUserInput): Promise<User> {
     const { userId, password, ...rest } = input;
 
     const hashedPassword = password ? this.hashService.hash(password) : undefined;
 
-    return this.userRepository.update({
+    const updatedUser = await this.userRepository.update({
       where: {
         id: userId,
       },
       data: {
-        ...rest,
+        email: rest.email,
+        name: rest.name,
         password: hashedPassword,
+      },
+    });
+
+    if (input.email) {
+      await this.markEmailAsUnverified({ userId });
+    }
+
+    return updatedUser;
+  }
+
+  public async markEmailAsVerified(input: { userId: number }): Promise<User> {
+    return this.userRepository.update({
+      where: {
+        id: input.userId,
+      },
+      data: {
+        emailVerifiedAt: DateTime.now().toJSDate(),
+      },
+    });
+  }
+
+  public async markEmailAsUnverified(input: { userId: number }): Promise<User> {
+    return this.userRepository.update({
+      where: {
+        id: input.userId,
+      },
+      data: {
+        emailVerifiedAt: null,
       },
     });
   }

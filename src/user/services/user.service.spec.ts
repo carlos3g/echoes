@@ -193,6 +193,54 @@ describe('UserService', () => {
       expect(result).toEqual(updatedUser);
     });
 
+    it('should mark user email as unverified if email is provided', async () => {
+      const input: UpdateUserInput = {
+        userId: faker.number.int(),
+        email: faker.internet.email(),
+      };
+      const updatedUser = {
+        id: input.userId,
+        email: input.email,
+      } as User;
+
+      userRepository.update.mockResolvedValue(updatedUser);
+      jest.spyOn(userService, 'markEmailAsUnverified');
+
+      await userService.update(input);
+
+      expect(userService.markEmailAsUnverified).toHaveBeenCalledWith({ userId: updatedUser.id });
+      expect(userRepository.update).toHaveBeenCalledWith({
+        where: { id: input.userId },
+        data: {
+          email: input.email,
+        },
+      });
+    });
+
+    it('should not mark user email as unverified if email is not provided', async () => {
+      const input: UpdateUserInput = {
+        userId: faker.number.int(),
+        name: faker.person.fullName(),
+      };
+      const updatedUser = {
+        id: input.userId,
+        name: input.name,
+      } as User;
+
+      userRepository.update.mockResolvedValue(updatedUser);
+      jest.spyOn(userService, 'markEmailAsUnverified');
+
+      await userService.update(input);
+
+      expect(userService.markEmailAsUnverified).not.toHaveBeenCalledWith({ userId: updatedUser.id });
+      expect(userRepository.update).toHaveBeenCalledWith({
+        where: { id: input.userId },
+        data: {
+          name: input.name,
+        },
+      });
+    });
+
     it('should throw BadRequestException if the user is not found', async () => {
       const input: UpdateUserInput = {
         userId: faker.number.int(),
