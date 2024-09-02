@@ -98,6 +98,7 @@ describe('UserService', () => {
         email: faker.internet.email(),
         password: faker.internet.password(),
         name: faker.person.fullName(),
+        username: faker.internet.userName().toLowerCase(),
         avatar,
       };
       const hashedPassword = `${input.password}hash`;
@@ -128,6 +129,7 @@ describe('UserService', () => {
         email: input.email,
         password: hashedPassword,
         name: input.name,
+        username: input.username,
         uuid: expect.any(String) as string,
         avatarId: createdFile.id,
       });

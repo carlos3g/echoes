@@ -29,6 +29,7 @@ export class UserService {
       email: rest.email,
       password: this.hashService.hash(rest.password),
       name: rest.name,
+      username: rest.username,
       uuid: createUuidV4(),
       avatarId: file?.id,
     });

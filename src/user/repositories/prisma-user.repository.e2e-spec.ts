@@ -77,6 +77,22 @@ describe('PrismaUserRepository', () => {
       });
     });
 
+    it('should find a user by username', async () => {
+      const createdUser = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const result = await userRepository.findUniqueOrThrow({
+        where: { username: createdUser.username },
+      });
+
+      expect(result).toMatchObject({
+        ...createdUser,
+        id: Number(createdUser.id),
+        uuid: createdUser.uuid,
+      });
+    });
+
     it('should throw an error if user not found', async () => {
       await expect(userRepository.findUniqueOrThrow({ where: { uuid: 'non-existent-uuid' } })).rejects.toThrow();
     });

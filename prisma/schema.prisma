@@ -18,6 +18,7 @@ model User {
   uuid                    String                   @unique
   name                    String
   email                   String                   @unique
+  username                String                   @unique
   password                String
   emailVerifiedAt         DateTime?                @map("email_verified_at")
   passwordChangeRequests  PasswordChangeRequest[]

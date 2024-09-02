@@ -14,6 +14,10 @@ export class IsUnguessablePasswordConstraint implements ValidatorConstraintInter
 
     return score >= 3;
   }
+
+  public defaultMessage(_?: ValidationArguments): string {
+    return 'Password too weak';
+  }
 }
 
 export function IsUnguessablePassword(validationOptions?: ValidationOptions) {
@@ -21,10 +25,7 @@ export function IsUnguessablePassword(validationOptions?: ValidationOptions) {
     registerDecorator({
       target: object.constructor,
       propertyName,
-      options: {
-        message: 'Password too weak',
-        ...validationOptions,
-      },
+      options: validationOptions,
       validator: IsUnguessablePasswordConstraint,
     });
   };
