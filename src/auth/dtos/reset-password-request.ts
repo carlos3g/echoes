@@ -1,6 +1,6 @@
 import { Match } from '@app/shared/validators/match.validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, Length } from 'class-validator';
+import { IsEmail, MinLength } from 'class-validator';
 
 export class ResetPasswordRequest {
   @ApiProperty()
@@ -8,11 +8,11 @@ export class ResetPasswordRequest {
   public email!: string;
 
   @ApiProperty({ minLength: 8 })
-  @Length(8)
+  @MinLength(8)
   public password!: string;
 
   @ApiProperty({ minLength: 8 })
-  @Length(8)
+  @MinLength(8)
   @Match('password', { message: 'Passwords do not match' })
   public passwordConfirmation!: string;
 }

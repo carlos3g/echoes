@@ -297,7 +297,7 @@ describe('(PATCH) /auth/me/change-password', () => {
   });
 
   it('should return error for non-matching new password and confirmation', async () => {
-    const currentPassword = faker.internet.password({ length: 8 });
+    const currentPassword = faker.internet.password();
     const { email } = await userService.create({ ...userFactory(), password: currentPassword });
     const token = await getAccessToken(app, { email });
 
@@ -306,8 +306,8 @@ describe('(PATCH) /auth/me/change-password', () => {
       .auth(token, { type: 'bearer' })
       .send({
         currentPassword,
-        password: faker.internet.password({ length: 8 }),
-        passwordConfirmation: faker.internet.password({ length: 8 }),
+        password: faker.internet.password(),
+        passwordConfirmation: faker.internet.password(),
       });
 
     expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
@@ -315,16 +315,16 @@ describe('(PATCH) /auth/me/change-password', () => {
   });
 
   it('should return error for invalid current password', async () => {
-    const currentPassword = faker.internet.password({ length: 8 });
+    const currentPassword = faker.internet.password();
     const { email } = await userService.create({ ...userFactory(), password: currentPassword });
     const token = await getAccessToken(app, { email });
-    const password = faker.internet.password({ length: 8 });
+    const password = faker.internet.password();
 
     const response = await request(app.getHttpServer())
       .patch('/auth/change-password')
       .auth(token, { type: 'bearer' })
       .send({
-        currentPassword: faker.internet.password({ length: 8 }),
+        currentPassword: faker.internet.password(),
         password,
         passwordConfirmation: password,
       });
