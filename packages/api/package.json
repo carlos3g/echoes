@@ -12,6 +12,7 @@
     "db:migrate": "prisma db push",
     "db:migrate:test": "dotenv -e .env.testing -- prisma db push --accept-data-loss",
     "db:seed": "prisma db seed",
+    "dev": "pnpm start:dev",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "start": "nest start",

@@ -8,7 +8,8 @@
   "scripts": {
     "prepare": "husky",
     "style": "lerna run style",
-    "db": "lerna run db:generate && lerna run db:migrate",
+    "dev": "lerna run dev",
+    "db": "lerna run db:generate && lerna run db:migrate && lerna run db:seed",
     "db:test": "lerna run db:generate && lerna run db:migrate:test"
   },
   "devDependencies": {
