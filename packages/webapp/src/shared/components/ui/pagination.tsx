@@ -4,6 +4,7 @@ import * as React from 'react';
 import type { ButtonProps } from '@/shared/components/ui/button';
 import { buttonVariants } from '@/shared/components/ui/button';
 import { cn } from '@/shared/utils';
+import Link from 'next/link';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -30,10 +31,10 @@ PaginationItem.displayName = 'PaginationItem';
 type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, 'size'> &
-  React.ComponentProps<'a'>;
+  React.ComponentProps<typeof Link>;
 
-const PaginationLink = ({ className, isActive, size = 'icon', ...props }: PaginationLinkProps) => (
-  <a
+const PaginationLink = ({ className, isActive, children, size = 'icon', ...props }: PaginationLinkProps) => (
+  <Link
     aria-current={isActive ? 'page' : undefined}
     className={cn(
       buttonVariants({
@@ -43,21 +44,23 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }: Pagina
       className
     )}
     {...props}
-  />
+  >
+    {children}
+  </Link>
 );
 PaginationLink.displayName = 'PaginationLink';
 
 const PaginationPrevious = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink aria-label="Go to previous page" size="default" className={cn('gap-1 pl-2.5', className)} {...props}>
     <ChevronLeftIcon className="h-4 w-4" />
-    <span>Previous</span>
+    <span>Anterior</span>
   </PaginationLink>
 );
 PaginationPrevious.displayName = 'PaginationPrevious';
 
 const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink aria-label="Go to next page" size="default" className={cn('gap-1 pr-2.5', className)} {...props}>
-    <span>Next</span>
+    <span>Próximo</span>
     <ChevronRightIcon className="h-4 w-4" />
   </PaginationLink>
 );

@@ -1,17 +1,13 @@
+import { ReactQueryProvider } from '@/lib/react-query';
 import { TailwindIndicator } from '@/shared/components/tailwind-indicator';
+import { cn } from '@/shared/utils';
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
 });
 
 export const metadata: Metadata = {
@@ -26,8 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+      <body suppressHydrationWarning className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
+        <ReactQueryProvider> {children}</ReactQueryProvider>
 
         <TailwindIndicator />
       </body>
