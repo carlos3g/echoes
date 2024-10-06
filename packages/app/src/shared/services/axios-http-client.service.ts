@@ -1,9 +1,9 @@
+import type { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import type { HttpClientServiceContract } from '@/shared/contracts/http-client-service.contract';
 import type { HttpConfig } from '@/types/http';
-import type { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 export class AxiosHttpClientService implements HttpClientServiceContract {
-  private _bearerToken: string = '';
+  private _bearerToken = '';
 
   constructor(private readonly httpPackage: AxiosInstance) {}
 
@@ -13,7 +13,7 @@ export class AxiosHttpClientService implements HttpClientServiceContract {
 
   set bearerToken(token: string) {
     this._bearerToken = token;
-    this.httpPackage.defaults.headers['Authorization'] = `Bearer ${token}`;
+    this.httpPackage.defaults.headers.Authorization = `Bearer ${token}`;
   }
 
   registerResponseInterceptor<TResponse = unknown, TError = unknown>(

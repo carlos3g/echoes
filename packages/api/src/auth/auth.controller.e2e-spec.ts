@@ -219,10 +219,12 @@ describe('(GET) /auth/me', () => {
 
     expect(response.status).toEqual(HttpStatus.OK);
     expect(response.body).toMatchObject({
-      ...rest,
-      createdAt: rest.createdAt.toISOString(),
-      updatedAt: rest.updatedAt.toISOString(),
-      emailVerifiedAt: rest.emailVerifiedAt?.toISOString(),
+      user: {
+        ...rest,
+        createdAt: rest.createdAt.toISOString(),
+        updatedAt: rest.updatedAt.toISOString(),
+        emailVerifiedAt: rest.emailVerifiedAt?.toISOString(),
+      },
     });
     expect(response.body).not.toHaveProperty('id');
   });
