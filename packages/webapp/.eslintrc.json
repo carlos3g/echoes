@@ -24,6 +24,7 @@
     ],
     "@typescript-eslint/consistent-type-imports": 2,
     "@typescript-eslint/no-empty-object-type": 0,
-    "no-void": 0
+    "no-void": 0,
+    "import/order": 2
   }
 }

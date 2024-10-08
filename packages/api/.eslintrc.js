@@ -74,5 +74,6 @@ module.exports = {
         leadingUnderscore: 'allowSingleOrDouble',
       },
     ],
+    'import/order': 2,
   },
 };

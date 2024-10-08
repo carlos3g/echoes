@@ -1,18 +1,10 @@
 import { api } from '@/lib/axios';
+import { secureStorage, storage } from '@/lib/react-native-mmkv';
 import type { HttpClientServiceContract } from '@/shared/contracts/http-client-service.contract';
+import type { StorageServiceContract } from '@/shared/contracts/storage-service.contract';
 import { AxiosHttpClientService } from '@/shared/services/axios-http-client.service';
-import type { ApiResponse, ApiResponseError } from '@/types/api';
+import { MMKVStorageService } from '@/shared/services/mmkv-storage.service';
 
-const httpClientService: HttpClientServiceContract = new AxiosHttpClientService(api);
-
-httpClientService.registerResponseInterceptor<ApiResponse, ApiResponseError>(undefined, async (error) => {
-  const statusCode = error.response?.status;
-  const message = error.response?.data?.message;
-
-  switch (statusCode) {
-    default:
-      throw error;
-  }
-});
-
-export { httpClientService };
+export const storageService: StorageServiceContract = new MMKVStorageService(storage);
+export const secureStorageService: StorageServiceContract = new MMKVStorageService(secureStorage);
+export const httpClientService: HttpClientServiceContract = new AxiosHttpClientService(api);

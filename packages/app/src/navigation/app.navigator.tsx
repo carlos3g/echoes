@@ -1,6 +1,6 @@
-import { AppStackParams } from "@/navigation/app.navigator.types";
-import { HomeScreen } from "@/screens/home";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import type { AppStackParams } from '@/navigation/app.navigator.types';
+import { HomeScreen } from '@/screens/app/home';
 
 const { Navigator, Screen } = createNativeStackNavigator<AppStackParams>();
 

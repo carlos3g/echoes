@@ -1,17 +1,19 @@
 module.exports = function (api) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   api.cache(true);
   return {
-    presets: ["babel-preset-expo"],
+    presets: ['babel-preset-expo'],
     plugins: [
       [
-        "module-resolver",
+        'module-resolver',
         {
-          root: ["./src"],
+          root: ['./src'],
           alias: {
-            "@": "./src",
+            '@': './src',
           },
         },
       ],
+      'react-native-reanimated/plugin',
     ],
   };
 };

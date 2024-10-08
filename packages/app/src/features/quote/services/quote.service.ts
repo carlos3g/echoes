@@ -15,7 +15,7 @@ export class QuoteService implements QuoteServiceContract {
   }
 
   public list(payload: ListQuotesPayload): Promise<ListQuotesOutput> {
-    return this.httpClientService.get<ListQuotesOutput, ListQuotesPayload>(`/quotes`, {
+    return this.httpClientService.get<ListQuotesOutput, ListQuotesPayload>('/quotes', {
       ...payload,
     });
   }
