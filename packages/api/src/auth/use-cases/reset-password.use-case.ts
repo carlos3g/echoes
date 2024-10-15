@@ -42,6 +42,7 @@ export class ResetPasswordUseCase implements UseCaseHandler {
       },
     });
 
+    // Fix
     await this.userService.update({
       userId: user.id,
       password: input.password,
