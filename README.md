@@ -16,7 +16,7 @@ To run the project locally, ensure you have the following installed:
 
 - [Docker](https://www.docker.com)
 - [Node.js](https://nodejs.org/en)
-- [PNPM](https://pnpm.io) (Package Manager)
+- [Yarn](https://yarnpkg.com/) (Package Manager)
 
 ## Packages
 
@@ -41,9 +41,9 @@ To run the project locally, follow these steps:
 2. Install dependencies and start the development environment:
 
    ```bash
-   pnpm install
-   pnpm db
-   pnpm dev
+   yarn install
+   yarn db
+   yarn dev
    ```
 
 3. Access the application:

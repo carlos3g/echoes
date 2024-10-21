@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "check": "tsc --noEmit",
-    "style": "pnpm format && pnpm lint && pnpm check"
+    "style": "yarn format && yarn lint && yarn check"
   },
   "dependencies": {
     "@hookform/devtools": "^4.3.1",
