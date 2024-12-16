@@ -32,13 +32,21 @@ This monorepo consists of the following main packages:
 
 To run the project locally, follow these steps:
 
-1. Start the services using Docker:
+1. Setup .env:
+
+   ```bash
+   cp packages/api/.env.example packages/api/.env && cp packages/app/.env.example packages/app/.env && cp packages/webapp/.env.example packages/webapp/.env
+
+   # adjust for yours needs
+   ```
+
+2. Start the services using Docker:
 
    ```bash
    cd packages/api && docker-compose up -d && cd ../..
    ```
 
-2. Install dependencies and start the development environment:
+3. Install dependencies and start the development environment:
 
    ```bash
    yarn install
@@ -46,7 +54,7 @@ To run the project locally, follow these steps:
    yarn dev
    ```
 
-3. Access the application:
+4. Access the application:
    - **REST API**: `http://localhost:3000`
    - **Web App**: `http://localhost:3333`
 
@@ -55,8 +63,10 @@ To run the project locally, follow these steps:
 To run the tests, use the following commands:
 
 ```bash
-pnpx lerna run test
-pnpx lerna run test:e2e
+yarn dev:test
+
+yarn lerna run test
+yarn lerna run test:e2e
 ```
 
 ## Notes

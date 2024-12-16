@@ -73,6 +73,10 @@ services:
       - minio
     entrypoint: >
       /bin/sh -c "
+      until /usr/bin/mc alias set myminio http://minio:9000 ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY}; do
+        echo 'Waiting for MinIO to be ready...';
+        sleep 1;
+      done;
       /usr/bin/mc alias set myminio http://minio:9000 ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
       /usr/bin/mc mb myminio/avatars;
       /usr/bin/mc policy set public myminio/avatars;
