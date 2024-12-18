@@ -3,7 +3,6 @@ import { PrismaQuoteRepository } from '@app/quote/repositories/prisma-quote.repo
 import { faker } from '@faker-js/faker';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { FavoritableType } from '@prisma/client';
 import { quoteFactory, userFactory } from '@test/factories';
 import { prisma } from '@test/server';
 import * as _ from 'lodash';
@@ -18,8 +17,8 @@ const createQuotesFavorited = async (args: { userId: number; count: number }) =>
   const promises = quotes.map((quote) =>
     prisma.quote.update({
       data: {
-        userOnFavoritable: {
-          create: { userId, favoritableType: FavoritableType.Quote },
+        favoritedBy: {
+          create: { userId },
         },
       },
       where: { uuid: quote.uuid },
@@ -103,7 +102,7 @@ describe('PrismaQuoteRepository', () => {
     });
   });
 
-  describe.skip('findManyFavoritedByUser', () => {
+  describe('findManyFavoritedByUser', () => {
     it('should find quotes favorited by a specific user', async () => {
       const user = await prisma.user.create({
         data: userFactory(),
@@ -183,6 +182,31 @@ describe('PrismaQuoteRepository', () => {
       });
 
       expect(result.body).toBe(newBody);
+    });
+  });
+
+  describe('favorite', () => {
+    it('should favorite an quote', async () => {
+      const quote = await prisma.quote.create({
+        data: quoteFactory(),
+      });
+
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      await quoteRepository.favorite({
+        data: { userId: Number(user.id), quoteId: Number(quote.id) },
+      });
+
+      const relation = await prisma.userFavoriteQuote.findFirst({
+        where: {
+          userId: Number(user.id),
+          quoteId: Number(quote.id),
+        },
+      });
+
+      expect(relation).toBeDefined();
     });
   });
 
