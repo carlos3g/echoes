@@ -53,3 +53,10 @@ export interface QuoteRepositoryDeleteInput {
     uuid?: string;
   }>;
 }
+
+export interface QuoteRepositoryFavoriteInput {
+  data: {
+    userId: number;
+    quoteId: number;
+  };
+}

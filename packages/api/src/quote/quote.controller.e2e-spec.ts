@@ -112,11 +112,14 @@ describe('(GET) /quotes/:uuid', () => {
   });
 });
 
-describe.skip('(GET) /quotes/:uuid/favorite', () => {
-  it('should be able to view a quote', async () => {
+describe('(GET) /quotes/:uuid/favorite', () => {
+  it('should be able to favorite a quote', async () => {
     const quote = await quoteRepository.create(quoteFactory());
 
-    const response = await request(server).get(`/quotes/${quote.uuid}/favorite`).auth(token, { type: 'bearer' }).send();
+    const response = await request(server)
+      .post(`/quotes/${quote.uuid}/favorite`)
+      .auth(token, { type: 'bearer' })
+      .send();
 
     expect(response.status).toBe(HttpStatus.OK);
   });

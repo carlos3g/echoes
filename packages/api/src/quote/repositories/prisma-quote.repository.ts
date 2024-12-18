@@ -5,6 +5,7 @@ import type { QuoteRepositoryContract } from '@app/quote/contracts/quote-reposit
 import type {
   QuoteRepositoryCreateInput,
   QuoteRepositoryDeleteInput,
+  QuoteRepositoryFavoriteInput,
   QuoteRepositoryFindManyByTagInput,
   QuoteRepositoryFindManyFavoritedByUserInput,
   QuoteRepositoryFindManyInput,
@@ -64,12 +65,27 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
     return entities.map(prismaQuoteToQuoteAdapter);
   }
 
-  public findManyFavoritedByUser(input: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]> {
-    throw new Error('Method not implemented.');
+  public async findManyFavoritedByUser(input: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]> {
+    const entities = await this.prismaManager.getClient().quote.findMany({
+      where: {
+        favoritedBy: {
+          some: {
+            userId: input.where.userId,
+          },
+        },
+      },
+      orderBy: [{ createdAt: 'desc' }],
+    });
+
+    return entities.map(prismaQuoteToQuoteAdapter);
   }
 
   public findManyByTag(input?: QuoteRepositoryFindManyByTagInput): Promise<Quote[]> {
     throw new Error('Method not implemented.');
+  }
+
+  public async favorite(input: QuoteRepositoryFavoriteInput): Promise<void> {
+    await this.prismaManager.getClient().userFavoriteQuote.create({ data: input.data });
   }
 
   public async create(input: QuoteRepositoryCreateInput) {
