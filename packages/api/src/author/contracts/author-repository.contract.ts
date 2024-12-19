@@ -7,6 +7,8 @@ import type {
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
+  AuthorRepositoryTagInput,
+  AuthorRepositoryUntagInput,
   AuthorRepositoryUpdateInput,
 } from '@app/author/dtos/author-repository-dtos';
 import type { Author } from '@app/author/entities/author.entity';
@@ -19,15 +21,19 @@ abstract class AuthorRepositoryContract {
 
   public abstract favorite(input: AuthorRepositoryFavoriteInput): Promise<void>;
 
+  public abstract tag(input: AuthorRepositoryTagInput): Promise<void>;
+
+  public abstract untag(input: AuthorRepositoryUntagInput): Promise<void>;
+
   public abstract findUniqueOrThrow(input: AuthorRepositoryFindUniqueOrThrowInput): Promise<Author>;
 
   public abstract findManyPaginated(input: AuthorRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Author>>;
 
   public abstract findMany(input?: AuthorRepositoryFindManyInput): Promise<Author[]>;
 
-  public abstract findManyFavoritedByUser(input?: AuthorRepositoryFindManyFavoritedByUserInput): Promise<Author[]>;
+  public abstract findManyFavoritedByUser(input: AuthorRepositoryFindManyFavoritedByUserInput): Promise<Author[]>;
 
-  public abstract findManyByTag(input?: AuthorRepositoryFindManyByTagInput): Promise<Author[]>;
+  public abstract findManyByTag(input: AuthorRepositoryFindManyByTagInput): Promise<Author[]>;
 
   public abstract delete(input: AuthorRepositoryDeleteInput): Promise<void>;
 }

@@ -9,7 +9,7 @@ export class AuthorService {
     return this.authorRepository.favorite({ data: args });
   }
 
-  public tag(args: { authorId: number; tagId: number; userId: number }): Promise<void> {
-    throw new Error('Method not implemented.');
+  public tag(args: { authorId: number; tagId: number }): Promise<void> {
+    return this.authorRepository.tag({ data: args });
   }
 }

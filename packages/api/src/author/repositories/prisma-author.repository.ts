@@ -9,6 +9,8 @@ import type {
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
+  AuthorRepositoryTagInput,
+  AuthorRepositoryUntagInput,
   AuthorRepositoryUpdateInput,
 } from '@app/author/dtos/author-repository-dtos';
 import type { Author } from '@app/author/entities/author.entity';
@@ -81,8 +83,19 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
     return entities.map(prismaAuthorToAuthorAdapter);
   }
 
-  public findManyByTag(input?: AuthorRepositoryFindManyByTagInput): Promise<Author[]> {
-    throw new Error('Method not implemented.');
+  public async findManyByTag(input: AuthorRepositoryFindManyByTagInput): Promise<Author[]> {
+    const entities = await this.prismaManager.getClient().author.findMany({
+      where: {
+        tags: {
+          some: {
+            tagId: input.where.tagId,
+          },
+        },
+      },
+      orderBy: [{ createdAt: 'desc' }],
+    });
+
+    return entities.map(prismaAuthorToAuthorAdapter);
   }
 
   public async create(input: AuthorRepositoryCreateInput) {
@@ -104,6 +117,19 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
 
   public async favorite(input: AuthorRepositoryFavoriteInput): Promise<void> {
     await this.prismaManager.getClient().userFavoriteAuthor.create({ data: input.data });
+  }
+
+  public async tag(input: AuthorRepositoryTagInput): Promise<void> {
+    await this.prismaManager.getClient().tagAuthor.create({ data: input.data });
+  }
+
+  public async untag(input: AuthorRepositoryUntagInput): Promise<void> {
+    await this.prismaManager.getClient().tagAuthor.delete({
+      where: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        tagId_authorId: input.data,
+      },
+    });
   }
 
   public async delete(input: AuthorRepositoryDeleteInput): Promise<void> {

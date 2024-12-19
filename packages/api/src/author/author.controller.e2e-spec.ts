@@ -1,20 +1,23 @@
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
+import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type { User } from '@app/user/entities/user.entity';
 import { HttpStatus } from '@nestjs/common';
 import { getAccessToken } from '@test/auth';
-import { authorFactory, userFactory } from '@test/factories';
-import { app, server } from '@test/server';
+import { authorFactory, tagFactory, userFactory } from '@test/factories';
+import { app, prisma, server } from '@test/server';
 import * as request from 'supertest';
 
 let userRepository: UserRepositoryContract;
 let authorRepository: AuthorRepositoryContract;
+let tagRepository: TagRepositoryContract;
 let user: User;
 let token: string;
 
 beforeAll(() => {
   userRepository = app.get<UserRepositoryContract>(UserRepositoryContract);
   authorRepository = app.get<AuthorRepositoryContract>(AuthorRepositoryContract);
+  tagRepository = app.get<TagRepositoryContract>(TagRepositoryContract);
 });
 
 beforeEach(async () => {
@@ -143,4 +146,32 @@ describe('(GET) /authors/:uuid/favorite', () => {
   });
 });
 
-describe.skip('(GET) /authors/:uuid/tag', () => {});
+describe('(GET) /authors/:uuid/tag', () => {
+  it('should be able to tag a author', async () => {
+    const author = await authorRepository.create(authorFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+
+    const response = await request(server)
+      .post(`/authors/${author.uuid}/tag`)
+      .auth(token, { type: 'bearer' })
+      .send({ tagUuid: tag.uuid });
+
+    expect(response.status).toBe(HttpStatus.OK);
+  });
+
+  it("should not be able to tag author using another user's tag", async () => {
+    const author = await authorRepository.create(authorFactory());
+    const anotherUser = await userRepository.create(userFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
+
+    const response = await request(server).post(`/authors/${author.uuid}/tag`).auth(token, { type: 'bearer' }).send({
+      tagUuid: tag.uuid,
+    });
+
+    expect(response.status).toBe(HttpStatus.FORBIDDEN);
+    await expect(
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      prisma.tagAuthor.findUniqueOrThrow({ where: { tagId_authorId: { tagId: tag.id, authorId: author.id } } })
+    ).rejects.toThrow();
+  });
+});
