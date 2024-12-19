@@ -10,7 +10,6 @@ import { User } from '@app/user/entities/user.entity';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Public()
 @Controller('authors')
 export class AuthorController {
   public constructor(
@@ -20,12 +19,14 @@ export class AuthorController {
     private readonly tagAuthorUseCase: TagAuthorUseCase
   ) {}
 
+  @Public()
   @Get('')
   @HttpCode(HttpStatus.OK)
   public async index(@Query() params: AuthorPaginatedQuery) {
     return this.listAuthorPaginatedUseCase.handle(params);
   }
 
+  @Public()
   @Get(':uuid')
   @HttpCode(HttpStatus.OK)
   public async show(@Param('uuid') uuid: string) {

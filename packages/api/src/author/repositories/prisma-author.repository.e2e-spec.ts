@@ -3,9 +3,32 @@ import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import { faker } from '@faker-js/faker';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { authorFactory } from '@test/factories';
+import { authorFactory, userFactory } from '@test/factories';
 import { prisma } from '@test/server';
 import * as _ from 'lodash';
+
+const createAuthorsFavorited = async (args: { userId: number; count: number }) => {
+  const { userId, count } = args;
+
+  const authors = await prisma.author.createManyAndReturn({
+    data: _.range(count).map(authorFactory),
+  });
+
+  const promises = authors.map((author) =>
+    prisma.author.update({
+      data: {
+        favoritedBy: {
+          create: { userId },
+        },
+      },
+      where: { uuid: author.uuid },
+    })
+  );
+
+  await Promise.all(promises);
+
+  return authors;
+};
 
 describe('PrismaAuthorRepository', () => {
   let authorRepository: PrismaAuthorRepository;
@@ -99,7 +122,49 @@ describe('PrismaAuthorRepository', () => {
     });
   });
 
-  describe.skip('findManyFavoritedByUser', () => {});
+  describe('findManyFavoritedByUser', () => {
+    it('should find authors favorited by a specific user', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      await prisma.author.createMany({
+        data: _.range(5).map(authorFactory),
+      });
+
+      const authors = await createAuthorsFavorited({
+        userId: Number(user.id),
+        count: 5,
+      });
+
+      const result = await authorRepository.findManyFavoritedByUser({
+        where: { userId: Number(user.id) },
+      });
+
+      const favoritedAuthorsUuid = authors.map((author) => author.uuid);
+
+      expect(result).toHaveLength(5);
+      result.forEach((author) => {
+        expect(favoritedAuthorsUuid).toContain(author.uuid);
+      });
+    });
+
+    it('should return an empty array if the user has no favorited authors', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      await prisma.author.createMany({
+        data: _.range(5).map(authorFactory),
+      });
+
+      const result = await authorRepository.findManyFavoritedByUser({
+        where: { userId: Number(user.id) },
+      });
+
+      expect(result).toEqual([]);
+    });
+  });
 
   describe.skip('findManyByTag', () => {});
 
@@ -117,6 +182,31 @@ describe('PrismaAuthorRepository', () => {
       });
 
       expect(result.bio).toBe(newBio);
+    });
+  });
+
+  describe('favorite', () => {
+    it('should favorite an quote', async () => {
+      const author = await prisma.author.create({
+        data: authorFactory(),
+      });
+
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      await authorRepository.favorite({
+        data: { userId: Number(user.id), authorId: Number(author.id) },
+      });
+
+      const relation = await prisma.userFavoriteAuthor.findFirst({
+        where: {
+          userId: Number(user.id),
+          authorId: Number(author.id),
+        },
+      });
+
+      expect(relation).toBeDefined();
     });
   });
 

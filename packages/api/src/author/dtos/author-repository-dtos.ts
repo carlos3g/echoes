@@ -57,3 +57,10 @@ export interface AuthorRepositoryDeleteInput {
     uuid?: string;
   }>;
 }
+
+export interface AuthorRepositoryFavoriteInput {
+  data: {
+    userId: number;
+    authorId: number;
+  };
+}

@@ -3,6 +3,7 @@ import type { AuthorRepositoryContract } from '@app/author/contracts/author-repo
 import type {
   AuthorRepositoryCreateInput,
   AuthorRepositoryDeleteInput,
+  AuthorRepositoryFavoriteInput,
   AuthorRepositoryFindManyByTagInput,
   AuthorRepositoryFindManyFavoritedByUserInput,
   AuthorRepositoryFindManyInput,
@@ -65,8 +66,19 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
     return entities.map(prismaAuthorToAuthorAdapter);
   }
 
-  public findManyFavoritedByUser(input: AuthorRepositoryFindManyFavoritedByUserInput): Promise<Author[]> {
-    throw new Error('Method not implemented.');
+  public async findManyFavoritedByUser(input: AuthorRepositoryFindManyFavoritedByUserInput): Promise<Author[]> {
+    const entities = await this.prismaManager.getClient().author.findMany({
+      where: {
+        favoritedBy: {
+          some: {
+            userId: input.where.userId,
+          },
+        },
+      },
+      orderBy: [{ createdAt: 'desc' }],
+    });
+
+    return entities.map(prismaAuthorToAuthorAdapter);
   }
 
   public findManyByTag(input?: AuthorRepositoryFindManyByTagInput): Promise<Author[]> {
@@ -88,6 +100,10 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
     });
 
     return prismaAuthorToAuthorAdapter(entity);
+  }
+
+  public async favorite(input: AuthorRepositoryFavoriteInput): Promise<void> {
+    await this.prismaManager.getClient().userFavoriteAuthor.create({ data: input.data });
   }
 
   public async delete(input: AuthorRepositoryDeleteInput): Promise<void> {
