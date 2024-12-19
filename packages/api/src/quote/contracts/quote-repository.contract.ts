@@ -8,6 +8,8 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryTagInput,
+  QuoteRepositoryUntagInput,
   QuoteRepositoryUpdateInput,
 } from '@app/quote/dtos/quote-repository-dtos';
 import type { Quote } from '@app/quote/entities/quote.entity';
@@ -19,13 +21,17 @@ abstract class QuoteRepositoryContract {
 
   public abstract favorite(input: QuoteRepositoryFavoriteInput): Promise<void>;
 
+  public abstract tag(input: QuoteRepositoryTagInput): Promise<void>;
+
+  public abstract untag(input: QuoteRepositoryUntagInput): Promise<void>;
+
   public abstract findUniqueOrThrow(input: QuoteRepositoryFindUniqueOrThrowInput): Promise<Quote>;
 
   public abstract findManyPaginated(input: QuoteRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Quote>>;
 
-  public abstract findManyFavoritedByUser(input?: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]>;
+  public abstract findManyFavoritedByUser(input: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]>;
 
-  public abstract findManyByTag(input?: QuoteRepositoryFindManyByTagInput): Promise<Quote[]>;
+  public abstract findManyByTag(input: QuoteRepositoryFindManyByTagInput): Promise<Quote[]>;
 
   public abstract findMany(input?: QuoteRepositoryFindManyInput): Promise<Quote[]>;
 

@@ -1,15 +1,17 @@
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
 import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
+import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type { User } from '@app/user/entities/user.entity';
 import { HttpStatus } from '@nestjs/common';
 import { getAccessToken } from '@test/auth';
-import { authorFactory, quoteFactory, userFactory } from '@test/factories';
-import { app, server } from '@test/server';
+import { authorFactory, quoteFactory, tagFactory, userFactory } from '@test/factories';
+import { app, prisma, server } from '@test/server';
 import * as request from 'supertest';
 
 let userRepository: UserRepositoryContract;
 let quoteRepository: QuoteRepositoryContract;
+let tagRepository: TagRepositoryContract;
 let authorRepository: AuthorRepositoryContract;
 let user: User;
 let token: string;
@@ -17,6 +19,7 @@ let token: string;
 beforeAll(() => {
   userRepository = app.get<UserRepositoryContract>(UserRepositoryContract);
   quoteRepository = app.get<QuoteRepositoryContract>(QuoteRepositoryContract);
+  tagRepository = app.get<TagRepositoryContract>(TagRepositoryContract);
   authorRepository = app.get<AuthorRepositoryContract>(AuthorRepositoryContract);
 });
 
@@ -125,4 +128,32 @@ describe('(GET) /quotes/:uuid/favorite', () => {
   });
 });
 
-describe.skip('(GET) /quotes/:uuid/tag', () => {});
+describe('(GET) /quotes/:uuid/tag', () => {
+  it('should be able to tag a quote', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+
+    const response = await request(server)
+      .post(`/quotes/${quote.uuid}/tag`)
+      .auth(token, { type: 'bearer' })
+      .send({ tagUuid: tag.uuid });
+
+    expect(response.status).toBe(HttpStatus.OK);
+  });
+
+  it("should not be able to tag quote using another user's tag", async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const anotherUser = await userRepository.create(userFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
+
+    const response = await request(server).post(`/quotes/${quote.uuid}/tag`).auth(token, { type: 'bearer' }).send({
+      tagUuid: tag.uuid,
+    });
+
+    expect(response.status).toBe(HttpStatus.FORBIDDEN);
+    await expect(
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      prisma.tagQuote.findUniqueOrThrow({ where: { tagId_quoteId: { tagId: tag.id, quoteId: quote.id } } })
+    ).rejects.toThrow();
+  });
+});

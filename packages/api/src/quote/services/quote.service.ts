@@ -9,7 +9,7 @@ export class QuoteService {
     return this.quoteRepository.favorite({ data: args });
   }
 
-  public tag(args: { quoteId: number; tagId: number; userId: number }): Promise<void> {
-    throw new Error('Method not implemented.');
+  public tag(args: { quoteId: number; tagId: number }): Promise<void> {
+    return this.quoteRepository.tag({ data: args });
   }
 }

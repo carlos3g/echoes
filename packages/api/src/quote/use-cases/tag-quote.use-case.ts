@@ -3,7 +3,7 @@ import type { TagQuoteInput } from '@app/quote/dtos/tag-quote-input';
 import { QuoteService } from '@app/quote/services/quote.service';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TagQuoteUseCase implements UseCaseHandler {
@@ -16,18 +16,23 @@ export class TagQuoteUseCase implements UseCaseHandler {
   public async handle(input: TagQuoteInput): Promise<void> {
     const { tagUuid, quoteUuid, user } = input;
 
-    const tag = await this.tagRepository.findUniqueOrThrow({
-      where: {
-        uuid: tagUuid,
-      },
-    });
+    const [tag, quote] = await Promise.all([
+      this.tagRepository.findUniqueOrThrow({
+        where: {
+          uuid: tagUuid,
+        },
+      }),
+      this.quoteRepository.findUniqueOrThrow({
+        where: {
+          uuid: quoteUuid,
+        },
+      }),
+    ]);
 
-    const quote = await this.quoteRepository.findUniqueOrThrow({
-      where: {
-        uuid: quoteUuid,
-      },
-    });
+    if (tag.userId !== user.id) {
+      throw new ForbiddenException();
+    }
 
-    return this.quoteService.tag({ quoteId: quote.id, tagId: tag.id, userId: user.id });
+    await this.quoteService.tag({ quoteId: quote.id, tagId: tag.id });
   }
 }

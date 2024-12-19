@@ -11,6 +11,8 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryTagInput,
+  QuoteRepositoryUntagInput,
   QuoteRepositoryUpdateInput,
 } from '@app/quote/dtos/quote-repository-dtos';
 import type { Quote } from '@app/quote/entities/quote.entity';
@@ -80,12 +82,36 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
     return entities.map(prismaQuoteToQuoteAdapter);
   }
 
-  public findManyByTag(input?: QuoteRepositoryFindManyByTagInput): Promise<Quote[]> {
-    throw new Error('Method not implemented.');
+  public async findManyByTag(input: QuoteRepositoryFindManyByTagInput): Promise<Quote[]> {
+    const entities = await this.prismaManager.getClient().quote.findMany({
+      where: {
+        tags: {
+          some: {
+            tagId: input.where.tagId,
+          },
+        },
+      },
+      orderBy: [{ createdAt: 'desc' }],
+    });
+
+    return entities.map(prismaQuoteToQuoteAdapter);
   }
 
   public async favorite(input: QuoteRepositoryFavoriteInput): Promise<void> {
     await this.prismaManager.getClient().userFavoriteQuote.create({ data: input.data });
+  }
+
+  public async tag(input: QuoteRepositoryTagInput): Promise<void> {
+    await this.prismaManager.getClient().tagQuote.create({ data: input.data });
+  }
+
+  public async untag(input: QuoteRepositoryUntagInput): Promise<void> {
+    await this.prismaManager.getClient().tagQuote.delete({
+      where: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        tagId_quoteId: input.data,
+      },
+    });
   }
 
   public async create(input: QuoteRepositoryCreateInput) {
