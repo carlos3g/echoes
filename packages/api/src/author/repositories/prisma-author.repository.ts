@@ -138,5 +138,3 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
     await this.prismaManager.getClient().author.delete({ where });
   }
 }
-
-// fix
