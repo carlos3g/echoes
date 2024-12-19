@@ -1,9 +1,10 @@
+import type { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
 import { PrismaAuthorRepository } from '@app/author/repositories/prisma-author.repository';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import { faker } from '@faker-js/faker';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { authorFactory, userFactory } from '@test/factories';
+import { authorFactory, tagFactory, userFactory } from '@test/factories';
 import { prisma } from '@test/server';
 import * as _ from 'lodash';
 
@@ -30,8 +31,31 @@ const createAuthorsFavorited = async (args: { userId: number; count: number }) =
   return authors;
 };
 
+const createAuthorsTagged = async (args: { tagId: number; count: number }) => {
+  const { tagId, count } = args;
+
+  const authors = await prisma.author.createManyAndReturn({
+    data: _.range(count).map(authorFactory),
+  });
+
+  const promises = authors.map((author) =>
+    prisma.author.update({
+      data: {
+        tags: {
+          create: { tagId },
+        },
+      },
+      where: { uuid: author.uuid },
+    })
+  );
+
+  await Promise.all(promises);
+
+  return authors;
+};
+
 describe('PrismaAuthorRepository', () => {
-  let authorRepository: PrismaAuthorRepository;
+  let authorRepository: AuthorRepositoryContract;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -39,7 +63,7 @@ describe('PrismaAuthorRepository', () => {
       providers: [PrismaAuthorRepository],
     }).compile();
 
-    authorRepository = module.get<PrismaAuthorRepository>(PrismaAuthorRepository);
+    authorRepository = module.get<AuthorRepositoryContract>(PrismaAuthorRepository);
   });
 
   describe('create', () => {
@@ -166,7 +190,63 @@ describe('PrismaAuthorRepository', () => {
     });
   });
 
-  describe.skip('findManyByTag', () => {});
+  describe('findManyByTag', () => {
+    it('should find authors by tag', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await prisma.author.createMany({
+        data: _.range(5).map(authorFactory),
+      });
+
+      const authors = await createAuthorsTagged({
+        tagId: Number(tag.id),
+        count: 5,
+      });
+
+      const result = await authorRepository.findManyByTag({
+        where: { tagId: Number(tag.id) },
+      });
+
+      const authorsTaggedUuid = authors.map((author) => author.uuid);
+
+      expect(result).toHaveLength(5);
+      result.forEach((author) => {
+        expect(authorsTaggedUuid).toContain(author.uuid);
+      });
+    });
+
+    it('should return an empty array if the tag has no authors', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await prisma.author.createMany({
+        data: _.range(5).map(authorFactory),
+      });
+
+      const result = await authorRepository.findManyByTag({
+        where: { tagId: Number(tag.id) },
+      });
+
+      expect(result).toEqual([]);
+    });
+  });
 
   describe('update', () => {
     it('should update an existing author', async () => {
@@ -207,6 +287,83 @@ describe('PrismaAuthorRepository', () => {
       });
 
       expect(relation).toBeDefined();
+    });
+  });
+
+  describe('tag', () => {
+    it('should tag an quote', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const author = await prisma.author.create({
+        data: authorFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await authorRepository.tag({
+        data: {
+          authorId: Number(author.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      await expect(
+        prisma.tagAuthor.findFirstOrThrow({
+          where: {
+            tagId: Number(tag.id),
+            authorId: Number(author.id),
+          },
+        })
+      ).resolves.toBeDefined();
+    });
+  });
+
+  describe('untag', () => {
+    it('should untag an quote', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const author = await prisma.author.create({
+        data: authorFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await authorRepository.tag({
+        data: {
+          authorId: Number(author.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      await authorRepository.untag({
+        data: {
+          authorId: Number(author.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      await expect(
+        prisma.tagAuthor.findFirstOrThrow({
+          where: {
+            tagId: Number(tag.id),
+            authorId: Number(author.id),
+          },
+        })
+      ).rejects.toThrow();
     });
   });
 

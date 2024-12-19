@@ -47,7 +47,7 @@ export interface AuthorRepositoryFindManyFavoritedByUserInput {
 
 export interface AuthorRepositoryFindManyByTagInput {
   where: {
-    userId: number;
+    tagId: number;
   };
 }
 
@@ -61,6 +61,20 @@ export interface AuthorRepositoryDeleteInput {
 export interface AuthorRepositoryFavoriteInput {
   data: {
     userId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryTagInput {
+  data: {
+    tagId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryUntagInput {
+  data: {
+    tagId: number;
     authorId: number;
   };
 }

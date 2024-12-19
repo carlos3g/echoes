@@ -108,6 +108,18 @@ model TagQuote {
   @@map("tag_quotes")
 }
 
+model TagAuthor {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId     BigInt   @db.BigInt
+  author    Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([tagId, authorId])
+  @@map("tag_authors")
+}
+
 model Source {
   id        BigInt   @id @default(autoincrement()) @db.BigInt
   uuid      String   @unique
@@ -139,6 +151,7 @@ model Author {
   deathDate   DateTime?            @map("death_date")
   bio         String
   quotes      Quote[]
+  tags        TagAuthor[]
   favoritedBy UserFavoriteAuthor[]
   createdAt   DateTime             @default(now()) @map("created_at")
   updatedAt   DateTime             @updatedAt @map("updated_at")
@@ -147,14 +160,15 @@ model Author {
 }
 
 model Tag {
-  id        BigInt     @id @default(autoincrement()) @db.BigInt
-  uuid      String     @unique
+  id        BigInt      @id @default(autoincrement()) @db.BigInt
+  uuid      String      @unique
   title     String
-  user      User       @relation(fields: [userId], references: [id])
-  userId    BigInt     @db.BigInt
+  user      User        @relation(fields: [userId], references: [id])
+  userId    BigInt      @db.BigInt
   tags      TagQuote[]
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  authors   TagAuthor[]
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
 
   @@map("tags")
 }
