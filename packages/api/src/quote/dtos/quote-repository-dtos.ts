@@ -36,7 +36,7 @@ export interface QuoteRepositoryFindManyFavoritedByUserInput {
 
 export interface QuoteRepositoryFindManyByTagInput {
   where: {
-    userId: number;
+    tagId: number;
   };
 }
 
@@ -57,6 +57,20 @@ export interface QuoteRepositoryDeleteInput {
 export interface QuoteRepositoryFavoriteInput {
   data: {
     userId: number;
+    quoteId: number;
+  };
+}
+
+export interface QuoteRepositoryTagInput {
+  data: {
+    tagId: number;
+    quoteId: number;
+  };
+}
+
+export interface QuoteRepositoryUntagInput {
+  data: {
+    tagId: number;
     quoteId: number;
   };
 }

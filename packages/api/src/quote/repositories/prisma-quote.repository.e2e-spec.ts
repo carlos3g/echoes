@@ -3,7 +3,7 @@ import { PrismaQuoteRepository } from '@app/quote/repositories/prisma-quote.repo
 import { faker } from '@faker-js/faker';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { quoteFactory, userFactory } from '@test/factories';
+import { quoteFactory, tagFactory, userFactory } from '@test/factories';
 import { prisma } from '@test/server';
 import * as _ from 'lodash';
 
@@ -19,6 +19,29 @@ const createQuotesFavorited = async (args: { userId: number; count: number }) =>
       data: {
         favoritedBy: {
           create: { userId },
+        },
+      },
+      where: { uuid: quote.uuid },
+    })
+  );
+
+  await Promise.all(promises);
+
+  return quotes;
+};
+
+const createQuotesTagged = async (args: { tagId: number; count: number }) => {
+  const { tagId, count } = args;
+
+  const quotes = await prisma.quote.createManyAndReturn({
+    data: _.range(count).map(quoteFactory),
+  });
+
+  const promises = quotes.map((quote) =>
+    prisma.quote.update({
+      data: {
+        tags: {
+          create: { tagId },
         },
       },
       where: { uuid: quote.uuid },
@@ -146,7 +169,63 @@ describe('PrismaQuoteRepository', () => {
     });
   });
 
-  describe.skip('findManyByTag', () => {});
+  describe('findManyByTag', () => {
+    it('should find quotes by tag', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await prisma.quote.createMany({
+        data: _.range(5).map(quoteFactory),
+      });
+
+      const quotes = await createQuotesTagged({
+        tagId: Number(tag.id),
+        count: 5,
+      });
+
+      const result = await quoteRepository.findManyByTag({
+        where: { tagId: Number(tag.id) },
+      });
+
+      const quotesTaggedUuid = quotes.map((quote) => quote.uuid);
+
+      expect(result).toHaveLength(5);
+      result.forEach((quote) => {
+        expect(quotesTaggedUuid).toContain(quote.uuid);
+      });
+    });
+
+    it('should return an empty array if the tag has no quotes', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await prisma.quote.createMany({
+        data: _.range(5).map(quoteFactory),
+      });
+
+      const result = await quoteRepository.findManyByTag({
+        where: { tagId: Number(tag.id) },
+      });
+
+      expect(result).toEqual([]);
+    });
+  });
 
   describe('findManyPaginated', () => {
     it('should find many quotes paginated', async () => {
@@ -207,6 +286,83 @@ describe('PrismaQuoteRepository', () => {
       });
 
       expect(relation).toBeDefined();
+    });
+  });
+
+  describe('tag', () => {
+    it('should tag an quote', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const quote = await prisma.quote.create({
+        data: quoteFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await quoteRepository.tag({
+        data: {
+          quoteId: Number(quote.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      await expect(
+        prisma.tagQuote.findFirstOrThrow({
+          where: {
+            tagId: Number(tag.id),
+            quoteId: Number(quote.id),
+          },
+        })
+      ).resolves.toBeDefined();
+    });
+  });
+
+  describe('untag', () => {
+    it('should untag an quote', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const quote = await prisma.quote.create({
+        data: quoteFactory(),
+      });
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await quoteRepository.tag({
+        data: {
+          quoteId: Number(quote.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      await quoteRepository.untag({
+        data: {
+          quoteId: Number(quote.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      await expect(
+        prisma.tagQuote.findFirstOrThrow({
+          where: {
+            tagId: Number(tag.id),
+            quoteId: Number(quote.id),
+          },
+        })
+      ).rejects.toThrow();
     });
   });
 
