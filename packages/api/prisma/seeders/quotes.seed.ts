@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import { AuthorFactory } from '../factories/author.factory';
 import { QuoteFactory } from '../factories/quote.factory';
 
@@ -6,7 +6,7 @@ const authorFactory = new AuthorFactory();
 const quoteFactory = new QuoteFactory();
 
 export class QuotesSeeder {
-  public static async run(prisma: PrismaClient): Promise<void> {
+  public static async run(prisma: Prisma.TransactionClient): Promise<void> {
     const authors = await prisma.author.createManyAndReturn({
       data: authorFactory.makeMany(10),
     });
