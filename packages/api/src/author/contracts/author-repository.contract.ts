@@ -1,6 +1,7 @@
 import type {
   AuthorRepositoryCreateInput,
   AuthorRepositoryDeleteInput,
+  AuthorRepositoryFavoriteInput,
   AuthorRepositoryFindManyByTagInput,
   AuthorRepositoryFindManyFavoritedByUserInput,
   AuthorRepositoryFindManyInput,
@@ -15,6 +16,8 @@ abstract class AuthorRepositoryContract {
   public abstract create(input: AuthorRepositoryCreateInput): Promise<Author>;
 
   public abstract update(input: AuthorRepositoryUpdateInput): Promise<Author>;
+
+  public abstract favorite(input: AuthorRepositoryFavoriteInput): Promise<void>;
 
   public abstract findUniqueOrThrow(input: AuthorRepositoryFindUniqueOrThrowInput): Promise<Author>;
 

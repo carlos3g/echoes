@@ -25,6 +25,7 @@ model User {
   emailConfirmationTokens EmailConfirmationToken[]
   tags                    Tag[]
   favoriteQuotes          UserFavoriteQuote[]
+  favoriteAuthors         UserFavoriteAuthor[]
   createdAt               DateTime                 @default(now()) @map("created_at")
   updatedAt               DateTime                 @updatedAt @map("updated_at")
   avatarId                BigInt?                  @unique @map("avatar_id") @db.BigInt
@@ -82,6 +83,18 @@ model UserFavoriteQuote {
   @@map("user_favorite_quotes")
 }
 
+model UserFavoriteAuthor {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  author    Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, authorId])
+  @@map("user_favorite_authors")
+}
+
 model Source {
   id        BigInt   @id @default(autoincrement()) @db.BigInt
   uuid      String   @unique
@@ -106,15 +119,16 @@ model Category {
 }
 
 model Author {
-  id        BigInt    @id @default(autoincrement()) @db.BigInt
-  uuid      String    @unique
-  name      String
-  birthDate DateTime  @map("birth_date")
-  deathDate DateTime? @map("death_date")
-  bio       String
-  quotes    Quote[]
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  id          BigInt               @id @default(autoincrement()) @db.BigInt
+  uuid        String               @unique
+  name        String
+  birthDate   DateTime             @map("birth_date")
+  deathDate   DateTime?            @map("death_date")
+  bio         String
+  quotes      Quote[]
+  favoritedBy UserFavoriteAuthor[]
+  createdAt   DateTime             @default(now()) @map("created_at")
+  updatedAt   DateTime             @updatedAt @map("updated_at")
 
   @@map("authors")
 }
