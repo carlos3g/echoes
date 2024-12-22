@@ -264,6 +264,61 @@ describe('PrismaQuoteRepository', () => {
     });
   });
 
+  describe('isTagged', () => {
+    it('should return true if the quote is tagged', async () => {
+      const [user, quote] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.quote.create({ data: quoteFactory() }),
+      ]);
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await prisma.tagQuote.create({
+        data: {
+          quoteId: Number(quote.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      const result = await quoteRepository.isTagged({
+        where: {
+          quoteId: Number(quote.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the quote is not tagged', async () => {
+      const [user, quote] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.quote.create({ data: quoteFactory() }),
+      ]);
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      const result = await quoteRepository.isTagged({
+        where: {
+          quoteId: Number(quote.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('favorite', () => {
     it('should favorite an quote', async () => {
       const quote = await prisma.quote.create({

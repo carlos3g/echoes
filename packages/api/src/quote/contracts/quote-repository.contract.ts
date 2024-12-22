@@ -8,6 +8,7 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryIsTaggedInput,
   QuoteRepositoryTagInput,
   QuoteRepositoryUntagInput,
   QuoteRepositoryUpdateInput,
@@ -24,6 +25,8 @@ abstract class QuoteRepositoryContract {
   public abstract tag(input: QuoteRepositoryTagInput): Promise<void>;
 
   public abstract untag(input: QuoteRepositoryUntagInput): Promise<void>;
+
+  public abstract isTagged(input: QuoteRepositoryIsTaggedInput): Promise<boolean>;
 
   public abstract findUniqueOrThrow(input: QuoteRepositoryFindUniqueOrThrowInput): Promise<Quote>;
 

@@ -12,4 +12,8 @@ export class QuoteService {
   public tag(args: { quoteId: number; tagId: number }): Promise<void> {
     return this.quoteRepository.tag({ data: args });
   }
+
+  public untag(args: { quoteId: number; tagId: number }): Promise<void> {
+    return this.quoteRepository.untag({ data: args });
+  }
 }
