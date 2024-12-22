@@ -326,7 +326,7 @@ describe('PrismaAuthorRepository', () => {
   });
 
   describe('untag', () => {
-    it('should untag an quote', async () => {
+    it('should untag an author', async () => {
       const user = await prisma.user.create({
         data: userFactory(),
       });
@@ -364,6 +364,61 @@ describe('PrismaAuthorRepository', () => {
           },
         })
       ).rejects.toThrow();
+    });
+  });
+
+  describe('isTagged', () => {
+    it('should return true if the author is tagged', async () => {
+      const [user, author] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.author.create({ data: authorFactory() }),
+      ]);
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      await prisma.tagAuthor.create({
+        data: {
+          authorId: Number(author.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      const result = await authorRepository.isTagged({
+        where: {
+          authorId: Number(author.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the author is not tagged', async () => {
+      const [user, author] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.author.create({ data: authorFactory() }),
+      ]);
+
+      const tag = await prisma.tag.create({
+        data: {
+          ...tagFactory(),
+          userId: Number(user.id),
+        },
+      });
+
+      const result = await authorRepository.isTagged({
+        where: {
+          authorId: Number(author.id),
+          tagId: Number(tag.id),
+        },
+      });
+
+      expect(result).toBe(false);
     });
   });
 

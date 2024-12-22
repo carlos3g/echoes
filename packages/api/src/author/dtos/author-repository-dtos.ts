@@ -78,3 +78,10 @@ export interface AuthorRepositoryUntagInput {
     authorId: number;
   };
 }
+
+export interface AuthorRepositoryIsTaggedInput {
+  where: {
+    tagId: number;
+    authorId: number;
+  };
+}

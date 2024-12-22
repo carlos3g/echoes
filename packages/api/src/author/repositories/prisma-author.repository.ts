@@ -9,6 +9,7 @@ import type {
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
+  AuthorRepositoryIsTaggedInput,
   AuthorRepositoryTagInput,
   AuthorRepositoryUntagInput,
   AuthorRepositoryUpdateInput,
@@ -130,6 +131,14 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
         tagId_authorId: input.data,
       },
     });
+  }
+
+  public async isTagged(input: AuthorRepositoryIsTaggedInput): Promise<boolean> {
+    const count = await this.prismaManager.getClient().tagAuthor.count({
+      where: input.where,
+    });
+
+    return count > 0;
   }
 
   public async delete(input: AuthorRepositoryDeleteInput): Promise<void> {

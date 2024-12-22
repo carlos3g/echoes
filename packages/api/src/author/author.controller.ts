@@ -6,6 +6,7 @@ import { FavoriteAuthorUseCase } from '@app/author/use-cases/favorite-author.use
 import { GetOneAuthorUseCase } from '@app/author/use-cases/get-one-author.use-case';
 import { ListAuthorPaginatedUseCase } from '@app/author/use-cases/list-author-paginated.use-case';
 import { TagAuthorUseCase } from '@app/author/use-cases/tag-author.use-case';
+import { UntagAuthorUseCase } from '@app/author/use-cases/untag-author.use-case';
 import { User } from '@app/user/entities/user.entity';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -16,7 +17,8 @@ export class AuthorController {
     private readonly listAuthorPaginatedUseCase: ListAuthorPaginatedUseCase,
     private readonly getOneAuthorUseCase: GetOneAuthorUseCase,
     private readonly favoriteAuthorUseCase: FavoriteAuthorUseCase,
-    private readonly tagAuthorUseCase: TagAuthorUseCase
+    private readonly tagAuthorUseCase: TagAuthorUseCase,
+    private readonly untagAuthorUseCase: UntagAuthorUseCase
   ) {}
 
   @Public()
@@ -45,5 +47,12 @@ export class AuthorController {
   @HttpCode(HttpStatus.OK)
   public async tag(@Param('uuid') uuid: string, @UserDecorator() user: User, @Body() input: TagAuthorRequest) {
     return this.tagAuthorUseCase.handle({ authorUuid: uuid, user, tagUuid: input.tagUuid });
+  }
+
+  @ApiBearerAuth()
+  @Post(':uuid/untag')
+  @HttpCode(HttpStatus.OK)
+  public async untag(@Param('uuid') uuid: string, @UserDecorator() user: User, @Body() input: TagAuthorRequest) {
+    return this.untagAuthorUseCase.handle({ authorUuid: uuid, user, tagUuid: input.tagUuid });
   }
 }

@@ -6,6 +6,7 @@ import { FavoriteAuthorUseCase } from '@app/author/use-cases/favorite-author.use
 import { GetOneAuthorUseCase } from '@app/author/use-cases/get-one-author.use-case';
 import { ListAuthorPaginatedUseCase } from '@app/author/use-cases/list-author-paginated.use-case';
 import { TagAuthorUseCase } from '@app/author/use-cases/tag-author.use-case';
+import { UntagAuthorUseCase } from '@app/author/use-cases/untag-author.use-case';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import { TagModule } from '@app/tag/tag.module';
 import { Module } from '@nestjs/common';
@@ -23,6 +24,7 @@ import { Module } from '@nestjs/common';
     GetOneAuthorUseCase,
     FavoriteAuthorUseCase,
     TagAuthorUseCase,
+    UntagAuthorUseCase,
   ],
   exports: [AuthorRepositoryContract],
 })

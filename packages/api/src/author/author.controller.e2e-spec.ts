@@ -175,3 +175,33 @@ describe('(GET) /authors/:uuid/tag', () => {
     ).rejects.toThrow();
   });
 });
+
+describe('(GET) /authors/:uuid/untag', () => {
+  it('should be able to untag a author', async () => {
+    const author = await authorRepository.create(authorFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    await authorRepository.tag({ data: { authorId: author.id, tagId: tag.id } });
+
+    const response = await request(server)
+      .post(`/authors/${author.uuid}/untag`)
+      .auth(token, { type: 'bearer' })
+      .send({ tagUuid: tag.uuid });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    await expect(authorRepository.isTagged({ where: { authorId: author.id, tagId: tag.id } })).resolves.toBeFalsy();
+  });
+
+  it("should not be able to untag author using another user's tag", async () => {
+    const author = await authorRepository.create(authorFactory());
+    const anotherUser = await userRepository.create(userFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
+    await authorRepository.tag({ data: { authorId: author.id, tagId: tag.id } });
+
+    const response = await request(server).post(`/authors/${author.uuid}/untag`).auth(token, { type: 'bearer' }).send({
+      tagUuid: tag.uuid,
+    });
+
+    expect(response.status).toBe(HttpStatus.FORBIDDEN);
+    await expect(authorRepository.isTagged({ where: { authorId: author.id, tagId: tag.id } })).resolves.toBeTruthy();
+  });
+});

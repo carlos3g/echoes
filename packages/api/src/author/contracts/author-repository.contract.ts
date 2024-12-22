@@ -7,6 +7,7 @@ import type {
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
+  AuthorRepositoryIsTaggedInput,
   AuthorRepositoryTagInput,
   AuthorRepositoryUntagInput,
   AuthorRepositoryUpdateInput,
@@ -24,6 +25,8 @@ abstract class AuthorRepositoryContract {
   public abstract tag(input: AuthorRepositoryTagInput): Promise<void>;
 
   public abstract untag(input: AuthorRepositoryUntagInput): Promise<void>;
+
+  public abstract isTagged(input: AuthorRepositoryIsTaggedInput): Promise<boolean>;
 
   public abstract findUniqueOrThrow(input: AuthorRepositoryFindUniqueOrThrowInput): Promise<Author>;
 
