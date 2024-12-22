@@ -12,4 +12,8 @@ export class AuthorService {
   public tag(args: { authorId: number; tagId: number }): Promise<void> {
     return this.authorRepository.tag({ data: args });
   }
+
+  public untag(args: { authorId: number; tagId: number }): Promise<void> {
+    return this.authorRepository.untag({ data: args });
+  }
 }
