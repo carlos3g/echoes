@@ -23,5 +23,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Generate prisma client
+        run: yarn lerna run db:generate
+
       - name: Run unit tests
         run: yarn lerna run test
