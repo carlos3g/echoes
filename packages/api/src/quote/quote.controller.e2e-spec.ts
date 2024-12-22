@@ -157,3 +157,33 @@ describe('(GET) /quotes/:uuid/tag', () => {
     ).rejects.toThrow();
   });
 });
+
+describe('(GET) /quotes/:uuid/untag', () => {
+  it('should be able to untag a quote', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag.id } });
+
+    const response = await request(server)
+      .post(`/quotes/${quote.uuid}/untag`)
+      .auth(token, { type: 'bearer' })
+      .send({ tagUuid: tag.uuid });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    await expect(quoteRepository.isTagged({ where: { quoteId: quote.id, tagId: tag.id } })).resolves.toBeFalsy();
+  });
+
+  it("should not be able to untag quote using another user's tag", async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const anotherUser = await userRepository.create(userFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
+    await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag.id } });
+
+    const response = await request(server).post(`/quotes/${quote.uuid}/untag`).auth(token, { type: 'bearer' }).send({
+      tagUuid: tag.uuid,
+    });
+
+    expect(response.status).toBe(HttpStatus.FORBIDDEN);
+    await expect(quoteRepository.isTagged({ where: { quoteId: quote.id, tagId: tag.id } })).resolves.toBeTruthy();
+  });
+});

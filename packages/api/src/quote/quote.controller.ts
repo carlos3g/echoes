@@ -6,6 +6,7 @@ import { FavoriteQuoteUseCase } from '@app/quote/use-cases/favorite-quote.use-ca
 import { GetOneQuoteUseCase } from '@app/quote/use-cases/get-one-quote.use-case';
 import { ListQuotePaginatedUseCase } from '@app/quote/use-cases/list-quote-paginated.use-case';
 import { TagQuoteUseCase } from '@app/quote/use-cases/tag-quote.use-case';
+import { UntagQuoteUseCase } from '@app/quote/use-cases/untag-quote.use-case';
 import { User } from '@app/user/entities/user.entity';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -16,7 +17,8 @@ export class QuoteController {
     private readonly listQuotePaginatedUseCase: ListQuotePaginatedUseCase,
     private readonly getOneQuoteUseCase: GetOneQuoteUseCase,
     private readonly favoriteQuoteUseCase: FavoriteQuoteUseCase,
-    private readonly tagQuoteUseCase: TagQuoteUseCase
+    private readonly tagQuoteUseCase: TagQuoteUseCase,
+    private readonly untagQuoteUseCase: UntagQuoteUseCase
   ) {}
 
   @Public()
@@ -45,5 +47,12 @@ export class QuoteController {
   @HttpCode(HttpStatus.OK)
   public async tag(@Param('uuid') uuid: string, @UserDecorator() user: User, @Body() input: TagQuoteRequest) {
     return this.tagQuoteUseCase.handle({ quoteUuid: uuid, user, tagUuid: input.tagUuid });
+  }
+
+  @ApiBearerAuth()
+  @Post(':uuid/untag')
+  @HttpCode(HttpStatus.OK)
+  public async untag(@Param('uuid') uuid: string, @UserDecorator() user: User, @Body() input: TagQuoteRequest) {
+    return this.untagQuoteUseCase.handle({ quoteUuid: uuid, user, tagUuid: input.tagUuid });
   }
 }

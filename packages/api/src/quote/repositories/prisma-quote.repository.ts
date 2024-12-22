@@ -11,6 +11,7 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryIsTaggedInput,
   QuoteRepositoryTagInput,
   QuoteRepositoryUntagInput,
   QuoteRepositoryUpdateInput,
@@ -95,6 +96,14 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
     });
 
     return entities.map(prismaQuoteToQuoteAdapter);
+  }
+
+  public async isTagged(input: QuoteRepositoryIsTaggedInput): Promise<boolean> {
+    const count = await this.prismaManager.getClient().tagQuote.count({
+      where: input.where,
+    });
+
+    return count > 0;
   }
 
   public async favorite(input: QuoteRepositoryFavoriteInput): Promise<void> {

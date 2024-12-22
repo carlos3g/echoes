@@ -74,3 +74,10 @@ export interface QuoteRepositoryUntagInput {
     quoteId: number;
   };
 }
+
+export interface QuoteRepositoryIsTaggedInput {
+  where: {
+    tagId: number;
+    quoteId: number;
+  };
+}
