@@ -9,6 +9,10 @@ export class AuthorService {
     return this.authorRepository.favorite({ data: args });
   }
 
+  public unfavorite(args: { userId: number; authorId: number }): Promise<void> {
+    return this.authorRepository.unfavorite({ data: args });
+  }
+
   public tag(args: { authorId: number; tagId: number }): Promise<void> {
     return this.authorRepository.tag({ data: args });
   }

@@ -7,8 +7,10 @@ import type {
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
+  AuthorRepositoryIsFavoritedInput,
   AuthorRepositoryIsTaggedInput,
   AuthorRepositoryTagInput,
+  AuthorRepositoryUnfavoriteInput,
   AuthorRepositoryUntagInput,
   AuthorRepositoryUpdateInput,
 } from '@app/author/dtos/author-repository-dtos';
@@ -21,6 +23,10 @@ abstract class AuthorRepositoryContract {
   public abstract update(input: AuthorRepositoryUpdateInput): Promise<Author>;
 
   public abstract favorite(input: AuthorRepositoryFavoriteInput): Promise<void>;
+
+  public abstract unfavorite(input: AuthorRepositoryUnfavoriteInput): Promise<void>;
+
+  public abstract isFavorited(input: AuthorRepositoryIsFavoritedInput): Promise<boolean>;
 
   public abstract tag(input: AuthorRepositoryTagInput): Promise<void>;
 

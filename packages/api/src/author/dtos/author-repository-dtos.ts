@@ -65,6 +65,20 @@ export interface AuthorRepositoryFavoriteInput {
   };
 }
 
+export interface AuthorRepositoryUnfavoriteInput {
+  data: {
+    userId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryIsFavoritedInput {
+  where: {
+    userId: number;
+    authorId: number;
+  };
+}
+
 export interface AuthorRepositoryTagInput {
   data: {
     tagId: number;

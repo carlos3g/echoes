@@ -146,6 +146,23 @@ describe('(GET) /authors/:uuid/favorite', () => {
   });
 });
 
+describe('(GET) /authors/:uuid/unfavorite', () => {
+  it('should be able to unfavorite a author', async () => {
+    const author = await authorRepository.create(authorFactory());
+    await authorRepository.favorite({ data: { authorId: author.id, userId: user.id } });
+
+    const response = await request(server)
+      .post(`/authors/${author.uuid}/unfavorite`)
+      .auth(token, { type: 'bearer' })
+      .send({ authorUuid: author.uuid });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    await expect(
+      authorRepository.isFavorited({ where: { authorId: author.id, userId: user.id } })
+    ).resolves.toBeFalsy();
+  });
+});
+
 describe('(GET) /authors/:uuid/tag', () => {
   it('should be able to tag a author', async () => {
     const author = await authorRepository.create(authorFactory());
