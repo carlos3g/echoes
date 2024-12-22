@@ -266,7 +266,7 @@ describe('PrismaAuthorRepository', () => {
   });
 
   describe('favorite', () => {
-    it('should favorite an quote', async () => {
+    it('should favorite an author', async () => {
       const author = await prisma.author.create({
         data: authorFactory(),
       });
@@ -290,8 +290,78 @@ describe('PrismaAuthorRepository', () => {
     });
   });
 
+  describe('unfavorite', () => {
+    it('should unfavorite an author', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const author = await prisma.author.create({
+        data: authorFactory(),
+      });
+
+      await authorRepository.favorite({
+        data: { userId: Number(user.id), authorId: Number(author.id) },
+      });
+
+      await authorRepository.unfavorite({
+        data: {
+          authorId: Number(author.id),
+          userId: Number(user.id),
+        },
+      });
+
+      await expect(
+        prisma.userFavoriteAuthor.findFirstOrThrow({
+          where: {
+            userId: Number(user.id),
+            authorId: Number(author.id),
+          },
+        })
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('isFavorited', () => {
+    it('should return true if the author is favorited', async () => {
+      const [user, author] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.author.create({ data: authorFactory() }),
+      ]);
+
+      await authorRepository.favorite({
+        data: { userId: Number(user.id), authorId: Number(author.id) },
+      });
+
+      const result = await authorRepository.isFavorited({
+        where: {
+          authorId: Number(author.id),
+          userId: Number(user.id),
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the author is not favorited', async () => {
+      const [user, author] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.author.create({ data: authorFactory() }),
+      ]);
+
+      const result = await authorRepository.isFavorited({
+        where: {
+          authorId: Number(author.id),
+          userId: Number(user.id),
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('tag', () => {
-    it('should tag an quote', async () => {
+    it('should tag an author', async () => {
       const user = await prisma.user.create({
         data: userFactory(),
       });

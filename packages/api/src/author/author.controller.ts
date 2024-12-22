@@ -6,6 +6,7 @@ import { FavoriteAuthorUseCase } from '@app/author/use-cases/favorite-author.use
 import { GetOneAuthorUseCase } from '@app/author/use-cases/get-one-author.use-case';
 import { ListAuthorPaginatedUseCase } from '@app/author/use-cases/list-author-paginated.use-case';
 import { TagAuthorUseCase } from '@app/author/use-cases/tag-author.use-case';
+import { UnfavoriteAuthorUseCase } from '@app/author/use-cases/unfavorite-author.use-case';
 import { UntagAuthorUseCase } from '@app/author/use-cases/untag-author.use-case';
 import { User } from '@app/user/entities/user.entity';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
@@ -17,6 +18,7 @@ export class AuthorController {
     private readonly listAuthorPaginatedUseCase: ListAuthorPaginatedUseCase,
     private readonly getOneAuthorUseCase: GetOneAuthorUseCase,
     private readonly favoriteAuthorUseCase: FavoriteAuthorUseCase,
+    private readonly unfavoriteAuthorUseCase: UnfavoriteAuthorUseCase,
     private readonly tagAuthorUseCase: TagAuthorUseCase,
     private readonly untagAuthorUseCase: UntagAuthorUseCase
   ) {}
@@ -40,6 +42,13 @@ export class AuthorController {
   @HttpCode(HttpStatus.OK)
   public async favorite(@Param('uuid') uuid: string, @UserDecorator() user: User) {
     return this.favoriteAuthorUseCase.handle({ authorUuid: uuid, user });
+  }
+
+  @ApiBearerAuth()
+  @Post(':uuid/unfavorite')
+  @HttpCode(HttpStatus.OK)
+  public async unfavorite(@Param('uuid') uuid: string, @UserDecorator() user: User) {
+    return this.unfavoriteAuthorUseCase.handle({ authorUuid: uuid, user });
   }
 
   @ApiBearerAuth()

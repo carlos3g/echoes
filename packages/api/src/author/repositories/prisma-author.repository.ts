@@ -9,8 +9,10 @@ import type {
   AuthorRepositoryFindManyInput,
   AuthorRepositoryFindManyPaginatedInput,
   AuthorRepositoryFindUniqueOrThrowInput,
+  AuthorRepositoryIsFavoritedInput,
   AuthorRepositoryIsTaggedInput,
   AuthorRepositoryTagInput,
+  AuthorRepositoryUnfavoriteInput,
   AuthorRepositoryUntagInput,
   AuthorRepositoryUpdateInput,
 } from '@app/author/dtos/author-repository-dtos';
@@ -118,6 +120,23 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
 
   public async favorite(input: AuthorRepositoryFavoriteInput): Promise<void> {
     await this.prismaManager.getClient().userFavoriteAuthor.create({ data: input.data });
+  }
+
+  public async unfavorite(input: AuthorRepositoryUnfavoriteInput): Promise<void> {
+    await this.prismaManager.getClient().userFavoriteAuthor.delete({
+      where: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        userId_authorId: input.data,
+      },
+    });
+  }
+
+  public async isFavorited(input: AuthorRepositoryIsFavoritedInput): Promise<boolean> {
+    const count = await this.prismaManager.getClient().userFavoriteAuthor.count({
+      where: input.where,
+    });
+
+    return count > 0;
   }
 
   public async tag(input: AuthorRepositoryTagInput): Promise<void> {
