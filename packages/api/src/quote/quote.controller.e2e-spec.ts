@@ -128,6 +128,21 @@ describe('(GET) /quotes/:uuid/favorite', () => {
   });
 });
 
+describe('(GET) /quotes/:uuid/unfavorite', () => {
+  it('should be able to unfavorite a quote', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    await quoteRepository.favorite({ data: { quoteId: quote.id, userId: user.id } });
+
+    const response = await request(server)
+      .post(`/quotes/${quote.uuid}/unfavorite`)
+      .auth(token, { type: 'bearer' })
+      .send({ quoteUuid: quote.uuid });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    await expect(quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: user.id } })).resolves.toBeFalsy();
+  });
+});
+
 describe('(GET) /quotes/:uuid/tag', () => {
   it('should be able to tag a quote', async () => {
     const quote = await quoteRepository.create(quoteFactory());

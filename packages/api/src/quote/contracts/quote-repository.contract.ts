@@ -8,8 +8,10 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryIsFavoritedInput,
   QuoteRepositoryIsTaggedInput,
   QuoteRepositoryTagInput,
+  QuoteRepositoryUnfavoriteInput,
   QuoteRepositoryUntagInput,
   QuoteRepositoryUpdateInput,
 } from '@app/quote/dtos/quote-repository-dtos';
@@ -21,6 +23,10 @@ abstract class QuoteRepositoryContract {
   public abstract update(input: QuoteRepositoryUpdateInput): Promise<Quote>;
 
   public abstract favorite(input: QuoteRepositoryFavoriteInput): Promise<void>;
+
+  public abstract unfavorite(input: QuoteRepositoryUnfavoriteInput): Promise<void>;
+
+  public abstract isFavorited(input: QuoteRepositoryIsFavoritedInput): Promise<boolean>;
 
   public abstract tag(input: QuoteRepositoryTagInput): Promise<void>;
 

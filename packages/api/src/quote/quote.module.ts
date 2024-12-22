@@ -8,6 +8,7 @@ import { FavoriteQuoteUseCase } from '@app/quote/use-cases/favorite-quote.use-ca
 import { GetOneQuoteUseCase } from '@app/quote/use-cases/get-one-quote.use-case';
 import { ListQuotePaginatedUseCase } from '@app/quote/use-cases/list-quote-paginated.use-case';
 import { TagQuoteUseCase } from '@app/quote/use-cases/tag-quote.use-case';
+import { UnfavoriteQuoteUseCase } from '@app/quote/use-cases/unfavorite-quote.use-case';
 import { UntagQuoteUseCase } from '@app/quote/use-cases/untag-quote.use-case';
 import { TagModule } from '@app/tag/tag.module';
 import { Module } from '@nestjs/common';
@@ -26,6 +27,7 @@ import { Module } from '@nestjs/common';
     FavoriteQuoteUseCase,
     TagQuoteUseCase,
     UntagQuoteUseCase,
+    UnfavoriteQuoteUseCase,
   ],
   exports: [QuoteRepositoryContract],
 })

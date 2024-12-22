@@ -11,8 +11,10 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryIsFavoritedInput,
   QuoteRepositoryIsTaggedInput,
   QuoteRepositoryTagInput,
+  QuoteRepositoryUnfavoriteInput,
   QuoteRepositoryUntagInput,
   QuoteRepositoryUpdateInput,
 } from '@app/quote/dtos/quote-repository-dtos';
@@ -108,6 +110,23 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
 
   public async favorite(input: QuoteRepositoryFavoriteInput): Promise<void> {
     await this.prismaManager.getClient().userFavoriteQuote.create({ data: input.data });
+  }
+
+  public async unfavorite(input: QuoteRepositoryUnfavoriteInput): Promise<void> {
+    await this.prismaManager.getClient().userFavoriteQuote.delete({
+      where: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        userId_quoteId: input.data,
+      },
+    });
+  }
+
+  public async isFavorited(input: QuoteRepositoryIsFavoritedInput): Promise<boolean> {
+    const count = await this.prismaManager.getClient().userFavoriteQuote.count({
+      where: input.where,
+    });
+
+    return count > 0;
   }
 
   public async tag(input: QuoteRepositoryTagInput): Promise<void> {
