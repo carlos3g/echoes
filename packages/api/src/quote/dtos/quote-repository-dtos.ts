@@ -61,6 +61,20 @@ export interface QuoteRepositoryFavoriteInput {
   };
 }
 
+export interface QuoteRepositoryUnfavoriteInput {
+  data: {
+    userId: number;
+    quoteId: number;
+  };
+}
+
+export interface QuoteRepositoryIsFavoritedInput {
+  where: {
+    userId: number;
+    quoteId: number;
+  };
+}
+
 export interface QuoteRepositoryTagInput {
   data: {
     tagId: number;

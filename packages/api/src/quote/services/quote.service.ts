@@ -9,6 +9,10 @@ export class QuoteService {
     return this.quoteRepository.favorite({ data: args });
   }
 
+  public unfavorite(args: { userId: number; quoteId: number }): Promise<void> {
+    return this.quoteRepository.unfavorite({ data: args });
+  }
+
   public tag(args: { quoteId: number; tagId: number }): Promise<void> {
     return this.quoteRepository.tag({ data: args });
   }

@@ -344,6 +344,76 @@ describe('PrismaQuoteRepository', () => {
     });
   });
 
+  describe('unfavorite', () => {
+    it('should unfavorite an quote', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(),
+      });
+
+      const quote = await prisma.quote.create({
+        data: quoteFactory(),
+      });
+
+      await quoteRepository.favorite({
+        data: { userId: Number(user.id), quoteId: Number(quote.id) },
+      });
+
+      await quoteRepository.unfavorite({
+        data: {
+          quoteId: Number(quote.id),
+          userId: Number(user.id),
+        },
+      });
+
+      await expect(
+        prisma.userFavoriteQuote.findFirstOrThrow({
+          where: {
+            userId: Number(user.id),
+            quoteId: Number(quote.id),
+          },
+        })
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('isFavorited', () => {
+    it('should return true if the quote is favorited', async () => {
+      const [user, quote] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.quote.create({ data: quoteFactory() }),
+      ]);
+
+      await quoteRepository.favorite({
+        data: { userId: Number(user.id), quoteId: Number(quote.id) },
+      });
+
+      const result = await quoteRepository.isFavorited({
+        where: {
+          quoteId: Number(quote.id),
+          userId: Number(user.id),
+        },
+      });
+
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the quote is not favorited', async () => {
+      const [user, quote] = await Promise.all([
+        prisma.user.create({ data: userFactory() }),
+        prisma.quote.create({ data: quoteFactory() }),
+      ]);
+
+      const result = await quoteRepository.isFavorited({
+        where: {
+          quoteId: Number(quote.id),
+          userId: Number(user.id),
+        },
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe('tag', () => {
     it('should tag an quote', async () => {
       const user = await prisma.user.create({
