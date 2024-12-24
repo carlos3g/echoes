@@ -12,6 +12,10 @@
       "name": "webapp",
       "path": "packages/webapp",
     },
+    {
+      "name": "app",
+      "path": "packages/app",
+    },
   ],
   "settings": {
     "jest.disabledWorkspaceFolders": ["webapp", "root"],
