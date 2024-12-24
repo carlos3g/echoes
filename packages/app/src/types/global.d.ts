@@ -11,5 +11,9 @@ declare global {
 declare namespace NodeJS {
   interface ProcessEnv {
     EXPO_PUBLIC_API_URL: string;
+    SENTRY_ORG: string;
+    SENTRY_PROJECT: string;
+    EXPO_PUBLIC_SENTRY_PROJECT_DSN: string;
+    SENTRY_AUTH_TOKEN: string;
   }
 }
