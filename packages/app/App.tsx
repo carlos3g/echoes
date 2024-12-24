@@ -2,7 +2,6 @@ import '@/lib/i18n';
 import '@/shared/services';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-import { Toaster } from 'sonner-native';
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -24,11 +23,13 @@ import {
   Poppins_900Black_Italic,
   useFonts,
 } from '@expo-google-fonts/poppins';
+import * as Sentry from '@sentry/react-native';
 import { ThemeProvider } from '@shopify/restyle';
 import { QueryClientProvider } from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Toaster } from 'sonner-native';
 import { lightTheme } from '@/shared/theme/theme';
 import { RootNavigator } from '@/navigation';
 import { queryClient } from '@/lib/react-query';
@@ -36,7 +37,12 @@ import { AuthProvider } from '@/features/auth/contexts/auth.context';
 
 void SplashScreen.preventAutoHideAsync();
 
-const App = gestureHandlerRootHOC(() => {
+Sentry.init({
+  dsn: process.env.EXPO_PUBLIC_SENTRY_PROJECT_DSN,
+  debug: true,
+});
+
+const App = () => {
   const [loaded, error] = useFonts({
     'Poppins-Thin': Poppins_100Thin,
     'Poppins-ThinItalic': Poppins_100Thin_Italic,
@@ -81,6 +87,6 @@ const App = gestureHandlerRootHOC(() => {
       </SafeAreaProvider>
     </QueryClientProvider>
   );
-});
+};
 
-export default App;
+export default gestureHandlerRootHOC(Sentry.wrap(App));
