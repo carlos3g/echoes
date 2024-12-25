@@ -5,7 +5,7 @@ import { TextInput } from '@/shared/components/ui/text-input';
 
 export type PasswordInputProps = Omit<TextInputProps, 'RightComponent'>;
 
-export const PasswordInput = (props: PasswordInputProps) => {
+export const PasswordInput: React.FC<PasswordInputProps> = (props) => {
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
 
   const toggleSecureTextEntry = () => {

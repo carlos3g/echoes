@@ -9,9 +9,9 @@ import { forgotPasswordFormSchema } from '@/features/auth/validations';
 import { authService } from '@/features/auth/services';
 import type { ForgotPasswordOutput, ForgotPasswordPayload } from '@/features/auth/contracts/auth-service.contract';
 import { Screen } from '@/shared/components/ui/screen';
-import { Text } from '@/shared/components/ui/text';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { Button } from '@/shared/components/ui/button';
+import { Text } from '@/shared/components/ui/text';
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordFormSchema>;
 
@@ -23,7 +23,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
     defaultValues: {},
   });
 
-  const { mutate, status } = useMutation<
+  const { mutate, isPending } = useMutation<
     ForgotPasswordOutput,
     HttpError<ApiResponseError<ForgotPasswordPayload>>,
     ForgotPasswordPayload
@@ -45,14 +45,12 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
     mutate(data);
   });
 
-  const isLoading = status === 'pending';
-
   return (
     <Screen canGoBack>
-      <Text preset="headingLarge" mb="s16">
+      <Text variant="headingLarge" className="mb-s-16">
         Esqueci minha senha
       </Text>
-      <Text preset="paragraphLarge" mb="s32">
+      <Text variant="paragraphLarge" className="mb-s-32">
         Digite seu e-mail e enviaremos as instruções para redefinição de senha
       </Text>
 
@@ -61,10 +59,10 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
         name="email"
         label="E-mail"
         placeholder="Digite seu e-mail"
-        boxProps={{ mb: 's40' }}
+        boxClassName="mb-s-40"
       />
 
-      <Button loading={isLoading} disabled={!form.formState.isValid} onPress={onSubmit} title="Recuperar senha" />
+      <Button loading={isPending} disabled={!form.formState.isValid} onPress={onSubmit} title="Recuperar senha" />
     </Screen>
   );
 };

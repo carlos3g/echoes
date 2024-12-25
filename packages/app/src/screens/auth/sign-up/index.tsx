@@ -4,18 +4,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { toast } from 'sonner-native';
+import { View } from 'react-native';
 import { signUpFormSchema } from '@/features/auth/validations';
 import type { SignUpOutput, SignUpPayload } from '@/features/auth/contracts/auth-service.contract';
 import type { HttpError } from '@/types/http';
 import type { ApiResponseError } from '@/types/api';
 import { authService } from '@/features/auth/services';
 import { Screen } from '@/shared/components/ui/screen';
-import { Text } from '@/shared/components/ui/text';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
-import { Button } from '@/shared/components/ui/button';
-import { Box } from '@/shared/components/ui/box';
 import type { AuthStackNavigationProp, AuthStackScreenProps } from '@/navigation/auth.navigator.types';
+import { Text } from '@/shared/components/ui/text';
+import { Button } from '@/shared/components/ui/button';
 
 type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
@@ -32,7 +32,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = () => {
     mode: 'onChange',
   });
 
-  const { mutate, status } = useMutation<SignUpOutput, HttpError<ApiResponseError<SignUpPayload>>, SignUpPayload>({
+  const { mutate, isPending } = useMutation<SignUpOutput, HttpError<ApiResponseError<SignUpPayload>>, SignUpPayload>({
     mutationFn: async (payload) => authService.signUp(payload),
     onSuccess: () => {
       navigate('SignInScreen');
@@ -48,15 +48,13 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = () => {
     mutate(data);
   });
 
-  const isLoading = status === 'pending';
-
   return (
     <Screen canGoBack scrollable>
-      <Text preset="headingLarge" mb="s32">
+      <Text variant="headingLarge" className="mb-s-32">
         Criar nova conta
       </Text>
 
-      <Box gap="s20" mb="s20">
+      <View className="gap-s-20 mb-s-20">
         <ControlledTextInput control={form.control} name="name" label="Nome" placeholder="Digite seu nome" />
         <ControlledTextInput
           control={form.control}
@@ -72,9 +70,9 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = () => {
           label="Confirmar senha"
           placeholder="Digite a mesma senha"
         />
-      </Box>
+      </View>
 
-      <Button loading={isLoading} disabled={!form.formState.isValid} onPress={onSubmit} title="Criar conta" />
+      <Button loading={isPending} disabled={!form.formState.isValid} onPress={onSubmit} title="Criar conta" />
     </Screen>
   );
 };

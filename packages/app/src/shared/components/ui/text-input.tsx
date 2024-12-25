@@ -1,88 +1,58 @@
 import type React from 'react';
 import { useRef } from 'react';
-import type { TextInputProps as RNTextInputProps, TextStyle } from 'react-native';
-import { Pressable, TextInput as RNTextInput } from 'react-native';
-import { useAppTheme } from '@/shared/hooks/use-app-theme';
-import { Box } from '@/shared/components/ui/box';
-import type { BoxProps } from '@/shared/components/ui/box';
-import { $fontFamily, $fontSizes, Text } from '@/shared/components/ui/text';
-import { colors as themeColors } from '@/shared/theme/colors';
+import type { TextInputProps as RNTextInputProps } from 'react-native';
+import { Pressable, TextInput as RNTextInput, View } from 'react-native';
+import { cn } from '@/shared/utils';
+import { colors } from '@/shared/theme/colors';
+import { Text } from '@/shared/components/ui/text';
 
 export interface TextInputProps extends RNTextInputProps {
   label?: string;
   errorMessage?: string;
   RightComponent?: React.ReactElement;
   LeftComponent?: React.ReactElement;
-  boxProps?: BoxProps;
-  containerProps?: BoxProps;
+  boxClassName?: string;
 }
 
-export const TextInput = ({
-  label,
-  errorMessage,
-  RightComponent,
-  LeftComponent,
-  boxProps,
-  containerProps,
-  ...rnTextInputProps
-}: TextInputProps) => {
-  const { colors } = useAppTheme();
-  const inputRef = useRef<RNTextInput>(null);
+export const TextInput: React.FC<TextInputProps> = (props) => {
+  const { label, errorMessage, RightComponent, LeftComponent, boxClassName, ...rnTextInputProps } = props;
 
-  const $textInputContainer: BoxProps = {
-    flexDirection: 'row',
-    borderWidth: errorMessage ? 2 : 1,
-    borderColor: errorMessage ? 'error' : 'gray4',
-    padding: 's16',
-    borderRadius: 's12',
-  };
+  const inputRef = useRef<RNTextInput>(null);
 
   const focusInput = () => {
     inputRef.current?.focus();
   };
 
   return (
-    <Box flexGrow={1} flexShrink={1} {...boxProps}>
+    <View className={cn('grow shrink', boxClassName)}>
       <Pressable onPress={focusInput}>
         {label && (
-          <Text preset="paragraphMedium" marginBottom="s4">
+          <Text variant="paragraphMedium" className="mb-s-4">
             {label}
           </Text>
         )}
-        <Box {...$textInputContainer} {...containerProps} backgroundColor="grayWhite">
-          {LeftComponent && (
-            <Box justifyContent="center" mr="s16">
-              {LeftComponent}
-            </Box>
+        <View
+          className={cn(
+            'bg-gray-white rounded-s-12 p-s-16 flex-row',
+            errorMessage ? 'border-2 border-error' : 'border border-gray-400'
           )}
+        >
+          {LeftComponent && <View className="justify-center mr-s-16">{LeftComponent}</View>}
           <RNTextInput
             autoCapitalize="none"
             ref={inputRef}
-            placeholderTextColor={colors.gray2}
-            style={$textInputStyle}
+            placeholderTextColor={colors.palette.gray2}
+            className="p-0 grow shrink text-gray-black font-poppins-regular text-paragraph-medium"
             {...rnTextInputProps}
           />
-          {RightComponent && (
-            <Box justifyContent="center" ml="s16">
-              {RightComponent}
-            </Box>
-          )}
-        </Box>
+          {RightComponent && <View className="justify-center ml-s-16">{RightComponent}</View>}
+        </View>
         {errorMessage && (
-          <Text color="error" preset="paragraphSmall" bold>
+          <Text variant="paragraphSmall" bold className="text-error">
             {errorMessage}
           </Text>
         )}
       </Pressable>
-    </Box>
+    </View>
   );
-};
-
-export const $textInputStyle: TextStyle = {
-  padding: 0,
-  flexGrow: 1,
-  flexShrink: 1,
-  color: themeColors.palette.grayBlack,
-  fontFamily: $fontFamily.regular,
-  ...$fontSizes.paragraphMedium,
 };
