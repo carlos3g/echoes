@@ -20,6 +20,8 @@
   "hediet.vscode-drawio.theme": "atlas",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
+    "source.fixAll": "always",
+    "source.fixAll.eslint": "always",
+    "source.fixAll.ts": "always"
   }
 }
