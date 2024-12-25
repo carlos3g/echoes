@@ -46,6 +46,7 @@ const lightTheme = {
   onBackgroundGray1: palette.gray1,
   onBackgroundGray2: palette.gray4,
 };
+
 const darkTheme: typeof lightTheme = {
   ...palette,
   primary: palette.carrotSecondary,

@@ -1,39 +1,88 @@
-import { ActivityIndicator } from '@/shared/components/ui/activity-indicator';
-import type { TouchableOpacityBoxProps } from '@/shared/components/ui/box';
-import { TouchableOpacityBox } from '@/shared/components/ui/box';
-import { buttonPresets } from '@/shared/components/ui/button.presets';
+import { cva } from 'class-variance-authority';
+import type React from 'react';
+import type { TouchableOpacityProps } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { cn } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
+import { ActivityIndicator } from '@/shared/components/ui/activity-indicator';
 
 export type ButtonPreset = 'primary' | 'outline' | 'ghost';
 
-export interface ButtonProps extends TouchableOpacityBoxProps {
+export const buttonContainerStyles = cva('px-s-20 h-[50px] items-center justify-center rounded-s-16', {
+  variants: {
+    variant: {
+      primary: 'bg-primary',
+      outline: 'border border-primary',
+      ghost: 'bg-white-70 h-[40px]',
+    },
+    state: {
+      default: '',
+      disabled: 'bg-gray-400',
+    },
+  },
+  compoundVariants: [
+    { variant: 'primary', state: 'disabled', class: 'bg-gray-400' },
+    { variant: 'outline', state: 'disabled', class: 'border-gray-400' },
+    { variant: 'ghost', state: 'disabled', class: 'bg-gray-white h-[40px]' },
+  ],
+  defaultVariants: {
+    variant: 'primary',
+    state: 'default',
+  },
+});
+
+export const buttonContentStyles = cva('', {
+  variants: {
+    variant: {
+      primary: 'text-primary-contrast',
+      outline: 'text-primary',
+      ghost: 'text-gray-black',
+    },
+    state: {
+      default: '',
+      disabled: 'text-gray-200',
+    },
+  },
+  compoundVariants: [
+    {
+      variant: 'ghost',
+      state: 'default',
+      class: 'font-poppins-regular text-paragraph-small',
+    },
+  ],
+  defaultVariants: {
+    variant: 'primary',
+    state: 'default',
+  },
+});
+
+export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   title: string;
   loading?: boolean;
-  preset?: ButtonPreset;
+  variant?: ButtonPreset;
   disabled?: boolean;
+  className?: string;
 }
 
-export const Button = ({ title, loading, preset = 'primary', disabled, ...touchableOpacityBoxProps }: ButtonProps) => {
-  const buttonPreset = buttonPresets[preset][disabled ? 'disabled' : 'default'];
+export const Button: React.FC<ButtonProps> = (props) => {
+  const { title, loading, variant = 'primary', disabled, className, ...touchableOpacityProps } = props;
+
+  const state = disabled ? 'disabled' : 'default';
+
   return (
-    <TouchableOpacityBox
+    <TouchableOpacity
       testID="button"
       disabled={disabled || loading}
-      paddingHorizontal="s20"
-      height={50}
-      alignItems="center"
-      justifyContent="center"
-      borderRadius="s16"
-      {...buttonPreset.container}
-      {...touchableOpacityBoxProps}
+      className={cn(buttonContainerStyles({ variant, state }), className)}
+      {...touchableOpacityProps}
     >
       {loading ? (
-        <ActivityIndicator color={buttonPreset.content.color} />
+        <ActivityIndicator className={buttonContentStyles({ variant, state })} />
       ) : (
-        <Text preset="paragraphMedium" bold color={buttonPreset.content.color} {...buttonPreset.content.textProps}>
+        <Text variant="paragraphMedium" bold className={buttonContentStyles({ variant, state })}>
           {title}
         </Text>
       )}
-    </TouchableOpacityBox>
+    </TouchableOpacity>
   );
 };

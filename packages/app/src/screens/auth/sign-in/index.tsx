@@ -11,11 +11,11 @@ import { useAuth } from '@/features/auth/hooks/use-auth';
 import type { HttpError } from '@/types/http';
 import type { ApiResponseError } from '@/types/api';
 import { Screen } from '@/shared/components/ui/screen';
-import { Text } from '@/shared/components/ui/text';
-import { Button } from '@/shared/components/ui/button';
 import type { AuthStackNavigationProp, AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
+import { Text } from '@/shared/components/ui/text';
+import { Button } from '@/shared/components/ui/button';
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
@@ -32,7 +32,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
     },
   });
 
-  const { mutate, status } = useMutation<SignInOutput, HttpError<ApiResponseError<SignInPayload>>, SignInPayload>({
+  const { mutate, isPending } = useMutation<SignInOutput, HttpError<ApiResponseError<SignInPayload>>, SignInPayload>({
     mutationFn: async (payload) => authService.signIn(payload),
     onSuccess: (response) => {
       handleSignIn(response);
@@ -48,8 +48,6 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
     mutate(data);
   });
 
-  const isLoading = status === 'pending';
-
   const navigateToForgotPasswordScreen = () => {
     navigate('ForgotPasswordScreen');
   };
@@ -60,11 +58,11 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
 
   return (
     <Screen scrollable>
-      <Text marginBottom="s8" preset="headingLarge">
+      <Text className="mb-s-8" variant="headingLarge">
         Olá
       </Text>
 
-      <Text preset="paragraphLarge" mb="s40">
+      <Text variant="paragraphLarge" className="mb-s-40">
         Digite seu e-mail e senha para entrar
       </Text>
 
@@ -73,7 +71,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
         name="email"
         label="E-mail"
         placeholder="Digite seu e-mail"
-        boxProps={{ mb: 's20' }}
+        boxClassName="mb-s-20"
       />
 
       <ControlledPasswordInput
@@ -81,22 +79,22 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
         name="password"
         label="Senha"
         placeholder="Digite sua senha"
-        boxProps={{ mb: 's20' }}
+        boxClassName="mb-s-20"
       />
 
-      <Text onPress={navigateToForgotPasswordScreen} color="primary" preset="paragraphSmall" bold>
+      <Text onPress={navigateToForgotPasswordScreen} className="text-primary" variant="paragraphSmall" bold>
         Esqueci minha senha
       </Text>
 
       <Button
-        loading={isLoading}
+        loading={isPending}
         disabled={!form.formState.isValid}
         onPress={onSubmit}
-        marginTop="s48"
+        className="mt-s-48"
         title="Entrar"
       />
 
-      <Button onPress={navigateToSignUpScreen} preset="outline" marginTop="s12" title="Criar uma conta" />
+      <Button onPress={navigateToSignUpScreen} variant="outline" className="mt-s-12" title="Criar uma conta" />
     </Screen>
   );
 };

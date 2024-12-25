@@ -1,13 +1,10 @@
-import type { ActivityIndicatorProps } from 'react-native';
+import type { ActivityIndicatorProps as RNActivityIndicatorProps } from 'react-native';
 import { ActivityIndicator as RNActivityIndicator } from 'react-native';
-import { useAppTheme } from '@/shared/hooks/use-app-theme';
-import type { ThemeColors } from '@/shared/theme/theme';
 
-interface Props extends Omit<ActivityIndicatorProps, 'color'> {
-  color?: ThemeColors;
-}
-export const ActivityIndicator = ({ color = 'primary', ...rest }: Props) => {
-  const { colors } = useAppTheme();
+interface ActivityIndicatorProps extends Omit<RNActivityIndicatorProps, 'color'> {}
 
-  return <RNActivityIndicator testID="activity-indicator" color={colors[color]} {...rest} />;
+export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
+  const { ...rest } = props;
+
+  return <RNActivityIndicator testID="activity-indicator" {...rest} />;
 };

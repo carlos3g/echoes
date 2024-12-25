@@ -1,52 +1,52 @@
 import type React from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
-
-import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
-import { useAppTheme } from '@/shared/hooks/use-app-theme';
-import { Box, type BoxProps } from '@/shared/components/ui/box';
-import { ScreenHeader } from '@/shared/components/ui/screen/screen-header';
+import type { ViewProps } from 'react-native';
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { ScrollViewContainer, ViewContainer } from '@/shared/components/ui/screen/screen-container';
+import { ScreenHeader } from '@/shared/components/ui/screen/screen-header';
+import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
+import { cn } from '@/shared/utils';
 
-export interface ScreenProps extends BoxProps {
+export interface ScreenProps extends Omit<ViewProps, 'style'> {
   children: React.ReactNode;
   HeaderComponent?: React.ReactNode;
   canGoBack?: boolean;
   scrollable?: boolean;
   title?: string;
   noPaddingHorizontal?: boolean;
+  className?: string;
 }
 
-export const Screen = ({
-  children,
-  canGoBack = false,
-  scrollable = false,
-  noPaddingHorizontal = false,
-  style,
-  title,
-  HeaderComponent,
-  ...boxProps
-}: ScreenProps) => {
-  const { bottom, top } = useAppSafeArea();
-  const { colors } = useAppTheme();
+export const Screen: React.FC<ScreenProps> = (props) => {
+  const {
+    children,
+    canGoBack = false,
+    scrollable = false,
+    noPaddingHorizontal = false,
+    className,
+    title,
+    HeaderComponent,
+    ...viewProps
+  } = props;
+
+  const { bottom = 0, top = 0 } = useAppSafeArea();
 
   const Container = scrollable ? ScrollViewContainer : ViewContainer;
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <Container backgroundColor={colors.background}>
-        <Box
-          paddingHorizontal={noPaddingHorizontal ? undefined : 's24'}
-          style={[{ paddingTop: top, paddingBottom: bottom }, style]}
-          {...boxProps}
+    <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <Container>
+        <View
+          className={cn(`pt-[${top}px] pb-[${bottom}px]`, noPaddingHorizontal ? 'px-0' : 'px-s-24', className)}
+          {...viewProps}
         >
           <ScreenHeader
-            paddingHorizontal={noPaddingHorizontal ? 's24' : undefined}
+            className={cn(noPaddingHorizontal ? 'px-s-24' : 'px-0')}
             HeaderComponent={HeaderComponent}
             canGoBack={canGoBack}
             title={title}
           />
           {children}
-        </Box>
+        </View>
       </Container>
     </KeyboardAvoidingView>
   );

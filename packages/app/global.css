@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-green-primary: #074C4E;
+  --color-green-primary-light: #EAF6F6;
+  --color-carrot-secondary: #F86F2D;
+  --color-carrot-secondary-light: #FAE6DD;
+  --color-green-success: #4ABC86;
+  --color-green-success-light: #D8FFEC;
+  --color-red-error: #EA3838;
+  --color-red-error-light: #FBECEC;
+
+  --color-gray-black: #000000;
+  --color-black-60: rgba(0, 0, 0, 0.6);
+  --color-gray-1: #636363;
+  --color-gray-2: #8E8E8E;
+  --color-gray-3: #B3B3B3;
+  --color-gray-4: #E1E1E1;
+  --color-gray-5: #F5F5F5;
+  --color-gray-white: #FFFFFF;
+  --color-white-70: rgba(255, 255, 255, 0.7);
+
+  --theme-primary: var(--color-green-primary);
+  --theme-primary-contrast: var(--color-gray-white);
+  --theme-button-primary: var(--color-green-primary);
+  --theme-background: var(--color-gray-white);
+  --theme-background-contrast: var(--color-gray-black);
+  --theme-error: var(--color-red-error);
+  --theme-error-light: var(--color-red-error-light);
+  --theme-success: var(--color-green-success);
+  --theme-success-light: var(--color-green-success-light);
+  --theme-market: var(--color-carrot-secondary);
+  --theme-paragraph: var(--color-gray-1);
+  --theme-paragraph-secondary: var(--color-gray-1);
+  --theme-icon-color: var(--color-green-primary);
+  --theme-icon-fill-color: var(--color-gray-white);
+  --theme-on-background-gray-1: var(--color-gray-1);
+  --theme-on-background-gray-2: var(--color-gray-4);
+}
