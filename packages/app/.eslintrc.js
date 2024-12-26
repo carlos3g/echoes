@@ -1,6 +1,12 @@
+// @ts-check
+
+/**
+ * @type {import("eslint").Linter.Config}
+ */
 module.exports = {
   env: {
     es2021: true,
+    jest: true,
   },
   extends: [
     'airbnb',
@@ -8,6 +14,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     '@react-native-community',
     'plugin:react/jsx-runtime',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -20,6 +28,20 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
+  overrides: [
+    {
+      files: ['**/*.spec.ts', '**/*.e2e-spec.ts'],
+      plugins: ['jest'],
+      rules: {
+        '@typescript-eslint/unbound-method': 0,
+        'jest/unbound-method': 2,
+      },
+    },
+    {
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      extends: ['plugin:testing-library/react'],
+    },
+  ],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
     'react/function-component-definition': [
@@ -50,5 +72,11 @@ module.exports = {
     'no-useless-constructor': 0,
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/consistent-type-imports': 2,
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['**/*.e2e-spec.ts', '**/*.spec.ts', 'test/**/*'],
+      },
+    ],
   },
 };

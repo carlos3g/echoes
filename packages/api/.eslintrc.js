@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * @type {import("eslint").Linter.Config}
  */
@@ -56,14 +58,6 @@ module.exports = {
       2,
       {
         checksVoidReturn: false,
-      },
-    ],
-    '@typescript-eslint/naming-convention': [
-      2,
-      {
-        selector: 'default',
-        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
-        leadingUnderscore: 'allowSingleOrDouble',
       },
     ],
     '@typescript-eslint/naming-convention': [
