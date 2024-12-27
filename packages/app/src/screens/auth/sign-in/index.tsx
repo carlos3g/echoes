@@ -72,6 +72,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
         label="E-mail"
         placeholder="Digite seu e-mail"
         boxClassName="mb-s-20"
+        testID="signin-email-input"
       />
 
       <ControlledPasswordInput
@@ -80,9 +81,16 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
         label="Senha"
         placeholder="Digite sua senha"
         boxClassName="mb-s-20"
+        testID="signin-password-input"
       />
 
-      <Text onPress={navigateToForgotPasswordScreen} className="text-primary" variant="paragraphSmall" bold>
+      <Text
+        onPress={navigateToForgotPasswordScreen}
+        className="text-primary"
+        variant="paragraphSmall"
+        bold
+        testID="go-to-forgot-password-button"
+      >
         Esqueci minha senha
       </Text>
 
@@ -92,9 +100,16 @@ export const SignInScreen: React.FC<SignInScreenProps> = () => {
         onPress={onSubmit}
         className="mt-s-48"
         title="Entrar"
+        testID="signin-button"
       />
 
-      <Button onPress={navigateToSignUpScreen} variant="outline" className="mt-s-12" title="Criar uma conta" />
+      <Button
+        onPress={navigateToSignUpScreen}
+        variant="outline"
+        className="mt-s-12"
+        title="Criar conta"
+        testID="go-to-sign-up-button"
+      />
     </Screen>
   );
 };

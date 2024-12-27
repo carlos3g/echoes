@@ -63,7 +63,7 @@ To run the project locally, follow these steps:
 To run the tests, use the following commands:
 
 ```bash
-yarn dev:test
+yarn db:test
 
 yarn lerna run test
 yarn lerna run test:e2e
