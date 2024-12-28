@@ -1,0 +1,4 @@
+appId: com.carlos3g.echoes
+---
+- launchApp:
+    clearState: true

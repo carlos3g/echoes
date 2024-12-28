@@ -7,6 +7,8 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Text>Logged</Text>
+
       <Text>{JSON.stringify(user, null, 2)}</Text>
 
       <Button title="Sair" onPress={handleSignOut} />

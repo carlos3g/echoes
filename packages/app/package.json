@@ -14,7 +14,8 @@
     "lint": "eslint . --fix",
     "format": "prettier --write .",
     "check": "tsc --noEmit",
-    "style": "yarn format && yarn lint && yarn check"
+    "style": "yarn format && yarn lint && yarn check",
+    "nuke": "rm -rf ./node_modules && rm -rf ./ios && rm -rf ./android"
   },
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.2.3",

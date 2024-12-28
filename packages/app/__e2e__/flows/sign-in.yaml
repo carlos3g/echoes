@@ -1,0 +1,43 @@
+appId: com.carlos3g.echoes
+env:
+  EMAIL: 'test@gmail.com'
+  PASSWORD: 'p@ss9ord1!'
+  INVALID_EMAIL: 'invalid@email.com'
+  INVALID_PASSWORD: 'wrong123'
+---
+- runFlow:
+    file: ../setup-app.yaml
+- assertVisible:
+    id: 'signin-button'
+- assertTrue: 'signin-button.enabled == false'
+
+- tapOn:
+    id: 'signin-email-input'
+- inputText: ${INVALID_EMAIL}
+- tapOn:
+    id: 'signin-password-input'
+- inputText: ${INVALID_PASSWORD}
+- tapOn:
+    id: 'signin-button'
+- assertVisible: 'Opa!!'
+- assertVisible: 'E-mail ou senha inválidos'
+
+- tapOn:
+    id: 'signin-email-input'
+- eraseText: 100
+- tapOn:
+    id: 'signin-password-input'
+- eraseText
+
+- tapOn:
+    id: 'signin-email-input'
+- inputText: ${EMAIL}
+- tapOn:
+    id: 'signin-password-input'
+- inputText: ${PASSWORD}
+- hideKeyboard
+- tapOn:
+    id: 'signin-button'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible: 'Logged'
