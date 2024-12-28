@@ -55,16 +55,36 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = () => {
       </Text>
 
       <View className="gap-s-20 mb-s-20">
-        <ControlledTextInput control={form.control} name="name" label="Nome" placeholder="Digite seu nome" />
         <ControlledTextInput
+          testID="signup-name-input"
+          control={form.control}
+          name="name"
+          label="Nome"
+          placeholder="Digite seu nome"
+        />
+        <ControlledTextInput
+          testID="signup-username-input"
           control={form.control}
           name="username"
           label="Username"
           placeholder="Escolha um username"
         />
-        <ControlledTextInput control={form.control} name="email" label="E-mail" placeholder="Digite seu e-mail" />
-        <ControlledPasswordInput control={form.control} name="password" label="Senha" placeholder="Digite sua senha" />
+        <ControlledTextInput
+          testID="signup-email-input"
+          control={form.control}
+          name="email"
+          label="E-mail"
+          placeholder="Digite seu e-mail"
+        />
         <ControlledPasswordInput
+          testID="signup-password-input"
+          control={form.control}
+          name="password"
+          label="Senha"
+          placeholder="Digite sua senha"
+        />
+        <ControlledPasswordInput
+          testID="signup-password-confirmation-input"
           control={form.control}
           name="passwordConfirmation"
           label="Confirmar senha"
@@ -72,7 +92,13 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = () => {
         />
       </View>
 
-      <Button loading={isPending} disabled={!form.formState.isValid} onPress={onSubmit} title="Criar conta" />
+      <Button
+        testID="signup-button"
+        loading={isPending}
+        disabled={!form.formState.isValid}
+        onPress={onSubmit}
+        title="Criar conta"
+      />
     </Screen>
   );
 };

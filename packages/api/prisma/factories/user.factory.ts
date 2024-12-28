@@ -8,7 +8,7 @@ import { createUuidV4 } from '../utils';
 type Entity = Omit<User, 'id' | 'avatarId' | 'createdAt' | 'updatedAt'>;
 
 export class UserFactory extends FactoryContract<Entity> {
-  public static password = 'p@ssword1!';
+  public static password = 'p@ss9ord1!';
 
   public definition(): FactoryEntityDefinition<Entity> {
     return {
