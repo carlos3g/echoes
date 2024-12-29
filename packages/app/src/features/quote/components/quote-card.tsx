@@ -1,6 +1,7 @@
 import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
 import { TouchableOpacity, View } from 'react-native';
 import { cssInterop } from 'nativewind';
+import Share from 'react-native-share';
 import { Text } from '@/shared/components/ui/text';
 import type { Quote } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
@@ -24,6 +25,12 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
 
   const formattedLikes = humanizeNumber(metadata?.likes);
   const formattedTags = humanizeNumber(metadata?.tags);
+
+  const handleShare = async () => {
+    await Share.open({
+      url: `https://echoes.carlos3g.dev/quotes/${data.uuid}`,
+    });
+  };
 
   return (
     <View key={data.uuid} className="py-4 px-4">
@@ -53,7 +60,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleShare}>
           <Ionicons name="share-social-outline" size={20} className="text-[#4b5563]" />
         </TouchableOpacity>
       </View>
