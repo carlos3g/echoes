@@ -3,7 +3,7 @@ import { cssInterop } from 'nativewind';
 import { TouchableOpacity, View } from 'react-native';
 import Share from 'react-native-share';
 import { toast } from 'sonner-native';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Quote } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
@@ -48,20 +48,28 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
   const { data } = props;
   const { metadata = { favorites: 856, tags: 2, favoritedByUser: true } } = data;
 
+  const queryClient = useQueryClient();
+
   const favoriteMutation = useMutation<void, HttpError<ApiResponseError>, string>({
     mutationFn: async (uuid) => quoteService.favorite(uuid),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['quotes'] });
+    },
     onError: () => {
-      toast.error('Opa!!', {
-        description: 'E-mail ou senha inválidos',
+      toast.error('Erro!', {
+        description: 'Tente novamente',
       });
     },
   });
 
   const unfavoriteMutation = useMutation<void, HttpError<ApiResponseError>, string>({
     mutationFn: async (uuid) => quoteService.favorite(uuid),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['quotes'] });
+    },
     onError: () => {
-      toast.error('Opa!!', {
-        description: 'E-mail ou senha inválidos',
+      toast.error('Erro!', {
+        description: 'Tente novamente',
       });
     },
   });

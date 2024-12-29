@@ -32,6 +32,10 @@ export class TagAuthorUseCase implements UseCaseHandler {
       throw new ForbiddenException();
     }
 
-    return this.authorService.tag({ authorId: author.id, tagId: tag.id });
+    if (await this.authorRepository.isTagged({ where: { authorId: author.id, tagId: tag.id } })) {
+      return;
+    }
+
+    await this.authorService.tag({ authorId: author.id, tagId: tag.id });
   }
 }

@@ -20,6 +20,10 @@ export class UnfavoriteAuthorUseCase implements UseCaseHandler {
       },
     });
 
+    if (!(await this.authorRepository.isFavorited({ where: { authorId: author.id, userId: user.id } }))) {
+      return;
+    }
+
     await this.authorService.unfavorite({ authorId: author.id, userId: user.id });
   }
 }

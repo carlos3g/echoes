@@ -20,6 +20,10 @@ export class UnfavoriteQuoteUseCase implements UseCaseHandler {
       },
     });
 
+    if (!(await this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: user.id } }))) {
+      return;
+    }
+
     await this.quoteService.unfavorite({ quoteId: quote.id, userId: user.id });
   }
 }

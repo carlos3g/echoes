@@ -33,6 +33,10 @@ export class UntagQuoteUseCase implements UseCaseHandler {
       throw new ForbiddenException();
     }
 
+    if (!(await this.quoteRepository.isTagged({ where: { quoteId: quote.id, tagId: tag.id } }))) {
+      return;
+    }
+
     await this.quoteService.untag({ quoteId: quote.id, tagId: tag.id });
   }
 }

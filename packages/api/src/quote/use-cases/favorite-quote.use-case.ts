@@ -20,6 +20,10 @@ export class FavoriteQuoteUseCase implements UseCaseHandler {
       },
     });
 
-    return this.quoteService.favorite({ quoteId: quote.id, userId: user.id });
+    if (await this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: user.id } })) {
+      return;
+    }
+
+    await this.quoteService.favorite({ quoteId: quote.id, userId: user.id });
   }
 }

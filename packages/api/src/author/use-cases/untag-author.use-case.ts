@@ -33,6 +33,10 @@ export class UntagAuthorUseCase implements UseCaseHandler {
       throw new ForbiddenException();
     }
 
+    if (!(await this.authorRepository.isTagged({ where: { authorId: author.id, tagId: tag.id } }))) {
+      return;
+    }
+
     await this.authorService.untag({ authorId: author.id, tagId: tag.id });
   }
 }
