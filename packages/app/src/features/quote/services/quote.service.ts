@@ -25,6 +25,6 @@ export class QuoteService implements QuoteServiceContract {
   }
 
   public async unfavorite(uuid: string): Promise<void> {
-    return this.httpClientService.post(`/quotes/${uuid}/favorite`);
+    return this.httpClientService.post(`/quotes/${uuid}/unfavorite`);
   }
 }

@@ -3,12 +3,13 @@ import { cssInterop } from 'nativewind';
 import { TouchableOpacity, View } from 'react-native';
 import Share from 'react-native-share';
 import { toast } from 'sonner-native';
+import type { InfiniteData } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Quote } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
 import { quoteService } from '@/features/quote/services';
-import type { ApiResponseError } from '@/types/api';
+import type { ApiPaginatedResult, ApiResponseError } from '@/types/api';
 import type { HttpError } from '@/types/http';
 
 const Ionicons = cssInterop(ExpoIonicons, {
@@ -50,24 +51,104 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
 
   const queryClient = useQueryClient();
 
-  const favoriteMutation = useMutation<void, HttpError<ApiResponseError>, string>({
+  const favoriteMutation = useMutation<
+    void,
+    HttpError<ApiResponseError>,
+    string,
+    { previousState?: InfiniteData<ApiPaginatedResult<Quote>> }
+  >({
     mutationFn: async (uuid) => quoteService.favorite(uuid),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['quotes'] });
+    onMutate: async (uuid) => {
+      await queryClient.cancelQueries({ queryKey: ['quotes'] });
+
+      const previousState = queryClient.getQueryData<InfiniteData<ApiPaginatedResult<Quote>>>(['quotes']);
+
+      if (!previousState) {
+        return {};
+      }
+
+      const newState: InfiniteData<ApiPaginatedResult<Quote>> = {
+        pageParams: previousState?.pageParams,
+        pages: previousState?.pages?.map((page) => {
+          const quotes = page.data.map((quote) => {
+            if (quote.uuid === uuid) {
+              return {
+                ...quote,
+                metadata: { ...quote.metadata, favorites: quote.metadata.favorites + 1, favoritedByUser: true },
+              };
+            }
+
+            return quote;
+          });
+
+          return {
+            ...page,
+            data: quotes,
+          };
+        }),
+      };
+
+      queryClient.setQueryData(['quotes'], newState);
+
+      return { previousState };
     },
-    onError: () => {
+    onError: (_, __, context) => {
+      if (context?.previousState) {
+        queryClient.setQueryData(['quotes'], context.previousState);
+      }
+
       toast.error('Erro!', {
         description: 'Tente novamente',
       });
     },
   });
 
-  const unfavoriteMutation = useMutation<void, HttpError<ApiResponseError>, string>({
-    mutationFn: async (uuid) => quoteService.favorite(uuid),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['quotes'] });
+  const unfavoriteMutation = useMutation<
+    void,
+    HttpError<ApiResponseError>,
+    string,
+    { previousState?: InfiniteData<ApiPaginatedResult<Quote>> }
+  >({
+    mutationFn: async (uuid) => quoteService.unfavorite(uuid),
+    onMutate: async (uuid) => {
+      await queryClient.cancelQueries({ queryKey: ['quotes'] });
+
+      const previousState = queryClient.getQueryData<InfiniteData<ApiPaginatedResult<Quote>>>(['quotes']);
+
+      if (!previousState) {
+        return {};
+      }
+
+      const newState: InfiniteData<ApiPaginatedResult<Quote>> = {
+        pageParams: previousState?.pageParams,
+        pages: previousState?.pages?.map((page) => {
+          const quotes = page.data.map((quote) => {
+            if (quote.uuid === uuid) {
+              return {
+                ...quote,
+                metadata: { ...quote.metadata, favorites: quote.metadata.favorites - 1, favoritedByUser: false },
+              };
+            }
+
+            return quote;
+          });
+
+          return {
+            ...page,
+            data: quotes,
+          };
+        }),
+      };
+
+      queryClient.setQueryData(['quotes'], newState);
+
+      return { previousState };
     },
-    onError: () => {
+    onError: (_, __, context) => {
+      if (context?.previousState) {
+        queryClient.setQueryData(['quotes'], context.previousState);
+      }
+
       toast.error('Erro!', {
         description: 'Tente novamente',
       });
