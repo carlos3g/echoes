@@ -10,6 +10,12 @@ export class Quote {
   public updatedAt!: Date;
 
   public author?: Author;
+
+  public metadata!: {
+    favorites: number;
+    tags: number;
+    favoritedByUser: boolean;
+  };
 }
 
 export class Author {

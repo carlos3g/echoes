@@ -19,4 +19,12 @@ export class QuoteService implements QuoteServiceContract {
       ...payload,
     });
   }
+
+  public async favorite(uuid: string): Promise<void> {
+    return this.httpClientService.post(`/quotes/${uuid}/favorite`);
+  }
+
+  public async unfavorite(uuid: string): Promise<void> {
+    return this.httpClientService.post(`/quotes/${uuid}/unfavorite`);
+  }
 }

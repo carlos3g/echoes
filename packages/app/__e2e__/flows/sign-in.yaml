@@ -40,4 +40,4 @@ env:
     id: 'signin-button'
 - waitForAnimationToEnd:
     timeout: 2000
-- assertVisible: 'Logged'
+- assertVisible: 'Echoes'

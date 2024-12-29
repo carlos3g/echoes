@@ -37,3 +37,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 nativewind-env.d.ts
+
+# Firebase (Android) Google services
+google-services.json
+
+# Performance results (Flashlight)
+.perf/

@@ -33,6 +33,10 @@ export class TagQuoteUseCase implements UseCaseHandler {
       throw new ForbiddenException();
     }
 
+    if (await this.quoteRepository.isTagged({ where: { quoteId: quote.id, tagId: tag.id } })) {
+      return;
+    }
+
     await this.quoteService.tag({ quoteId: quote.id, tagId: tag.id });
   }
 }

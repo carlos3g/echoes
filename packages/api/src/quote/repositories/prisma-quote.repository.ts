@@ -46,6 +46,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
         where: {
           ...where,
         },
+        include: { author: true },
         orderBy: [{ createdAt: 'desc' }],
       },
       { page, perPage }
@@ -117,6 +118,22 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
       where: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         userId_quoteId: input.data,
+      },
+    });
+  }
+
+  public countFavorites(quoteId: number): Promise<number> {
+    return this.prismaManager.getClient().userFavoriteQuote.count({
+      where: {
+        quoteId,
+      },
+    });
+  }
+
+  public countTags(quoteId: number): Promise<number> {
+    return this.prismaManager.getClient().tagQuote.count({
+      where: {
+        quoteId,
       },
     });
   }

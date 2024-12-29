@@ -7,6 +7,7 @@ export type GetQuoteOutput = Quote;
 
 export type ListQuotesPayload = {
   paginate?: Paginate;
+  page?: number;
 };
 
 export type ListQuotesOutput = ApiPaginatedResult<Quote>;
@@ -15,4 +16,8 @@ export abstract class QuoteServiceContract {
   public abstract get(uuid: string): Promise<GetQuoteOutput>;
 
   public abstract list(payload: ListQuotesPayload): Promise<ListQuotesOutput>;
+
+  public abstract favorite(uuid: string): Promise<void>;
+
+  public abstract unfavorite(uuid: string): Promise<void>;
 }

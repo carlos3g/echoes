@@ -20,6 +20,10 @@ export class FavoriteAuthorUseCase implements UseCaseHandler {
       },
     });
 
-    return this.authorService.favorite({ authorId: author.id, userId: user.id });
+    if (await this.authorRepository.isFavorited({ where: { authorId: author.id, userId: user.id } })) {
+      return;
+    }
+
+    await this.authorService.favorite({ authorId: author.id, userId: user.id });
   }
 }
