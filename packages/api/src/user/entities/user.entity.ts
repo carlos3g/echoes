@@ -16,6 +16,7 @@ export class User {
 
   public username!: string;
 
+  @Exclude()
   public password!: string;
 
   public emailVerifiedAt!: Date | null;

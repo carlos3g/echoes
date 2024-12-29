@@ -46,6 +46,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
         where: {
           ...where,
         },
+        include: { author: true },
         orderBy: [{ createdAt: 'desc' }],
       },
       { page, perPage }

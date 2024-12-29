@@ -10,7 +10,7 @@ const { Navigator, Screen } = createNativeStackNavigator<AuthStackParams>();
 
 const screenOptions: NativeStackNavigationOptions = { headerShown: false };
 
-const AuthNavigator: React.FC = () => (
+export const AuthNavigator: React.FC = () => (
   <Navigator initialRouteName="SignInScreen" screenOptions={screenOptions}>
     <Screen component={SignInScreen} name="SignInScreen" />
     <Screen component={SignUpScreen} name="SignUpScreen" />
@@ -18,5 +18,3 @@ const AuthNavigator: React.FC = () => (
     <Screen component={ForgotPasswordScreen} name="ForgotPasswordScreen" />
   </Navigator>
 );
-
-export { AuthNavigator };

@@ -34,6 +34,7 @@ import { RootNavigator } from '@/navigation';
 import { queryClient } from '@/lib/react-query';
 import { AuthProvider } from '@/features/auth/contexts/auth.context';
 import { ThemeProvider } from '@/lib/nativewind/theme.context';
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -69,6 +70,8 @@ const App = () => {
       void SplashScreen.hideAsync();
     }
   }, [loaded, error]);
+
+  useReactQueryDevTools(queryClient);
 
   if (!loaded && !error) {
     return null;

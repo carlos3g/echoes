@@ -10,6 +10,12 @@ export class Quote {
   public updatedAt!: Date;
 
   public author?: Author;
+
+  public metadata?: {
+    likes: number;
+    tags: number;
+    likedByUser?: boolean;
+  };
 }
 
 export class Author {
