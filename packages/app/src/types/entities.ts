@@ -11,10 +11,10 @@ export class Quote {
 
   public author?: Author;
 
-  public metadata?: {
-    likes: number;
+  public metadata!: {
+    favorites: number;
     tags: number;
-    likedByUser?: boolean;
+    favoritedByUser: boolean;
   };
 }
 

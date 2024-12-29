@@ -122,6 +122,22 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
     });
   }
 
+  public countFavorites(quoteId: number): Promise<number> {
+    return this.prismaManager.getClient().userFavoriteQuote.count({
+      where: {
+        quoteId,
+      },
+    });
+  }
+
+  public countTags(quoteId: number): Promise<number> {
+    return this.prismaManager.getClient().tagQuote.count({
+      where: {
+        quoteId,
+      },
+    });
+  }
+
   public async isFavorited(input: QuoteRepositoryIsFavoritedInput): Promise<boolean> {
     const count = await this.prismaManager.getClient().userFavoriteQuote.count({
       where: input.where,

@@ -30,11 +30,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
 import { RootNavigator } from '@/navigation';
 import { queryClient } from '@/lib/react-query';
 import { AuthProvider } from '@/features/auth/contexts/auth.context';
 import { ThemeProvider } from '@/lib/nativewind/theme.context';
-import { useReactQueryDevTools } from '@dev-plugins/react-query';
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -84,7 +84,7 @@ const App = () => {
           <ThemeProvider>
             <RootNavigator />
 
-            <Toaster />
+            <Toaster autoWiggleOnUpdate="always" />
           </ThemeProvider>
         </AuthProvider>
       </SafeAreaProvider>

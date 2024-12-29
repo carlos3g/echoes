@@ -34,6 +34,10 @@ abstract class QuoteRepositoryContract {
 
   public abstract isTagged(input: QuoteRepositoryIsTaggedInput): Promise<boolean>;
 
+  public abstract countFavorites(quoteId: number): Promise<number>;
+
+  public abstract countTags(quoteId: number): Promise<number>;
+
   public abstract findUniqueOrThrow(input: QuoteRepositoryFindUniqueOrThrowInput): Promise<Quote>;
 
   public abstract findManyPaginated(input: QuoteRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Quote>>;
