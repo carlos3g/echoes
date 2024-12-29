@@ -35,7 +35,7 @@ export const ShareButton: React.FC<ShareButtonProps> = (props) => {
   };
 
   return (
-    <TouchableOpacity onPress={handleShare}>
+    <TouchableOpacity testID="share-button" onPress={handleShare}>
       <Ionicons name="share-social-outline" size={20} className="text-[#4b5563]" />
     </TouchableOpacity>
   );
@@ -47,7 +47,7 @@ interface FavoriteButtonProps {
 
 export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
   const { data } = props;
-  const { metadata = { favorites: 856, tags: 2, favoritedByUser: true } } = data;
+  const { metadata } = data;
 
   const queryClient = useQueryClient();
 
@@ -167,7 +167,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
   };
 
   return (
-    <TouchableOpacity className="flex-row items-center gap-1" onPress={handleFavorite}>
+    <TouchableOpacity testID="toggle-favorite-button" className="flex-row items-center gap-1" onPress={handleFavorite}>
       <Ionicons
         name={metadata?.favoritedByUser ? 'heart' : 'heart-outline'}
         size={20}
@@ -199,7 +199,7 @@ export const TagButton: React.FC<TagButtonProps> = (props) => {
   };
 
   return (
-    <TouchableOpacity className="flex-row items-center gap-1" onPress={handleTag}>
+    <TouchableOpacity testID="toggle-tag-button" className="flex-row items-center gap-1" onPress={handleTag}>
       <Ionicons name="pricetag-outline" size={19} className="text-[#4b5563]" />
       <Text variant="paragraphSmall" className="text-gray-600">
         {formattedTags}
