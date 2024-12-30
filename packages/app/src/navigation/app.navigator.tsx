@@ -1,10 +1,12 @@
+import { Ionicons } from '@expo/vector-icons';
+import type IoniconsGlyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/Ionicons.json';
+import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import type { RouteProp } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import type { AppTabParams } from '@/navigation/app.navigator.types';
 import { HomeScreen } from '@/screens/app/home';
 import { SettingsScreen } from '@/screens/app/settings';
-import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RouteProp } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import type IoniconsGlyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/Ionicons.json';
 import { colors } from '@/shared/theme/colors';
 
 const { Navigator, Screen } = createBottomTabNavigator<AppTabParams>();
@@ -38,6 +40,11 @@ const screenOptions: ScreenOptions = ({ route }) => ({
   headerTitleStyle: {
     color: colors.lightTheme.backgroundContrast,
   },
+  headerStyle: {
+    borderBottomColor: '#C2C2C2',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  headerShadowVisible: false,
   tabBarHideOnKeyboard: true,
   tabBarIcon: ({ color, focused, size }) => {
     const { onFocusIcon, onBlurIcon } = options[route.name];
