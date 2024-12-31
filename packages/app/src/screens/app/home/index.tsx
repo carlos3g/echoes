@@ -3,7 +3,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
-import { QuoteCard } from '@/features/quote/components/quote-card';
+import { QuoteCard, QuoteCardSkeleton } from '@/features/quote/components/quote-card';
 import type { ListQuotesOutput } from '@/features/quote/contracts/quote-service.contract';
 import { quoteService } from '@/features/quote/services';
 import type { AppTabScreenProps } from '@/navigation/app.navigator.types';
@@ -11,12 +11,14 @@ import type { Quote } from '@/types/entities';
 
 const renderItem: ListRenderItem<Quote> = ({ item }) => <QuoteCard data={item} />;
 
+const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
+
 const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
 
 interface HomeScreenProps extends AppTabScreenProps<'HomeScreen'> {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
-  const { isRefetching, refetch, hasNextPage, fetchNextPage, data } = useInfiniteQuery<ListQuotesOutput>({
+  const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListQuotesOutput>({
     queryKey: ['quotes'],
     queryFn: ({ pageParam }) => quoteService.list({ paginate: { page: pageParam as number } }),
     initialPageParam: 0,
@@ -40,8 +42,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
   return (
     <View className="flex-1 bg-white">
       <FlashList
-        data={quotes}
-        renderItem={renderItem}
+        estimatedItemSize={166}
+        data={isLoading ? Array(10).fill(null) : quotes}
+        renderItem={isLoading ? renderItemSkeleton : renderItem}
         onEndReached={safeFetchNextPage}
         onEndReachedThreshold={0.5}
         refreshControl={refreshControl}

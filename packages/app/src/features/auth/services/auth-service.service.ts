@@ -1,5 +1,7 @@
 import type {
   AuthServiceContract,
+  ChangePasswordOutput,
+  ChangePasswordPayload,
   ForgotPasswordOutput,
   ForgotPasswordPayload,
   MeOutput,
@@ -34,6 +36,10 @@ export class AuthService implements AuthServiceContract {
       `/auth/reset-password/${payload.token}`,
       payload
     );
+  }
+
+  public async changePassword(payload: ChangePasswordPayload): Promise<ChangePasswordOutput> {
+    return this.httpClientService.patch<ChangePasswordOutput, ChangePasswordPayload>('/auth/change-password', payload);
   }
 
   public refreshToken(payload: RefreshTokenPayload): Promise<RefreshTokenOutput> {

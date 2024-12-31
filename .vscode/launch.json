@@ -15,7 +15,7 @@
         "--scope",
         "api",
         "--",
-        "pnpm",
+        "yarn",
         "start:debug",
         "--",
         "--inspect-brk"

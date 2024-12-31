@@ -38,3 +38,14 @@ export const resetPasswordFormSchema = z
     message: 'As senhas inseridas devem ser iguais',
     path: ['passwordConfirmation'],
   });
+
+export const changePasswordFormSchema = z
+  .object({
+    currentPassword: validatePassword(),
+    password: validatePassword(),
+    passwordConfirmation: validatePassword(),
+  })
+  .refine(({ password, passwordConfirmation }) => password === passwordConfirmation, {
+    message: 'As senhas inseridas devem ser iguais',
+    path: ['passwordConfirmation'],
+  });
