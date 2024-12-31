@@ -2,7 +2,7 @@ import { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
 import type { ChangePasswordInput } from '@app/auth/dtos/change-password-input';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { UserService } from '@app/user/services/user.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ChangePasswordUseCase implements UseCaseHandler {
@@ -15,7 +15,7 @@ export class ChangePasswordUseCase implements UseCaseHandler {
     const { user, passwordConfirmation: _, currentPassword: __, ...rest } = input;
 
     if (!this.hashService.compare(input.currentPassword, user.password)) {
-      throw new UnauthorizedException('Invalid current password');
+      throw new ForbiddenException('Invalid current password');
     }
 
     await this.userService.update({

@@ -4,10 +4,10 @@ import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import type { RouteProp } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
-import type { AppTabParams } from '@/navigation/app.navigator.types';
-import { HomeScreen } from '@/screens/app/home';
-import { SettingsScreen } from '@/screens/app/settings';
 import { colors } from '@/shared/theme/colors';
+import { HomeScreen } from '@/screens/app/home';
+import { SettingsNavigator } from '@/navigation/settings.navigator';
+import type { AppTabParams } from '@/navigation/app.navigator.types';
 
 const { Navigator, Screen } = createBottomTabNavigator<AppTabParams>();
 
@@ -23,11 +23,13 @@ const options: { [key in keyof AppTabParams]: TabBarItemOptions } = {
     onFocusIcon: 'home',
     onBlurIcon: 'home-outline',
     title: 'Echoes',
+    tabBarButtonTestID: 'feed-tab-button',
   },
-  SettingsScreen: {
+  SettingsNavigator: {
     onBlurIcon: 'settings-outline',
     onFocusIcon: 'settings',
-    title: 'Configurações',
+    headerShown: false,
+    tabBarButtonTestID: 'settings-tab-button',
   },
 };
 
@@ -57,6 +59,6 @@ const screenOptions: ScreenOptions = ({ route }) => ({
 export const AppNavigator: React.FC = () => (
   <Navigator screenOptions={screenOptions}>
     <Screen component={HomeScreen} name="HomeScreen" />
-    <Screen component={SettingsScreen} name="SettingsScreen" />
+    <Screen component={SettingsNavigator} name="SettingsNavigator" />
   </Navigator>
 );

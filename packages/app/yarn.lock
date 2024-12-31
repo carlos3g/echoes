@@ -7536,6 +7536,11 @@ rc@~1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-content-loader@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-content-loader/-/react-content-loader-7.0.2.tgz#5d5e0f723cb937db88f9fec1c5b0651cd301c42e"
+  integrity sha512-773S98JTyC8VB2nu7LXUhpHx8tZMieGxMcx3qTe7IkohT6Br7d9AXnIXs/wQ6IhlUdKQcw6JLKk1QKigYCWDRA==
+
 react-devtools-core@^5.3.1:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-5.3.2.tgz#d5df92f8ef2a587986d094ef2c47d84cf4ae46ec"
@@ -7633,10 +7638,10 @@ react-native-share@^12.0.3:
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-12.0.3.tgz#1f2d6fc0c8f1e7ec9e75e0b4915bee78e06dce5b"
   integrity sha512-Bg96AjouSbcpdlI/AzWXMBwpjyWcm4NvGr49mSF1cz8aw8E1sMXwpsHa6I841SJML8Im6sRN3aXnK+/QManrtQ==
 
-react-native-svg@15.8.0:
-  version "15.8.0"
-  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-15.8.0.tgz#9b5fd4f5cf5675197b3f4cbfcc77c215de2b9502"
-  integrity sha512-KHJzKpgOjwj1qeZzsBjxNdoIgv2zNCO9fVcoq2TEhTRsVV5DGTZ9JzUZwybd7q4giT/H3RdtqC3u44dWdO0Ffw==
+react-native-svg@^15.10.1:
+  version "15.10.1"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-15.10.1.tgz#5df51fca80cb1912648d058b67903f05eac0b8a6"
+  integrity sha512-Hqz/doQciVFK/Df2v+wsW96oY5jxlta7rZ31KQYo78dlgvAHEaGr6paEOAMvlIruw7EHNQ0Vc1ZmJPJF2kfIPQ==
   dependencies:
     css-select "^5.1.0"
     css-tree "^1.1.3"

@@ -1,16 +1,19 @@
 import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
 import { cssInterop } from 'nativewind';
-import { TouchableOpacity, View } from 'react-native';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
 import Share from 'react-native-share';
 import { toast } from 'sonner-native';
 import type { InfiniteData } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import ContentLoader, { Rect } from 'react-content-loader/native';
 import type { Quote } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
 import { quoteService } from '@/features/quote/services';
 import type { ApiPaginatedResult, ApiResponseError } from '@/types/api';
 import type { HttpError } from '@/types/http';
+
+const { width: wWidth } = Dimensions.get('window');
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -232,5 +235,30 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
         <ShareButton data={data} />
       </View>
     </View>
+  );
+};
+
+export interface QuoteCardSkeletonProps {}
+
+export const QuoteCardSkeleton: React.FC<QuoteCardSkeletonProps> = () => {
+  return (
+    <ContentLoader
+      speed={2}
+      width={wWidth}
+      height={166}
+      viewBox={`0 0 ${wWidth} 166`}
+      backgroundColor="#e5e7eb"
+      foregroundColor="#d1d5db"
+    >
+      <Rect x="16" y="16" rx="4" ry="4" width={wWidth - 64} height="16" />
+      <Rect x="16" y="40" rx="4" ry="4" width={wWidth - 96} height="16" />
+      <Rect x="16" y="64" rx="4" ry="4" width={wWidth - 128} height="16" />
+
+      <Rect x="16" y="96" rx="4" ry="4" width={120} height="14" />
+
+      <Rect x="16" y="128" rx="4" ry="4" width="50" height="20" />
+      <Rect x="90" y="128" rx="4" ry="4" width="50" height="20" />
+      <Rect x={wWidth - 36} y="128" rx="4" ry="4" width="20" height="20" />
+    </ContentLoader>
   );
 };

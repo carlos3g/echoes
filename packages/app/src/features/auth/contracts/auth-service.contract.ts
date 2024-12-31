@@ -1,5 +1,6 @@
 import type { z } from 'zod';
 import type {
+  changePasswordFormSchema,
   forgotPasswordFormSchema,
   loginFormSchema,
   resetPasswordFormSchema,
@@ -38,6 +39,14 @@ export type ForgotPasswordOutput = {
   email: string;
 };
 
+export type ChangePasswordPayload = z.infer<typeof changePasswordFormSchema>;
+
+export type ChangePasswordOutput = {
+  currentPassword: string;
+  password: string;
+  passwordConfirmation: string;
+};
+
 export type RefreshTokenPayload = {
   refreshToken: string;
 };
@@ -59,6 +68,8 @@ export abstract class AuthServiceContract {
   public abstract resetPassword(payload: ResetPasswordPayload): Promise<ResetPasswordOutput>;
 
   public abstract forgotPassword(payload: ForgotPasswordPayload): Promise<ForgotPasswordOutput>;
+
+  public abstract changePassword(payload: ChangePasswordPayload): Promise<ChangePasswordOutput>;
 
   public abstract refreshToken(payload: RefreshTokenPayload): Promise<RefreshTokenOutput>;
 
