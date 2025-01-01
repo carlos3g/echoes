@@ -9,6 +9,7 @@ import type { CreateUserInput, UpdateUserInput } from '@app/user/dtos/user-servi
 import type { User } from '@app/user/entities/user.entity';
 import { faker } from '@faker-js/faker';
 import { BadRequestException } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { UserService } from './user.service';
@@ -56,6 +57,7 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule],
       providers: [
         UserService,
         {
@@ -293,25 +295,21 @@ describe('UserService', () => {
   });
 
   describe('getAvatar', () => {
-    it('should retrieve the user avatar as a buffer', async () => {
+    it('should retrieve the user avatar as a url', async () => {
       const file = { id: faker.number.int(), bucket: 'avatars', key: faker.system.commonFileName('png') } as FileEntity;
       const user = { id: faker.number.int(), avatarId: file.id } as User;
-      const buffer = Buffer.from(faker.lorem.word());
 
       fileRepository.findUniqueOrThrow.mockResolvedValue(file);
-      storageService.get.mockResolvedValue(buffer);
 
-      const result = await userService.getAvatar({ user });
+      await userService.getAvatarUrl({ user });
 
       expect(fileRepository.findUniqueOrThrow).toHaveBeenCalledWith({ where: { id: user.avatarId } });
-      expect(storageService.get).toHaveBeenCalledWith({ bucket: file.bucket, key: file.key });
-      expect(result).toEqual(buffer);
     });
 
     it('should throw a BadRequestException if the user has no avatar', async () => {
       const user = { id: faker.number.int() } as User;
 
-      await expect(userService.getAvatar({ user })).rejects.toThrow(BadRequestException);
+      await expect(userService.getAvatarUrl({ user })).rejects.toThrow(BadRequestException);
     });
   });
 });

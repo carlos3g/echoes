@@ -21,7 +21,12 @@ export class GetUserAvatarUseCase implements UseCaseHandler {
       },
     });
 
-    const buffer = !user.avatarId ? this.getAvatarFallback(user.email) : await this.userService.getAvatar({ user });
+    if (user.avatarId) {
+      response.status(HttpStatus.TEMPORARY_REDIRECT).redirect(await this.userService.getAvatarUrl({ user }));
+      return;
+    }
+
+    const buffer = this.getAvatarFallback(user.email);
 
     response.set({
       // eslint-disable-next-line @typescript-eslint/naming-convention
