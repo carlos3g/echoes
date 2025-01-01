@@ -1,5 +1,6 @@
 import { HashServiceContract } from '@app/auth/contracts/hash-service.contract';
 import { Transaction } from '@app/lib/prisma/decorators/transaction.decorator';
+import type { EnvVariables } from '@app/shared/types';
 import { convertImageToWebp, createUuidV4 } from '@app/shared/utils';
 import { FileRepositoryContract } from '@app/storage/contracts/file-repository.contract';
 import { StorageServiceContract } from '@app/storage/contracts/storage-service.contract';
@@ -9,6 +10,7 @@ import type { CreateUserInput } from '@app/user/dtos/user-service-dtos';
 import { UpdateUserInput } from '@app/user/dtos/user-service-dtos';
 import type { User } from '@app/user/entities/user.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DateTime } from 'luxon';
 
 @Injectable()
@@ -17,7 +19,8 @@ export class UserService {
     private readonly userRepository: UserRepositoryContract,
     private readonly hashService: HashServiceContract,
     private readonly storageService: StorageServiceContract,
-    private readonly fileRepository: FileRepositoryContract
+    private readonly fileRepository: FileRepositoryContract,
+    private readonly configService: ConfigService<EnvVariables>
   ) {}
 
   public async create(input: CreateUserInput): Promise<User> {
@@ -111,7 +114,7 @@ export class UserService {
     await this.fileRepository.delete({ where: { id: user.avatarId } });
   }
 
-  public async getAvatar(input: { user: User }): Promise<Buffer> {
+  public async getAvatarUrl(input: { user: User }): Promise<string> {
     const { user } = input;
 
     if (!user.avatarId) {
@@ -120,10 +123,9 @@ export class UserService {
 
     const file = await this.fileRepository.findUniqueOrThrow({ where: { id: user.avatarId } });
 
-    return this.storageService.get({
-      bucket: file.bucket,
-      key: file.key,
-    });
+    console.log(`${this.configService.get('AWS_CLOUDFRONT_DNS')}/${file.bucket}/${file.key}`);
+
+    return `${this.configService.get('AWS_CLOUDFRONT_DNS')}/${file.bucket}/${file.key}`;
   }
 
   private async uploadAvatar(input: { avatar: Express.Multer.File }): Promise<FileEntity> {

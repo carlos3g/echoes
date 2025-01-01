@@ -85,6 +85,29 @@ services:
     networks:
       - echoesnetwork
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8080:80"
+    environment:
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: ${AWS_ACCESS_KEY_ID}
+      MINIO_SECRET_KEY: ${AWS_SECRET_ACCESS_KEY}
+    command: >
+      /bin/sh -c "
+      envsubst '$$MINIO_ENDPOINT $$MINIO_ACCESS_KEY $$MINIO_SECRET_KEY' < /tmp/nginx.conf.template > /etc/nginx/nginx.conf &&
+      nginx -g 'daemon off;'"
+    volumes:
+      - ./nginx.conf:/tmp/nginx.conf.template:ro
+    networks:
+      - echoesnetwork
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 volumes:
   echoes-db:
     driver: local

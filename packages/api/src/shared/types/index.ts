@@ -26,4 +26,6 @@ export interface EnvVariables {
   AWS_SECRET_ACCESS_KEY: string;
   AWS_REGION: string;
   AWS_ENDPOINT: string;
+
+  AWS_CLOUDFRONT_DNS: string;
 }
