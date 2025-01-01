@@ -123,8 +123,6 @@ export class UserService {
 
     const file = await this.fileRepository.findUniqueOrThrow({ where: { id: user.avatarId } });
 
-    console.log(`${this.configService.get('AWS_CLOUDFRONT_DNS')}/${file.bucket}/${file.key}`);
-
     return `${this.configService.get('AWS_CLOUDFRONT_DNS')}/${file.bucket}/${file.key}`;
   }
 
