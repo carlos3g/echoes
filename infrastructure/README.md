@@ -1,4 +1,4 @@
-# Infrastructure Setup for Node.js Application
+# Infrastructure Setup
 
 This document provides an overview and instructions for managing the infrastructure of our Node.js application using Terraform on AWS.
 
