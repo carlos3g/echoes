@@ -10,6 +10,12 @@ variable "ami_id" {
   default     = ""
 }
 
+variable "db_name" {
+  description = "RDS database name"
+  type        = string
+  default     = "echoes"
+}
+
 variable "db_username" {
   description = "RDS database username"
   type        = string
@@ -29,3 +35,22 @@ variable "s3_bucket_name" {
   default     = "avatars"
 }
 
+variable "vpc_id" {
+  description = "ID of the VPC"
+  type        = string
+}
+
+variable "subnet_ids" {
+  description = "List of subnet IDs"
+  type        = list(string)
+}
+
+variable "key_name" {
+  description = "Name of the SSH key pair"
+  type        = string
+}
+
+variable "admin_cidr_block" {
+  description = "CIDR block for admin access"
+  type        = string
+}

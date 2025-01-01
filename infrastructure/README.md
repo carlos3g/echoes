@@ -62,11 +62,49 @@ Run the following command to initialize Terraform in the `infrastructure/` direc
 terraform init
 ```
 
-### Step 2: Review the Plan
+### Step 2: Setup `values.tfvars`
 
 Before applying the infrastructure changes, you need to create a `values.tfvars` file with your desired settings. This file should contain the values for the variables declared in `variables.tf`.
 
 You can use the `example.tfvars` file as a starting point and customize it according to your needs.
+
+#### To get values from AWS:
+
+1. VPC ID:
+
+```bash
+aws ec2 describe-vpcs --query 'Vpcs[].{VpcId:VpcId}'
+```
+
+2. Subnet IDs:
+
+```bash
+aws ec2 describe-subnets --query 'Subnets[].{SubnetId:SubnetId,VpcId:VpcId,AZ:AvailabilityZone}'
+```
+
+3. Key name:
+
+```bash
+aws ec2 describe-key-pairs --query 'KeyPairs[].KeyName'
+```
+
+If no key exists, create one:
+
+```bash
+aws ec2 create-key-pair --key-name your-key-name --query 'KeyMaterial' --output text > your-key-name.pem
+```
+
+4. Admin CIDR block:
+
+Get your IP:
+
+```bash
+curl ifconfig.me
+```
+
+Add "/32" to make it a CIDR block (e.g., "203.0.113.0/32")
+
+### Step 3: Review the Plan
 
 Preview the infrastructure changes that will be applied:
 
@@ -74,7 +112,7 @@ Preview the infrastructure changes that will be applied:
 terraform plan -var-file values.tfvars
 ```
 
-### Step 3: Apply Changes
+### Step 4: Apply Changes
 
 Apply the Terraform configuration to provision the resources:
 
@@ -114,5 +152,3 @@ graph TD
     alb --> ec2[EC2 Instances - Node.js App]
     ec2 --> rds[RDS - PostgreSQL]
 ```
-
----
