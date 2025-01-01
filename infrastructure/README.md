@@ -64,10 +64,14 @@ terraform init
 
 ### Step 2: Review the Plan
 
+Before applying the infrastructure changes, you need to create a `values.tfvars` file with your desired settings. This file should contain the values for the variables declared in `variables.tf`.
+
+You can use the `example.tfvars` file as a starting point and customize it according to your needs.
+
 Preview the infrastructure changes that will be applied:
 
 ```bash
-terraform plan
+terraform plan -var-file values.tfvars
 ```
 
 ### Step 3: Apply Changes
