@@ -54,7 +54,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = () => {
         Criar nova conta
       </Text>
 
-      <View className="gap-s-20 mb-s-20">
+      <View className="mb-s-20 gap-s-20">
         <ControlledTextInput
           testID="signup-name-input"
           control={form.control}

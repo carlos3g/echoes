@@ -4,6 +4,7 @@ import type { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navig
 
 export type AppTabParams = {
   HomeScreen: undefined;
+  ManageTagsScreen: undefined;
   SettingsNavigator: undefined;
 };
 

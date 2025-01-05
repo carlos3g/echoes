@@ -16,6 +16,8 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:jest/recommended',
     'plugin:jest/style',
+    'plugin:prettier/recommended',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {

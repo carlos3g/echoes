@@ -62,7 +62,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = () => {
         Digite seu e-mail e enviaremos as instruções para redefinição de senha
       </Text>
 
-      <View className="gap-s-20 mb-s-40">
+      <View className="mb-s-40 gap-s-20">
         <ControlledTextInput control={form.control} name="email" label="E-mail" placeholder="Digite seu e-mail" />
         <ControlledPasswordInput control={form.control} name="password" label="Senha" placeholder="Digite sua senha" />
         <ControlledPasswordInput

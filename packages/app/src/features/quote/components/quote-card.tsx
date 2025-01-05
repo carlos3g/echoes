@@ -219,14 +219,14 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
   const { data } = props;
 
   return (
-    <View key={data.uuid} className="py-4 px-4">
+    <View key={data.uuid} className="px-4 py-4">
       <Text className="leading-relaxed">{data.body}</Text>
       <Text variant="paragraphSmall" className="mt-3 text-[#2559ac]">
         {data.author?.name}
       </Text>
 
-      <View className="flex-row justify-between mt-4">
-        <View className="gap-5 flex-row">
+      <View className="mt-4 flex-row justify-between">
+        <View className="flex-row gap-5">
           <FavoriteButton data={data} />
 
           <TagButton data={data} />

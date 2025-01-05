@@ -24,7 +24,7 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
   };
 
   return (
-    <View className={cn('grow shrink', boxClassName)}>
+    <View className={cn('shrink grow', boxClassName)}>
       <Pressable onPress={focusInput}>
         {label && (
           <Text variant="paragraphMedium" className="mb-s-4">
@@ -33,19 +33,19 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
         )}
         <View
           className={cn(
-            'bg-gray-white rounded-s-12 p-s-16 flex-row',
+            'flex-row rounded-s-12 bg-gray-white p-s-16',
             errorMessage ? 'border-2 border-error' : 'border border-gray-400'
           )}
         >
-          {LeftComponent && <View className="justify-center mr-s-16">{LeftComponent}</View>}
+          {LeftComponent && <View className="mr-s-16 justify-center">{LeftComponent}</View>}
           <RNTextInput
             autoCapitalize="none"
             ref={inputRef}
             placeholderTextColor={colors.palette.gray2}
-            className="p-0 grow shrink text-gray-black font-poppins-regular text-paragraph-medium"
+            className="shrink grow p-0 font-poppins-regular text-paragraph-medium text-gray-black"
             {...rnTextInputProps}
           />
-          {RightComponent && <View className="justify-center ml-s-16">{RightComponent}</View>}
+          {RightComponent && <View className="ml-s-16 justify-center">{RightComponent}</View>}
         </View>
         {errorMessage && (
           <Text variant="paragraphSmall" bold className="text-error">

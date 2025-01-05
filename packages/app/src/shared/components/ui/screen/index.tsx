@@ -1,4 +1,5 @@
 import type React from 'react';
+import { useMemo } from 'react';
 import type { ViewProps } from 'react-native';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { ScrollViewContainer, ViewContainer } from '@/shared/components/ui/screen/screen-container';
@@ -28,15 +29,18 @@ export const Screen: React.FC<ScreenProps> = (props) => {
     ...viewProps
   } = props;
 
-  const { bottom = 0, top = 0 } = useAppSafeArea();
+  const { bottom, top } = useAppSafeArea();
 
   const Container = scrollable ? ScrollViewContainer : ViewContainer;
+
+  const safeAreaInsetsStyle = useMemo(() => ({ paddingTop: top, paddingBottom: bottom }), [top, bottom]);
 
   return (
     <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <Container>
         <View
-          className={cn(`pt-[${top}px] pb-[${bottom}px]`, noPaddingHorizontal ? 'px-0' : 'px-s-24', className)}
+          className={cn(noPaddingHorizontal ? 'px-0' : 'px-s-24', className)}
+          style={safeAreaInsetsStyle}
           {...viewProps}
         >
           <ScreenHeader

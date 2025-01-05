@@ -24,7 +24,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
   const showBackLabel = !title && !HeaderComponent;
 
   return (
-    <View className={cn('flex-row items-center justify-between mb-s-24', className)} {...viewProps}>
+    <View className={cn('mb-s-24 flex-row items-center justify-between', className)} {...viewProps}>
       {canGoBack && (
         <TouchableOpacity
           testID="screen-back-button"
