@@ -9,6 +9,9 @@
     "prepare": "husky",
     "style": "lerna run style",
     "dev": "lerna run dev",
+    "dev:webapp": "lerna run dev --scope webapp",
+    "dev:api": "lerna run dev --scope api",
+    "clean": "lerna clean && rm -rf node_modules",
     "db": "lerna run db:generate && lerna run db:migrate && lerna run db:seed",
     "db:test": "lerna run db:generate && lerna run db:migrate:test"
   },

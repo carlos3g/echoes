@@ -6,26 +6,22 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'echoes',
   version: '1.0.0',
   orientation: 'portrait',
-  icon: './assets/icon.png',
-  userInterfaceStyle: 'light',
-  splash: {
-    image: './assets/splash.png',
-    resizeMode: 'contain',
-    backgroundColor: '#ffffff',
-  },
+  icon: './src/assets/icon.png',
+  userInterfaceStyle: 'automatic',
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.carlos3g.echoes',
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
+      foregroundImage: './src/assets/adaptive-icon.png',
+      monochromeImage: './src/assets/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
     package: 'com.carlos3g.echoes',
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './src/assets/favicon.png',
     bundler: 'metro',
   },
   plugins: [
@@ -44,6 +40,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         ios: ['fb', 'instagram', 'twitter', 'tiktoksharesdk'],
         android: ['com.facebook.katana', 'com.instagram.android', 'com.twitter.android', 'com.zhiliaoapp.musically'],
+      },
+    ],
+    [
+      'expo-splash-screen',
+      {
+        backgroundColor: '#fff',
+        image: './src/assets/splash-icon.png',
+        dark: {
+          image: './src/assets/splash-icon-dark.png',
+          backgroundColor: '#000',
+        },
+        imageWidth: 200,
       },
     ],
   ],
