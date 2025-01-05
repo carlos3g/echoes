@@ -38,6 +38,11 @@ import { ThemeProvider } from '@/lib/nativewind/theme.context';
 
 void SplashScreen.preventAutoHideAsync();
 
+SplashScreen.setOptions({
+  duration: 500,
+  fade: true,
+});
+
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_PROJECT_DSN,
   debug: true,
