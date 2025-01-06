@@ -45,14 +45,16 @@ export const TagCardSkeleton: React.FC<TagCardSkeletonProps> = () => {
     <ContentLoader
       speed={2}
       width={wWidth}
-      height={166}
-      viewBox={`0 0 ${wWidth} 166`}
+      height={56}
+      viewBox={`0 0 ${wWidth} 56`}
       backgroundColor="#e5e7eb"
       foregroundColor="#d1d5db"
     >
-      <Rect x="16" y="16" rx="4" ry="4" width={wWidth - 64} height="16" />
-      <Rect x="16" y="40" rx="4" ry="4" width={wWidth - 96} height="16" />
-      <Rect x="16" y="64" rx="4" ry="4" width={wWidth - 128} height="16" />
+      <Rect x="16" y="18" rx="4" ry="4" width="19" height="19" />
+
+      <Rect x="51" y="20" rx="4" ry="4" width={120} height="16" />
+
+      <Rect x={wWidth - 80} y="22" rx="4" ry="4" width="48" height="12" />
     </ContentLoader>
   );
 };

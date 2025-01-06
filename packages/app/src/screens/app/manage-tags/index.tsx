@@ -230,7 +230,7 @@ export const ManageTagsScreen: React.FC<ManageTagsScreenProps> = () => {
   return (
     <View className="flex-1 bg-background">
       <FlashList
-        estimatedItemSize={166}
+        estimatedItemSize={56}
         data={isLoading ? Array(10).fill(null) : tags}
         renderItem={isLoading ? renderItemSkeleton : renderItem}
         onEndReached={safeFetchNextPage}
