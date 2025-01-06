@@ -21,7 +21,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListQuotesOutput>({
     queryKey: ['quotes'],
     queryFn: ({ pageParam }) => quoteService.list({ paginate: { page: pageParam as number } }),
-    initialPageParam: 0,
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.meta.next,
     getPreviousPageParam: (lastPage) => lastPage.meta.prev,
   });

@@ -7,7 +7,6 @@ export type GetQuoteOutput = Quote;
 
 export type ListQuotesPayload = {
   paginate?: Paginate;
-  page?: number;
 };
 
 export type ListQuotesOutput = ApiPaginatedResult<Quote>;

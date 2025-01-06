@@ -29,7 +29,7 @@ const options: { [key in keyof AppTabParams]: TabBarItemOptions } = {
   ManageTagsScreen: {
     onBlurIcon: 'pricetags-outline',
     onFocusIcon: 'pricetags',
-    title: 'Manage Tags',
+    title: 'Gerenciar tags',
     tabBarButtonTestID: 'manage-tags-tab-button',
   },
   SettingsNavigator: {

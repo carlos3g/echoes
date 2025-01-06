@@ -51,3 +51,13 @@ export class User {
 
   public updatedAt!: Date;
 }
+
+export class Tag {
+  public uuid!: string;
+
+  public title!: string;
+
+  public createdAt!: Date;
+
+  public updatedAt!: Date;
+}

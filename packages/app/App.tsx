@@ -4,6 +4,7 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import './global.css';
 
 import { useReactQueryDevTools } from '@dev-plugins/react-query';
+import { Host } from 'react-native-portalize';
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -87,7 +88,9 @@ const App = () => {
       <SafeAreaProvider>
         <AuthProvider>
           <ThemeProvider>
-            <RootNavigator />
+            <Host>
+              <RootNavigator />
+            </Host>
 
             <Toaster autoWiggleOnUpdate="always" />
           </ThemeProvider>
