@@ -111,6 +111,8 @@ describe('PrismaTagRepository', () => {
     });
   });
 
+  describe.skip('countQuotes', () => {});
+
   describe('update', () => {
     it('should update an existing source', async () => {
       const user = await prisma.user.create({ data: userFactory() });

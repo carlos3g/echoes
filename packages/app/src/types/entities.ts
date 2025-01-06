@@ -60,4 +60,8 @@ export class Tag {
   public createdAt!: Date;
 
   public updatedAt!: Date;
+
+  public metadata!: {
+    totalQuotes: number;
+  };
 }

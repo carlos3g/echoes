@@ -70,6 +70,14 @@ export class PrismaTagRepository implements TagRepositoryContract {
     return prismaTagToTagAdapter(entity);
   }
 
+  public countQuotes(tagId: number): Promise<number> {
+    return this.prismaManager.getClient().tagQuote.count({
+      where: {
+        tagId,
+      },
+    });
+  }
+
   public async update(input: TagRepositoryUpdateInput) {
     const entity = await this.prismaManager.getClient().tag.update({
       where: input.where,

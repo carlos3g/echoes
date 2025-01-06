@@ -33,7 +33,7 @@ import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
 import { RootNavigator } from '@/navigation';
-import { queryClient } from '@/lib/react-query';
+import { queryClient, useFocusManager } from '@/lib/react-query';
 import { ThemeProvider } from '@/lib/nativewind/theme.context';
 import { AuthProvider } from '@/features/auth/contexts/auth.context';
 
@@ -78,6 +78,7 @@ const App = () => {
   }, [loaded, error]);
 
   useReactQueryDevTools(queryClient);
+  useFocusManager();
 
   if (!loaded && !error) {
     return null;

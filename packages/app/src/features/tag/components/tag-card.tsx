@@ -32,7 +32,7 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
       </View>
 
       <Text variant="paragraphCaption" className="text-zinc-500">
-        23 quotes
+        {data.metadata.totalQuotes} quotes
       </Text>
     </View>
   );

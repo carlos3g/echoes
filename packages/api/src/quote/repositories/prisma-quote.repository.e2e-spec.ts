@@ -376,6 +376,10 @@ describe('PrismaQuoteRepository', () => {
     });
   });
 
+  describe.skip('countFavorites', () => {});
+
+  describe.skip('countTags', () => {});
+
   describe('isFavorited', () => {
     it('should return true if the quote is favorited', async () => {
       const [user, quote] = await Promise.all([

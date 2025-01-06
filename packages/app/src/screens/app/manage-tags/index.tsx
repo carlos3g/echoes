@@ -1,7 +1,12 @@
 import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
-import type { BottomSheetFooterProps } from '@gorhom/bottom-sheet';
-import RNBottomSheet, { BottomSheetView, BottomSheetFooter as RNBottomSheetFooter } from '@gorhom/bottom-sheet';
+import type { BottomSheetBackdropProps, BottomSheetFooterProps } from '@gorhom/bottom-sheet';
+import RNBottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+  BottomSheetFooter as RNBottomSheetFooter,
+} from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useFocusEffect } from '@react-navigation/native';
 import type { ListRenderItem } from '@shopify/flash-list';
 import { FlashList } from '@shopify/flash-list';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -22,7 +27,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { toast } from 'sonner-native';
 import type { z } from 'zod';
-import type { HttpError } from '@/types/http';
 import type { Tag } from '@/types/entities';
 import type { ApiResponseError } from '@/types/api';
 import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
@@ -33,6 +37,7 @@ import { createTagFormSchema } from '@/features/tag/validations';
 import { tagService } from '@/features/tag/services';
 import type { CreateTagOutput, CreateTagPayload, ListTagsOutput } from '@/features/tag/contracts/tag-service.contract';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
+import type { HttpError } from '@/types/http';
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -137,6 +142,11 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet, CreateTagBot
     mutate(data);
   });
 
+  const renderBackdrop = useCallback(
+    (backdropProps: BottomSheetBackdropProps) => <BottomSheetBackdrop {...backdropProps} />,
+    []
+  );
+
   const renderFooter = useCallback(
     (footerProps: BottomSheetFooterProps) => (
       <BottomSheetFooter {...footerProps} bottomInset={bottom + 16} className="px-4">
@@ -158,9 +168,10 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet, CreateTagBot
         ref={ref}
         index={-1}
         footerComponent={renderFooter}
+        backdropComponent={renderBackdrop}
         enablePanDownToClose
         snapPoints={['50%']}
-        className="shadow-sm"
+        className="shadow-md"
       >
         <BottomSheetView className="px-4">
           <ControlledTextInput
@@ -200,6 +211,8 @@ export const ManageTagsScreen: React.FC<ManageTagsScreenProps> = () => {
     getNextPageParam: (lastPage) => lastPage.meta.next,
     getPreviousPageParam: (lastPage) => lastPage.meta.prev,
   });
+
+  useFocusEffect(useCallback(() => void refetch(), [refetch]));
 
   const refreshControl = useMemo(
     () => <RefreshControl refreshing={isRefetching} onRefresh={refetch} />,
