@@ -6,4 +6,9 @@ export class FilterQuoteQuery {
   @IsOptional()
   @IsUUID()
   public authorUuid?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsUUID()
+  public tagUuid?: string;
 }

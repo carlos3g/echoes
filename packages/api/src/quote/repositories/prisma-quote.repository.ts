@@ -37,7 +37,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
   }
 
   public async findManyPaginated(input: QuoteRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Quote>> {
-    const { ...where } = input.where || {};
+    const { tagId, ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
     const result = await paginate<FindManyReturn, 'Quote'>(
@@ -45,6 +45,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
       {
         where: {
           ...where,
+          tags: tagId ? { some: { tagId } } : undefined,
         },
         include: { author: true },
         orderBy: [{ createdAt: 'desc' }],

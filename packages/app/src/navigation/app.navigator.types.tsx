@@ -2,10 +2,11 @@
 
 import type { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { RouteProp } from '@react-navigation/native';
+import type { Tag } from '@/types/entities';
 
 export type AppTabParams = {
   HomeScreen: {
-    tagUuid?: string;
+    tag?: Tag;
   };
   ManageTagsScreen: undefined;
   SettingsNavigator: undefined;

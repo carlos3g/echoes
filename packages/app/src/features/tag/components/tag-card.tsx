@@ -29,7 +29,7 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
   const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
 
   const onPress = () => {
-    navigate('HomeScreen', { tagUuid: data.uuid });
+    navigate('HomeScreen', { tag: data });
   };
 
   return (

@@ -43,6 +43,7 @@ export interface QuoteRepositoryFindManyByTagInput {
 export interface QuoteRepositoryFindManyPaginatedInput {
   where?: {
     authorId?: number;
+    tagId?: number;
   };
   options?: Paginate;
 }
