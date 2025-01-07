@@ -1,9 +1,12 @@
 import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { cssInterop } from 'nativewind';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import { Dimensions, View } from 'react-native';
+import type { TouchableOpacityProps } from 'react-native';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
 import type { Tag } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
+import type { AppTabNavigationProp } from '@/navigation/app.navigator.types';
 
 const { width: wWidth } = Dimensions.get('window');
 
@@ -16,15 +19,26 @@ const Ionicons = cssInterop(ExpoIonicons, {
   },
 });
 
-interface TagCardProps {
+interface TagCardProps extends Omit<TouchableOpacityProps, 'onPress'> {
   data: Tag;
 }
 
 export const TagCard: React.FC<TagCardProps> = (props) => {
-  const { data } = props;
+  const { data, ...rest } = props;
+
+  const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
+
+  const onPress = () => {
+    navigate('HomeScreen', { tagUuid: data.uuid });
+  };
 
   return (
-    <View key={data.uuid} className="flex-row items-center justify-between px-4 py-4">
+    <TouchableOpacity
+      key={data.uuid}
+      className="flex-row items-center justify-between px-4 py-4"
+      {...rest}
+      onPress={onPress}
+    >
       <View className="flex-row items-center gap-3">
         <Ionicons name="pricetag-outline" size={19} className="text-primary" />
 
@@ -34,7 +48,7 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
       <Text variant="paragraphCaption" className="text-zinc-500">
         {data.metadata.totalQuotes} quotes
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

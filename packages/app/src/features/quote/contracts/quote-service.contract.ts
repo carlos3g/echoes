@@ -7,6 +7,10 @@ export type GetQuoteOutput = Quote;
 
 export type ListQuotesPayload = {
   paginate?: Paginate;
+  filters?: {
+    authorUuid?: string;
+    tagUuid?: string;
+  };
 };
 
 export type ListQuotesOutput = ApiPaginatedResult<Quote>;
