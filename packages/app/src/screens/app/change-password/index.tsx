@@ -47,7 +47,7 @@ export const ChangePasswordScreen: React.FC<ChangePasswordScreenProps> = () => {
 
   return (
     <Screen scrollable className="py-4">
-      <View className="gap-s-20 mb-s-20">
+      <View className="mb-s-20 gap-s-20">
         <ControlledPasswordInput
           testID="current-password-input"
           control={form.control}

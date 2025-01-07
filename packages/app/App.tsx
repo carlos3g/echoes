@@ -1,8 +1,10 @@
 import '@/lib/i18n';
 import '@/shared/services';
-import './global.css';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import './global.css';
 
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
+import { Host } from 'react-native-portalize';
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -30,11 +32,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
-import { useReactQueryDevTools } from '@dev-plugins/react-query';
 import { RootNavigator } from '@/navigation';
-import { queryClient } from '@/lib/react-query';
-import { AuthProvider } from '@/features/auth/contexts/auth.context';
+import { queryClient, useFocusManager } from '@/lib/react-query';
 import { ThemeProvider } from '@/lib/nativewind/theme.context';
+import { AuthProvider } from '@/features/auth/contexts/auth.context';
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -77,6 +78,7 @@ const App = () => {
   }, [loaded, error]);
 
   useReactQueryDevTools(queryClient);
+  useFocusManager();
 
   if (!loaded && !error) {
     return null;
@@ -87,7 +89,9 @@ const App = () => {
       <SafeAreaProvider>
         <AuthProvider>
           <ThemeProvider>
-            <RootNavigator />
+            <Host>
+              <RootNavigator />
+            </Host>
 
             <Toaster autoWiggleOnUpdate="always" />
           </ThemeProvider>

@@ -20,8 +20,8 @@
   "hediet.vscode-drawio.theme": "atlas",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
+    "source.removeUnusedImports": "always",
     "source.fixAll": "always",
-    "source.fixAll.eslint": "always",
-    "source.fixAll.ts": "always"
+    "source.fixAll.eslint": "always"
   }
 }

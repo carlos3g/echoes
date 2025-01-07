@@ -20,6 +20,8 @@ abstract class TagRepositoryContract {
 
   public abstract findMany(input?: TagRepositoryFindManyInput): Promise<Tag[]>;
 
+  public abstract countQuotes(tagId: number): Promise<number>;
+
   public abstract delete(input: TagRepositoryDeleteInput): Promise<void>;
 }
 

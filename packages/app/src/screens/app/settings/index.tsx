@@ -26,7 +26,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   return (
     <View className="flex-1 bg-white">
       <View
-        className="px-4 py-6 flex flex-col items-center border-[#D6D6D6]"
+        className="flex flex-col items-center border-[#D6D6D6] px-4 py-6"
         style={{ borderBottomWidth: StyleSheet.hairlineWidth }}
       >
         <Image
@@ -34,7 +34,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             uri: userAvatarUrl(user!),
           }}
-          className="w-20 h-20 mb-3 rounded-full"
+          className="mb-3 h-20 w-20 rounded-full"
         />
         <Text variant="headingSmall" className="text-gray-900">
           {user?.name}
@@ -44,7 +44,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
         </Text>
       </View>
 
-      <View className="px-4 py-4 space-y-2">
+      <View className="space-y-2 px-4 py-4">
         <TouchableOpacity className="flex-row items-center justify-between py-4">
           <Text>Editar perfil</Text>
           <Ionicons name="chevron-forward" size={24} className="text-[#D1D5DB]" />

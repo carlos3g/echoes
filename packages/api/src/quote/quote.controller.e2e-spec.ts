@@ -88,6 +88,8 @@ describe('(GET) /quotes', () => {
       ]),
     });
   });
+
+  it.skip('should be able to filter quotes by tag uuid', async () => {});
 });
 
 describe('(GET) /quotes/:uuid', () => {

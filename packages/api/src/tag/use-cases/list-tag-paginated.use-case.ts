@@ -5,11 +5,17 @@ import type { TagPaginatedInput } from '@app/tag/dtos/tag-paginated-input';
 import type { Tag } from '@app/tag/entities/tag.entity';
 import { Injectable } from '@nestjs/common';
 
+type TagWithMetadata = Tag & {
+  metadata: {
+    totalQuotes: number;
+  };
+};
+
 @Injectable()
 export class ListTagPaginatedUseCase implements UseCaseHandler {
   public constructor(private readonly tagRepository: TagRepositoryContract) {}
 
-  public async handle(input: TagPaginatedInput): Promise<PaginatedResult<Tag>> {
+  public async handle(input: TagPaginatedInput): Promise<PaginatedResult<TagWithMetadata>> {
     const { filters, paginate, user } = input;
 
     const result = await this.tagRepository.findManyPaginated({
@@ -17,6 +23,19 @@ export class ListTagPaginatedUseCase implements UseCaseHandler {
       options: paginate,
     });
 
-    return result;
+    return {
+      ...result,
+      data: await this.enrichWithMetadata(result.data),
+    };
+  }
+
+  public async enrichWithMetadata(tags: Tag[]): Promise<TagWithMetadata[]> {
+    const tagsWithMetadataPromises = tags.map(async (tag) => {
+      const [totalQuotes] = await Promise.all([this.tagRepository.countQuotes(tag.id)]);
+
+      return { ...tag, metadata: { totalQuotes } };
+    });
+
+    return Promise.all(tagsWithMetadataPromises);
   }
 }

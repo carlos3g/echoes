@@ -8,6 +8,7 @@ import { colors } from '@/shared/theme/colors';
 import { HomeScreen } from '@/screens/app/home';
 import { SettingsNavigator } from '@/navigation/settings.navigator';
 import type { AppTabParams } from '@/navigation/app.navigator.types';
+import { ManageTagsScreen } from '@/screens/app/manage-tags';
 
 const { Navigator, Screen } = createBottomTabNavigator<AppTabParams>();
 
@@ -24,6 +25,12 @@ const options: { [key in keyof AppTabParams]: TabBarItemOptions } = {
     onBlurIcon: 'home-outline',
     title: 'Echoes',
     tabBarButtonTestID: 'feed-tab-button',
+  },
+  ManageTagsScreen: {
+    onBlurIcon: 'pricetags-outline',
+    onFocusIcon: 'pricetags',
+    title: 'Gerenciar tags',
+    tabBarButtonTestID: 'manage-tags-tab-button',
   },
   SettingsNavigator: {
     onBlurIcon: 'settings-outline',
@@ -59,6 +66,7 @@ const screenOptions: ScreenOptions = ({ route }) => ({
 export const AppNavigator: React.FC = () => (
   <Navigator screenOptions={screenOptions}>
     <Screen component={HomeScreen} name="HomeScreen" />
+    <Screen component={ManageTagsScreen} name="ManageTagsScreen" />
     <Screen component={SettingsNavigator} name="SettingsNavigator" />
   </Navigator>
 );

@@ -4,6 +4,7 @@ import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.c
 import type { QuotePaginatedInput } from '@app/quote/dtos/quote-paginated-input';
 import type { Quote } from '@app/quote/entities/quote.entity';
 import type { UseCaseHandler } from '@app/shared/interfaces';
+import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { Injectable } from '@nestjs/common';
 
 type QuoteWithMetadata = Quote & {
@@ -18,16 +19,18 @@ type QuoteWithMetadata = Quote & {
 export class ListQuotePaginatedUseCase implements UseCaseHandler {
   public constructor(
     private readonly quoteRepository: QuoteRepositoryContract,
-    private readonly authorRepository: AuthorRepositoryContract
+    private readonly authorRepository: AuthorRepositoryContract,
+    private readonly tagRepository: TagRepositoryContract
   ) {}
 
   public async handle(input: QuotePaginatedInput): Promise<PaginatedResult<QuoteWithMetadata>> {
     const { filters, paginate } = input;
 
     const authorId = filters?.authorUuid ? await this.getAuthorId(filters.authorUuid) : undefined;
+    const tagId = filters?.tagUuid ? await this.getTagId(filters.tagUuid) : undefined;
 
     const result = await this.quoteRepository.findManyPaginated({
-      where: { authorId },
+      where: { authorId, tagId },
       options: paginate,
     });
 
@@ -57,5 +60,13 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
     });
 
     return author.id;
+  }
+
+  public async getTagId(uuid: string): Promise<number> {
+    const tag = await this.tagRepository.findUniqueOrThrow({
+      where: { uuid },
+    });
+
+    return tag.id;
   }
 }
