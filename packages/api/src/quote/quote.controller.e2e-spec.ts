@@ -204,3 +204,5 @@ describe('(GET) /quotes/:uuid/untag', () => {
     await expect(quoteRepository.isTagged({ where: { quoteId: quote.id, tagId: tag.id } })).resolves.toBeTruthy();
   });
 });
+
+describe.skip('(GET) /quotes/:uuid/tags/:tagUuid/exists', () => {});

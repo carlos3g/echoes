@@ -4,6 +4,7 @@ import { QuotePaginatedQuery } from '@app/quote/dtos/quote-paginated-query';
 import { TagQuoteRequest } from '@app/quote/dtos/tag-quote-request';
 import { FavoriteQuoteUseCase } from '@app/quote/use-cases/favorite-quote.use-case';
 import { GetOneQuoteUseCase } from '@app/quote/use-cases/get-one-quote.use-case';
+import { IsQuoteTaggedUseCase } from '@app/quote/use-cases/is-quote-tagged.use-case';
 import { ListQuotePaginatedUseCase } from '@app/quote/use-cases/list-quote-paginated.use-case';
 import { TagQuoteUseCase } from '@app/quote/use-cases/tag-quote.use-case';
 import { UnfavoriteQuoteUseCase } from '@app/quote/use-cases/unfavorite-quote.use-case';
@@ -20,7 +21,8 @@ export class QuoteController {
     private readonly favoriteQuoteUseCase: FavoriteQuoteUseCase,
     private readonly unfavoriteQuoteUseCase: UnfavoriteQuoteUseCase,
     private readonly tagQuoteUseCase: TagQuoteUseCase,
-    private readonly untagQuoteUseCase: UntagQuoteUseCase
+    private readonly untagQuoteUseCase: UntagQuoteUseCase,
+    private readonly isQuoteTaggedUseCase: IsQuoteTaggedUseCase
   ) {}
 
   @Public()
@@ -63,5 +65,12 @@ export class QuoteController {
   @HttpCode(HttpStatus.OK)
   public async untag(@Param('uuid') uuid: string, @UserDecorator() user: User, @Body() input: TagQuoteRequest) {
     return this.untagQuoteUseCase.handle({ quoteUuid: uuid, user, tagUuid: input.tagUuid });
+  }
+
+  @ApiBearerAuth()
+  @Get(':uuid/tags/:tagUuid/exists')
+  @HttpCode(HttpStatus.OK)
+  public async isTagged(@Param('uuid') uuid: string, @Param('tagUuid') tagUuid: string, @UserDecorator() user: User) {
+    return this.isQuoteTaggedUseCase.handle({ quoteUuid: uuid, user, tagUuid });
   }
 }

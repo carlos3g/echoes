@@ -15,6 +15,10 @@ export type ListQuotesPayload = {
 
 export type ListQuotesOutput = ApiPaginatedResult<Quote>;
 
+export type IsQuoteTaggedOutput = {
+  exists: boolean;
+};
+
 export abstract class QuoteServiceContract {
   public abstract get(uuid: string): Promise<GetQuoteOutput>;
 
@@ -23,4 +27,10 @@ export abstract class QuoteServiceContract {
   public abstract favorite(uuid: string): Promise<void>;
 
   public abstract unfavorite(uuid: string): Promise<void>;
+
+  public abstract tag(uuid: string, tagUuid: string): Promise<void>;
+
+  public abstract untag(uuid: string, tagUuid: string): Promise<void>;
+
+  public abstract isTagged(uuid: string, tagUuid: string): Promise<IsQuoteTaggedOutput>;
 }

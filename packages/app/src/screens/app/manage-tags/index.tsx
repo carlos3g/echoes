@@ -6,7 +6,7 @@ import RNBottomSheet, {
   BottomSheetFooter as RNBottomSheetFooter,
 } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { ListRenderItem } from '@shopify/flash-list';
 import { FlashList } from '@shopify/flash-list';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -38,6 +38,7 @@ import { tagService } from '@/features/tag/services';
 import type { CreateTagOutput, CreateTagPayload, ListTagsOutput } from '@/features/tag/contracts/tag-service.contract';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
 import type { HttpError } from '@/types/http';
+import { AppTabNavigationProp } from '@/navigation/app.navigator.types';
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -171,11 +172,11 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet, CreateTagBot
         backdropComponent={renderBackdrop}
         enablePanDownToClose
         snapPoints={['50%']}
-        className="shadow-md"
       >
         <BottomSheetView className="px-4">
           <ControlledTextInput
             control={form.control}
+            autoFocus
             name="title"
             label="Título"
             placeholder="Digite o título da tag"
@@ -187,7 +188,17 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet, CreateTagBot
   );
 });
 
-const renderItem: ListRenderItem<Tag> = ({ item }) => <TagCard data={item} />;
+const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
+  const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
+
+  const onPress = () => {
+    navigate('HomeScreen', { tag: item });
+  };
+
+  return <TagCard data={item} onPress={onPress} key={item.uuid} />;
+};
+
+const renderItem: ListRenderItem<Tag> = ({ item }) => <RenderItem item={item} />;
 
 const renderItemSkeleton: ListRenderItem<Tag> = () => <TagCardSkeleton />;
 

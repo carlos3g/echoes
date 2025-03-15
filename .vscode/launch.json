@@ -13,7 +13,7 @@
       "runtimeArgs": [
         "exec",
         "--scope",
-        "api",
+        "@echoes/api",
         "--",
         "yarn",
         "start:debug",
