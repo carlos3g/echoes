@@ -7,21 +7,31 @@ import { RefreshControl, StyleSheet, View } from 'react-native';
 import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
 import type { ListQuotesOutput } from '@/features/quote/contracts/quote-service.contract';
 import { quoteService } from '@/features/quote/services';
-import type { AppTabNavigationProp, AppTabRouteProp, AppTabScreenProps } from '@/navigation/app.navigator.types';
 import { Badge, BadgeIcon, BadgeText } from '@/shared/components/ui/badge';
 import type { Quote } from '@/types/entities';
+import type {
+  QuoteStackNavigationProp,
+  QuoteStackRouteProp,
+  QuoteStackScreenProps,
+} from '@/navigation/quotes.navigator.types';
 
-const renderItem: ListRenderItem<Quote> = ({ item }) => <QuoteCard data={item} />;
+const RenderItem: React.FC<{ item: Quote }> = ({ item }) => {
+  const { navigate } = useNavigation<QuoteStackNavigationProp<'QuoteScreen'>>();
+
+  return <QuoteCard data={item} onPress={() => navigate('QuoteScreen', { quoteUuid: item.uuid })} />;
+};
+
+const renderItem: ListRenderItem<Quote> = ({ item }) => <RenderItem item={item} />;
 
 const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
 
 const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
 
-interface HomeScreenProps extends AppTabScreenProps<'HomeScreen'> {}
+interface ManageQuotesScreenProps extends QuoteStackScreenProps<'ManageQuotesScreen'> {}
 
-export const HomeScreen: React.FC<HomeScreenProps> = () => {
-  const { setParams } = useNavigation<AppTabNavigationProp<'HomeScreen'>>();
-  const { params } = useRoute<AppTabRouteProp<'HomeScreen'>>();
+export const ManageQuotesScreen: React.FC<ManageQuotesScreenProps> = () => {
+  const { setParams } = useNavigation<QuoteStackNavigationProp<'ManageQuotesScreen'>>();
+  const { params } = useRoute<QuoteStackRouteProp<'ManageQuotesScreen'>>();
   const { tag } = params || {};
 
   const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListQuotesOutput>({

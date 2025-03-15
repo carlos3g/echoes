@@ -5,10 +5,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import type { RouteProp } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import { colors } from '@/shared/theme/colors';
-import { HomeScreen } from '@/screens/app/home';
 import { SettingsNavigator } from '@/navigation/settings.navigator';
 import type { AppTabParams } from '@/navigation/app.navigator.types';
 import { ManageTagsScreen } from '@/screens/app/manage-tags';
+import { QuotesNavigator } from '@/navigation/quotes.navigator';
 
 const { Navigator, Screen } = createBottomTabNavigator<AppTabParams>();
 
@@ -20,11 +20,12 @@ interface TabBarItemOptions extends BottomTabNavigationOptions {
 }
 
 const options: { [key in keyof AppTabParams]: TabBarItemOptions } = {
-  HomeScreen: {
+  QuotesNavigator: {
     onFocusIcon: 'home',
     onBlurIcon: 'home-outline',
     title: 'Echoes',
     tabBarButtonTestID: 'feed-tab-button',
+    headerShown: false,
   },
   ManageTagsScreen: {
     onBlurIcon: 'pricetags-outline',
@@ -65,7 +66,7 @@ const screenOptions: ScreenOptions = ({ route }) => ({
 
 export const AppNavigator: React.FC = () => (
   <Navigator screenOptions={screenOptions}>
-    <Screen component={HomeScreen} name="HomeScreen" />
+    <Screen component={QuotesNavigator} name="QuotesNavigator" />
     <Screen component={ManageTagsScreen} name="ManageTagsScreen" />
     <Screen component={SettingsNavigator} name="SettingsNavigator" />
   </Navigator>

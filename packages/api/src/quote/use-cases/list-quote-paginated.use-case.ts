@@ -7,7 +7,7 @@ import type { UseCaseHandler } from '@app/shared/interfaces';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { Injectable } from '@nestjs/common';
 
-type QuoteWithMetadata = Quote & {
+export type QuoteWithMetadata = Quote & {
   metadata: {
     favorites: number;
     tags: number;
@@ -45,6 +45,7 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
       const [favorites, tags, favoritedByUser] = await Promise.all([
         this.quoteRepository.countFavorites(quote.id),
         this.quoteRepository.countTags(quote.id),
+        // TODO: get user id from context
         this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: 1 } }),
       ]);
 

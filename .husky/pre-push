@@ -1,2 +1,0 @@
-yarn lerna run test
-yarn lerna run test:e2e

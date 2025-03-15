@@ -38,7 +38,7 @@ import { tagService } from '@/features/tag/services';
 import type { CreateTagOutput, CreateTagPayload, ListTagsOutput } from '@/features/tag/contracts/tag-service.contract';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
 import type { HttpError } from '@/types/http';
-import { AppTabNavigationProp } from '@/navigation/app.navigator.types';
+import type { AppTabNavigationProp } from '@/navigation/app.navigator.types';
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -192,7 +192,10 @@ const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
   const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
 
   const onPress = () => {
-    navigate('HomeScreen', { tag: item });
+    navigate('QuotesNavigator', {
+      screen: 'ManageQuotesScreen',
+      params: { tag: item },
+    });
   };
 
   return <TagCard data={item} onPress={onPress} key={item.uuid} />;
