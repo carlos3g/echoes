@@ -31,6 +31,9 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
   public async findUniqueOrThrow(input: QuoteRepositoryFindUniqueOrThrowInput) {
     const entity = await this.prismaManager.getClient().quote.findUniqueOrThrow({
       where: input.where,
+      include: {
+        author: true,
+      },
     });
 
     return prismaQuoteToQuoteAdapter(entity);

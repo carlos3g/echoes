@@ -1,6 +1,7 @@
 import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
 import { cssInterop } from 'nativewind';
-import { Dimensions, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import type { PressableProps } from 'react-native';
+import { Dimensions, Pressable, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Share from 'react-native-share';
 import { toast } from 'sonner-native';
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
@@ -16,6 +17,7 @@ import RNBottomSheet, {
 } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo, useRef, createContext, useContext, useState } from 'react';
 import type { ListRenderItem } from '@shopify/flash-list';
+import { useNavigation } from '@react-navigation/native';
 import type { Quote, Tag } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
@@ -27,9 +29,8 @@ import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
 import type { ListTagsOutput } from '@/features/tag/contracts/tag-service.contract';
 import { tagService } from '@/features/tag/services';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
-import { IsQuoteTaggedOutput } from '@/features/quote/contracts/quote-service.contract';
-import { useNavigation } from '@react-navigation/native';
-import { AppTabNavigationProp } from '@/navigation/app.navigator.types';
+import type { IsQuoteTaggedOutput } from '@/features/quote/contracts/quote-service.contract';
+import type { AppTabNavigationProp } from '@/navigation/app.navigator.types';
 
 const { width: wWidth } = Dimensions.get('window');
 
@@ -113,7 +114,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
         const [_, queryData] = qData;
 
         return !!queryData?.pageParams;
-      }) as undefined | [QueryKey, InfiniteData<ApiPaginatedResult<Quote>> | undefined];
+      });
 
       const [previousStateQuery, previousStateData] = previousState || [];
 
@@ -177,7 +178,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
         const [_, queryData] = qData;
 
         return !!queryData?.pageParams;
-      }) as undefined | [QueryKey, InfiniteData<ApiPaginatedResult<Quote>> | undefined];
+      });
 
       const [previousStateQuery, previousStateData] = previousState || [];
 
@@ -257,8 +258,8 @@ const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey: ['quotes'] });
 
-      queryClient.invalidateQueries({ queryKey: ['quote', 'is-tagged', quote?.uuid, item.uuid] });
-      queryClient.invalidateQueries({ queryKey: ['tags'] });
+      await queryClient.invalidateQueries({ queryKey: ['quote', 'is-tagged', quote?.uuid, item.uuid] });
+      await queryClient.invalidateQueries({ queryKey: ['tags'] });
 
       // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
       const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
@@ -269,7 +270,7 @@ const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
         const [_, queryData] = qData;
 
         return !!queryData?.pageParams;
-      }) as undefined | [QueryKey, InfiniteData<ApiPaginatedResult<Quote>> | undefined];
+      });
 
       const [previousStateQuery, previousStateData] = previousState || [];
 
@@ -307,8 +308,8 @@ const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey: ['quotes'] });
 
-      queryClient.invalidateQueries({ queryKey: ['quote', 'is-tagged', quote?.uuid, item.uuid] });
-      queryClient.invalidateQueries({ queryKey: ['tags'] });
+      await queryClient.invalidateQueries({ queryKey: ['quote', 'is-tagged', quote?.uuid, item.uuid] });
+      await queryClient.invalidateQueries({ queryKey: ['tags'] });
 
       // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
       const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
@@ -319,7 +320,7 @@ const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
         const [_, queryData] = qData;
 
         return !!queryData?.pageParams;
-      }) as undefined | [QueryKey, InfiniteData<ApiPaginatedResult<Quote>> | undefined];
+      });
 
       const [previousStateQuery, previousStateData] = previousState || [];
 
@@ -402,7 +403,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBotto
   const { bottom } = useAppSafeArea();
   const { hide } = useTagQuoteBottomSheet();
 
-  const { navigate } = useNavigation<AppTabNavigationProp<'HomeScreen'>>();
+  const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
 
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => <BottomSheetBackdrop {...backdropProps} />,
@@ -422,7 +423,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBotto
         />
       </BottomSheetFooter>
     ),
-    [bottom, navigate]
+    [bottom, navigate, hide]
   );
 
   const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListTagsOutput>({
@@ -499,8 +500,8 @@ export const TagQuoteBottomSheetProvider: React.FC<TagQuoteBottomSheetProviderPr
   const [quote, setQuote] = useState<Quote | null>(null);
   const bottomSheetRef = useRef<RNBottomSheet>(null);
 
-  const show = useCallback((quote: Quote) => {
-    setQuote(quote);
+  const show = useCallback((q: Quote) => {
+    setQuote(q);
     bottomSheetRef.current?.expand();
   }, []);
 
@@ -549,15 +550,15 @@ export const TagButton: React.FC<TagButtonProps> = (props) => {
   );
 };
 
-interface QuoteCardProps {
+interface QuoteCardProps extends PressableProps {
   data: Quote;
 }
 
 export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
-  const { data } = props;
+  const { data, ...rest } = props;
 
   return (
-    <View key={data.uuid} className="px-4 py-4">
+    <Pressable key={data.uuid} className="px-4 py-4" {...rest}>
       <Text className="leading-relaxed">{data.body}</Text>
       <Text variant="paragraphSmall" className="mt-3 text-[#2559ac]">
         {data.author?.name}
@@ -572,7 +573,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
 
         <ShareButton data={data} />
       </View>
-    </View>
+    </Pressable>
   );
 };
 

@@ -1,15 +1,14 @@
 // See: https://reactnavigation.org/docs/typescript
 
 import type { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import type { RouteProp } from '@react-navigation/native';
-import type { Tag } from '@/types/entities';
+import type { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
+import type { QuoteStackParam } from '@/navigation/quotes.navigator.types';
+import type { SettingsStackParams } from '@/navigation/settings.navigator.types';
 
 export type AppTabParams = {
-  HomeScreen: {
-    tag?: Tag;
-  };
+  QuotesNavigator: NavigatorScreenParams<QuoteStackParam>;
   ManageTagsScreen: undefined;
-  SettingsNavigator: undefined;
+  SettingsNavigator: NavigatorScreenParams<SettingsStackParams>;
 };
 
 // Helpers

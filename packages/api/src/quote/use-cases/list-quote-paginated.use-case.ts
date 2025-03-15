@@ -5,9 +5,10 @@ import type { QuotePaginatedInput } from '@app/quote/dtos/quote-paginated-input'
 import type { Quote } from '@app/quote/entities/quote.entity';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
+import type { User } from '@app/user/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 
-type QuoteWithMetadata = Quote & {
+export type QuoteWithMetadata = Quote & {
   metadata: {
     favorites: number;
     tags: number;
@@ -24,7 +25,7 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
   ) {}
 
   public async handle(input: QuotePaginatedInput): Promise<PaginatedResult<QuoteWithMetadata>> {
-    const { filters, paginate } = input;
+    const { filters, paginate, user } = input;
 
     const authorId = filters?.authorUuid ? await this.getAuthorId(filters.authorUuid) : undefined;
     const tagId = filters?.tagUuid ? await this.getTagId(filters.tagUuid) : undefined;
@@ -36,16 +37,16 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
 
     return {
       ...result,
-      data: await this.enrichWithMetadata(result.data),
+      data: await this.enrichWithMetadata(result.data, user),
     };
   }
 
-  public async enrichWithMetadata(quotes: Quote[]): Promise<QuoteWithMetadata[]> {
+  public async enrichWithMetadata(quotes: Quote[], user?: User): Promise<QuoteWithMetadata[]> {
     const quotesWithMetadataPromises = quotes.map(async (quote) => {
       const [favorites, tags, favoritedByUser] = await Promise.all([
         this.quoteRepository.countFavorites(quote.id),
         this.quoteRepository.countTags(quote.id),
-        this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: 1 } }),
+        user ? this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: user.id } }) : false,
       ]);
 
       return { ...quote, metadata: { favorites, tags, favoritedByUser } };
