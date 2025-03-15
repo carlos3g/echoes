@@ -6,6 +6,7 @@ import { PrismaQuoteRepository } from '@app/quote/repositories/prisma-quote.repo
 import { QuoteService } from '@app/quote/services/quote.service';
 import { FavoriteQuoteUseCase } from '@app/quote/use-cases/favorite-quote.use-case';
 import { GetOneQuoteUseCase } from '@app/quote/use-cases/get-one-quote.use-case';
+import { IsQuoteTaggedUseCase } from '@app/quote/use-cases/is-quote-tagged.use-case';
 import { ListQuotePaginatedUseCase } from '@app/quote/use-cases/list-quote-paginated.use-case';
 import { TagQuoteUseCase } from '@app/quote/use-cases/tag-quote.use-case';
 import { UnfavoriteQuoteUseCase } from '@app/quote/use-cases/unfavorite-quote.use-case';
@@ -27,6 +28,7 @@ import { Module } from '@nestjs/common';
     FavoriteQuoteUseCase,
     TagQuoteUseCase,
     UntagQuoteUseCase,
+    IsQuoteTaggedUseCase,
     UnfavoriteQuoteUseCase,
   ],
   exports: [QuoteRepositoryContract],

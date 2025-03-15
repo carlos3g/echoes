@@ -1,12 +1,10 @@
 import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { cssInterop } from 'nativewind';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import type { TouchableOpacityProps } from 'react-native';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import type { Tag } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
-import type { AppTabNavigationProp } from '@/navigation/app.navigator.types';
 
 const { width: wWidth } = Dimensions.get('window');
 
@@ -19,28 +17,23 @@ const Ionicons = cssInterop(ExpoIonicons, {
   },
 });
 
-interface TagCardProps extends Omit<TouchableOpacityProps, 'onPress'> {
+interface TagCardProps extends TouchableOpacityProps {
   data: Tag;
+  icon?: 'outline' | 'solid';
 }
 
+// Better use compound components here, but not worth since it's a simple component
 export const TagCard: React.FC<TagCardProps> = (props) => {
-  const { data, ...rest } = props;
-
-  const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
-
-  const onPress = () => {
-    navigate('HomeScreen', { tag: data });
-  };
+  const { data, icon, ...rest } = props;
 
   return (
-    <TouchableOpacity
-      key={data.uuid}
-      className="flex-row items-center justify-between px-4 py-4"
-      {...rest}
-      onPress={onPress}
-    >
+    <TouchableOpacity className="flex-row items-center justify-between px-4 py-4" {...rest}>
       <View className="flex-row items-center gap-3">
-        <Ionicons name="pricetag-outline" size={19} className="text-primary" />
+        {icon === 'solid' ? (
+          <Ionicons name="pricetag" size={19} className="text-primary" />
+        ) : (
+          <Ionicons name="pricetag-outline" size={19} className="text-primary" />
+        )}
 
         <Text variant="paragraphMedium">{data.title}</Text>
       </View>

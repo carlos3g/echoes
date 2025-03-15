@@ -4,7 +4,6 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import './global.css';
 
 import { useReactQueryDevTools } from '@dev-plugins/react-query';
-import { Host } from 'react-native-portalize';
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -32,7 +31,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
-import { RootNavigator } from '@/navigation';
+import { navigationIntegration, RootNavigator } from '@/navigation';
 import { queryClient, useFocusManager } from '@/lib/react-query';
 import { ThemeProvider } from '@/lib/nativewind/theme.context';
 import { AuthProvider } from '@/features/auth/contexts/auth.context';
@@ -46,7 +45,10 @@ SplashScreen.setOptions({
 
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_PROJECT_DSN,
-  debug: true,
+  sendDefaultPii: true,
+  tracesSampleRate: 0.3,
+  integrations: [navigationIntegration],
+  debug: false,
 });
 
 const App = () => {
@@ -89,9 +91,7 @@ const App = () => {
       <SafeAreaProvider>
         <AuthProvider>
           <ThemeProvider>
-            <Host>
-              <RootNavigator />
-            </Host>
+            <RootNavigator />
 
             <Toaster autoWiggleOnUpdate="always" />
           </ThemeProvider>

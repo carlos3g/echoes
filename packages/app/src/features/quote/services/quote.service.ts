@@ -1,6 +1,7 @@
 import type {
   GetQuoteOutput,
   GetQuotePayload,
+  IsQuoteTaggedOutput,
   ListQuotesOutput,
   ListQuotesPayload,
   QuoteServiceContract,
@@ -26,5 +27,17 @@ export class QuoteService implements QuoteServiceContract {
 
   public async unfavorite(uuid: string): Promise<void> {
     return this.httpClientService.post(`/quotes/${uuid}/unfavorite`);
+  }
+
+  public async tag(uuid: string, tagUuid: string): Promise<void> {
+    return this.httpClientService.post(`/quotes/${uuid}/tag`, { tagUuid });
+  }
+
+  public async untag(uuid: string, tagUuid: string): Promise<void> {
+    return this.httpClientService.post(`/quotes/${uuid}/untag`, { tagUuid });
+  }
+
+  public async isTagged(uuid: string, tagUuid: string): Promise<IsQuoteTaggedOutput> {
+    return this.httpClientService.get<IsQuoteTaggedOutput, void>(`/quotes/${uuid}/tags/${tagUuid}/exists`);
   }
 }

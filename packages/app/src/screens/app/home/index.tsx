@@ -4,7 +4,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
-import { QuoteCard, QuoteCardSkeleton } from '@/features/quote/components/quote-card';
+import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
 import type { ListQuotesOutput } from '@/features/quote/contracts/quote-service.contract';
 import { quoteService } from '@/features/quote/services';
 import type { AppTabNavigationProp, AppTabRouteProp, AppTabScreenProps } from '@/navigation/app.navigator.types';
@@ -52,24 +52,26 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   return (
     <View className="flex-1 bg-white">
-      {tag?.title && (
-        <View className="flex-row gap-2 px-4 pt-4">
-          <Badge className="pl-2" onPress={clearFilters}>
-            <BadgeIcon name="close" />
-            <BadgeText>{tag?.title}</BadgeText>
-          </Badge>
-        </View>
-      )}
+      <TagQuoteBottomSheetProvider>
+        {tag?.title && (
+          <View className="flex-row gap-2 px-4 pt-4">
+            <Badge className="pl-2" onPress={clearFilters}>
+              <BadgeIcon name="close" />
+              <BadgeText>{tag?.title}</BadgeText>
+            </Badge>
+          </View>
+        )}
 
-      <FlashList
-        estimatedItemSize={166}
-        data={isLoading ? Array(10).fill(null) : quotes}
-        renderItem={isLoading ? renderItemSkeleton : renderItem}
-        onEndReached={safeFetchNextPage}
-        onEndReachedThreshold={0.5}
-        refreshControl={refreshControl}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-      />
+        <FlashList
+          estimatedItemSize={166}
+          data={isLoading ? Array(10).fill(null) : quotes}
+          renderItem={isLoading ? renderItemSkeleton : renderItem}
+          onEndReached={safeFetchNextPage}
+          onEndReachedThreshold={0.5}
+          refreshControl={refreshControl}
+          ItemSeparatorComponent={ItemSeparatorComponent}
+        />
+      </TagQuoteBottomSheetProvider>
     </View>
   );
 };
