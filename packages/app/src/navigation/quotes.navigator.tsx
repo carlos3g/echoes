@@ -1,7 +1,7 @@
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type React from 'react';
-import { QuoteScreen } from '@/screens/app/quotes';
+import { QuoteScreen } from '@/screens/app/quote';
 import type { QuoteStackParam } from './quotes.navigator.types';
 import { ManageQuotesScreen } from '@/screens/app/manage-quotes';
 

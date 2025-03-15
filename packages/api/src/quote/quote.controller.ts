@@ -28,15 +28,15 @@ export class QuoteController {
   @Public()
   @Get('')
   @HttpCode(HttpStatus.OK)
-  public async index(@Query() params: QuotePaginatedQuery) {
-    return this.listQuotePaginatedUseCase.handle(params);
+  public async index(@Query() params: QuotePaginatedQuery, @UserDecorator() user: User) {
+    return this.listQuotePaginatedUseCase.handle({ ...params, user });
   }
 
   @Public()
   @Get(':uuid')
   @HttpCode(HttpStatus.OK)
-  public async show(@Param('uuid') uuid: string) {
-    return this.getOneQuoteUseCase.handle({ uuid });
+  public async show(@Param('uuid') uuid: string, @UserDecorator() user: User) {
+    return this.getOneQuoteUseCase.handle({ uuid, user });
   }
 
   @ApiBearerAuth()

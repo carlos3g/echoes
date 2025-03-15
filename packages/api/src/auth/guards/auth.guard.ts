@@ -23,18 +23,22 @@ export class AuthGuard {
       context.getClass(),
     ]);
 
+    const request = context.switchToHttp().getRequest<Request>();
+    const token = this.getAccessToken(request);
+
+    if (token) {
+      this.verifyToken(token);
+
+      request.user = await this.authService.getUserByToken(token);
+
+      return true;
+    }
+
     if (isPublic) {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest<Request>();
-    const token = this.getAccessTokenOrThrow(request);
-
-    this.verifyToken(token);
-
-    request.user = await this.authService.getUserByToken(token);
-
-    return true;
+    throw new UnauthorizedException();
   }
 
   private verifyToken(token: string): void {
@@ -47,11 +51,11 @@ export class AuthGuard {
     }
   }
 
-  private getAccessTokenOrThrow(request: Request): string | never {
+  private getAccessToken(request: Request): string | null {
     const header = request.headers.authorization;
 
     if (!header || !header.startsWith('Bearer ')) {
-      throw new UnauthorizedException();
+      return null;
     }
 
     return header.split(' ')[1];
