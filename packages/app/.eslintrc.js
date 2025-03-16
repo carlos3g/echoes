@@ -9,15 +9,15 @@ module.exports = {
     jest: true,
   },
   extends: [
-    'airbnb',
+    'standard',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    '@react-native-community',
+    '@react-native',
     'plugin:react/jsx-runtime',
     'plugin:jest/recommended',
     'plugin:jest/style',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
     'plugin:prettier/recommended',
-    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -29,7 +29,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', '@tanstack/query'],
   overrides: [
     {
       files: ['**/*.spec.ts', '**/*.e2e-spec.ts'],
@@ -77,7 +77,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['**/*.e2e-spec.ts', '**/*.spec.ts', 'src/test/**/*'],
+        devDependencies: ['**/*.e2e-spec.ts', '**/*.spec.ts', 'src/test/**/*', 'tests/**/*'],
       },
     ],
   },

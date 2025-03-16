@@ -38,7 +38,7 @@ import { tagService } from '@/features/tag/services';
 import type { CreateTagOutput, CreateTagPayload, ListTagsOutput } from '@/features/tag/contracts/tag-service.contract';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
 import type { HttpError } from '@/types/http';
-import type { AppTabNavigationProp } from '@/navigation/app.navigator.types';
+import type { AppTabNavigationProp, AppTabScreenProps } from '@/navigation/app.navigator.types';
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -110,9 +110,7 @@ export const Fab: React.FC<FabProps> = (props) => {
 
 type CreateTagFormData = z.infer<typeof createTagFormSchema>;
 
-interface CreateTagBottomSheetProps {}
-
-export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet, CreateTagBottomSheetProps>((props, ref) => {
+export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
 
   const form = useForm<CreateTagFormData>({
@@ -213,9 +211,7 @@ const ListEmptyComponent = () => (
   </View>
 );
 
-interface ManageTagsScreenProps {}
-
-export const ManageTagsScreen: React.FC<ManageTagsScreenProps> = () => {
+export const ManageTagsScreen: React.FC<AppTabScreenProps<'ManageTagsScreen'>> = () => {
   const bottomSheetRef = useRef<RNBottomSheet>(null);
 
   const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListTagsOutput>({

@@ -16,9 +16,7 @@ const Ionicons = cssInterop(ExpoIonicons, {
   },
 });
 
-interface SettingsScreenProps extends SettingsStackScreenProps<'SettingsScreen'> {}
-
-export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
+export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>> = () => {
   const { handleSignOut, user } = useAuth();
 
   const { navigate } = useNavigation<SettingsStackNavigationProp<'SettingsScreen'>>();
@@ -31,7 +29,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
       >
         <Image
           source={{
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             uri: userAvatarUrl(user!),
           }}
           className="mb-3 h-20 w-20 rounded-full"

@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 export class Quote {
   public uuid!: string;
 

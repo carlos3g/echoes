@@ -19,9 +19,7 @@ import { Button } from '@/shared/components/ui/button';
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
-interface SignInScreenProps extends AuthStackScreenProps<'SignInScreen'> {}
-
-export const SignInScreen: React.FC<SignInScreenProps> = () => {
+export const SignInScreen: React.FC<AuthStackScreenProps<'SignInScreen'>> = () => {
   const { handleSignIn } = useAuth();
   const { navigate } = useNavigation<AuthStackNavigationProp<'SignInScreen'>>();
 

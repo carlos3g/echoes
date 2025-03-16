@@ -13,6 +13,5 @@ export const humanizeNumber = (num: number): string => {
 };
 
 export const userAvatarUrl = (user: User): string => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return `${process.env.EXPO_PUBLIC_API_URL!}/users/${user.uuid}.webp`;
 };

@@ -19,9 +19,7 @@ import { Button } from '@/shared/components/ui/button';
 
 type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
-interface SignUpScreenProps extends AuthStackScreenProps<'SignUpScreen'> {}
-
-export const SignUpScreen: React.FC<SignUpScreenProps> = () => {
+export const SignUpScreen: React.FC<AuthStackScreenProps<'SignUpScreen'>> = () => {
   const { navigate } = useNavigation<AuthStackNavigationProp<'SignUpScreen'>>();
 
   const form = useForm<SignUpFormData>({

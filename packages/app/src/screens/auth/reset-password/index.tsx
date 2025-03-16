@@ -14,12 +14,11 @@ import { Screen } from '@/shared/components/ui/screen';
 import type { ApiResponseError } from '@/types/api';
 import type { HttpError } from '@/types/http';
 import { Text } from '@/shared/components/ui/text';
+import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>;
 
-interface ResetPasswordScreenProps {}
-
-export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = () => {
+export const ResetPasswordScreen: React.FC<AuthStackScreenProps<'ResetPasswordScreen'>> = () => {
   const token = '';
 
   const form = useForm<ResetPasswordFormData>({

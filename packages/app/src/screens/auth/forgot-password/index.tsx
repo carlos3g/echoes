@@ -12,12 +12,11 @@ import { Screen } from '@/shared/components/ui/screen';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { Button } from '@/shared/components/ui/button';
 import { Text } from '@/shared/components/ui/text';
+import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordFormSchema>;
 
-interface ForgotPasswordScreenProps {}
-
-export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = () => {
+export const ForgotPasswordScreen: React.FC<AuthStackScreenProps<'ForgotPasswordScreen'>> = () => {
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordFormSchema),
     defaultValues: {},

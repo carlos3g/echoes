@@ -27,9 +27,7 @@ const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
 
 const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
 
-interface ManageQuotesScreenProps extends QuoteStackScreenProps<'ManageQuotesScreen'> {}
-
-export const ManageQuotesScreen: React.FC<ManageQuotesScreenProps> = () => {
+export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScreen'>> = () => {
   const { setParams } = useNavigation<QuoteStackNavigationProp<'ManageQuotesScreen'>>();
   const { params } = useRoute<QuoteStackRouteProp<'ManageQuotesScreen'>>();
   const { tag } = params || {};

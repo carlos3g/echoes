@@ -15,9 +15,7 @@ import type { HttpError } from '@/types/http';
 
 type ChangePasswordFormData = z.infer<typeof changePasswordFormSchema>;
 
-interface ChangePasswordScreenProps extends SettingsStackScreenProps<'ChangePasswordScreen'> {}
-
-export const ChangePasswordScreen: React.FC<ChangePasswordScreenProps> = () => {
+export const ChangePasswordScreen: React.FC<SettingsStackScreenProps<'ChangePasswordScreen'>> = () => {
   const form = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordFormSchema),
     defaultValues: {},
