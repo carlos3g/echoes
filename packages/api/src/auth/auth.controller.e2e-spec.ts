@@ -29,7 +29,7 @@ describe('(POST) /auth/sign-in', () => {
       email: payload.email,
       password: payload.password,
       name: faker.person.fullName(),
-      username: faker.internet.userName().toLowerCase(),
+      username: faker.internet.username().toLowerCase(),
     });
 
     const response = await request(server).post('/auth/sign-in').send(payload);
@@ -53,7 +53,7 @@ describe('(POST) /auth/sign-in', () => {
       email: faker.internet.email(),
       password: faker.internet.password(),
       name: faker.person.fullName(),
-      username: faker.internet.userName().toLowerCase(),
+      username: faker.internet.username().toLowerCase(),
     });
 
     const response = await request(server).post('/auth/sign-in').send({
@@ -90,7 +90,7 @@ describe('(POST) /auth/sign-up', () => {
       email: payload.email,
       password: payload.password,
       name: faker.person.fullName(),
-      username: faker.internet.userName().toLowerCase(),
+      username: faker.internet.username().toLowerCase(),
     });
 
     const response = await request(server).post('/auth/sign-up').send({
@@ -114,7 +114,7 @@ describe('(POST) /auth/refresh', () => {
       email: payload.email,
       password: payload.password,
       name: faker.person.fullName(),
-      username: faker.internet.userName().toLowerCase(),
+      username: faker.internet.username().toLowerCase(),
     });
 
     const signInResponse = await request(server).post('/auth/sign-in').send({
@@ -150,7 +150,7 @@ describe('(POST) /auth/forgot-password', () => {
       email: payload.email,
       password: payload.password,
       name: faker.person.fullName(),
-      username: faker.internet.userName().toLowerCase(),
+      username: faker.internet.username().toLowerCase(),
     });
 
     const response = await request(server).post('/auth/forgot-password').send({
@@ -175,7 +175,7 @@ describe('(POST) /auth/reset-password/:token', () => {
       email: payload.email,
       password: payload.password,
       name: faker.person.fullName(),
-      username: faker.internet.userName().toLowerCase(),
+      username: faker.internet.username().toLowerCase(),
     });
 
     const { token } = await authService.createPasswordChangeRequest({ userId: user.id });
@@ -197,7 +197,7 @@ describe('(POST) /auth/reset-password/:token', () => {
       email: payload.email,
       password: payload.password,
       name: faker.person.fullName(),
-      username: faker.internet.userName().toLowerCase(),
+      username: faker.internet.username().toLowerCase(),
     });
 
     const response = await request(server).post(`/auth/reset-password/${token}`).send({

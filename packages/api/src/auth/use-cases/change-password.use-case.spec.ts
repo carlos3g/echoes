@@ -4,7 +4,7 @@ import { ChangePasswordUseCase } from '@app/auth/use-cases/change-password.use-c
 import type { User } from '@app/user/entities/user.entity';
 import { UserService } from '@app/user/services/user.service';
 import { faker } from '@faker-js/faker';
-import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 
@@ -65,7 +65,7 @@ describe('ChangePasswordUseCase', () => {
       });
     });
 
-    it('should throw ForbiddenException if the current password is incorrect', async () => {
+    it('should throw UnauthorizedException if the current password is incorrect', async () => {
       const password = faker.internet.password();
       const input: ChangePasswordInput = {
         user: {
@@ -79,7 +79,7 @@ describe('ChangePasswordUseCase', () => {
 
       hashService.compare.mockReturnValue(false);
 
-      await expect(changePasswordUseCase.handle(input)).rejects.toThrow(ForbiddenException);
+      await expect(changePasswordUseCase.handle(input)).rejects.toThrow(UnauthorizedException);
       expect(hashService.compare).toHaveBeenCalledWith(input.currentPassword, input.user.password);
       expect(userService.update).not.toHaveBeenCalled();
     });
