@@ -397,9 +397,7 @@ const ListEmptyComponent = () => (
   </View>
 );
 
-interface TagQuoteBottomSheetProps {}
-
-export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBottomSheetProps>((props, ref) => {
+export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
   const { hide } = useTagQuoteBottomSheet();
 
@@ -577,9 +575,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
   );
 };
 
-export interface QuoteCardSkeletonProps {}
-
-export const QuoteCardSkeleton: React.FC<QuoteCardSkeletonProps> = () => {
+export const QuoteCardSkeleton: React.FC = () => {
   return (
     <ContentLoader
       speed={2}

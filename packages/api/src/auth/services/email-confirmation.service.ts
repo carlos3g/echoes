@@ -5,7 +5,6 @@ import { emailConfirmationTokenPreset, emailConfirmedPreset } from '@app/email/p
 import { Transaction } from '@app/lib/prisma/decorators/transaction.decorator';
 import type { EnvVariables } from '@app/shared/types';
 import { createUuidV4 } from '@app/shared/utils';
-import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type { User } from '@app/user/entities/user.entity';
 import { UserService } from '@app/user/services/user.service';
 import { Injectable } from '@nestjs/common';
@@ -15,7 +14,6 @@ import { DateTime } from 'luxon';
 @Injectable()
 export class EmailConfirmationService {
   public constructor(
-    private readonly userRepository: UserRepositoryContract,
     private readonly hashService: HashServiceContract,
     private readonly configService: ConfigService<EnvVariables>,
     private readonly userService: UserService,

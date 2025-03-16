@@ -45,9 +45,7 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
   );
 };
 
-export interface TagCardSkeletonProps {}
-
-export const TagCardSkeleton: React.FC<TagCardSkeletonProps> = () => {
+export const TagCardSkeleton: React.FC = () => {
   return (
     <ContentLoader
       speed={2}

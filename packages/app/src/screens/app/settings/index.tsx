@@ -16,9 +16,7 @@ const Ionicons = cssInterop(ExpoIonicons, {
   },
 });
 
-interface SettingsScreenProps extends SettingsStackScreenProps<'SettingsScreen'> {}
-
-export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
+export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>> = () => {
   const { handleSignOut, user } = useAuth();
 
   const { navigate } = useNavigation<SettingsStackNavigationProp<'SettingsScreen'>>();
@@ -31,7 +29,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
       >
         <Image
           source={{
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             uri: userAvatarUrl(user!),
           }}
           className="mb-3 h-20 w-20 rounded-full"
@@ -46,7 +43,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
 
       <View className="space-y-2 px-4 py-4">
         <TouchableOpacity className="flex-row items-center justify-between py-4">
-          <Text>Editar perfil</Text>
+          <Text className="text-[#D1D5DB]">Editar perfil</Text>
           <Ionicons name="chevron-forward" size={24} className="text-[#D1D5DB]" />
         </TouchableOpacity>
 

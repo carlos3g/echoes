@@ -23,7 +23,7 @@ export class AxiosHttpClientService implements HttpClientServiceContract {
     this.httpPackage.interceptors.response.use(onSuccess, onError);
   }
 
-  async get<TResult, TQuery>(url: string, params?: TQuery): Promise<TResult | never> {
+  async get<TResult, TQuery>(url: string, params?: TQuery): Promise<TResult> {
     const data = await this.httpPackage.get<TResult>(url, { params });
     return data?.data;
   }
@@ -32,12 +32,12 @@ export class AxiosHttpClientService implements HttpClientServiceContract {
     url: string,
     payload?: TPayload,
     config?: HttpConfig
-  ): Promise<TResult | never> {
+  ): Promise<TResult> {
     const data = await this.httpPackage.post<TResult>(url, payload, config);
     return data?.data;
   }
 
-  async patch<TResult, TPayload>(url: string, payload?: TPayload, config?: HttpConfig | undefined): Promise<TResult> {
+  async patch<TResult, TPayload>(url: string, payload?: TPayload, config?: HttpConfig): Promise<TResult> {
     const data = await this.httpPackage.patch<TResult>(url, payload, config);
     return data?.data;
   }
@@ -46,7 +46,7 @@ export class AxiosHttpClientService implements HttpClientServiceContract {
     url: string,
     payload?: TPayload,
     config?: HttpConfig
-  ): Promise<TResult | never> {
+  ): Promise<TResult> {
     const data = await this.httpPackage.delete<TResult>(url, { data: payload, ...config });
     return data?.data;
   }

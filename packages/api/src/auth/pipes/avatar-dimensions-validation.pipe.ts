@@ -13,7 +13,7 @@ export class AvatarDimensionsValidationPipe extends FileValidator {
   }
 
   public isValid(
-    file?: IFileWithBuffer | IFileWithBuffer[] | Record<string, IFileWithBuffer[]> | undefined
+    file?: IFileWithBuffer | IFileWithBuffer[] | Record<string, IFileWithBuffer[]>
   ): boolean | Promise<boolean> {
     if (!file) {
       return true;

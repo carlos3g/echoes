@@ -100,7 +100,7 @@ describe('UserService', () => {
         email: faker.internet.email(),
         password: faker.internet.password(),
         name: faker.person.fullName(),
-        username: faker.internet.userName().toLowerCase(),
+        username: faker.internet.username().toLowerCase(),
         avatar,
       };
       const hashedPassword = `${input.password}hash`;

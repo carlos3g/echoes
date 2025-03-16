@@ -14,12 +14,11 @@ import { Screen } from '@/shared/components/ui/screen';
 import type { ApiResponseError } from '@/types/api';
 import type { HttpError } from '@/types/http';
 import { Text } from '@/shared/components/ui/text';
+import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>;
 
-interface ResetPasswordScreenProps {}
-
-export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = () => {
+export const ResetPasswordScreen: React.FC<AuthStackScreenProps<'ResetPasswordScreen'>> = () => {
   const token = '';
 
   const form = useForm<ResetPasswordFormData>({
@@ -29,7 +28,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = () => {
     },
   });
 
-  const { mutate, status } = useMutation<
+  const { mutate, isPending } = useMutation<
     ResetPasswordOutput,
     HttpError<ApiResponseError<ResetPasswordPayload>>,
     ResetPasswordPayload
@@ -37,7 +36,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = () => {
     mutationFn: async (payload) => authService.resetPassword(payload),
     onSuccess: () => {
       toast.success('Senha alterada com sucesso!', {
-        description: 'Faca login com sua nova senha',
+        description: 'Faça login com sua nova senha',
       });
     },
     onError: () => {
@@ -50,8 +49,6 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = () => {
   const onSubmit = form.handleSubmit((data: ResetPasswordFormData) => {
     mutate(data);
   });
-
-  const isLoading = status === 'pending';
 
   return (
     <Screen canGoBack>
@@ -73,7 +70,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = () => {
         />
       </View>
 
-      <Button loading={isLoading} disabled={!form.formState.isValid} onPress={onSubmit} title="Redefinir senha" />
+      <Button loading={isPending} disabled={!form.formState.isValid} onPress={onSubmit} title="Redefinir senha" />
     </Screen>
   );
 };

@@ -12,24 +12,22 @@ module.exports = {
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
-    'airbnb-base',
-    'airbnb-typescript/base',
+    'standard',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:jest/recommended',
     'plugin:jest/style',
     'plugin:prettier/recommended',
-    'prettier',
   ],
   root: true,
   env: {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', 'dist', 'node_modules'],
   overrides: [
     {
-      files: ['**/*.spec.ts', '**/*.e2e-spec.ts'],
+      files: ['**/*.spec.ts', '**/*.e2e-spec.ts', 'test/**/*'],
       plugins: ['jest'],
       rules: {
         '@typescript-eslint/unbound-method': 0,
@@ -69,5 +67,6 @@ module.exports = {
       },
     ],
     'import/order': 2,
+    'no-useless-constructor': 0,
   },
 };

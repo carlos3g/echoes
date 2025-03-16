@@ -15,6 +15,10 @@ export class Tag {
   @Exclude()
   public userId!: number | null;
 
+  public metadata?: {
+    totalQuotes?: number;
+  };
+
   public createdAt!: Date;
 
   public updatedAt!: Date;

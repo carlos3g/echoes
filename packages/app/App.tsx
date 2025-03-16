@@ -31,10 +31,14 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
+import { useMMKVDevTools } from '@dev-plugins/react-native-mmkv';
+import { LogBox } from 'react-native';
 import { navigationIntegration, RootNavigator } from '@/navigation';
 import { queryClient, useFocusManager } from '@/lib/react-query';
 import { ThemeProvider } from '@/lib/nativewind/theme.context';
 import { AuthProvider } from '@/features/auth/contexts/auth.context';
+
+LogBox.ignoreLogs(['ProgressiveListView: `ref` is not a prop.']);
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -80,6 +84,7 @@ const App = () => {
   }, [loaded, error]);
 
   useReactQueryDevTools(queryClient);
+  useMMKVDevTools();
   useFocusManager();
 
   if (!loaded && !error) {

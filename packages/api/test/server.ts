@@ -1,11 +1,11 @@
 /* eslint-disable import/no-mutable-exports */
+import type { Server } from 'net';
 import { AppModule } from '@app/app.module';
 import { PrismaService } from '@app/lib/prisma/services/prisma.service';
 import type { INestApplication } from '@nestjs/common';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
-import type { Server } from 'net';
 
 const createTestingModule = async () => {
   const moduleFixture = Test.createTestingModule({

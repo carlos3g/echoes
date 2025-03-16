@@ -17,7 +17,7 @@ export class UserFactory extends FactoryContract<Entity> {
       emailVerifiedAt: () => faker.date.recent(),
       name: () => faker.person.fullName(),
       password: () => bcrypt.hashSync(UserFactory.password, 10),
-      username: () => faker.internet.userName(),
+      username: () => faker.internet.username(),
     };
   }
 }

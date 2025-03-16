@@ -3,11 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { View } from 'react-native';
 import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
 import { quoteService } from '@/features/quote/services';
-import type { QuoteStackRouteProp } from '@/navigation/quotes.navigator.types';
+import type { QuoteStackRouteProp, QuoteStackScreenProps } from '@/navigation/quotes.navigator.types';
 
-interface QuoteScreenProps {}
-
-export const QuoteScreen: React.FC<QuoteScreenProps> = () => {
+export const QuoteScreen: React.FC<QuoteStackScreenProps<'QuoteScreen'>> = () => {
   const { params } = useRoute<QuoteStackRouteProp<'QuoteScreen'>>();
   const { quoteUuid } = params;
 
