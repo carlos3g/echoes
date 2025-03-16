@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { MjmlAdapter } from '@app/email/adapters/mjml.adapter';
 import { EmailServiceContract } from '@app/email/contracts/email-service.contract';
 import { EmailService } from '@app/email/services/email-service.service';
@@ -5,7 +6,6 @@ import type { EnvVariables } from '@app/shared/types';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as path from 'path';
 
 @Module({
   imports: [
