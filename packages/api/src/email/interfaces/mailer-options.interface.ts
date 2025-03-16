@@ -1,14 +1,14 @@
 // see: https://github.com/nest-modules/mailer/blob/main/lib/interfaces/mailer-options.interface.ts
-/** Interfaces **/
-import { Transport, TransportOptions } from 'nodemailer';
-import * as SMTPTransport from 'nodemailer/lib/smtp-transport';
-import * as SMTPPool from 'nodemailer/lib/smtp-pool';
-import * as SendmailTransport from 'nodemailer/lib/sendmail-transport';
-import * as StreamTransport from 'nodemailer/lib/stream-transport';
-import * as JSONTransport from 'nodemailer/lib/json-transport';
-import * as SESTransport from 'nodemailer/lib/ses-transport';
+/** Interfaces * */
+import type { Transport, TransportOptions } from 'nodemailer';
+import type * as SMTPTransport from 'nodemailer/lib/smtp-transport';
+import type * as SMTPPool from 'nodemailer/lib/smtp-pool';
+import type * as SendmailTransport from 'nodemailer/lib/sendmail-transport';
+import type * as StreamTransport from 'nodemailer/lib/stream-transport';
+import type * as JSONTransport from 'nodemailer/lib/json-transport';
+import type * as SESTransport from 'nodemailer/lib/ses-transport';
 
-import { TemplateAdapter } from './template-adapter.interface';
+import type { TemplateAdapter } from './template-adapter.interface';
 
 type Options =
   | SMTPTransport.Options

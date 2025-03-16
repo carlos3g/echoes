@@ -1,14 +1,15 @@
+/* eslint-disable */
 // see: https://github.com/nest-modules/mailer/blob/main/lib/adapters/pug.adapter.ts
-/** Dependencies **/
+/** Dependencies * */
 import * as path from 'path';
 import { get } from 'lodash';
 import { renderFile } from 'pug';
 import { inline } from '@css-inline/css-inline';
 
-/** Interfaces **/
-import { MailerOptions } from '../interfaces/mailer-options.interface';
-import { TemplateAdapter } from '../interfaces/template-adapter.interface';
-import { TemplateAdapterConfig } from '../interfaces/template-adapter-config.interface';
+/** Interfaces * */
+import type { MailerOptions } from '../interfaces/mailer-options.interface';
+import type { TemplateAdapter } from '../interfaces/template-adapter.interface';
+import type { TemplateAdapterConfig } from '../interfaces/template-adapter-config.interface';
 
 export class PugAdapter implements TemplateAdapter {
   private config: TemplateAdapterConfig = {

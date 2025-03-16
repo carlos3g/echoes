@@ -1,13 +1,15 @@
-import React, { createContext, useMemo } from 'react';
+import type React from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import { useColorScheme } from 'nativewind';
-import { ThemeContextValue } from '@/lib/nativewind/theme.context.types';
 import { themes } from '@/lib/nativewind';
 
-export const ThemeContext = createContext<ThemeContextValue>({
-  theme: 'light',
-  setTheme: () => {},
-});
+export type ThemeContextValue = {
+  theme: 'light' | 'dark';
+  setTheme: (value: 'light' | 'dark') => void;
+};
+
+export const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export const ThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
   const { children } = props;
@@ -23,4 +25,14 @@ export const ThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
       </View>
     </ThemeContext.Provider>
   );
+};
+
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+
+  return context;
 };

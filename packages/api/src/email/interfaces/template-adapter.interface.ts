@@ -1,6 +1,6 @@
 // see: https://github.com/nest-modules/mailer/blob/main/lib/interfaces/template-adapter.interface.ts
-/** Interfaces **/
-import { MailerOptions } from './mailer-options.interface';
+/** Interfaces * */
+import type { MailerOptions } from './mailer-options.interface';
 
 export interface TemplateAdapter {
   compile(mail: any, callback: (err?: any, body?: string) => any, options: MailerOptions): void;
