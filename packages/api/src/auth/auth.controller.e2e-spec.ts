@@ -212,7 +212,7 @@ describe('(POST) /auth/reset-password/:token', () => {
 
 describe('(GET) /auth/me', () => {
   it('should return logged user data', async () => {
-    const { id: _, avatarId: __, ...rest } = await userRepository.create(userFactory());
+    const { id: _, avatarId: __, password: _password, ...rest } = await userRepository.create(userFactory());
     const token = await getAccessToken(app, { email: rest.email });
 
     const response = await request(server).get('/auth/me').auth(token, { type: 'bearer' }).send();

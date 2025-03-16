@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { toast } from 'sonner-native';
 import type { z } from 'zod';
 import type { ChangePasswordOutput, ChangePasswordPayload } from '@/features/auth/contracts/auth-service.contract';
@@ -10,7 +10,6 @@ import { changePasswordFormSchema } from '@/features/auth/validations';
 import type { SettingsStackScreenProps } from '@/navigation/settings.navigator.types';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { Button } from '@/shared/components/ui/button';
-import { Screen } from '@/shared/components/ui/screen';
 import type { ApiResponseError } from '@/types/api';
 import type { HttpError } from '@/types/http';
 
@@ -46,7 +45,7 @@ export const ChangePasswordScreen: React.FC<ChangePasswordScreenProps> = () => {
   });
 
   return (
-    <Screen scrollable className="py-4">
+    <ScrollView className="flex-1 bg-background px-4 py-6">
       <View className="mb-s-20 gap-s-20">
         <ControlledPasswordInput
           testID="current-password-input"
@@ -78,6 +77,6 @@ export const ChangePasswordScreen: React.FC<ChangePasswordScreenProps> = () => {
         onPress={onSubmit}
         title="Alterar senha"
       />
-    </Screen>
+    </ScrollView>
   );
 };

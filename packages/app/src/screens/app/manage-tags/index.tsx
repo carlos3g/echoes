@@ -208,7 +208,7 @@ const renderItemSkeleton: ListRenderItem<Tag> = () => <TagCardSkeleton />;
 const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
 
 const ListEmptyComponent = () => (
-  <View className="items-center">
+  <View className="items-center py-4">
     <Text>Nenhuma tag cadastrada</Text>
   </View>
 );
