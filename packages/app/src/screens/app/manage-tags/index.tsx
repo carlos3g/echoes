@@ -9,7 +9,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { ListRenderItem } from '@shopify/flash-list';
 import { FlashList } from '@shopify/flash-list';
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { cssInterop } from 'nativewind';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,20 +24,17 @@ import Animated, {
   withSequence,
   withSpring,
 } from 'react-native-reanimated';
-import { toast } from 'sonner-native';
 import type { z } from 'zod';
 import type { Tag } from '@/types/entities';
-import type { ApiResponseError } from '@/types/api';
 import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
 import { Text } from '@/shared/components/ui/text';
 import { Button } from '@/shared/components/ui/button';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { createTagFormSchema } from '@/features/tag/validations';
-import { tagService } from '@/features/tag/services';
-import type { CreateTagOutput, CreateTagPayload, ListTagsOutput } from '@/features/tag/contracts/tag-service.contract';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
-import type { HttpError } from '@/types/http';
 import type { AppTabNavigationProp, AppTabScreenProps } from '@/navigation/app.navigator.types';
+import { useTags } from '@/features/tag/hooks/use-tags';
+import { useCreateTag } from '@/features/tag/hooks/use-create-tag';
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -117,23 +113,9 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref)
     resolver: zodResolver(createTagFormSchema),
   });
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation<
-    CreateTagOutput,
-    HttpError<ApiResponseError<CreateTagPayload>>,
-    CreateTagPayload
-  >({
-    mutationFn: async (payload) => tagService.create(payload),
+  const { mutate, isPending } = useCreateTag({
     onSuccess: () => {
-      toast.success('Tag criada com sucesso!');
       form.reset();
-      void queryClient.invalidateQueries({ queryKey: ['tags'] });
-    },
-    onError: () => {
-      toast.error('Tivemos um erro :/', {
-        description: 'Tente novamente',
-      });
     },
   });
 
@@ -214,13 +196,7 @@ const ListEmptyComponent = () => (
 export const ManageTagsScreen: React.FC<AppTabScreenProps<'ManageTagsScreen'>> = () => {
   const bottomSheetRef = useRef<RNBottomSheet>(null);
 
-  const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListTagsOutput>({
-    queryKey: ['tags'],
-    queryFn: ({ pageParam }) => tagService.list({ paginate: { page: pageParam as number } }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.meta.next,
-    getPreviousPageParam: (lastPage) => lastPage.meta.prev,
-  });
+  const { isRefetching, refetch, fetchNextPage, tags, isLoading } = useTags();
 
   useFocusEffect(useCallback(() => void refetch(), [refetch]));
 
@@ -229,21 +205,13 @@ export const ManageTagsScreen: React.FC<AppTabScreenProps<'ManageTagsScreen'>> =
     [isRefetching, refetch]
   );
 
-  const tags: Tag[] = useMemo(() => data?.pages.map((page) => page.data).flat() ?? [], [data]);
-
-  const safeFetchNextPage = useCallback(() => {
-    if (hasNextPage) {
-      void fetchNextPage();
-    }
-  }, [hasNextPage, fetchNextPage]);
-
   return (
     <View className="flex-1 bg-background">
       <FlashList
         estimatedItemSize={56}
         data={isLoading ? Array(10).fill(null) : tags}
         renderItem={isLoading ? renderItemSkeleton : renderItem}
-        onEndReached={safeFetchNextPage}
+        onEndReached={fetchNextPage}
         onEndReachedThreshold={0.5}
         refreshControl={refreshControl}
         ItemSeparatorComponent={ItemSeparatorComponent}

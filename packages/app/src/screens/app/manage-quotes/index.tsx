@@ -1,12 +1,9 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { ListRenderItem } from '@shopify/flash-list';
 import { FlashList } from '@shopify/flash-list';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
-import type { ListQuotesOutput } from '@/features/quote/contracts/quote-service.contract';
-import { quoteService } from '@/features/quote/services';
 import { Badge, BadgeIcon, BadgeText } from '@/shared/components/ui/badge';
 import type { Quote } from '@/types/entities';
 import type {
@@ -14,6 +11,7 @@ import type {
   QuoteStackRouteProp,
   QuoteStackScreenProps,
 } from '@/navigation/quotes.navigator.types';
+import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
 
 const RenderItem: React.FC<{ item: Quote }> = ({ item }) => {
   const { navigate } = useNavigation<QuoteStackNavigationProp<'QuoteScreen'>>();
@@ -32,27 +30,12 @@ export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScr
   const { params } = useRoute<QuoteStackRouteProp<'ManageQuotesScreen'>>();
   const { tag } = params || {};
 
-  const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListQuotesOutput>({
-    queryKey: ['quotes', { tagUuid: tag?.uuid }],
-    queryFn: ({ pageParam }) =>
-      quoteService.list({ paginate: { page: pageParam as number }, filters: { tagUuid: tag?.uuid } }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.meta.next,
-    getPreviousPageParam: (lastPage) => lastPage.meta.prev,
-  });
+  const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({ tagUuid: tag?.uuid });
 
   const refreshControl = useMemo(
     () => <RefreshControl refreshing={isRefetching} onRefresh={refetch} />,
     [isRefetching, refetch]
   );
-
-  const quotes: Quote[] = useMemo(() => data?.pages.map((page) => page.data).flat() ?? [], [data]);
-
-  const safeFetchNextPage = useCallback(() => {
-    if (hasNextPage) {
-      void fetchNextPage();
-    }
-  }, [hasNextPage, fetchNextPage]);
 
   const clearFilters = () => {
     setParams({ tag: undefined });
@@ -74,7 +57,7 @@ export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScr
           estimatedItemSize={166}
           data={isLoading ? Array(10).fill(null) : quotes}
           renderItem={isLoading ? renderItemSkeleton : renderItem}
-          onEndReached={safeFetchNextPage}
+          onEndReached={fetchNextPage}
           onEndReachedThreshold={0.5}
           refreshControl={refreshControl}
           ItemSeparatorComponent={ItemSeparatorComponent}

@@ -1,20 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner-native';
 import type { z } from 'zod';
 import { View } from 'react-native';
-import type { ResetPasswordOutput, ResetPasswordPayload } from '@/features/auth/contracts/auth-service.contract';
-import { authService } from '@/features/auth/services';
 import { resetPasswordFormSchema } from '@/features/auth/validations';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { Button } from '@/shared/components/ui/button';
 import { Screen } from '@/shared/components/ui/screen';
-import type { ApiResponseError } from '@/types/api';
-import type { HttpError } from '@/types/http';
 import { Text } from '@/shared/components/ui/text';
 import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
+import { useResetPassword } from '@/features/auth/hooks/use-reset-password';
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>;
 
@@ -28,23 +23,7 @@ export const ResetPasswordScreen: React.FC<AuthStackScreenProps<'ResetPasswordSc
     },
   });
 
-  const { mutate, isPending } = useMutation<
-    ResetPasswordOutput,
-    HttpError<ApiResponseError<ResetPasswordPayload>>,
-    ResetPasswordPayload
-  >({
-    mutationFn: async (payload) => authService.resetPassword(payload),
-    onSuccess: () => {
-      toast.success('Senha alterada com sucesso!', {
-        description: 'Faça login com sua nova senha',
-      });
-    },
-    onError: () => {
-      toast.error('Tivemos um problema!', {
-        description: 'Tente novamente ou entre em contato com o suporte.',
-      });
-    },
-  });
+  const { mutate, isPending } = useResetPassword();
 
   const onSubmit = form.handleSubmit((data: ResetPasswordFormData) => {
     mutate(data);
