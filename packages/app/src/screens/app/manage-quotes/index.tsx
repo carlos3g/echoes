@@ -14,9 +14,14 @@ import type {
 import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
 
 const RenderItem: React.FC<{ item: Quote }> = ({ item }) => {
-  const { navigate } = useNavigation<QuoteStackNavigationProp<'QuoteScreen'>>();
+  const { navigate } = useNavigation();
 
-  return <QuoteCard data={item} onPress={() => navigate('QuoteScreen', { quoteUuid: item.uuid })} />;
+  return (
+    <QuoteCard
+      data={item}
+      onPress={() => navigate('QuotesNavigator', { screen: 'QuoteScreen', params: { quoteUuid: item.uuid } })}
+    />
+  );
 };
 
 const renderItem: ListRenderItem<Quote> = ({ item }) => <RenderItem item={item} />;
@@ -27,8 +32,8 @@ const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ hei
 
 export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScreen'>> = () => {
   const { setParams } = useNavigation<QuoteStackNavigationProp<'ManageQuotesScreen'>>();
-  const { params } = useRoute<QuoteStackRouteProp<'ManageQuotesScreen'>>();
-  const { tag } = params || {};
+  const { params = {} } = useRoute<QuoteStackRouteProp<'ManageQuotesScreen'>>();
+  const { tag } = params;
 
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({ tagUuid: tag?.uuid });
 
@@ -38,7 +43,7 @@ export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScr
   );
 
   const clearFilters = () => {
-    setParams({ tag: undefined });
+    setParams({ tag });
   };
 
   return (

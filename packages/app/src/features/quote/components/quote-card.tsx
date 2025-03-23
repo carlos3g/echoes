@@ -21,7 +21,6 @@ import { Text } from '@/shared/components/ui/text';
 import { Button } from '@/shared/components/ui/button';
 import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
-import type { AppTabNavigationProp } from '@/navigation/app.navigator.types';
 import { useFavoriteQuote } from '@/features/quote/hooks/use-favorite-quote';
 import { useUnfavoriteQuote } from '@/features/quote/hooks/use-unfavorite-quote';
 import { useTagQuote } from '@/features/quote/hooks/use-tag-quote';
@@ -167,7 +166,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
   const { bottom } = useAppSafeArea();
   const { hide, quote } = useTagQuoteBottomSheet();
 
-  const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
+  const { navigate } = useNavigation();
 
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => <BottomSheetBackdrop {...backdropProps} />,

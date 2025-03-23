@@ -6,7 +6,7 @@ import RNBottomSheet, {
   BottomSheetFooter as RNBottomSheetFooter,
 } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import type { ListRenderItem } from '@shopify/flash-list';
 import { FlashList } from '@shopify/flash-list';
 import { cssInterop } from 'nativewind';
@@ -32,9 +32,10 @@ import { Button } from '@/shared/components/ui/button';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { createTagFormSchema } from '@/features/tag/validations';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
-import type { AppTabNavigationProp, AppTabScreenProps } from '@/navigation/app.navigator.types';
+import type { AppTabScreenProps } from '@/navigation/app.navigator.types';
 import { useTags } from '@/features/tag/hooks/use-tags';
 import { useCreateTag } from '@/features/tag/hooks/use-create-tag';
+import { useRefreshOnFocus } from '@/lib/react-query';
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -169,7 +170,7 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref)
 });
 
 const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
-  const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
+  const { navigate } = useNavigation();
 
   const onPress = () => {
     navigate('QuotesNavigator', {
@@ -198,7 +199,7 @@ export const ManageTagsScreen: React.FC<AppTabScreenProps<'ManageTagsScreen'>> =
 
   const { isRefetching, refetch, fetchNextPage, tags, isLoading } = useTags();
 
-  useFocusEffect(useCallback(() => void refetch(), [refetch]));
+  useRefreshOnFocus(refetch);
 
   const refreshControl = useMemo(
     () => <RefreshControl refreshing={isRefetching} onRefresh={refetch} />,

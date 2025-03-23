@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { loginFormSchema } from '@/features/auth/validations';
 import { Screen } from '@/shared/components/ui/screen';
-import type { AuthStackNavigationProp, AuthStackScreenProps } from '@/navigation/auth.navigator.types';
+import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { Text } from '@/shared/components/ui/text';
@@ -14,7 +14,7 @@ import { useSignIn } from '@/features/auth/hooks/use-sign-in';
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export const SignInScreen: React.FC<AuthStackScreenProps<'SignInScreen'>> = () => {
-  const { navigate } = useNavigation<AuthStackNavigationProp<'SignInScreen'>>();
+  const { navigate } = useNavigation();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
