@@ -1,4 +1,5 @@
 import { quoteService } from '@/features/quote/services';
+import { updateQuotesCacheState } from '@/features/quote/utils';
 import type { ApiPaginatedResult, ApiResponseError } from '@/types/api';
 import type { Quote } from '@/types/entities';
 import type { HttpError } from '@/types/http';
@@ -19,47 +20,24 @@ export const useFavoriteQuote = () => {
     onMutate: async (uuid) => {
       await queryClient.cancelQueries({ queryKey: ['quotes'] });
 
-      // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
-      const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
-        queryKey: ['quotes'],
+      const newState = updateQuotesCacheState(queryClient, (quote) => {
+        if (quote.uuid === uuid) {
+          return {
+            ...quote,
+            metadata: { ...quote.metadata, favorites: quote.metadata.favorites + 1, favoritedByUser: true },
+          };
+        }
+
+        return quote;
       });
 
-      const previousState = queriesData.find((qData) => {
-        const [_, queryData] = qData;
-
-        return !!queryData?.pageParams;
-      });
-
-      const [previousStateQuery, previousStateData] = previousState || [];
-
-      if (!previousStateData || !previousStateQuery) {
+      if (!newState) {
         return {};
       }
 
-      const newState: InfiniteData<ApiPaginatedResult<Quote>> = {
-        pageParams: previousStateData?.pageParams,
-        pages: previousStateData?.pages?.map((page) => {
-          const quotes = page.data.map((quote) => {
-            if (quote.uuid === uuid) {
-              return {
-                ...quote,
-                metadata: { ...quote.metadata, favorites: quote.metadata.favorites + 1, favoritedByUser: true },
-              };
-            }
+      queryClient.setQueryData(newState.queryKey, newState.state);
 
-            return quote;
-          });
-
-          return {
-            ...page,
-            data: quotes,
-          };
-        }),
-      };
-
-      queryClient.setQueryData(previousStateQuery, newState);
-
-      return { previousState };
+      return { previousState: newState.previousState };
     },
     onError: (_, __, context) => {
       if (context?.previousState) {
