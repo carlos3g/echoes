@@ -1278,6 +1278,7 @@ __metadata:
     expo-build-properties: "npm:~0.13.2"
     expo-font: "npm:~13.0.4"
     expo-linking: "npm:~7.0.5"
+    expo-network: "npm:~7.0.5"
     expo-splash-screen: "npm:~0.29.22"
     expo-status-bar: "npm:~2.0.1"
     expo-system-ui: "npm:~4.0.8"
@@ -6416,6 +6417,16 @@ __metadata:
   dependencies:
     invariant: "npm:^2.2.4"
   checksum: 10c0/1f0ca6902baf0bfabad2442b08ee44099bd3675a4f57eda76316416c2518667bd1e72cddc1c3b8c3ff1464b318a2814ff0a63036a5d7405d508f65fcacce19da
+  languageName: node
+  linkType: hard
+
+"expo-network@npm:~7.0.5":
+  version: 7.0.5
+  resolution: "expo-network@npm:7.0.5"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+  checksum: 10c0/0f043f86db26c2ab5b1a08edd381a59a6fd5c5b89028cb9116125a064dd09149db4377449d16289d33e0fdf9b5051b64a13c527ebac81aa1369f4d2b79adcc90
   languageName: node
   linkType: hard
 

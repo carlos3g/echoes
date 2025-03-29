@@ -3,7 +3,7 @@ import { cssInterop } from 'nativewind';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@/features/auth/hooks/use-auth';
-import type { SettingsStackNavigationProp, SettingsStackScreenProps } from '@/navigation/settings.navigator.types';
+import type { SettingsStackScreenProps } from '@/navigation/settings.navigator.types';
 import { Text } from '@/shared/components/ui/text';
 import { userAvatarUrl } from '@/shared/utils';
 
@@ -19,7 +19,7 @@ const Ionicons = cssInterop(ExpoIonicons, {
 export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>> = () => {
   const { handleSignOut, user } = useAuth();
 
-  const { navigate } = useNavigation<SettingsStackNavigationProp<'SettingsScreen'>>();
+  const { navigate } = useNavigation();
 
   return (
     <View className="flex-1 bg-white">
@@ -31,7 +31,8 @@ export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>
           source={{
             uri: userAvatarUrl(user!),
           }}
-          className="mb-3 h-20 w-20 rounded-full"
+          className="mb-3 h-40 w-40 rounded-full border-[#D6D6D6]"
+          style={{ borderWidth: StyleSheet.hairlineWidth }}
         />
         <Text variant="headingSmall" className="text-gray-900">
           {user?.name}
@@ -50,7 +51,7 @@ export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>
         <TouchableOpacity
           testID="go-to-change-password-button"
           className="flex-row items-center justify-between py-4"
-          onPress={() => navigate('ChangePasswordScreen')}
+          onPress={() => navigate('SettingsNavigator', { screen: 'ChangePasswordScreen' })}
         >
           <Text>Alterar senha</Text>
           <Ionicons name="chevron-forward" size={24} className="text-[#D1D5DB]" />

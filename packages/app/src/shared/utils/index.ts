@@ -13,5 +13,5 @@ export const humanizeNumber = (num: number): string => {
 };
 
 export const userAvatarUrl = (user: User): string => {
-  return `${process.env.EXPO_PUBLIC_API_URL!}/users/${user.uuid}.webp`;
+  return `${process.env.EXPO_PUBLIC_API_URL}/users/${user.uuid}.webp`;
 };

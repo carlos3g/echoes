@@ -6,6 +6,7 @@ import type { INestApplication } from '@nestjs/common';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
+import * as qs from 'qs';
 
 const createTestingModule = async () => {
   const moduleFixture = Test.createTestingModule({
@@ -22,8 +23,15 @@ const createTestingModule = async () => {
 const getApplication = async () => {
   const app = await createTestingModule();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  app
+    .getHttpAdapter()
+    .getInstance()
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    .set('query parser', (str: string) => qs.parse(str));
+
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   return app;
 };

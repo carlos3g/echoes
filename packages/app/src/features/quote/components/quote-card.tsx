@@ -3,9 +3,6 @@ import { cssInterop } from 'nativewind';
 import type { PressableProps } from 'react-native';
 import { Dimensions, Pressable, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Share from 'react-native-share';
-import { toast } from 'sonner-native';
-import type { InfiniteData, QueryKey } from '@tanstack/react-query';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { Portal } from 'react-native-portalize';
 import type { BottomSheetBackdropProps, BottomSheetFooterProps } from '@gorhom/bottom-sheet';
@@ -21,16 +18,15 @@ import { useNavigation } from '@react-navigation/native';
 import type { Quote, Tag } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
-import { quoteService } from '@/features/quote/services';
-import type { ApiPaginatedResult, ApiResponseError } from '@/types/api';
-import type { HttpError } from '@/types/http';
 import { Button } from '@/shared/components/ui/button';
 import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
-import type { ListTagsOutput } from '@/features/tag/contracts/tag-service.contract';
-import { tagService } from '@/features/tag/services';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
-import type { IsQuoteTaggedOutput } from '@/features/quote/contracts/quote-service.contract';
-import type { AppTabNavigationProp } from '@/navigation/app.navigator.types';
+import { useFavoriteQuote } from '@/features/quote/hooks/use-favorite-quote';
+import { useUnfavoriteQuote } from '@/features/quote/hooks/use-unfavorite-quote';
+import { useTagQuote } from '@/features/quote/hooks/use-tag-quote';
+import { useUntagQuote } from '@/features/quote/hooks/use-untag-quote';
+import { useIsQuoteTagged } from '@/features/quote/hooks/use-is-quote-tagged';
+import { useTags } from '@/features/tag/hooks/use-tags';
 
 const { width: wWidth } = Dimensions.get('window');
 
@@ -93,135 +89,8 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
   const { data } = props;
   const { metadata } = data;
 
-  const queryClient = useQueryClient();
-
-  const favoriteMutation = useMutation<
-    void,
-    HttpError<ApiResponseError>,
-    string,
-    { previousState?: [QueryKey, InfiniteData<ApiPaginatedResult<Quote>> | undefined] }
-  >({
-    mutationFn: async (uuid) => quoteService.favorite(uuid),
-    onMutate: async (uuid) => {
-      await queryClient.cancelQueries({ queryKey: ['quotes'] });
-
-      // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
-      const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
-        queryKey: ['quotes'],
-      });
-
-      const previousState = queriesData.find((qData) => {
-        const [_, queryData] = qData;
-
-        return !!queryData?.pageParams;
-      });
-
-      const [previousStateQuery, previousStateData] = previousState || [];
-
-      if (!previousStateData || !previousStateQuery) {
-        return {};
-      }
-
-      const newState: InfiniteData<ApiPaginatedResult<Quote>> = {
-        pageParams: previousStateData?.pageParams,
-        pages: previousStateData?.pages?.map((page) => {
-          const quotes = page.data.map((quote) => {
-            if (quote.uuid === uuid) {
-              return {
-                ...quote,
-                metadata: { ...quote.metadata, favorites: quote.metadata.favorites + 1, favoritedByUser: true },
-              };
-            }
-
-            return quote;
-          });
-
-          return {
-            ...page,
-            data: quotes,
-          };
-        }),
-      };
-
-      queryClient.setQueryData(previousStateQuery, newState);
-
-      return { previousState };
-    },
-    onError: (_, __, context) => {
-      if (context?.previousState) {
-        const [previousStateQuery, previousStateData] = context.previousState;
-        queryClient.setQueryData(previousStateQuery, previousStateData);
-      }
-
-      toast.error('Erro!', {
-        description: 'Tente novamente',
-      });
-    },
-  });
-
-  const unfavoriteMutation = useMutation<
-    void,
-    HttpError<ApiResponseError>,
-    string,
-    { previousState?: [QueryKey, InfiniteData<ApiPaginatedResult<Quote>> | undefined] }
-  >({
-    mutationFn: async (uuid) => quoteService.unfavorite(uuid),
-    onMutate: async (uuid) => {
-      await queryClient.cancelQueries({ queryKey: ['quotes'] });
-
-      // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
-      const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
-        queryKey: ['quotes'],
-      });
-
-      const previousState = queriesData.find((qData) => {
-        const [_, queryData] = qData;
-
-        return !!queryData?.pageParams;
-      });
-
-      const [previousStateQuery, previousStateData] = previousState || [];
-
-      if (!previousStateData || !previousStateQuery) {
-        return {};
-      }
-
-      const newState: InfiniteData<ApiPaginatedResult<Quote>> = {
-        pageParams: previousStateData?.pageParams,
-        pages: previousStateData?.pages?.map((page) => {
-          const quotes = page.data.map((quote) => {
-            if (quote.uuid === uuid) {
-              return {
-                ...quote,
-                metadata: { ...quote.metadata, favorites: quote.metadata.favorites - 1, favoritedByUser: false },
-              };
-            }
-
-            return quote;
-          });
-
-          return {
-            ...page,
-            data: quotes,
-          };
-        }),
-      };
-
-      queryClient.setQueryData(previousStateQuery, newState);
-
-      return { previousState };
-    },
-    onError: (_, __, context) => {
-      if (context?.previousState) {
-        const [previousStateQuery, previousStateData] = context.previousState;
-        queryClient.setQueryData(previousStateQuery, previousStateData);
-      }
-
-      toast.error('Erro!', {
-        description: 'Tente novamente',
-      });
-    },
-  });
+  const favoriteMutation = useFavoriteQuote();
+  const unfavoriteMutation = useUnfavoriteQuote();
 
   const formattedFavorites = humanizeNumber(metadata?.favorites);
 
@@ -248,116 +117,12 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
   );
 };
 
-const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
+const RenderItem: React.FC<{ item: Tag }> = ({ item: tag }) => {
   const { quote } = useTagQuoteBottomSheet();
 
-  const queryClient = useQueryClient();
-
-  const tagMutation = useMutation<void, HttpError<ApiResponseError>, string>({
-    mutationFn: async (uuid) => quoteService.tag(uuid, item.uuid),
-    onSuccess: async () => {
-      await queryClient.cancelQueries({ queryKey: ['quotes'] });
-
-      await queryClient.invalidateQueries({ queryKey: ['quote', 'is-tagged', quote?.uuid, item.uuid] });
-      await queryClient.invalidateQueries({ queryKey: ['tags'] });
-
-      // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
-      const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
-        queryKey: ['quotes'],
-      });
-
-      const previousState = queriesData.find((qData) => {
-        const [_, queryData] = qData;
-
-        return !!queryData?.pageParams;
-      });
-
-      const [previousStateQuery, previousStateData] = previousState || [];
-
-      if (!previousStateData || !previousStateQuery) {
-        return {};
-      }
-
-      const newState: InfiniteData<ApiPaginatedResult<Quote>> = {
-        pageParams: previousStateData?.pageParams,
-        pages: previousStateData?.pages?.map((page) => {
-          const quotes = page.data.map((q) => {
-            if (q.uuid === quote!.uuid) {
-              return {
-                ...q,
-                metadata: { ...q.metadata, tags: q.metadata.tags + 1 },
-              };
-            }
-
-            return q;
-          });
-
-          return {
-            ...page,
-            data: quotes,
-          };
-        }),
-      };
-
-      queryClient.setQueryData(previousStateQuery, newState);
-    },
-  });
-
-  const untagMutation = useMutation<void, HttpError<ApiResponseError>, string>({
-    mutationFn: async (uuid) => quoteService.untag(uuid, item.uuid),
-    onSuccess: async () => {
-      await queryClient.cancelQueries({ queryKey: ['quotes'] });
-
-      await queryClient.invalidateQueries({ queryKey: ['quote', 'is-tagged', quote?.uuid, item.uuid] });
-      await queryClient.invalidateQueries({ queryKey: ['tags'] });
-
-      // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
-      const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
-        queryKey: ['quotes'],
-      });
-
-      const previousState = queriesData.find((qData) => {
-        const [_, queryData] = qData;
-
-        return !!queryData?.pageParams;
-      });
-
-      const [previousStateQuery, previousStateData] = previousState || [];
-
-      if (!previousStateData || !previousStateQuery) {
-        return {};
-      }
-
-      const newState: InfiniteData<ApiPaginatedResult<Quote>> = {
-        pageParams: previousStateData?.pageParams,
-        pages: previousStateData?.pages?.map((page) => {
-          const quotes = page.data.map((q) => {
-            if (q.uuid === quote!.uuid) {
-              return {
-                ...q,
-                metadata: { ...q.metadata, tags: q.metadata.tags - 1 },
-              };
-            }
-
-            return q;
-          });
-
-          return {
-            ...page,
-            data: quotes,
-          };
-        }),
-      };
-
-      queryClient.setQueryData(previousStateQuery, newState);
-    },
-  });
-
-  const isTaggedQuery = useQuery<IsQuoteTaggedOutput, HttpError<ApiResponseError>, IsQuoteTaggedOutput>({
-    queryKey: ['quote', 'is-tagged', quote?.uuid, item.uuid],
-    queryFn: () => quoteService.isTagged(quote!.uuid, item.uuid),
-    enabled: !!quote,
-  });
+  const tagMutation = useTagQuote({ tag });
+  const untagMutation = useUntagQuote({ tag });
+  const isTaggedQuery = useIsQuoteTagged({ quoteUuid: quote!.uuid, tagUuid: tag.uuid });
 
   const isTagged = isTaggedQuery.data?.exists;
 
@@ -376,8 +141,8 @@ const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
 
   return (
     <TagCard
-      data={item}
-      key={item.uuid}
+      data={tag}
+      key={tag.uuid}
       onPress={handleTag}
       icon={isTagged ? 'solid' : 'outline'}
       disabled={tagMutation.isPending || untagMutation.isPending}
@@ -399,9 +164,9 @@ const ListEmptyComponent = () => (
 
 export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
-  const { hide } = useTagQuoteBottomSheet();
+  const { hide, quote } = useTagQuoteBottomSheet();
 
-  const { navigate } = useNavigation<AppTabNavigationProp<'ManageTagsScreen'>>();
+  const { navigate } = useNavigation();
 
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => <BottomSheetBackdrop {...backdropProps} />,
@@ -424,26 +189,16 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
     [bottom, navigate, hide]
   );
 
-  const { isRefetching, refetch, hasNextPage, fetchNextPage, data, isLoading } = useInfiniteQuery<ListTagsOutput>({
-    queryKey: ['tags'],
-    queryFn: ({ pageParam }) => tagService.list({ paginate: { page: pageParam as number } }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.meta.next,
-    getPreviousPageParam: (lastPage) => lastPage.meta.prev,
-  });
+  const { isRefetching, refetch, fetchNextPage, tags, isLoading } = useTags();
 
   const refreshControl = useMemo(
     () => <RefreshControl refreshing={isRefetching} onRefresh={refetch} />,
     [isRefetching, refetch]
   );
 
-  const tags: Tag[] = useMemo(() => data?.pages.map((page) => page.data).flat() ?? [], [data]);
-
-  const safeFetchNextPage = useCallback(() => {
-    if (hasNextPage) {
-      void fetchNextPage();
-    }
-  }, [hasNextPage, fetchNextPage]);
+  if (!quote) {
+    return null;
+  }
 
   return (
     <BottomSheet
@@ -461,7 +216,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
           estimatedItemSize={56}
           data={isLoading ? Array(10).fill(null) : tags}
           renderItem={isLoading ? renderItemSkeleton : renderItem}
-          onEndReached={safeFetchNextPage}
+          onEndReached={fetchNextPage}
           onEndReachedThreshold={0.5}
           refreshControl={refreshControl}
           ItemSeparatorComponent={ItemSeparatorComponent}

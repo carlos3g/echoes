@@ -1,26 +1,21 @@
 import type { z } from 'zod';
-import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-import { toast } from 'sonner-native';
 import { View } from 'react-native';
 import { signUpFormSchema } from '@/features/auth/validations';
-import type { SignUpOutput, SignUpPayload } from '@/features/auth/contracts/auth-service.contract';
-import type { HttpError } from '@/types/http';
-import type { ApiResponseError } from '@/types/api';
-import { authService } from '@/features/auth/services';
 import { Screen } from '@/shared/components/ui/screen';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
-import type { AuthStackNavigationProp, AuthStackScreenProps } from '@/navigation/auth.navigator.types';
+import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 import { Text } from '@/shared/components/ui/text';
 import { Button } from '@/shared/components/ui/button';
+import { useSignUp } from '@/features/auth/hooks/use-sign-up';
 
 type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
 export const SignUpScreen: React.FC<AuthStackScreenProps<'SignUpScreen'>> = () => {
-  const { navigate } = useNavigation<AuthStackNavigationProp<'SignUpScreen'>>();
+  const { navigate } = useNavigation();
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
@@ -30,15 +25,9 @@ export const SignUpScreen: React.FC<AuthStackScreenProps<'SignUpScreen'>> = () =
     mode: 'onChange',
   });
 
-  const { mutate, isPending } = useMutation<SignUpOutput, HttpError<ApiResponseError<SignUpPayload>>, SignUpPayload>({
-    mutationFn: async (payload) => authService.signUp(payload),
+  const { mutate, isPending } = useSignUp({
     onSuccess: () => {
       navigate('SignInScreen');
-    },
-    onError: () => {
-      toast.error('Tivemos um problema!', {
-        description: 'Tente novamente ou entre em contato com o suporte.',
-      });
     },
   });
 

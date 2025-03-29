@@ -1,17 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
-import { toast } from 'sonner-native';
 import type { z } from 'zod';
-import type { ChangePasswordOutput, ChangePasswordPayload } from '@/features/auth/contracts/auth-service.contract';
-import { authService } from '@/features/auth/services';
 import { changePasswordFormSchema } from '@/features/auth/validations';
 import type { SettingsStackScreenProps } from '@/navigation/settings.navigator.types';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { Button } from '@/shared/components/ui/button';
-import type { ApiResponseError } from '@/types/api';
-import type { HttpError } from '@/types/http';
+import { useChangePassword } from '@/features/auth/hooks/use-change-password';
 
 type ChangePasswordFormData = z.infer<typeof changePasswordFormSchema>;
 
@@ -22,21 +17,7 @@ export const ChangePasswordScreen: React.FC<SettingsStackScreenProps<'ChangePass
     mode: 'onChange',
   });
 
-  const { mutate, isPending } = useMutation<
-    ChangePasswordOutput,
-    HttpError<ApiResponseError<ChangePasswordPayload>>,
-    ChangePasswordPayload
-  >({
-    mutationFn: async (payload) => authService.changePassword(payload),
-    onSuccess: () => {
-      toast.success('Senha alterada com sucesso!');
-    },
-    onError: () => {
-      toast.error('Não foi possível alterar a senha!', {
-        description: 'Talvez você digitou a senha atual incorretamente?',
-      });
-    },
-  });
+  const { mutate, isPending } = useChangePassword();
 
   const onSubmit = form.handleSubmit((data: ChangePasswordFormData) => {
     mutate(data);

@@ -16,9 +16,7 @@ export class QuoteService implements QuoteServiceContract {
   }
 
   public list(payload: ListQuotesPayload): Promise<ListQuotesOutput> {
-    return this.httpClientService.get<ListQuotesOutput, ListQuotesPayload>('/quotes', {
-      ...payload,
-    });
+    return this.httpClientService.get<ListQuotesOutput, ListQuotesPayload>('/quotes', payload);
   }
 
   public async favorite(uuid: string): Promise<void> {
