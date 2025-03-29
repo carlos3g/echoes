@@ -79,6 +79,8 @@ describe('(GET) /quotes', () => {
     expect(response.body).toHaveProperty('data');
     expect(response.body).toHaveProperty('meta');
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(response.body.data).toHaveLength(1);
     expect(response.body).toMatchObject({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       data: expect.arrayContaining([
@@ -89,7 +91,39 @@ describe('(GET) /quotes', () => {
     });
   });
 
-  it.skip('should be able to filter quotes by tag uuid', async () => {});
+  it('should be able to filter quotes by tag uuid', async () => {
+    const tag1 = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    const tag2 = await tagRepository.create({ ...tagFactory(), userId: user.id });
+
+    const quote1 = await quoteRepository.create(quoteFactory());
+    const quote2 = await quoteRepository.create(quoteFactory());
+
+    await quoteRepository.tag({ data: { quoteId: quote1.id, tagId: tag1.id } });
+    await quoteRepository.tag({ data: { quoteId: quote2.id, tagId: tag2.id } });
+
+    const response = await request(server)
+      .get('/quotes')
+      .query({
+        filters: {
+          tagUuid: tag1.uuid,
+        },
+      });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    expect(response.body).toHaveProperty('data');
+    expect(response.body).toHaveProperty('meta');
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(response.body.data).toHaveLength(1);
+    expect(response.body).toMatchObject({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      data: expect.arrayContaining([
+        expect.objectContaining({
+          uuid: quote1.uuid,
+        }),
+      ]),
+    });
+  });
 });
 
 describe('(GET) /quotes/:uuid', () => {

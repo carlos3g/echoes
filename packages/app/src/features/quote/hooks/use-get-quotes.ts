@@ -13,7 +13,10 @@ interface UseGetQuotesProps {
 export const useGetQuotes = ({ tagUuid }: UseGetQuotesProps) => {
   const query = useInfiniteQuery<ListQuotesOutput, HttpError<ApiResponseError>>({
     queryKey: ['quotes', { tagUuid }],
-    queryFn: ({ pageParam }) => quoteService.list({ paginate: { page: pageParam as number }, filters: { tagUuid } }),
+    queryFn: ({ pageParam }) => {
+      console.log({ paginate: { page: pageParam as number }, filters: { tagUuid } });
+      return quoteService.list({ paginate: { page: pageParam as number }, filters: { tagUuid } });
+    },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.meta.next,
     getPreviousPageParam: (lastPage) => lastPage.meta.prev,

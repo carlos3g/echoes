@@ -6,7 +6,7 @@ import type { Quote } from '@app/quote/entities/quote.entity';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import type { User } from '@app/user/entities/user.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 export type QuoteWithMetadata = Quote & {
   metadata: {
@@ -56,18 +56,26 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
   }
 
   public async getAuthorId(uuid: string): Promise<number> {
-    const author = await this.authorRepository.findUniqueOrThrow({
-      where: { uuid },
-    });
+    try {
+      const author = await this.authorRepository.findUniqueOrThrow({
+        where: { uuid },
+      });
 
-    return author.id;
+      return author.id;
+    } catch {
+      throw new NotFoundException('Author not found');
+    }
   }
 
   public async getTagId(uuid: string): Promise<number> {
-    const tag = await this.tagRepository.findUniqueOrThrow({
-      where: { uuid },
-    });
+    try {
+      const tag = await this.tagRepository.findUniqueOrThrow({
+        where: { uuid },
+      });
 
-    return tag.id;
+      return tag.id;
+    } catch {
+      throw new NotFoundException('Tag not found');
+    }
   }
 }
