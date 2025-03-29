@@ -35,8 +35,6 @@ export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScr
   const { params = {} } = useRoute<QuoteStackRouteProp<'ManageQuotesScreen'>>();
   const { tag } = params;
 
-  console.log('tag', tag?.uuid);
-
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({ tagUuid: tag?.uuid });
 
   const refreshControl = useMemo(

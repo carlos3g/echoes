@@ -31,7 +31,8 @@ export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>
           source={{
             uri: userAvatarUrl(user!),
           }}
-          className="mb-3 h-20 w-20 rounded-full"
+          className="mb-3 h-40 w-40 rounded-full border-[#D6D6D6]"
+          style={{ borderWidth: StyleSheet.hairlineWidth }}
         />
         <Text variant="headingSmall" className="text-gray-900">
           {user?.name}
