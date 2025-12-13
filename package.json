@@ -9,7 +9,6 @@
     "prepare": "husky",
     "style": "lerna run style",
     "dev": "lerna run dev",
-    "dev:webapp": "lerna run dev --scope @echoes/webapp",
     "dev:api": "lerna run dev --scope @echoes/api",
     "dev:app": "lerna run start --scope @echoes/app",
     "clean": "lerna clean && rm -rf node_modules",
