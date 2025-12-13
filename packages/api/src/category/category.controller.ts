@@ -6,7 +6,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @Public()
-@Controller('categories')
+@Controller({ path: 'categories', version: '1' })
 export class CategoryController {
   public constructor(private readonly listCategoryPaginatedUseCase: ListCategoryPaginatedUseCase) {}
 

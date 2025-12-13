@@ -8,7 +8,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestj
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
-@Controller('tags')
+@Controller({ path: 'tags', version: '1' })
 export class TagController {
   public constructor(
     private readonly listTagPaginatedUseCase: ListTagPaginatedUseCase,

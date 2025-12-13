@@ -4,7 +4,7 @@ import { Controller, Get, HttpCode, HttpStatus, Param, Res } from '@nestjs/commo
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Response } from 'express';
 
-@Controller('users')
+@Controller({ path: 'users', version: '1' })
 export class UserController {
   public constructor(private readonly getUserAvatarUseCase: GetUserAvatarUseCase) {}
 

@@ -13,7 +13,7 @@ import { User } from '@app/user/entities/user.entity';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('quotes')
+@Controller({ path: 'quotes', version: '1' })
 export class QuoteController {
   public constructor(
     private readonly listQuotePaginatedUseCase: ListQuotePaginatedUseCase,

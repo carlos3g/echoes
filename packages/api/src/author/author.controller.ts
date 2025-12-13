@@ -12,7 +12,7 @@ import { User } from '@app/user/entities/user.entity';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('authors')
+@Controller({ path: 'authors', version: '1' })
 export class AuthorController {
   public constructor(
     private readonly listAuthorPaginatedUseCase: ListAuthorPaginatedUseCase,

@@ -2,7 +2,7 @@ import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.se
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, PrismaHealthIndicator } from '@nestjs/terminus';
 
-@Controller('health')
+@Controller({ path: 'health', version: '1' })
 export class HealthController {
   public constructor(
     private health: HealthCheckService,

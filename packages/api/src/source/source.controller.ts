@@ -2,5 +2,5 @@ import { Controller } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
-@Controller('sources')
+@Controller({ path: 'sources', version: '1' })
 export class SourceController {}

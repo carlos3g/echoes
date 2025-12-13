@@ -39,7 +39,7 @@ const TWO_MINUTES_IN_MS = 2 * 60 * 1000;
 const MAX_AVATAR_SIZE_IN_BYTES = 2 * 1024 * 1024;
 const AVATAR_VALID_MIME_TYPES = 'image/*';
 
-@Controller('auth')
+@Controller({ path: 'auth', version: '1' })
 export class AuthController {
   public constructor(
     private readonly signUpUseCase: SignUpUseCase,
