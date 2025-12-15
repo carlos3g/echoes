@@ -2485,9 +2485,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@echoes/api@workspace:packages/api":
+"@echoes/api@workspace:apps/api":
   version: 0.0.0-use.local
-  resolution: "@echoes/api@workspace:packages/api"
+  resolution: "@echoes/api@workspace:apps/api"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.758.0"
     "@faker-js/faker": "npm:^9.6.0"
@@ -2568,9 +2568,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@echoes/app@workspace:packages/app":
+"@echoes/app@workspace:apps/app":
   version: 0.0.0-use.local
-  resolution: "@echoes/app@workspace:packages/app"
+  resolution: "@echoes/app@workspace:apps/app"
   dependencies:
     "@babel/core": "npm:^7.20.0"
     "@babel/runtime": "npm:^7.26.10"

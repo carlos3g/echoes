@@ -6,15 +6,11 @@
     },
     {
       "name": "api",
-      "path": "packages/api",
-    },
-    {
-      "name": "webapp",
-      "path": "packages/webapp",
+      "path": "apps/api",
     },
     {
       "name": "app",
-      "path": "packages/app",
+      "path": "apps/app",
     },
   ],
   "settings": {

@@ -17,7 +17,7 @@ Echoes is a platform for discovering and sharing quotes, built as a Turborepo mo
 
 ```bash
 # Setup environment files
-cp packages/api/.env.example packages/api/.env && cp packages/app/.env.example packages/app/.env
+cp apps/api/.env.example apps/api/.env && cp apps/app/.env.example apps/app/.env
 
 # Start database services (PostgreSQL, MailHog)
 docker-compose up -d
@@ -56,7 +56,7 @@ yarn test
 # Run E2E tests
 yarn test:e2e
 
-# API-specific test commands (from packages/api):
+# API-specific test commands (from apps/api):
 yarn test              # Unit tests in watch mode
 yarn test:e2e          # E2E tests
 yarn test:cov          # Coverage report
@@ -82,7 +82,7 @@ yarn check             # TypeScript type-checking
 yarn db                # Generate client + migrate + seed
 yarn db:test           # Setup test database
 
-# From packages/api directory:
+# From apps/api directory:
 yarn db:generate       # Generate Prisma client
 yarn db:migrate        # Push schema changes
 yarn db:seed          # Seed database
@@ -91,7 +91,7 @@ yarn db:fresh         # Fresh database (all steps)
 
 ## Architecture
 
-### API Architecture (`packages/api`)
+### API Architecture (`apps/api`)
 
 **Module-based NestJS architecture** - Each domain (quote, author, category, source, tag, user, auth) is a self-contained module.
 
@@ -122,7 +122,7 @@ yarn db:fresh         # Fresh database (all steps)
 
 **Testing**: E2E tests live alongside controllers (`*.e2e-spec.ts`). Test utilities in `test/` directory including test server setup, auth helpers, and factories.
 
-### Mobile App Architecture (`packages/app`)
+### Mobile App Architecture (`apps/app`)
 
 **Expo + React Native** with React Navigation for routing.
 

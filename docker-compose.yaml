@@ -1,7 +1,7 @@
 services:
   # api:
   #   restart: unless-stopped
-  #   env_file: packages/api/.env
+  #   env_file: apps/api/.env
   #   container_name: echoes-api
   #   build:
   #     context: .
@@ -30,7 +30,7 @@ services:
   #   image: postgres:10-alpine
   #   restart: unless-stopped
   #   container_name: echoes-postgres
-  #   env_file: packages/api/.env
+  #   env_file: apps/api/.env
   #   environment:
   #     POSTGRES_MULTIPLE_DATABASES: ${DB_DATABASE},${DB_DATABASE}_test
   #     POSTGRES_USER: ${DB_USERNAME}

@@ -16,8 +16,8 @@
 
 This monorepo consists of:
 
-- **[API](packages/api)** - NestJS REST API with PostgreSQL/Prisma
-- **[Mobile App](packages/app)** - React Native app built with Expo
+- **[API](apps/api)** - NestJS REST API with PostgreSQL/Prisma
+- **[Mobile App](apps/app)** - React Native app built with Expo
 
 ## Prerequisites
 
@@ -43,14 +43,14 @@ Copy the example environment files and configure as needed:
 
 ```bash
 cp .env.example .env
-cp packages/api/.env.example packages/api/.env
-cp packages/app/.env.example packages/app/.env
+cp apps/api/.env.example apps/api/.env
+cp apps/app/.env.example apps/app/.env
 ```
 
 **Required environment variables:**
 - `.env` - Docker Compose configuration (MinIO credentials, service ports)
-- `packages/api/.env` - Database connection, JWT secret, AWS/MinIO credentials
-- `packages/app/.env` - API URL (defaults to `http://localhost:3000`)
+- `apps/api/.env` - Database connection, JWT secret, AWS/MinIO credentials
+- `apps/app/.env` - API URL (defaults to `http://localhost:3000`)
 
 ### 3. Start Docker Services
 
@@ -104,7 +104,7 @@ yarn test
 # Run E2E tests
 yarn test:e2e
 
-# API-specific (from packages/api):
+# API-specific (from apps/api):
 yarn test              # Unit tests (watch mode)
 yarn test:cov          # With coverage
 yarn test:e2e          # E2E tests
@@ -125,7 +125,7 @@ yarn check             # TypeScript
 ### Database Management
 
 ```bash
-# From packages/api:
+# From apps/api:
 yarn db:generate       # Generate Prisma client
 yarn db:migrate        # Push schema changes
 yarn db:seed          # Seed database
@@ -136,7 +136,7 @@ yarn db:fresh         # Fresh database (generate + migrate + seed)
 
 ```
 echoes/
-├── packages/
+├── apps/
 │   ├── api/          # NestJS REST API
 │   │   ├── src/
 │   │   │   ├── auth/       # Authentication module
@@ -156,6 +156,7 @@ echoes/
 │       │   ├── shared/     # Shared components & utils
 │       │   └── lib/        # Third-party configs
 │       └── ...
+├── packages/         # Shared packages/libraries (future)
 └── ...
 ```
 

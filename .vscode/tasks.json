@@ -24,7 +24,7 @@
     {
       "label": "root: start docker containers",
       "type": "shell",
-      "command": "cd packages/api && docker-compose up -d && cd ../..",
+      "command": "docker-compose up -d",
       "problemMatcher": [],
       "group": "none",
       "icon": {
@@ -35,7 +35,7 @@
     {
       "label": "app: init expo server",
       "type": "shell",
-      "command": "cd packages/app && yarn start",
+      "command": "cd apps/app && yarn start",
       "problemMatcher": [],
       "group": "none",
       "presentation": {
@@ -52,7 +52,7 @@
     {
       "label": "app: build dev app",
       "type": "shell",
-      "command": "cd packages/app && yarn run ${input:platform}",
+      "command": "cd apps/app && yarn run ${input:platform}",
       "problemMatcher": [],
       "group": "none",
       "presentation": {
