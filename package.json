@@ -22,15 +22,14 @@
     "db:test": "turbo run db:generate db:migrate:test --filter=@echoes/api"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.0",
-    "@commitlint/config-conventional": "^19.8.0",
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
+    "lint-staged": "^16.2.7",
     "turbo": "^2.6.3"
   },
   "workspaces": [
-    "packages/api",
-    "apps/*"
+    "packages/*"
   ],
   "packageManager": "yarn@4.7.0"
 }

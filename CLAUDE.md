@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Echoes is a platform for discovering and sharing quotes, built as a Turborepo monorepo with a NestJS API and React Native mobile app (Expo).
 
 **Packages:**
+
 - `@echoes/api` - NestJS REST API backend
 - `@echoes/app` - React Native mobile app with Expo
 
@@ -95,6 +96,7 @@ yarn db:fresh         # Fresh database (all steps)
 **Module-based NestJS architecture** - Each domain (quote, author, category, source, tag, user, auth) is a self-contained module.
 
 **Standard module structure:**
+
 ```
 <domain>/
 ├── contracts/          # Repository interfaces
@@ -108,6 +110,7 @@ yarn db:fresh         # Fresh database (all steps)
 ```
 
 **Key patterns:**
+
 - **Repository pattern**: All database access goes through repository contracts (interfaces) with Prisma implementations
 - **Use case pattern**: Each feature is a separate use case class (e.g., `FavoriteQuoteUseCase`, `ListQuotePaginatedUseCase`)
 - **Dependency injection**: Modules provide repositories via contracts, allowing easy mocking/testing
@@ -124,6 +127,7 @@ yarn db:fresh         # Fresh database (all steps)
 **Expo + React Native** with React Navigation for routing.
 
 **Directory structure:**
+
 ```
 src/
 ├── features/          # Feature modules (auth, quote, tag)
@@ -145,6 +149,7 @@ src/
 ```
 
 **Key patterns:**
+
 - **Feature-based organization**: Each feature (auth, quote, tag) contains its own components, hooks, and services
 - **React Query**: All API calls use React Query hooks defined in `features/<feature>/hooks/`
 - **Shared services**: API client setup in `shared/services/`, common components in `shared/components/`
@@ -152,6 +157,7 @@ src/
 - **Styling**: NativeWind (Tailwind for React Native) with custom theme configuration
 
 **State management:**
+
 - React Query for server state
 - Zustand for client state (stores in `lib/zustand/`)
 - MMKV for persistent storage

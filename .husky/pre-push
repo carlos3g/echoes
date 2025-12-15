@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running code quality checks..."
+yarn style
+
+echo "🧪 Running unit tests..."
+yarn test
+
+echo "🧪 Running E2E tests..."
+yarn test:e2e
+
+echo "✅ All checks passed! Proceeding with push..."

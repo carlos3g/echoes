@@ -9,7 +9,12 @@
       "Bash(yarn db:*)",
       "Bash(yarn test:e2e:*)",
       "Bash(curl:*)",
-      "Bash(lsof:*)"
+      "Bash(lsof:*)",
+      "Bash(yarn info:*)",
+      "Bash(yarn up:*)",
+      "Bash(chmod:*)",
+      "Bash(yarn install)",
+      "Bash(yarn workspaces:*)"
     ]
   }
 }
