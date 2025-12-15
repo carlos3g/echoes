@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(cat:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn turbo run:*)",
+      "Bash(yarn check:*)",
+      "Bash(yarn db:*)",
+      "Bash(yarn test:e2e:*)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)"
     ]
   }
 }

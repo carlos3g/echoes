@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Echoes is a platform for discovering and sharing quotes, built as a Lerna monorepo with a NestJS API and React Native mobile app (Expo).
+Echoes is a platform for discovering and sharing quotes, built as a Turborepo monorepo with a NestJS API and React Native mobile app (Expo).
 
 **Packages:**
 - `@echoes/api` - NestJS REST API backend
@@ -19,7 +19,7 @@ Echoes is a platform for discovering and sharing quotes, built as a Lerna monore
 cp packages/api/.env.example packages/api/.env && cp packages/app/.env.example packages/app/.env
 
 # Start database services (PostgreSQL, MailHog)
-cd packages/api && docker-compose up -d && cd ../..
+docker-compose up -d
 
 # Install dependencies
 yarn install
@@ -50,10 +50,10 @@ API runs on `http://localhost:3000`, Swagger docs at `http://localhost:3000/api`
 yarn db:test
 
 # Run all tests
-yarn lerna run test
+yarn test
 
 # Run E2E tests
-yarn lerna run test:e2e
+yarn test:e2e
 
 # API-specific test commands (from packages/api):
 yarn test              # Unit tests in watch mode
@@ -77,17 +77,15 @@ yarn check             # TypeScript type-checking
 ### Database Management
 
 ```bash
-# Generate Prisma client
-yarn lerna run db:generate
+# All database commands (runs on API package)
+yarn db                # Generate client + migrate + seed
+yarn db:test           # Setup test database
 
-# Push schema changes to database
-yarn lerna run db:migrate
-
-# Seed database
-yarn lerna run db:seed
-
-# Fresh database (from packages/api)
-yarn db:fresh
+# From packages/api directory:
+yarn db:generate       # Generate Prisma client
+yarn db:migrate        # Push schema changes
+yarn db:seed          # Seed database
+yarn db:fresh         # Fresh database (all steps)
 ```
 
 ## Architecture
@@ -162,8 +160,14 @@ src/
 
 ## Important Notes
 
-- **Monorepo**: Use Lerna commands to run scripts across packages (`lerna run <script>`)
+- **Monorepo**: Uses Turborepo for fast, cached builds. Run scripts with `turbo run <script>` or use root package.json commands
+- **Turborepo features**:
+  - Smart caching of task outputs (builds, tests, lint)
+  - Parallel execution with dependency awareness
+  - Filter packages with `--filter=<package>` (e.g., `turbo run dev --filter=@echoes/api`)
+  - Cache stored in `.turbo/` directory (gitignored)
 - **Package Manager**: Yarn v4 (Berry) - do not use npm
 - **Commits**: Conventional commits enforced via commitlint and husky pre-commit hooks
-- **Docker**: docker-compose.yaml in `packages/api/` sets up PostgreSQL and MailHog for local development
+- **Docker**: docker-compose.yaml in project root sets up PostgreSQL, MinIO, and Mailpit for local development
 - **Environment**: API requires database connection and JWT secret; check `.env.example` files for required variables
+- **API Versioning**: All endpoints use URI versioning (e.g., `/v1/quotes`). Default version is v1.

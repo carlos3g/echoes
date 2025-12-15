@@ -42,11 +42,13 @@ yarn install
 Copy the example environment files and configure as needed:
 
 ```bash
+cp .env.example .env
 cp packages/api/.env.example packages/api/.env
 cp packages/app/.env.example packages/app/.env
 ```
 
 **Required environment variables:**
+- `.env` - Docker Compose configuration (MinIO credentials, service ports)
 - `packages/api/.env` - Database connection, JWT secret, AWS/MinIO credentials
 - `packages/app/.env` - API URL (defaults to `http://localhost:3000`)
 
@@ -55,9 +57,7 @@ cp packages/app/.env.example packages/app/.env
 Start PostgreSQL, MinIO (S3-compatible storage), and Mailpit (email testing):
 
 ```bash
-cd packages/api
 docker-compose up -d
-cd ../..
 ```
 
 **Services started:**
@@ -99,10 +99,10 @@ yarn dev:app   # Mobile app only
 yarn db:test
 
 # Run all tests
-yarn lerna run test
+yarn test
 
 # Run E2E tests
-yarn lerna run test:e2e
+yarn test:e2e
 
 # API-specific (from packages/api):
 yarn test              # Unit tests (watch mode)
@@ -172,7 +172,7 @@ echoes/
 This project uses:
 - **Conventional Commits** - Enforced via commitlint
 - **Husky** - Git hooks for pre-commit linting
-- **Lerna** - Monorepo management
+- **Turborepo** - High-performance monorepo build system with smart caching
 
 ## Notes
 

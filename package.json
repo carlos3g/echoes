@@ -7,20 +7,26 @@
   "author": "carlos3g",
   "scripts": {
     "prepare": "husky",
-    "style": "lerna run style",
-    "dev": "lerna run dev",
-    "dev:api": "lerna run dev --scope @echoes/api",
-    "dev:app": "lerna run start --scope @echoes/app",
-    "clean": "lerna clean && rm -rf node_modules",
-    "db": "lerna run db:generate && lerna run db:migrate && lerna run db:seed",
-    "db:test": "lerna run db:generate && lerna run db:migrate:test"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=@echoes/api",
+    "dev:app": "turbo run start --filter=@echoes/app",
+    "style": "turbo run style",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "check": "turbo run check",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "db": "turbo run db:generate db:migrate db:seed --filter=@echoes/api",
+    "db:test": "turbo run db:generate db:migrate:test --filter=@echoes/api"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "husky": "^9.1.7",
-    "lerna": "^8.2.1",
-    "lint-staged": "^15.5.0"
+    "lint-staged": "^15.5.0",
+    "turbo": "^2.6.3"
   },
   "workspaces": [
     "packages/api",

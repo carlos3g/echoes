@@ -239,4 +239,63 @@ describe('(GET) /quotes/:uuid/untag', () => {
   });
 });
 
-describe.skip('(GET) /quotes/:uuid/tags/:tagUuid/exists', () => {});
+describe('(GET) /quotes/:uuid/tags/:tagUuid/exists', () => {
+  it('should return true when quote is tagged with the tag', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag.id } });
+
+    const response = await request(server)
+      .get(`/quotes/${quote.uuid}/tags/${tag.uuid}/exists`)
+      .auth(token, { type: 'bearer' });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    expect(response.body).toEqual({ exists: true });
+  });
+
+  it('should return false when quote is not tagged with the tag', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+
+    const response = await request(server)
+      .get(`/quotes/${quote.uuid}/tags/${tag.uuid}/exists`)
+      .auth(token, { type: 'bearer' });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    expect(response.body).toEqual({ exists: false });
+  });
+
+  it("should return forbidden when checking with another user's tag", async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const anotherUser = await userRepository.create(userFactory());
+    const tag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
+
+    const response = await request(server)
+      .get(`/quotes/${quote.uuid}/tags/${tag.uuid}/exists`)
+      .auth(token, { type: 'bearer' });
+
+    expect(response.status).toBe(HttpStatus.FORBIDDEN);
+  });
+
+  it('should return not found when quote does not exist', async () => {
+    const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    const fakeUuid = '00000000-0000-0000-0000-000000000000';
+
+    const response = await request(server)
+      .get(`/quotes/${fakeUuid}/tags/${tag.uuid}/exists`)
+      .auth(token, { type: 'bearer' });
+
+    expect(response.status).toBe(HttpStatus.NOT_FOUND);
+  });
+
+  it('should return not found when tag does not exist', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const fakeUuid = '00000000-0000-0000-0000-000000000000';
+
+    const response = await request(server)
+      .get(`/quotes/${quote.uuid}/tags/${fakeUuid}/exists`)
+      .auth(token, { type: 'bearer' });
+
+    expect(response.status).toBe(HttpStatus.NOT_FOUND);
+  });
+});

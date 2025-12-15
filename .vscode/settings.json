@@ -23,5 +23,6 @@
     "source.removeUnusedImports": "always",
     "source.fixAll": "always",
     "source.fixAll.eslint": "always"
-  }
+  },
+  "prisma.pinToPrisma6": true
 }

@@ -1,7 +1,10 @@
 # compiled output
 /dist
 /node_modules
+
+
 .env
+./**/.env
 .nestjs_repl_history
 
 # Logs
@@ -12,6 +15,9 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+
+# Turbo
+.turbo
 
 # OS
 .DS_Store

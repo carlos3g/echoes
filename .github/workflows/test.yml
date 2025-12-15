@@ -27,7 +27,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Generate prisma client
-        run: yarn lerna run db:generate
+        run: yarn turbo run db:generate
 
       - name: Run unit tests
-        run: yarn lerna run test
+        run: yarn turbo run test

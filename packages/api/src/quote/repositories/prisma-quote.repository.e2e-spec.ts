@@ -376,9 +376,74 @@ describe('PrismaQuoteRepository', () => {
     });
   });
 
-  describe.skip('countFavorites', () => {});
+  describe('countFavorites', () => {
+    it('should count favorites for a quote', async () => {
+      const quote = await prisma.quote.create({ data: quoteFactory() });
 
-  describe.skip('countTags', () => {});
+      const users = await Promise.all(Array.from({ length: 3 }).map(() => prisma.user.create({ data: userFactory() })));
+
+      await Promise.all(
+        users.map((user) =>
+          prisma.userFavoriteQuote.create({
+            data: {
+              userId: user.id,
+              quoteId: quote.id,
+            },
+          })
+        )
+      );
+
+      const count = await quoteRepository.countFavorites(Number(quote.id));
+
+      expect(count).toBe(3);
+    });
+
+    it('should return 0 when quote has no favorites', async () => {
+      const quote = await prisma.quote.create({ data: quoteFactory() });
+
+      const count = await quoteRepository.countFavorites(Number(quote.id));
+
+      expect(count).toBe(0);
+    });
+  });
+
+  describe('countTags', () => {
+    it('should count tags for a quote', async () => {
+      const quote = await prisma.quote.create({ data: quoteFactory() });
+      const user = await prisma.user.create({ data: userFactory() });
+
+      const tags = await Promise.all(
+        Array.from({ length: 4 }).map(() =>
+          prisma.tag.create({
+            data: { ...tagFactory(), userId: user.id },
+          })
+        )
+      );
+
+      await Promise.all(
+        tags.map((tag) =>
+          prisma.tagQuote.create({
+            data: {
+              tagId: tag.id,
+              quoteId: quote.id,
+            },
+          })
+        )
+      );
+
+      const count = await quoteRepository.countTags(Number(quote.id));
+
+      expect(count).toBe(4);
+    });
+
+    it('should return 0 when quote has no tags', async () => {
+      const quote = await prisma.quote.create({ data: quoteFactory() });
+
+      const count = await quoteRepository.countTags(Number(quote.id));
+
+      expect(count).toBe(0);
+    });
+  });
 
   describe('isFavorited', () => {
     it('should return true if the quote is favorited', async () => {

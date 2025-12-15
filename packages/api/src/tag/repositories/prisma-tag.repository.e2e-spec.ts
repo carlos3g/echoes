@@ -111,7 +111,51 @@ describe('PrismaTagRepository', () => {
     });
   });
 
-  describe.skip('countQuotes', () => {});
+  describe('countQuotes', () => {
+    it('should count quotes for a tag', async () => {
+      const user = await prisma.user.create({ data: userFactory() });
+      const tag = await prisma.tag.create({
+        data: { ...tagFactory(), userId: user.id },
+      });
+
+      const quotes = await Promise.all(
+        Array.from({ length: 5 }).map(() =>
+          prisma.quote.create({
+            data: {
+              body: faker.lorem.sentence(),
+              uuid: faker.string.uuid(),
+            },
+          })
+        )
+      );
+
+      await Promise.all(
+        quotes.map((quote) =>
+          prisma.tagQuote.create({
+            data: {
+              tagId: tag.id,
+              quoteId: quote.id,
+            },
+          })
+        )
+      );
+
+      const count = await tagRepository.countQuotes(Number(tag.id));
+
+      expect(count).toBe(5);
+    });
+
+    it('should return 0 when tag has no quotes', async () => {
+      const user = await prisma.user.create({ data: userFactory() });
+      const tag = await prisma.tag.create({
+        data: { ...tagFactory(), userId: user.id },
+      });
+
+      const count = await tagRepository.countQuotes(Number(tag.id));
+
+      expect(count).toBe(0);
+    });
+  });
 
   describe('update', () => {
     it('should update an existing source', async () => {

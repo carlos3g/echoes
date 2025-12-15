@@ -1,7 +1,7 @@
 services:
   # api:
   #   restart: unless-stopped
-  #   env_file: .env
+  #   env_file: packages/api/.env
   #   container_name: echoes-api
   #   build:
   #     context: .
@@ -19,41 +19,41 @@ services:
   #     - echoesnetwork
 
   mailpit:
-    image: 'axllent/mailpit:latest'
+    image: "axllent/mailpit:latest"
     ports:
-      - '${FORWARD_MAILPIT_PORT:-1025}:1025'
-      - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+      - "${FORWARD_MAILPIT_PORT:-1025}:1025"
+      - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
     networks:
       - echoesnetwork
 
-  postgres:
-    image: postgres:10-alpine
-    restart: unless-stopped
-    container_name: echoes-postgres
-    env_file: .env
-    environment:
-      POSTGRES_MULTIPLE_DATABASES: ${DB_DATABASE},${DB_DATABASE}_test
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_SCHEMA: ${DB_SCHEMA}
-    ports:
-      - '${DB_PORT}:5432'
-    volumes:
-      - ./postgres-scripts/:/docker-entrypoint-initdb.d/
-      - echoes-db:/var/lib/postgresql/data
-    networks:
-      - echoesnetwork
+  # postgres:
+  #   image: postgres:10-alpine
+  #   restart: unless-stopped
+  #   container_name: echoes-postgres
+  #   env_file: packages/api/.env
+  #   environment:
+  #     POSTGRES_MULTIPLE_DATABASES: ${DB_DATABASE},${DB_DATABASE}_test
+  #     POSTGRES_USER: ${DB_USERNAME}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     POSTGRES_SCHEMA: ${DB_SCHEMA}
+  #   ports:
+  #     - '${DB_PORT}:5432'
+  #   volumes:
+  #     - ./postgres-scripts/:/docker-entrypoint-initdb.d/
+  #     - echoes-db:/var/lib/postgresql/data
+  #   networks:
+  #     - echoesnetwork
 
   minio:
-    image: 'minio/minio:latest'
+    image: "minio/minio:latest"
     ports:
-      - '${FORWARD_MINIO_PORT:-9000}:9000'
-      - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+      - "${FORWARD_MINIO_PORT:-9000}:9000"
+      - "${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900"
     environment:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
     volumes:
-      - 'echoes-minio:/data/minio'
+      - "echoes-minio:/data/minio"
     networks:
       - echoesnetwork
     command: 'minio server /data/minio --console-address ":8900"'
@@ -61,8 +61,8 @@ services:
       test:
         - CMD
         - curl
-        - '-f'
-        - 'http://localhost:9000/minio/health/live'
+        - "-f"
+        - "http://localhost:9000/minio/health/live"
       retries: 3
       timeout: 5s
 
