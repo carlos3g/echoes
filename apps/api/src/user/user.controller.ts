@@ -1,7 +1,6 @@
 import { Public } from '@app/auth/decorators/public.decorator';
 import { GetUserAvatarUseCase } from '@app/user/use-cases/get-user-avatar.use-case';
 import { Controller, Get, HttpCode, HttpStatus, Param, Res } from '@nestjs/common';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Response } from 'express';
 
 @Controller({ path: 'users', version: '1' })

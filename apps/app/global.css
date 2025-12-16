@@ -3,23 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --color-green-primary: #074C4E;
-  --color-green-primary-light: #EAF6F6;
-  --color-carrot-secondary: #F86F2D;
-  --color-carrot-secondary-light: #FAE6DD;
-  --color-green-success: #4ABC86;
-  --color-green-success-light: #D8FFEC;
-  --color-red-error: #EA3838;
-  --color-red-error-light: #FBECEC;
+  --color-green-primary: #074c4e;
+  --color-green-primary-light: #eaf6f6;
+  --color-carrot-secondary: #f86f2d;
+  --color-carrot-secondary-light: #fae6dd;
+  --color-green-success: #4abc86;
+  --color-green-success-light: #d8ffec;
+  --color-red-error: #ea3838;
+  --color-red-error-light: #fbecec;
 
   --color-gray-black: #000000;
   --color-black-60: rgba(0, 0, 0, 0.6);
   --color-gray-1: #636363;
-  --color-gray-2: #8E8E8E;
-  --color-gray-3: #B3B3B3;
-  --color-gray-4: #E1E1E1;
-  --color-gray-5: #F5F5F5;
-  --color-gray-white: #FFFFFF;
+  --color-gray-2: #8e8e8e;
+  --color-gray-3: #b3b3b3;
+  --color-gray-4: #e1e1e1;
+  --color-gray-5: #f5f5f5;
+  --color-gray-white: #ffffff;
   --color-white-70: rgba(255, 255, 255, 0.7);
 
   --theme-primary: var(--color-green-primary);

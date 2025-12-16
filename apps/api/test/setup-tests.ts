@@ -1,3 +1,4 @@
 import * as dotenv from 'dotenv';
+import { expand } from 'dotenv-expand';
 
-dotenv.config({ path: '.env.testing' });
+expand(dotenv.config({ path: '.env.testing' }));

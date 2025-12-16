@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/knip@5.74.0/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": [],
+      "ignore": ["apps/**", "packages/**"],
+      "ignoreBinaries": ["prettier", "eslint"]
+    },
+    "apps/api": {
+      "entry": ["src/main.ts", "src/repl.ts"],
+      "project": ["src/**/*.ts", "prisma/**/*.ts"],
+      "ignore": ["**/*.spec.ts", "**/*.e2e-spec.ts", "test/**"]
+    },
+    "apps/app": {
+      "entry": ["App.tsx", "app.config.ts"],
+      "project": ["src/**/*.{ts,tsx}"],
+      "metro": false
+    }
+  }
+}

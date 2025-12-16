@@ -6,7 +6,6 @@ async function bootstrap() {
 
   replServer.setupHistory('.nestjs_repl_history', (err) => {
     if (err) {
-      // eslint-disable-next-line no-console
       console.error(err);
     }
   });

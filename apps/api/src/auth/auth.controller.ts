@@ -71,6 +71,7 @@ export class AuthController {
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
           fileType: AVATAR_VALID_MIME_TYPES,
+          skipMagicNumbersValidation: true,
         })
         .addMaxSizeValidator({
           maxSize: MAX_AVATAR_SIZE_IN_BYTES,
@@ -138,6 +139,7 @@ export class AuthController {
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
           fileType: AVATAR_VALID_MIME_TYPES,
+          skipMagicNumbersValidation: true,
         })
         .addMaxSizeValidator({
           maxSize: MAX_AVATAR_SIZE_IN_BYTES,

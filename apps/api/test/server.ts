@@ -1,4 +1,3 @@
-/* eslint-disable import/no-mutable-exports */
 import type { Server } from 'net';
 import { AppModule } from '@app/app.module';
 import { PrismaService } from '@app/lib/prisma/services/prisma.service';

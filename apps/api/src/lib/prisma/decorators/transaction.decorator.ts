@@ -18,7 +18,6 @@ export function Transaction(): MethodDecorator {
 
     const originalMethod: OriginalMethod = propertyDescriptor.value as OriginalMethod;
 
-    // eslint-disable-next-line no-param-reassign
     propertyDescriptor.value = async function bindTransactionScopeCallback(this: ThisType, ...args: unknown[]) {
       const { transactionScope } = this;
 

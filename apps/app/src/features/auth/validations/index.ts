@@ -9,7 +9,7 @@ export const signUpFormSchema = z
     passwordConfirmation: validatePassword(),
     username: validateUsername(),
     acceptTerms: z.literal(true, {
-      errorMap: () => ({ message: 'Aceite os termos de uso e privacidade' }),
+      error: 'Você deve aceitar os termos de serviço',
     }),
   })
   .refine(({ password, passwordConfirmation }) => password === passwordConfirmation, {

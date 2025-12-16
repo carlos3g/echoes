@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { Transaction } from '@app/lib/prisma/decorators/transaction.decorator';
 import { PrismaTransactionScopeService } from '@app/lib/prisma/services/transaction-scope.service';
 

@@ -14,7 +14,29 @@
       "Bash(yarn up:*)",
       "Bash(chmod:*)",
       "Bash(yarn install)",
-      "Bash(yarn workspaces:*)"
+      "Bash(yarn workspaces:*)",
+      "Bash(grep:*)",
+      "Bash(npm view:*)",
+      "Bash(yarn remove:*)",
+      "Bash(yarn lint:*)",
+      "Bash(yarn style:*)",
+      "Bash(yarn format:*)",
+      "Bash(yarn cache clean:*)",
+      "Bash(yarn test:*)",
+      "Bash(node -e:*)",
+      "Bash(yarn jest:*)",
+      "Bash(node add-js-extensions.mjs:*)",
+      "Bash(find:*)",
+      "Bash({} ;)",
+      "Bash(yarn db:generate:*)",
+      "Bash(yarn build:*)",
+      "Bash(NODE_OPTIONS='--experimental-vm-modules' yarn test:*)",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(git fsck:*)",
+      "Bash(ls:*)",
+      "Bash(npx knip:*)",
+      "Bash(yarn why:*)"
     ]
   }
 }
