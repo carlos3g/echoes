@@ -6,9 +6,9 @@ import RNBottomSheet, {
   BottomSheetFooter as RNBottomSheetFooter,
 } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigation } from '@react-navigation/native';
-import type { ListRenderItem } from '@shopify/flash-list';
-import { FlashList } from '@shopify/flash-list';
+import { useRouter } from 'expo-router';
+import type { ListRenderItem, FlashListProps } from '@shopify/flash-list';
+import { FlashList as RNFlashList } from '@shopify/flash-list';
 import { cssInterop } from 'nativewind';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -32,10 +32,14 @@ import { Button } from '@/shared/components/ui/button';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { createTagFormSchema } from '@/features/tag/validations';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
-import type { AppTabScreenProps } from '@/navigation/app.navigator.types';
 import { useTags } from '@/features/tag/hooks/use-tags';
 import { useCreateTag } from '@/features/tag/hooks/use-create-tag';
 import { useRefreshOnFocus } from '@/lib/react-query';
+
+// Type assertion needed due to cssInterop incompatibility
+const FlashList = RNFlashList as unknown as <T>(
+  props: FlashListProps<T> & { estimatedItemSize: number }
+) => React.ReactElement;
 
 const Ionicons = cssInterop(ExpoIonicons, {
   className: {
@@ -78,7 +82,7 @@ interface FabProps extends Omit<AnimatedProps<PressableProps>, 'onPress'> {
   onPress?: PressableProps['onPress'];
 }
 
-export const Fab: React.FC<FabProps> = (props) => {
+const Fab: React.FC<FabProps> = (props) => {
   const { onPress, ...rest } = props;
 
   const progress = useSharedValue(0);
@@ -107,7 +111,7 @@ export const Fab: React.FC<FabProps> = (props) => {
 
 type CreateTagFormData = z.infer<typeof createTagFormSchema>;
 
-export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
+const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
 
   const form = useForm<CreateTagFormData>({
@@ -146,6 +150,7 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref)
 
   return (
     <Portal>
+      {/* @ts-expect-error BottomSheet types incompatible with cssInterop */}
       <BottomSheet
         ref={ref}
         index={-1}
@@ -170,12 +175,12 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref)
 });
 
 const RenderItem: React.FC<{ item: Tag }> = ({ item }) => {
-  const { navigate } = useNavigation();
+  const router = useRouter();
 
   const onPress = () => {
-    navigate('QuotesNavigator', {
-      screen: 'ManageQuotesScreen',
-      params: { tag: item },
+    router.push({
+      pathname: '/(app)/(tabs)/(quotes)',
+      params: { tagUuid: item.uuid, tagTitle: item.title },
     });
   };
 
@@ -194,7 +199,7 @@ const ListEmptyComponent = () => (
   </View>
 );
 
-export const ManageTagsScreen: React.FC<AppTabScreenProps<'ManageTagsScreen'>> = () => {
+export default function ManageTagsScreen() {
   const bottomSheetRef = useRef<RNBottomSheet>(null);
 
   const { isRefetching, refetch, fetchNextPage, tags, isLoading } = useTags();
@@ -224,4 +229,4 @@ export const ManageTagsScreen: React.FC<AppTabScreenProps<'ManageTagsScreen'>> =
       <Fab onPress={() => bottomSheetRef.current?.expand()} />
     </View>
   );
-};
+}

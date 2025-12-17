@@ -1,4 +1,4 @@
-import type { ViewStyle } from 'react-native/types';
+import type { ViewStyle } from 'react-native';
 
 export const spacing = {
   s4: 4,

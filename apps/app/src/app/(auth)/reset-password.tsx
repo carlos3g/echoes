@@ -2,19 +2,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 import { View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { resetPasswordFormSchema } from '@/features/auth/validations';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { Button } from '@/shared/components/ui/button';
 import { Screen } from '@/shared/components/ui/screen';
 import { Text } from '@/shared/components/ui/text';
-import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 import { useResetPassword } from '@/features/auth/hooks/use-reset-password';
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>;
 
-export const ResetPasswordScreen: React.FC<AuthStackScreenProps<'ResetPasswordScreen'>> = () => {
-  const token = '';
+export default function ResetPasswordScreen() {
+  const { token = '' } = useLocalSearchParams<{ token?: string }>();
 
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordFormSchema),
@@ -52,4 +52,4 @@ export const ResetPasswordScreen: React.FC<AuthStackScreenProps<'ResetPasswordSc
       <Button loading={isPending} disabled={!form.formState.isValid} onPress={onSubmit} title="Redefinir senha" />
     </Screen>
   );
-};
+}

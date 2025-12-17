@@ -3,14 +3,13 @@ import { useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import type { z } from 'zod';
 import { changePasswordFormSchema } from '@/features/auth/validations';
-import type { SettingsStackScreenProps } from '@/navigation/settings.navigator.types';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { Button } from '@/shared/components/ui/button';
 import { useChangePassword } from '@/features/auth/hooks/use-change-password';
 
 type ChangePasswordFormData = z.infer<typeof changePasswordFormSchema>;
 
-export const ChangePasswordScreen: React.FC<SettingsStackScreenProps<'ChangePasswordScreen'>> = () => {
+export default function ChangePasswordScreen() {
   const form = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordFormSchema),
     defaultValues: {},
@@ -58,4 +57,4 @@ export const ChangePasswordScreen: React.FC<SettingsStackScreenProps<'ChangePass
       />
     </ScrollView>
   );
-};
+}

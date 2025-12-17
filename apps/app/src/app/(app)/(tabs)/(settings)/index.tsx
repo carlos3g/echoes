@@ -1,9 +1,8 @@
 import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
 import { cssInterop } from 'nativewind';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { useAuth } from '@/features/auth/hooks/use-auth';
-import type { SettingsStackScreenProps } from '@/navigation/settings.navigator.types';
 import { Text } from '@/shared/components/ui/text';
 import { userAvatarUrl } from '@/shared/utils';
 
@@ -16,10 +15,9 @@ const Ionicons = cssInterop(ExpoIonicons, {
   },
 });
 
-export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>> = () => {
+export default function SettingsScreen() {
   const { handleSignOut, user } = useAuth();
-
-  const { navigate } = useNavigation();
+  const router = useRouter();
 
   return (
     <View className="flex-1 bg-white">
@@ -51,7 +49,7 @@ export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>
         <TouchableOpacity
           testID="go-to-change-password-button"
           className="flex-row items-center justify-between py-4"
-          onPress={() => navigate('SettingsNavigator', { screen: 'ChangePasswordScreen' })}
+          onPress={() => router.push('/(app)/(tabs)/(settings)/change-password')}
         >
           <Text>Alterar senha</Text>
           <Ionicons name="chevron-forward" size={24} className="text-[#D1D5DB]" />
@@ -64,4 +62,4 @@ export const SettingsScreen: React.FC<SettingsStackScreenProps<'SettingsScreen'>
       </View>
     </View>
   );
-};
+}

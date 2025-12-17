@@ -1,10 +1,9 @@
 import type { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { loginFormSchema } from '@/features/auth/validations';
 import { Screen } from '@/shared/components/ui/screen';
-import type { AuthStackScreenProps } from '@/navigation/auth.navigator.types';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { Text } from '@/shared/components/ui/text';
@@ -13,8 +12,8 @@ import { useSignIn } from '@/features/auth/hooks/use-sign-in';
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
-export const SignInScreen: React.FC<AuthStackScreenProps<'SignInScreen'>> = () => {
-  const { navigate } = useNavigation();
+export default function SignInScreen() {
+  const router = useRouter();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
@@ -30,11 +29,11 @@ export const SignInScreen: React.FC<AuthStackScreenProps<'SignInScreen'>> = () =
   });
 
   const navigateToForgotPasswordScreen = () => {
-    navigate('ForgotPasswordScreen');
+    router.push('/(auth)/forgot-password');
   };
 
   const navigateToSignUpScreen = () => {
-    navigate('SignUpScreen');
+    router.push('/(auth)/sign-up');
   };
 
   return (
@@ -93,4 +92,4 @@ export const SignInScreen: React.FC<AuthStackScreenProps<'SignInScreen'>> = () =
       />
     </Screen>
   );
-};
+}

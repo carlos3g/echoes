@@ -12,8 +12,8 @@
       "ignore": ["**/*.spec.ts", "**/*.e2e-spec.ts", "test/**"]
     },
     "apps/app": {
-      "entry": ["App.tsx", "app.config.ts"],
-      "project": ["src/**/*.{ts,tsx}"],
+      "entry": ["app/**/*.tsx", "app.config.ts"],
+      "project": ["src/**/*.{ts,tsx}", "app/**/*.tsx"],
       "metro": false
     }
   }

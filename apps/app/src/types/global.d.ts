@@ -1,18 +1,10 @@
-import type { AppTabParams } from '@/navigation/app.navigator.types';
-import type { AuthStackParams } from '@/navigation/auth.navigator.types';
 import type { Entries } from 'type-fest';
-
-type RootParams = AuthStackParams & AppTabParams;
 
 declare global {
   interface ObjectConstructor {
     entries<T extends object>(o: T): Entries<T>;
 
     keys<T extends object>(object: T): (keyof T)[];
-  }
-
-  namespace ReactNavigation {
-    interface RootParamList extends RootParams {}
   }
 
   declare namespace NodeJS {

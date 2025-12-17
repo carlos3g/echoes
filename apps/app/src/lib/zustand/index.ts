@@ -10,7 +10,7 @@ export const zustandSecureStateStorage: StateStorage = {
     return value ?? null;
   },
   removeItem: (key) => {
-    return secureStorage.delete(key);
+    return secureStorage.remove(key);
   },
 };
 
@@ -23,6 +23,6 @@ export const zustandStateStorage: StateStorage = {
     return value ?? null;
   },
   removeItem: (key) => {
-    return storage.delete(key);
+    return storage.remove(key);
   },
 };

@@ -14,7 +14,7 @@ import RNBottomSheet, {
 } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo, useRef, createContext, useContext, useState } from 'react';
 import type { ListRenderItem } from '@shopify/flash-list';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import type { Quote, Tag } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
@@ -166,7 +166,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
   const { bottom } = useAppSafeArea();
   const { hide, quote } = useTagQuoteBottomSheet();
 
-  const { navigate } = useNavigation();
+  const router = useRouter();
 
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => <BottomSheetBackdrop {...backdropProps} />,
@@ -181,12 +181,12 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
           testID="create-tag-button"
           onPress={() => {
             hide();
-            navigate('ManageTagsScreen');
+            router.push('/(app)/(tabs)/tags');
           }}
         />
       </BottomSheetFooter>
     ),
-    [bottom, navigate, hide]
+    [bottom, router, hide]
   );
 
   const { isRefetching, refetch, fetchNextPage, tags, isLoading } = useTags();
@@ -201,6 +201,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
   }
 
   return (
+    // @ts-expect-error BottomSheet types incompatible with cssInterop
     <BottomSheet
       ref={ref}
       index={-1}

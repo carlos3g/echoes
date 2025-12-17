@@ -4,10 +4,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Echoes',
   slug: 'echoes',
+  scheme: 'echoes',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   userInterfaceStyle: 'automatic',
+  experiments: {
+    reactCompiler: true,
+  },
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.carlos3g.echoes',
@@ -26,6 +30,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   newArchEnabled: true,
   plugins: [
+    'expo-router',
     'expo-font',
     'expo-build-properties',
     [

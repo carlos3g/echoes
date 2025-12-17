@@ -27,7 +27,7 @@ export class MMKVStorageService implements StorageServiceContract {
   }
 
   public delete(input: StorageServiceDeleteInput): void {
-    this.mmkvInstance.delete(input.key);
+    this.mmkvInstance.remove(input.key);
   }
 
   public clear(): void {

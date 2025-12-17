@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/core';
+import { useFocusEffect } from 'expo-router';
 import { focusManager, onlineManager, QueryClient } from '@tanstack/react-query';
 import * as Network from 'expo-network';
 import React, { useEffect } from 'react';

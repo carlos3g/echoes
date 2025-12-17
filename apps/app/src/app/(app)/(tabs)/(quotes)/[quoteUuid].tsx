@@ -1,14 +1,12 @@
-import { useRoute } from '@react-navigation/native';
+import { useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
-import type { QuoteStackRouteProp, QuoteStackScreenProps } from '@/navigation/quotes.navigator.types';
 import { useGetQuote } from '@/features/quote/hooks/use-get-quote';
 
-export const QuoteScreen: React.FC<QuoteStackScreenProps<'QuoteScreen'>> = () => {
-  const { params } = useRoute<QuoteStackRouteProp<'QuoteScreen'>>();
-  const { quoteUuid } = params;
+export default function QuoteScreen() {
+  const { quoteUuid } = useLocalSearchParams<{ quoteUuid: string }>();
 
-  const { data: quote, isLoading } = useGetQuote({ quoteUuid });
+  const { data: quote, isLoading } = useGetQuote({ quoteUuid: quoteUuid });
 
   if (isLoading || !quote) {
     return (
@@ -25,4 +23,4 @@ export const QuoteScreen: React.FC<QuoteStackScreenProps<'QuoteScreen'>> = () =>
       </TagQuoteBottomSheetProvider>
     </View>
   );
-};
+}

@@ -1,27 +1,27 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
-import type { ListRenderItem } from '@shopify/flash-list';
-import { FlashList } from '@shopify/flash-list';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import type { ListRenderItem, FlashListProps } from '@shopify/flash-list';
+import { FlashList as RNFlashList } from '@shopify/flash-list';
 import { useMemo } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
 import { Badge, BadgeIcon, BadgeText } from '@/shared/components/ui/badge';
 import type { Quote } from '@/types/entities';
-import type {
-  QuoteStackNavigationProp,
-  QuoteStackRouteProp,
-  QuoteStackScreenProps,
-} from '@/navigation/quotes.navigator.types';
 import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
 
-const RenderItem: React.FC<{ item: Quote }> = ({ item }) => {
-  const { navigate } = useNavigation();
+// Type assertion needed due to cssInterop incompatibility
+const FlashList = RNFlashList as unknown as <T>(
+  props: FlashListProps<T> & { estimatedItemSize: number }
+) => React.ReactElement;
 
-  return (
-    <QuoteCard
-      data={item}
-      onPress={() => navigate('QuotesNavigator', { screen: 'QuoteScreen', params: { quoteUuid: item.uuid } })}
-    />
-  );
+type SearchParams = {
+  tagUuid?: string;
+  tagTitle?: string;
+};
+
+const RenderItem: React.FC<{ item: Quote }> = ({ item }) => {
+  const router = useRouter();
+
+  return <QuoteCard data={item} onPress={() => router.push(`/(app)/(tabs)/(quotes)/${item.uuid}`)} />;
 };
 
 const renderItem: ListRenderItem<Quote> = ({ item }) => <RenderItem item={item} />;
@@ -30,12 +30,11 @@ const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
 
 const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
 
-export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScreen'>> = () => {
-  const { setParams } = useNavigation<QuoteStackNavigationProp<'ManageQuotesScreen'>>();
-  const { params = {} } = useRoute<QuoteStackRouteProp<'ManageQuotesScreen'>>();
-  const { tag } = params;
+export default function ManageQuotesScreen() {
+  const router = useRouter();
+  const { tagUuid, tagTitle } = useLocalSearchParams<SearchParams>();
 
-  const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({ tagUuid: tag?.uuid });
+  const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({ tagUuid });
 
   const refreshControl = useMemo(
     () => <RefreshControl refreshing={isRefetching} onRefresh={refetch} />,
@@ -43,17 +42,17 @@ export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScr
   );
 
   const clearFilters = () => {
-    setParams({ tag: undefined });
+    router.setParams({ tagUuid: undefined, tagTitle: undefined });
   };
 
   return (
     <View className="flex-1 bg-white">
       <TagQuoteBottomSheetProvider>
-        {tag?.title && (
+        {tagTitle && (
           <View className="flex-row gap-2 px-4 pt-4">
             <Badge className="pl-2" onPress={clearFilters}>
               <BadgeIcon name="close" />
-              <BadgeText>{tag?.title}</BadgeText>
+              <BadgeText>{tagTitle}</BadgeText>
             </Badge>
           </View>
         )}
@@ -70,4 +69,4 @@ export const ManageQuotesScreen: React.FC<QuoteStackScreenProps<'ManageQuotesScr
       </TagQuoteBottomSheetProvider>
     </View>
   );
-};
+}

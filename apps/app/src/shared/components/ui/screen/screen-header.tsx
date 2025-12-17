@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { TouchableOpacity, View } from 'react-native';
 import type { ViewProps } from 'react-native';
 import { Text } from '@/shared/components/ui/text';
@@ -15,7 +15,7 @@ interface ScreenHeaderProps extends Pick<ScreenProps, 'title' | 'canGoBack' | 'H
 export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
   const { canGoBack, title, HeaderComponent, className, ...viewProps } = props;
 
-  const navigation = useNavigation();
+  const router = useRouter();
 
   if (!title && !canGoBack && !HeaderComponent) {
     return null;
@@ -29,7 +29,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
         <TouchableOpacity
           testID="screen-back-button"
           className={cn('flex-row items-center', showBackLabel ? 'mr-s-10' : undefined)}
-          onPress={navigation.goBack}
+          onPress={() => router.back()}
         >
           <Ionicons size={ICON_SIZE} name="arrow-back" color="primary" />
           {showBackLabel && (

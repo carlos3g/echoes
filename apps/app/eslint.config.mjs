@@ -72,6 +72,12 @@ export default tseslint.config(
   },
   ...tanstackQuery.configs['flat/recommended'],
   {
+    files: ['src/app/**/*.tsx'],
+    rules: {
+      'react/function-component-definition': 'off',
+    },
+  },
+  {
     files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
     ...testingLibrary.configs['flat/react'],
   },

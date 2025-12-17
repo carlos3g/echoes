@@ -1,7 +1,6 @@
 import '@/lib/i18n';
 import '@/shared/services';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import './global.css';
+import '../global.css';
 
 import { useReactQueryDevTools } from '@dev-plugins/react-query';
 import {
@@ -27,16 +26,19 @@ import {
 } from '@expo-google-fonts/poppins';
 import * as Sentry from '@sentry/react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { Stack, useNavigationContainerRef } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { LogBox } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Host } from 'react-native-portalize';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
-import { useMMKVDevTools } from '@dev-plugins/react-native-mmkv';
-import { LogBox } from 'react-native';
-import { navigationIntegration, RootNavigator } from '@/navigation';
-import { queryClient, useFocusManager } from '@/lib/react-query';
-import { ThemeProvider } from '@/lib/nativewind/theme.context';
 import { AuthProvider } from '@/features/auth/contexts/auth.context';
+import { ThemeProvider } from '@/lib/nativewind/theme.context';
+import { queryClient, useFocusManager } from '@/lib/react-query';
+import { useMMKVDevTools } from '@dev-plugins/react-native-mmkv';
+import { storage } from '@/lib/react-native-mmkv';
 
 LogBox.ignoreLogs(['ProgressiveListView: `ref` is not a prop.']);
 
@@ -47,15 +49,41 @@ SplashScreen.setOptions({
   fade: true,
 });
 
+const routingInstrumentation = Sentry.reactNavigationIntegration({
+  enableTimeToInitialDisplay: true,
+});
+
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_PROJECT_DSN,
   sendDefaultPii: true,
   tracesSampleRate: 0.3,
-  integrations: [navigationIntegration],
+  enableLogs: true,
+  profilesSampleRate: 1.0,
+  replaysOnErrorSampleRate: 1.0,
+  replaysSessionSampleRate: 0.1,
+  integrations: [Sentry.mobileReplayIntegration(), routingInstrumentation],
   debug: false,
 });
 
-const App = () => {
+const RootLayoutNav = () => {
+  const ref = useNavigationContainerRef();
+
+  useEffect(() => {
+    if (ref) {
+      routingInstrumentation.registerNavigationContainer(ref);
+    }
+  }, [ref]);
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(app)" />
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+};
+
+const RootLayout = () => {
   const [loaded, error] = useFonts({
     'Poppins-Thin': Poppins_100Thin,
     'Poppins-ThinItalic': Poppins_100Thin_Italic,
@@ -84,7 +112,7 @@ const App = () => {
   }, [loaded, error]);
 
   useReactQueryDevTools(queryClient);
-  useMMKVDevTools();
+  useMMKVDevTools({ storage });
   useFocusManager();
 
   if (!loaded && !error) {
@@ -92,18 +120,21 @@ const App = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <AuthProvider>
-          <ThemeProvider>
-            <RootNavigator />
-
-            <Toaster autoWiggleOnUpdate="always" />
-          </ThemeProvider>
-        </AuthProvider>
-      </SafeAreaProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <Host>
+                <RootLayoutNav />
+              </Host>
+              <Toaster autoWiggleOnUpdate="always" />
+            </ThemeProvider>
+          </AuthProvider>
+        </SafeAreaProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 };
 
-export default gestureHandlerRootHOC(Sentry.wrap(App));
+export default Sentry.wrap(RootLayout);
