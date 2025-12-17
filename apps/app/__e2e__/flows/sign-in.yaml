@@ -1,40 +1,44 @@
 appId: com.carlos3g.echoes
-env:
-  EMAIL: 'test@gmail.com'
-  PASSWORD: 'p@ss9ord1!'
-  INVALID_EMAIL: 'invalid@email.com'
-  INVALID_PASSWORD: 'wrong123'
 ---
 - runFlow:
     file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Verify initial state - button should be disabled
 - assertVisible:
     id: 'signin-button'
 - assertTrue: 'signin-button.enabled == false'
 
+# Test invalid credentials
 - tapOn:
     id: 'signin-email-input'
-- inputText: ${INVALID_EMAIL}
+- inputText: ${output.INVALID_EMAIL}
 - tapOn:
     id: 'signin-password-input'
-- inputText: ${INVALID_PASSWORD}
+- inputText: ${output.INVALID_PASSWORD}
+- hideKeyboard
 - tapOn:
     id: 'signin-button'
 - assertVisible: 'Opa!!'
 - assertVisible: 'E-mail ou senha inválidos'
 
+# Clear inputs
 - tapOn:
     id: 'signin-email-input'
 - eraseText: 100
 - tapOn:
     id: 'signin-password-input'
-- eraseText
+- eraseText: 100
 
+# Test valid credentials
 - tapOn:
     id: 'signin-email-input'
-- inputText: ${EMAIL}
+- inputText: ${output.EMAIL}
 - tapOn:
     id: 'signin-password-input'
-- inputText: ${PASSWORD}
+- inputText: ${output.PASSWORD}
 - hideKeyboard
 - tapOn:
     id: 'signin-button'

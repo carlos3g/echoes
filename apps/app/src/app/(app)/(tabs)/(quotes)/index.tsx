@@ -49,8 +49,8 @@ export default function ManageQuotesScreen() {
     <View className="flex-1 bg-white">
       <TagQuoteBottomSheetProvider>
         {tagTitle && (
-          <View className="flex-row gap-2 px-4 pt-4">
-            <Badge className="pl-2" onPress={clearFilters}>
+          <View testID="quotes-filter-container" className="flex-row gap-2 px-4 pt-4">
+            <Badge testID="quotes-clear-filter-button" className="pl-2" onPress={clearFilters}>
               <BadgeIcon name="close" />
               <BadgeText>{tagTitle}</BadgeText>
             </Badge>

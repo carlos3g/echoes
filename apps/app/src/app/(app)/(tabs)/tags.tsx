@@ -80,10 +80,11 @@ const AnimatedPressable = Animated.createAnimatedComponent(
 
 interface FabProps extends Omit<AnimatedProps<PressableProps>, 'onPress'> {
   onPress?: PressableProps['onPress'];
+  testID?: string;
 }
 
 const Fab: React.FC<FabProps> = (props) => {
-  const { onPress, ...rest } = props;
+  const { onPress, testID = 'fab-button', ...rest } = props;
 
   const progress = useSharedValue(0);
 
@@ -93,6 +94,7 @@ const Fab: React.FC<FabProps> = (props) => {
 
   return (
     <AnimatedPressable
+      testID={testID}
       onPress={(e) => {
         progress.value = withSequence(withSpring(1, { duration: 300 }), withSpring(0, { duration: 200 }));
         onPress?.(e);
@@ -226,7 +228,7 @@ export default function ManageTagsScreen() {
 
       <CreateTagBottomSheet ref={bottomSheetRef} />
 
-      <Fab onPress={() => bottomSheetRef.current?.expand()} />
+      <Fab testID="tags-fab" onPress={() => bottomSheetRef.current?.expand()} />
     </View>
   );
 }

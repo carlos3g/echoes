@@ -39,17 +39,36 @@ export default function ResetPasswordScreen() {
       </Text>
 
       <View className="mb-s-40 gap-s-20">
-        <ControlledTextInput control={form.control} name="email" label="E-mail" placeholder="Digite seu e-mail" />
-        <ControlledPasswordInput control={form.control} name="password" label="Senha" placeholder="Digite sua senha" />
+        <ControlledTextInput
+          control={form.control}
+          name="email"
+          label="E-mail"
+          placeholder="Digite seu e-mail"
+          testID="reset-password-email-input"
+        />
+        <ControlledPasswordInput
+          control={form.control}
+          name="password"
+          label="Senha"
+          placeholder="Digite sua senha"
+          testID="reset-password-password-input"
+        />
         <ControlledPasswordInput
           control={form.control}
           name="passwordConfirmation"
           label="Confirmar senha"
           placeholder="Digite a mesma senha"
+          testID="reset-password-confirmation-input"
         />
       </View>
 
-      <Button loading={isPending} disabled={!form.formState.isValid} onPress={onSubmit} title="Redefinir senha" />
+      <Button
+        loading={isPending}
+        disabled={!form.formState.isValid}
+        onPress={onSubmit}
+        title="Redefinir senha"
+        testID="reset-password-button"
+      />
     </Screen>
   );
 }

@@ -1,21 +1,23 @@
 appId: com.carlos3g.echoes
-env:
-  EMAIL: 'test@gmail.com'
-  PASSWORD: 'p@ss9ord1!'
 ---
 - runFlow:
     file: ../setup-app.yaml
 
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
 - tapOn:
     id: 'signin-email-input'
-- inputText: ${EMAIL}
+- inputText: ${output.EMAIL}
 - tapOn:
     id: 'signin-password-input'
-- inputText: ${PASSWORD}
+- inputText: ${output.PASSWORD}
 - hideKeyboard
 - tapOn:
     id: 'signin-button'
 
+# Test favorite toggle
 - tapOn:
     id: 'toggle-favorite-button'
     index: 0
@@ -25,17 +27,14 @@ env:
     index: 0
 - assertVisible: '0'
 
+# Test tag button (feature not available yet)
 - tapOn:
     id: 'toggle-tag-button'
     index: 0
 - assertVisible: 'Essa funcionalidade ainda não está disponível'
 - assertVisible: 'Estamos trabalhando para trazer essa funcionalidade o mais breve possível'
 
-# - tapOn:
-#     id: 'toggle-tag-button'
-#     index: 0
-# - assertVisible: 'echoes.carlos3g.dev/quotes'
-
+# Test scrolling
 - swipe:
     direction: UP
     duration: 500

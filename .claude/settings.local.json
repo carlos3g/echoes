@@ -48,7 +48,13 @@
       "Bash(DEBUG=expo-doctor*)",
       "Bash(yarn explain:*)",
       "Bash(yarn dlx:*)",
-      "Bash(git -C /Users/carlos3g/projects/carlos/echoes status apps/app/app/ --short)"
+      "Bash(git -C /Users/carlos3g/projects/carlos/echoes status apps/app/app/ --short)",
+      "Bash(timeout 2 maestro mcp:*)",
+      "Bash(maestro --version:*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "maestro"
+  ],
+  "enableAllProjectMcpServers": true
 }

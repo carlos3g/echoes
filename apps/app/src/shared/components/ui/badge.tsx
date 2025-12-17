@@ -43,14 +43,15 @@ const BadgeContext = React.createContext<'default' | 'secondary' | 'destructive'
 
 interface BadgeProps extends VariantProps<typeof badgeVariants>, TouchableOpacityProps {
   className?: string;
+  testID?: string;
 }
 
 export const Badge: React.FC<React.PropsWithChildren<BadgeProps>> = (props) => {
-  const { children, variant, className, ...rest } = props;
+  const { children, variant, className, testID, ...rest } = props;
 
   return (
     <BadgeContext.Provider value={variant}>
-      <TouchableOpacity className={cn(badgeVariants({ variant }), className)} {...rest}>
+      <TouchableOpacity testID={testID} className={cn(badgeVariants({ variant }), className)} {...rest}>
         {children}
       </TouchableOpacity>
     </BadgeContext.Provider>

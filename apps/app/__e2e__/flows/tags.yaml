@@ -1,0 +1,51 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- tapOn:
+    id: 'signin-email-input'
+- inputText: ${output.EMAIL}
+- tapOn:
+    id: 'signin-password-input'
+- inputText: ${output.PASSWORD}
+- hideKeyboard
+- tapOn:
+    id: 'signin-button'
+
+# Navigate to tags screen
+- tapOn:
+    id: 'manage-tags-tab-button'
+
+# Test creating a new tag
+- tapOn:
+    id: 'tags-fab'
+
+# Verify bottom sheet is visible
+- assertVisible: 'Título'
+
+# Fill in tag title
+- tapOn:
+    id: 'tag-title-input'
+- inputText: ${output.TAG_TITLE}
+- hideKeyboard
+
+# Create tag
+- tapOn:
+    id: 'create-tag-button'
+
+# Wait for creation and verify tag appears in list
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Test scrolling the tags list
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500

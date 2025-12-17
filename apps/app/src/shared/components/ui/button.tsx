@@ -62,16 +62,25 @@ export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   variant?: ButtonPreset;
   disabled?: boolean;
   className?: string;
+  testID?: string;
 }
 
 export const Button: React.FC<ButtonProps> = (props) => {
-  const { title, loading, variant = 'primary', disabled, className, ...touchableOpacityProps } = props;
+  const {
+    title,
+    loading,
+    variant = 'primary',
+    disabled,
+    className,
+    testID = 'button',
+    ...touchableOpacityProps
+  } = props;
 
   const state = disabled ? 'disabled' : 'default';
 
   return (
     <TouchableOpacity
-      testID="button"
+      testID={testID}
       disabled={disabled || loading}
       className={cn(buttonContainerStyles({ variant, state }), className)}
       {...touchableOpacityProps}

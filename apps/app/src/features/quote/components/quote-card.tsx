@@ -306,15 +306,18 @@ export const TagButton: React.FC<TagButtonProps> = (props) => {
 
 interface QuoteCardProps extends PressableProps {
   data: Quote;
+  testID?: string;
 }
 
 export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
-  const { data, ...rest } = props;
+  const { data, testID, ...rest } = props;
 
   return (
-    <Pressable key={data.uuid} className="px-4 py-4" {...rest}>
-      <Text className="leading-relaxed">{data.body}</Text>
-      <Text variant="paragraphSmall" className="mt-3 text-[#2559ac]">
+    <Pressable testID={testID ?? `quote-card-${data.uuid}`} key={data.uuid} className="px-4 py-4" {...rest}>
+      <Text testID={`quote-body-${data.uuid}`} className="leading-relaxed">
+        {data.body}
+      </Text>
+      <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="mt-3 text-[#2559ac]">
         {data.author?.name}
       </Text>
 

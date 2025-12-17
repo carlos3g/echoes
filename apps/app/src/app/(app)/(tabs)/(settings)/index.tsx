@@ -26,22 +26,23 @@ export default function SettingsScreen() {
         style={{ borderBottomWidth: StyleSheet.hairlineWidth }}
       >
         <Image
+          testID="user-avatar"
           source={{
             uri: userAvatarUrl(user!),
           }}
           className="mb-3 h-40 w-40 rounded-full border-[#D6D6D6]"
           style={{ borderWidth: StyleSheet.hairlineWidth }}
         />
-        <Text variant="headingSmall" className="text-gray-900">
+        <Text testID="user-name" variant="headingSmall" className="text-gray-900">
           {user?.name}
         </Text>
-        <Text variant="paragraphLarge" className="text-gray-600">
+        <Text testID="user-username" variant="paragraphLarge" className="text-gray-600">
           @{user?.username}
         </Text>
       </View>
 
       <View className="space-y-2 px-4 py-4">
-        <TouchableOpacity className="flex-row items-center justify-between py-4">
+        <TouchableOpacity testID="edit-profile-button" className="flex-row items-center justify-between py-4">
           <Text className="text-[#D1D5DB]">Editar perfil</Text>
           <Ionicons name="chevron-forward" size={24} className="text-[#D1D5DB]" />
         </TouchableOpacity>
@@ -55,7 +56,11 @@ export default function SettingsScreen() {
           <Ionicons name="chevron-forward" size={24} className="text-[#D1D5DB]" />
         </TouchableOpacity>
 
-        <TouchableOpacity className="flex-row items-center justify-between py-4" onPress={handleSignOut}>
+        <TouchableOpacity
+          testID="logout-button"
+          className="flex-row items-center justify-between py-4"
+          onPress={handleSignOut}
+        >
           <Text className="text-red-600">Sair</Text>
           <Ionicons name="chevron-forward" size={24} className="text-red-600" />
         </TouchableOpacity>

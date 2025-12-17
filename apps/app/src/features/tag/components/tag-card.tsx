@@ -20,14 +20,19 @@ const Ionicons = cssInterop(ExpoIonicons, {
 interface TagCardProps extends TouchableOpacityProps {
   data: Tag;
   icon?: 'outline' | 'solid';
+  testID?: string;
 }
 
 // Better use compound components here, but not worth since it's a simple component
 export const TagCard: React.FC<TagCardProps> = (props) => {
-  const { data, icon, ...rest } = props;
+  const { data, icon, testID, ...rest } = props;
 
   return (
-    <TouchableOpacity className="flex-row items-center justify-between px-4 py-4" {...rest}>
+    <TouchableOpacity
+      testID={testID ?? `tag-card-${data.uuid}`}
+      className="flex-row items-center justify-between px-4 py-4"
+      {...rest}
+    >
       <View className="flex-row items-center gap-3">
         {icon === 'solid' ? (
           <Ionicons name="pricetag" size={19} className="text-primary" />

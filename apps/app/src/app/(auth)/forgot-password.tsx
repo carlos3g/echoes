@@ -37,9 +37,16 @@ export default function ForgotPasswordScreen() {
         label="E-mail"
         placeholder="Digite seu e-mail"
         boxClassName="mb-s-40"
+        testID="forgot-password-email-input"
       />
 
-      <Button loading={isPending} disabled={!form.formState.isValid} onPress={onSubmit} title="Recuperar senha" />
+      <Button
+        loading={isPending}
+        disabled={!form.formState.isValid}
+        onPress={onSubmit}
+        title="Recuperar senha"
+        testID="forgot-password-button"
+      />
     </Screen>
   );
 }
