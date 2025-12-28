@@ -1,0 +1,25 @@
+meta {
+  name: Untag Quote
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/v1/quotes/:uuid/untag
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: quote-uuid-here
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "tagUuid": "tag-uuid-here"
+  }
+}

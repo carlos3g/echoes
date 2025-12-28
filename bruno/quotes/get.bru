@@ -1,0 +1,15 @@
+meta {
+  name: Get Quote
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/v1/quotes/:uuid
+  body: none
+  auth: none
+}
+
+params:path {
+  uuid: quote-uuid-here
+}

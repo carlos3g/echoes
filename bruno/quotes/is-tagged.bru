@@ -1,0 +1,20 @@
+meta {
+  name: Is Quote Tagged
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/v1/quotes/:uuid/tags/:tagUuid/exists
+  body: none
+  auth: bearer
+}
+
+params:path {
+  uuid: quote-uuid-here
+  tagUuid: tag-uuid-here
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

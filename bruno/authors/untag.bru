@@ -1,0 +1,25 @@
+meta {
+  name: Untag Author
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/v1/authors/:uuid/untag
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: author-uuid-here
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "tagUuid": "tag-uuid-here"
+  }
+}

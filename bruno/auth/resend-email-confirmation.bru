@@ -1,0 +1,15 @@
+meta {
+  name: Resend Email Confirmation
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/v1/auth/email/resend
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

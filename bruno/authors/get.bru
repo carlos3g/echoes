@@ -1,0 +1,15 @@
+meta {
+  name: Get Author
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/v1/authors/:uuid
+  body: none
+  auth: none
+}
+
+params:path {
+  uuid: author-uuid-here
+}

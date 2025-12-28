@@ -1,0 +1,19 @@
+meta {
+  name: Unfavorite Quote
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/v1/quotes/:uuid/unfavorite
+  body: none
+  auth: bearer
+}
+
+params:path {
+  uuid: quote-uuid-here
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
