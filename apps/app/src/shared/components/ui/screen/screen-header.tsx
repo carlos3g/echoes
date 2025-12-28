@@ -24,16 +24,16 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
   const showBackLabel = !title && !HeaderComponent;
 
   return (
-    <View className={cn('mb-s-24 flex-row items-center justify-between', className)} {...viewProps}>
+    <View className={cn('mb-6 flex-row items-center justify-between', className)} {...viewProps}>
       {canGoBack && (
         <TouchableOpacity
           testID="screen-back-button"
-          className={cn('flex-row items-center', showBackLabel ? 'mr-s-10' : undefined)}
+          className={cn('flex-row items-center', showBackLabel ? 'mr-2.5' : undefined)}
           onPress={() => router.back()}
         >
-          <Ionicons size={ICON_SIZE} name="arrow-back" color="primary" />
+          <Ionicons size={ICON_SIZE} name="arrow-back" color="#18181b" />
           {showBackLabel && (
-            <Text variant="paragraphMedium" semiBold className="ml-s-8">
+            <Text variant="paragraphMedium" semiBold className="ml-2">
               Voltar
             </Text>
           )}
@@ -41,7 +41,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
       )}
       {HeaderComponent}
       {title && <Text variant="headingSmall">{title}</Text>}
-      {title && <View className={cn(`bg-carrot-secondary w-${ICON_SIZE}`)} />}
+      {title && <View className={cn(`bg-zinc-500 w-${ICON_SIZE}`)} />}
     </View>
   );
 };

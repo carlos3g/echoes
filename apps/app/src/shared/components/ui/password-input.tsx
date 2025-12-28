@@ -24,7 +24,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = (props) => {
           testID={testID ? `${testID}-toggle` : 'password-toggle-visibility'}
           onPress={toggleSecureTextEntry}
         >
-          <Ionicons color="gray2" size={24} name={isSecureTextEntry ? 'eye-outline' : 'eye-off-outline'} />
+          <Ionicons color="#71717a" size={24} name={isSecureTextEntry ? 'eye-outline' : 'eye-off-outline'} />
         </TouchableOpacity>
       }
     />

@@ -38,11 +38,11 @@ export default function SignInScreen() {
 
   return (
     <Screen scrollable>
-      <Text className="mb-s-8" variant="headingLarge">
+      <Text className="mb-2" variant="headingLarge">
         Olá
       </Text>
 
-      <Text variant="paragraphLarge" className="mb-s-40">
+      <Text variant="paragraphLarge" className="mb-10">
         Digite seu e-mail e senha para entrar
       </Text>
 
@@ -51,7 +51,7 @@ export default function SignInScreen() {
         name="email"
         label="E-mail"
         placeholder="Digite seu e-mail"
-        boxClassName="mb-s-20"
+        boxClassName="mb-5"
         testID="signin-email-input"
       />
 
@@ -60,7 +60,7 @@ export default function SignInScreen() {
         name="password"
         label="Senha"
         placeholder="Digite sua senha"
-        boxClassName="mb-s-20"
+        boxClassName="mb-5"
         testID="signin-password-input"
       />
 
@@ -78,7 +78,7 @@ export default function SignInScreen() {
         loading={isPending}
         disabled={!form.formState.isValid}
         onPress={onSubmit}
-        className="mt-s-48"
+        className="mt-12"
         title="Entrar"
         testID="signin-button"
       />
@@ -86,7 +86,7 @@ export default function SignInScreen() {
       <Button
         onPress={navigateToSignUpScreen}
         variant="outline"
-        className="mt-s-12"
+        className="mt-3"
         title="Criar conta"
         testID="go-to-sign-up-button"
       />

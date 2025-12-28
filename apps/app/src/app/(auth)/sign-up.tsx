@@ -36,11 +36,11 @@ export default function SignUpScreen() {
 
   return (
     <Screen canGoBack scrollable>
-      <Text variant="headingLarge" className="mb-s-32">
+      <Text variant="headingLarge" className="mb-8">
         Criar nova conta
       </Text>
 
-      <View className="mb-s-20 gap-s-20">
+      <View className="mb-5 gap-5">
         <ControlledTextInput
           testID="signup-name-input"
           control={form.control}

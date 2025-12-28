@@ -1,11 +1,12 @@
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { spacing } from '@/shared/theme/theme';
+
+const MIN_SAFE_AREA = 20;
 
 export const useAppSafeArea = () => {
   const { top, bottom } = useSafeAreaInsets();
 
   return {
-    top: Math.max(top, spacing.s20),
-    bottom: Math.max(bottom, spacing.s20),
+    top: Math.max(top, MIN_SAFE_AREA),
+    bottom: Math.max(bottom, MIN_SAFE_AREA),
   };
 };

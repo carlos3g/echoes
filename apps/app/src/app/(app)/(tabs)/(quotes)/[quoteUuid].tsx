@@ -10,14 +10,14 @@ export default function QuoteScreen() {
 
   if (isLoading || !quote) {
     return (
-      <View className="flex-1 bg-white">
+      <View className="flex-1 bg-background">
         <QuoteCardSkeleton />
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-background">
       <TagQuoteBottomSheetProvider>
         <QuoteCard data={quote} />
       </TagQuoteBottomSheetProvider>

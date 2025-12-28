@@ -24,10 +24,10 @@ export default function ForgotPasswordScreen() {
 
   return (
     <Screen canGoBack>
-      <Text variant="headingLarge" className="mb-s-16">
+      <Text variant="headingLarge" className="mb-4">
         Esqueci minha senha
       </Text>
-      <Text variant="paragraphLarge" className="mb-s-32">
+      <Text variant="paragraphLarge" className="mb-8">
         Digite seu e-mail e enviaremos as instruções para redefinição de senha
       </Text>
 
@@ -36,7 +36,7 @@ export default function ForgotPasswordScreen() {
         name="email"
         label="E-mail"
         placeholder="Digite seu e-mail"
-        boxClassName="mb-s-40"
+        boxClassName="mb-10"
         testID="forgot-password-email-input"
       />
 

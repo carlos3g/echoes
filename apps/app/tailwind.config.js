@@ -6,72 +6,30 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'green-primary': {
-          DEFAULT: 'var(--color-green-primary)',
-          light: 'var(--color-green-primary-light)',
+        primary: {
+          DEFAULT: 'var(--color-primary)',
+          foreground: 'var(--color-primary-foreground)',
         },
-        'carrot-secondary': {
-          DEFAULT: 'var(--color-carrot-secondary)',
-          light: 'var(--color-carrot-secondary-light)',
+        background: 'var(--color-background)',
+        foreground: 'var(--color-foreground)',
+        muted: {
+          DEFAULT: 'var(--color-muted)',
+          foreground: 'var(--color-muted-foreground)',
         },
-        'green-success': {
-          DEFAULT: 'var(--color-green-success)',
-          light: 'var(--color-green-success-light)',
+        border: 'var(--color-border)',
+        input: 'var(--color-input)',
+        destructive: {
+          DEFAULT: 'var(--color-destructive)',
+          foreground: 'var(--color-destructive-foreground)',
         },
-        'red-error': {
-          DEFAULT: 'var(--color-red-error)',
-          light: 'var(--color-red-error-light)',
+        success: {
+          DEFAULT: 'var(--color-success)',
+          foreground: 'var(--color-success-foreground)',
         },
-
-        'gray-black': '#000000',
-        'black-60': 'rgba(0,0,0,0.6)',
-        gray: {
-          100: 'var(--color-gray-1)',
-          200: 'var(--color-gray-2)',
-          300: 'var(--color-gray-3)',
-          400: 'var(--color-gray-4)',
-          500: 'var(--color-gray-5)',
+        accent: {
+          DEFAULT: 'var(--color-accent)',
+          foreground: 'var(--color-accent-foreground)',
         },
-        'gray-white': '#FFFFFF',
-        'white-70': 'rgba(255,255,255,0.7)',
-
-        primary: 'var(--theme-primary)',
-        'primary-contrast': 'var(--theme-primary-contrast)',
-
-        'button-primary': 'var(--theme-button-primary)',
-
-        background: 'var(--theme-background)',
-        'background-contrast': 'var(--theme-background-contrast)',
-
-        error: 'var(--theme-error)',
-        'error-light': 'var(--theme-error-light)',
-
-        success: 'var(--theme-success)',
-        'success-light': 'var(--theme-success-light)',
-
-        market: 'var(--theme-market)',
-        paragraph: 'var(--theme-paragraph)',
-        'paragraph-secondary': 'var(--theme-paragraph-secondary)',
-
-        'icon-color': 'var(--theme-icon-color)',
-        'icon-fill-color': 'var(--theme-icon-fill-color)',
-
-        'on-background-gray-1': 'var(--theme-on-background-gray-1)',
-        'on-background-gray-2': 'var(--theme-on-background-gray-2)',
-      },
-      spacing: {
-        's-4': '4px',
-        's-8': '8px',
-        's-10': '10px',
-        's-12': '12px',
-        's-14': '14px',
-        's-16': '16px',
-        's-20': '20px',
-        's-24': '24px',
-        's-32': '32px',
-        's-40': '40px',
-        's-48': '48px',
-        's-56': '56px',
       },
       fontFamily: {
         'poppins-thin': ['Poppins-Thin'],
@@ -92,11 +50,6 @@ module.exports = {
         'poppins-extra-bold-italic': ['Poppins-ExtraBoldItalic'],
         'poppins-black': ['Poppins-Black'],
         'poppins-black-italic': ['Poppins-BlackItalic'],
-      },
-      borderRadius: {
-        's-8': '8px',
-        's-12': '12px',
-        's-16': '16px',
       },
       boxShadow: {
         custom: '0 -3px 12px rgba(0, 0, 0, 0.05)',

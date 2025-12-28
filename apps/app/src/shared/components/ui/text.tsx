@@ -13,7 +13,7 @@ type TextVariants =
   | 'paragraphCaption'
   | 'paragraphCaptionSmall';
 
-const textVariants = cva('text-background-contrast', {
+const textVariants = cva('text-foreground', {
   variants: {
     variant: {
       default: 'text-paragraph-medium',

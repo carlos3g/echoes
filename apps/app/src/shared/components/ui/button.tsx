@@ -8,22 +8,22 @@ import { ActivityIndicator } from '@/shared/components/ui/activity-indicator';
 
 export type ButtonPreset = 'primary' | 'outline' | 'ghost';
 
-export const buttonContainerStyles = cva('px-s-20 h-[50px] items-center justify-center rounded-s-16', {
+export const buttonContainerStyles = cva('px-5 h-[50px] items-center justify-center rounded-2xl', {
   variants: {
     variant: {
       primary: 'bg-primary',
       outline: 'border border-primary',
-      ghost: 'bg-white-70 h-[40px]',
+      ghost: 'bg-zinc-100/70 h-[40px]',
     },
     state: {
       default: '',
-      disabled: 'bg-gray-400',
+      disabled: 'bg-zinc-400',
     },
   },
   compoundVariants: [
-    { variant: 'primary', state: 'disabled', class: 'bg-gray-400' },
-    { variant: 'outline', state: 'disabled', class: 'border-gray-400' },
-    { variant: 'ghost', state: 'disabled', class: 'bg-gray-white h-[40px]' },
+    { variant: 'primary', state: 'disabled', class: 'bg-zinc-400' },
+    { variant: 'outline', state: 'disabled', class: 'border-zinc-400' },
+    { variant: 'ghost', state: 'disabled', class: 'bg-white h-[40px]' },
   ],
   defaultVariants: {
     variant: 'primary',
@@ -34,13 +34,13 @@ export const buttonContainerStyles = cva('px-s-20 h-[50px] items-center justify-
 export const buttonContentStyles = cva('', {
   variants: {
     variant: {
-      primary: 'text-primary-contrast',
+      primary: 'text-primary-foreground',
       outline: 'text-primary',
-      ghost: 'text-gray-black',
+      ghost: 'text-foreground',
     },
     state: {
       default: '',
-      disabled: 'text-gray-200',
+      disabled: 'text-zinc-300',
     },
   },
   compoundVariants: [

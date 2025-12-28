@@ -35,6 +35,7 @@ import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
 import { useTags } from '@/features/tag/hooks/use-tags';
 import { useCreateTag } from '@/features/tag/hooks/use-create-tag';
 import { useRefreshOnFocus } from '@/lib/react-query';
+import { useTheme } from '@/lib/nativewind/theme.context';
 
 // Type assertion needed due to cssInterop incompatibility
 const FlashList = RNFlashList as unknown as <T>(
@@ -105,7 +106,7 @@ const Fab: React.FC<FabProps> = (props) => {
       style={animatedStyle}
     >
       <View className="flex h-14 w-14 items-center justify-center rounded-full bg-primary">
-        <Ionicons name="add-sharp" className="text-primary-contrast" size={24} />
+        <Ionicons name="add-sharp" className="text-primary-foreground" size={24} />
       </View>
     </AnimatedPressable>
   );
@@ -115,6 +116,7 @@ type CreateTagFormData = z.infer<typeof createTagFormSchema>;
 
 const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
+  const { colors } = useTheme();
 
   const form = useForm<CreateTagFormData>({
     resolver: zodResolver(createTagFormSchema),
@@ -137,7 +139,12 @@ const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
 
   const renderFooter = useCallback(
     (footerProps: BottomSheetFooterProps) => (
-      <BottomSheetFooter {...footerProps} bottomInset={bottom + 16} className="px-4">
+      <BottomSheetFooter
+        {...footerProps}
+        bottomInset={bottom + 16}
+        className="px-4"
+        style={{ backgroundColor: colors.background }}
+      >
         <Button
           loading={isPending}
           disabled={!form.formState.isValid}
@@ -147,7 +154,7 @@ const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
         />
       </BottomSheetFooter>
     ),
-    [bottom, isPending, onSubmit, form.formState.isValid]
+    [bottom, isPending, onSubmit, form.formState.isValid, colors.background]
   );
 
   return (
@@ -160,6 +167,8 @@ const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
         backdropComponent={renderBackdrop}
         enablePanDownToClose
         snapPoints={['50%']}
+        backgroundStyle={{ backgroundColor: colors.background }}
+        handleIndicatorStyle={{ backgroundColor: colors.mutedForeground }}
       >
         <BottomSheetView className="px-4">
           <ControlledTextInput
@@ -193,7 +202,7 @@ const renderItem: ListRenderItem<Tag> = ({ item }) => <RenderItem item={item} />
 
 const renderItemSkeleton: ListRenderItem<Tag> = () => <TagCardSkeleton />;
 
-const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
+const ItemSeparatorComponent = () => <View className="bg-border" style={{ height: StyleSheet.hairlineWidth }} />;
 
 const ListEmptyComponent = () => (
   <View className="items-center py-4">

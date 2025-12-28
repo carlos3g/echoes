@@ -2,6 +2,12 @@ import '@/lib/i18n';
 import '@/shared/services';
 import '../global.css';
 
+import { AuthProvider } from '@/features/auth/contexts/auth.context';
+import { useAuth } from '@/features/auth/hooks/use-auth';
+import { ThemeProvider } from '@/lib/nativewind/theme.context';
+import { storage } from '@/lib/react-native-mmkv';
+import { queryClient, useFocusManager } from '@/lib/react-query';
+import { useMMKVDevTools } from '@dev-plugins/react-native-mmkv';
 import { useReactQueryDevTools } from '@dev-plugins/react-query';
 import {
   Poppins_100Thin,
@@ -34,11 +40,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
-import { AuthProvider } from '@/features/auth/contexts/auth.context';
-import { ThemeProvider } from '@/lib/nativewind/theme.context';
-import { queryClient, useFocusManager } from '@/lib/react-query';
-import { useMMKVDevTools } from '@dev-plugins/react-native-mmkv';
-import { storage } from '@/lib/react-native-mmkv';
 
 LogBox.ignoreLogs(['ProgressiveListView: `ref` is not a prop.']);
 
@@ -67,6 +68,7 @@ Sentry.init({
 
 const RootLayoutNav = () => {
   const ref = useNavigationContainerRef();
+  const { isAuth } = useAuth();
 
   useEffect(() => {
     if (ref) {
@@ -76,9 +78,13 @@ const RootLayoutNav = () => {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(app)" />
-      <Stack.Screen name="+not-found" />
+      <Stack.Protected guard={!isAuth}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={isAuth}>
+        <Stack.Screen name="(app)" />
+      </Stack.Protected>
     </Stack>
   );
 };

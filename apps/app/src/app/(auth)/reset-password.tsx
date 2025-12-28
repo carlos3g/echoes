@@ -31,14 +31,14 @@ export default function ResetPasswordScreen() {
 
   return (
     <Screen canGoBack>
-      <Text variant="headingLarge" className="mb-s-16">
+      <Text variant="headingLarge" className="mb-4">
         Esqueci minha senha
       </Text>
-      <Text variant="paragraphLarge" className="mb-s-32">
+      <Text variant="paragraphLarge" className="mb-8">
         Digite seu e-mail e enviaremos as instruções para redefinição de senha
       </Text>
 
-      <View className="mb-s-40 gap-s-20">
+      <View className="mb-10 gap-5">
         <ControlledTextInput
           control={form.control}
           name="email"

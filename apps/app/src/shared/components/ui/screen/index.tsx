@@ -39,12 +39,12 @@ export const Screen: React.FC<ScreenProps> = (props) => {
     <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <Container>
         <View
-          className={cn(noPaddingHorizontal ? 'px-0' : 'px-s-24', className)}
+          className={cn(noPaddingHorizontal ? 'px-0' : 'px-6', className)}
           style={safeAreaInsetsStyle}
           {...viewProps}
         >
           <ScreenHeader
-            className={cn(noPaddingHorizontal ? 'px-s-24' : 'px-0')}
+            className={cn(noPaddingHorizontal ? 'px-6' : 'px-0')}
             HeaderComponent={HeaderComponent}
             canGoBack={canGoBack}
             title={title}

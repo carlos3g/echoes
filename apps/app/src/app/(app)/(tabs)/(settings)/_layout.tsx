@@ -1,16 +1,22 @@
 import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
-import { colors } from '@/shared/theme/colors';
+import { useTheme } from '@/lib/nativewind/theme.context';
 
 export default function SettingsLayout() {
+  const { colors } = useTheme();
+
   return (
     <Stack
       screenOptions={{
         headerTitleStyle: {
-          color: colors.lightTheme.backgroundContrast,
+          color: colors.foreground,
+        },
+        headerStyle: {
+          backgroundColor: colors.background,
         },
         contentStyle: {
-          borderTopColor: '#C2C2C2',
+          backgroundColor: colors.background,
+          borderTopColor: colors.border,
           borderTopWidth: StyleSheet.hairlineWidth,
         },
         headerShadowVisible: false,

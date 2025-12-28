@@ -27,6 +27,7 @@ import { useTagQuote } from '@/features/quote/hooks/use-tag-quote';
 import { useUntagQuote } from '@/features/quote/hooks/use-untag-quote';
 import { useIsQuoteTagged } from '@/features/quote/hooks/use-is-quote-tagged';
 import { useTags } from '@/features/tag/hooks/use-tags';
+import { useTheme } from '@/lib/nativewind/theme.context';
 
 const { width: wWidth } = Dimensions.get('window');
 
@@ -76,7 +77,7 @@ export const ShareButton: React.FC<ShareButtonProps> = (props) => {
 
   return (
     <TouchableOpacity testID="share-button" onPress={handleShare}>
-      <Ionicons name="share-social-outline" size={20} className="text-[#4b5563]" />
+      <Ionicons name="share-social-outline" size={20} className="text-muted-foreground" />
     </TouchableOpacity>
   );
 };
@@ -108,9 +109,12 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
       <Ionicons
         name={metadata?.favoritedByUser ? 'heart' : 'heart-outline'}
         size={20}
-        className={metadata?.favoritedByUser ? 'text-red-500' : 'text-[#4b5563]'}
+        className={metadata?.favoritedByUser ? 'text-destructive' : 'text-muted-foreground'}
       />
-      <Text variant="paragraphSmall" className={cn('text-gray-600', metadata?.favoritedByUser && 'text-red-500')}>
+      <Text
+        variant="paragraphSmall"
+        className={cn('text-muted-foreground', metadata?.favoritedByUser && 'text-destructive')}
+      >
         {formattedFavorites}
       </Text>
     </TouchableOpacity>
@@ -154,7 +158,7 @@ const renderItem: ListRenderItem<Tag> = ({ item }) => <RenderItem item={item} />
 
 const renderItemSkeleton: ListRenderItem<Tag> = () => <TagCardSkeleton />;
 
-const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
+const ItemSeparatorComponent = () => <View className="bg-border" style={{ height: StyleSheet.hairlineWidth }} />;
 
 const ListEmptyComponent = () => (
   <View className="items-center">
@@ -165,6 +169,7 @@ const ListEmptyComponent = () => (
 export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
   const { hide, quote } = useTagQuoteBottomSheet();
+  const { colors } = useTheme();
 
   const router = useRouter();
 
@@ -175,7 +180,12 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
 
   const renderFooter = useCallback(
     (footerProps: BottomSheetFooterProps) => (
-      <BottomSheetFooter {...footerProps} bottomInset={bottom + 16} className="px-4">
+      <BottomSheetFooter
+        {...footerProps}
+        bottomInset={bottom + 16}
+        className="px-4"
+        style={{ backgroundColor: colors.background }}
+      >
         <Button
           title="Criar"
           testID="create-tag-button"
@@ -186,7 +196,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
         />
       </BottomSheetFooter>
     ),
-    [bottom, router, hide]
+    [bottom, router, hide, colors.background]
   );
 
   const { isRefetching, refetch, fetchNextPage, tags, isLoading } = useTags();
@@ -211,6 +221,8 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
       enablePanDownToClose
       snapPoints={['30%', '50%', '70%', '80%']}
       onClose={hide}
+      backgroundStyle={{ backgroundColor: colors.background }}
+      handleIndicatorStyle={{ backgroundColor: colors.mutedForeground }}
     >
       <BottomSheetView className="flex-1">
         <BottomSheetFlashList
@@ -296,8 +308,8 @@ export const TagButton: React.FC<TagButtonProps> = (props) => {
 
   return (
     <TouchableOpacity testID="toggle-tag-button" className="flex-row items-center gap-1" onPress={handleTag}>
-      <Ionicons name="pricetag-outline" size={19} className="text-[#4b5563]" />
-      <Text variant="paragraphSmall" className="text-gray-600">
+      <Ionicons name="pricetag-outline" size={19} className="text-muted-foreground" />
+      <Text variant="paragraphSmall" className="text-muted-foreground">
         {formattedTags}
       </Text>
     </TouchableOpacity>
@@ -317,7 +329,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
       <Text testID={`quote-body-${data.uuid}`} className="leading-relaxed">
         {data.body}
       </Text>
-      <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="mt-3 text-[#2559ac]">
+      <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="text-muted-foreground mt-3">
         {data.author?.name}
       </Text>
 

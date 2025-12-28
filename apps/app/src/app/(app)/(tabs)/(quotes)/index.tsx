@@ -28,7 +28,7 @@ const renderItem: ListRenderItem<Quote> = ({ item }) => <RenderItem item={item} 
 
 const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
 
-const ItemSeparatorComponent = () => <View className="bg-[#D6D6D6]" style={{ height: StyleSheet.hairlineWidth }} />;
+const ItemSeparatorComponent = () => <View className="bg-border" style={{ height: StyleSheet.hairlineWidth }} />;
 
 export default function ManageQuotesScreen() {
   const router = useRouter();
@@ -46,7 +46,7 @@ export default function ManageQuotesScreen() {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-background">
       <TagQuoteBottomSheetProvider>
         {tagTitle && (
           <View testID="quotes-filter-container" className="flex-row gap-2 px-4 pt-4">

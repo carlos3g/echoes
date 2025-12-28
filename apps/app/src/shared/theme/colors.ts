@@ -1,77 +1,32 @@
-export const palette = {
-  greenPrimary: '#074C4E',
-  greenPrimaryLight: '#EAF6F6',
-  carrotSecondary: '#F86F2D',
-  carrotSecondaryLight: '#FAE6DD',
-  greenSuccess: '#4ABC86',
-  greenSuccessLight: '#D8FFEC',
-  redError: '#EA3838',
-  redErrorLight: '#FBECEC',
-
-  grayBlack: '#000000',
-  black60: 'rgba(0,0,0,0.6)',
-  gray1: '#636363',
-  gray2: '#8E8E8E',
-  gray3: '#B3B3B3',
-  gray4: '#E1E1E1',
-  gray5: '#F5F5F5',
-  grayWhite: '#FFFFFF',
-  white70: 'rgba(255,255,255,0.7)',
+export const zinc = {
+  50: '#fafafa',
+  100: '#f4f4f5',
+  200: '#e4e4e7',
+  300: '#d4d4d8',
+  400: '#a1a1aa',
+  500: '#71717a',
+  600: '#52525b',
+  700: '#3f3f46',
+  800: '#27272a',
+  900: '#18181b',
+  950: '#09090b',
 };
 
-const lightTheme = {
-  ...palette,
-  primary: palette.greenPrimary,
-  primaryContrast: palette.grayWhite,
+export { darkThemeColors, lightThemeColors, type ThemeColors } from '@/lib/nativewind';
 
-  buttonPrimary: palette.greenPrimary,
-
-  background: palette.grayWhite,
-  backgroundContrast: palette.grayBlack,
-
-  error: palette.redError,
-  errorLight: palette.redErrorLight,
-
-  success: palette.greenSuccess,
-  successLight: palette.greenSuccessLight,
-
-  market: palette.carrotSecondary,
-  paragraph: palette.gray1,
-
-  paragraphSecondary: palette.gray1,
-
-  iconColor: palette.greenPrimary,
-  iconFillColor: palette.grayWhite,
-
-  onBackgroundGray1: palette.gray1,
-  onBackgroundGray2: palette.gray4,
+export const colors = {
+  primary: zinc[900],
+  primaryForeground: '#ffffff',
+  background: '#ffffff',
+  foreground: zinc[950],
+  muted: zinc[100],
+  mutedForeground: zinc[500],
+  border: zinc[200],
+  input: zinc[200],
+  destructive: '#ef4444',
+  destructiveForeground: '#ffffff',
+  success: '#22c55e',
+  successForeground: '#ffffff',
+  accent: zinc[100],
+  accentForeground: zinc[900],
 };
-
-const darkTheme: typeof lightTheme = {
-  ...palette,
-  primary: palette.carrotSecondary,
-  primaryContrast: palette.grayWhite,
-
-  buttonPrimary: palette.carrotSecondary,
-
-  background: palette.grayBlack,
-  backgroundContrast: palette.grayWhite,
-
-  error: palette.redError,
-  errorLight: palette.redErrorLight,
-
-  success: palette.greenSuccess,
-  successLight: palette.greenSuccessLight,
-
-  market: palette.carrotSecondary,
-  paragraph: palette.grayWhite,
-  paragraphSecondary: palette.gray1,
-
-  iconColor: palette.greenPrimaryLight,
-  iconFillColor: palette.grayBlack,
-
-  onBackgroundGray1: palette.gray3,
-  onBackgroundGray2: palette.gray1,
-};
-
-export const colors = { palette, lightTheme, darkTheme };

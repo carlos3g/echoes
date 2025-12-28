@@ -24,7 +24,7 @@ export default function ChangePasswordScreen() {
 
   return (
     <ScrollView className="flex-1 bg-background px-4 py-6">
-      <View className="mb-s-20 gap-s-20">
+      <View className="mb-5 gap-5">
         <ControlledPasswordInput
           testID="current-password-input"
           control={form.control}

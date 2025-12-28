@@ -13,9 +13,9 @@ const badgeVariants = cva('flex-row items-center rounded-md h-8 border border-pr
   variants: {
     variant: {
       default: 'border-transparent bg-primary shadow',
-      secondary: 'border-transparent bg-carrot-secondary',
-      destructive: 'border-transparent bg-error shadow',
-      outline: 'border-background-contrast',
+      secondary: 'border-transparent bg-zinc-500',
+      destructive: 'border-transparent bg-destructive shadow',
+      outline: 'border-foreground',
     },
   },
   defaultVariants: {
@@ -26,10 +26,10 @@ const badgeVariants = cva('flex-row items-center rounded-md h-8 border border-pr
 const badgeTextVariants = cva('', {
   variants: {
     variant: {
-      default: 'text-primary-contrast',
+      default: 'text-primary-foreground',
       secondary: 'text-white',
       destructive: 'text-white',
-      outline: 'text-background-contrast',
+      outline: 'text-foreground',
     },
   },
   defaultVariants: {
