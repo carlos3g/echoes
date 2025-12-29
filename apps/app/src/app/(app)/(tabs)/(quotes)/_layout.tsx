@@ -20,12 +20,13 @@ export default function QuotesLayout() {
           borderTopWidth: StyleSheet.hairlineWidth,
         },
         headerShadowVisible: false,
+        headerBackButtonDisplayMode: 'minimal',
       }}
     >
       <Stack.Screen
         name="index"
         options={{
-          title: 'Gerenciar citações',
+          title: 'Citações',
         }}
       />
       <Stack.Screen

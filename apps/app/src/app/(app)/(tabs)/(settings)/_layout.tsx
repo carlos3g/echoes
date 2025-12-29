@@ -20,6 +20,7 @@ export default function SettingsLayout() {
           borderTopWidth: StyleSheet.hairlineWidth,
         },
         headerShadowVisible: false,
+        headerBackButtonDisplayMode: 'minimal',
       }}
     >
       <Stack.Screen

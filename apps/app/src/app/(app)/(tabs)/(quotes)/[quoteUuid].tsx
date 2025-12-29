@@ -1,6 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
-import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
+import { QuoteCard, QuoteCardSkeleton } from '@/features/quote/components/quote-card';
+import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { useGetQuote } from '@/features/quote/hooks/use-get-quote';
 
 export default function QuoteScreen() {

@@ -1,45 +1,19 @@
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import type { ListRenderItem, FlashListProps } from '@shopify/flash-list';
-import { FlashList as RNFlashList } from '@shopify/flash-list';
-import { useMemo } from 'react';
-import { RefreshControl, StyleSheet, View } from 'react-native';
-import { QuoteCard, QuoteCardSkeleton, TagQuoteBottomSheetProvider } from '@/features/quote/components/quote-card';
-import { Badge, BadgeIcon, BadgeText } from '@/shared/components/ui/badge';
-import type { Quote } from '@/types/entities';
+import { View } from 'react-native';
+import { QuoteList, QuoteFilterBadge } from '@/features/quote/components/quote-list';
+import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
-
-// Type assertion needed due to cssInterop incompatibility
-const FlashList = RNFlashList as unknown as <T>(
-  props: FlashListProps<T> & { estimatedItemSize: number }
-) => React.ReactElement;
 
 type SearchParams = {
   tagUuid?: string;
   tagTitle?: string;
 };
 
-const RenderItem: React.FC<{ item: Quote }> = ({ item }) => {
-  const router = useRouter();
-
-  return <QuoteCard data={item} onPress={() => router.push(`/(app)/(tabs)/(quotes)/${item.uuid}`)} />;
-};
-
-const renderItem: ListRenderItem<Quote> = ({ item }) => <RenderItem item={item} />;
-
-const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
-
-const ItemSeparatorComponent = () => <View className="bg-border" style={{ height: StyleSheet.hairlineWidth }} />;
-
 export default function ManageQuotesScreen() {
   const router = useRouter();
   const { tagUuid, tagTitle } = useLocalSearchParams<SearchParams>();
 
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({ tagUuid });
-
-  const refreshControl = useMemo(
-    () => <RefreshControl refreshing={isRefetching} onRefresh={refetch} />,
-    [isRefetching, refetch]
-  );
 
   const clearFilters = () => {
     router.setParams({ tagUuid: undefined, tagTitle: undefined });
@@ -48,23 +22,14 @@ export default function ManageQuotesScreen() {
   return (
     <View className="flex-1 bg-background">
       <TagQuoteBottomSheetProvider>
-        {tagTitle && (
-          <View testID="quotes-filter-container" className="flex-row gap-2 px-4 pt-4">
-            <Badge testID="quotes-clear-filter-button" className="pl-2" onPress={clearFilters}>
-              <BadgeIcon name="close" />
-              <BadgeText>{tagTitle}</BadgeText>
-            </Badge>
-          </View>
-        )}
+        {tagTitle && <QuoteFilterBadge tagTitle={tagTitle} onClear={clearFilters} />}
 
-        <FlashList
-          estimatedItemSize={166}
-          data={isLoading ? Array(10).fill(null) : quotes}
-          renderItem={isLoading ? renderItemSkeleton : renderItem}
+        <QuoteList
+          quotes={quotes}
+          isLoading={isLoading}
+          isRefetching={isRefetching}
+          onRefresh={refetch}
           onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.5}
-          refreshControl={refreshControl}
-          ItemSeparatorComponent={ItemSeparatorComponent}
         />
       </TagQuoteBottomSheetProvider>
     </View>

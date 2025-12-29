@@ -1,21 +1,11 @@
-import { Ionicons as ExpoIonicons } from '@expo/vector-icons';
-import { cssInterop } from 'nativewind';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import type { TouchableOpacityProps } from 'react-native';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import type { Tag } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
+import { Ionicons } from '@/lib/nativewind/components';
 
 const { width: wWidth } = Dimensions.get('window');
-
-const Ionicons = cssInterop(ExpoIonicons, {
-  className: {
-    target: 'style',
-    nativeStyleToProp: {
-      color: 'color',
-    },
-  },
-});
 
 interface TagCardProps extends TouchableOpacityProps {
   data: Tag;
