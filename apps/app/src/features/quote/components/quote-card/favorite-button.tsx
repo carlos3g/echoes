@@ -34,6 +34,8 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
       onPress={handleFavorite}
       accessibilityLabel={metadata?.favoritedByUser ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
       accessibilityRole="button"
+      activeOpacity={0.7}
+      hitSlop={12}
     >
       <Ionicons
         name={metadata?.favoritedByUser ? 'heart' : 'heart-outline'}

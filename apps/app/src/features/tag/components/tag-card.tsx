@@ -4,6 +4,7 @@ import { Dimensions, TouchableOpacity, View } from 'react-native';
 import type { Tag } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { Ionicons } from '@/lib/nativewind/components';
+import { useTheme } from '@/lib/nativewind/theme.context';
 
 const { width: wWidth } = Dimensions.get('window');
 
@@ -21,6 +22,9 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
     <TouchableOpacity
       testID={testID ?? `tag-card-${data.uuid}`}
       className="flex-row items-center justify-between px-4 py-4"
+      accessibilityRole="button"
+      accessibilityLabel={data.title}
+      activeOpacity={0.7}
       {...rest}
     >
       <View className="flex-row items-center gap-3">
@@ -33,7 +37,7 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
         <Text variant="paragraphMedium">{data.title}</Text>
       </View>
 
-      <Text variant="paragraphCaption" className="text-zinc-500">
+      <Text variant="paragraphCaption" className="text-muted-foreground">
         {data.metadata.totalQuotes} quotes
       </Text>
     </TouchableOpacity>
@@ -41,14 +45,16 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
 };
 
 export const TagCardSkeleton: React.FC = () => {
+  const { colors } = useTheme();
+
   return (
     <ContentLoader
       speed={2}
       width={wWidth}
       height={56}
       viewBox={`0 0 ${wWidth} 56`}
-      backgroundColor="#e5e7eb"
-      foregroundColor="#d1d5db"
+      backgroundColor={colors.muted}
+      foregroundColor={colors.border}
     >
       <Rect x="16" y="18" rx="4" ry="4" width="19" height="19" />
 

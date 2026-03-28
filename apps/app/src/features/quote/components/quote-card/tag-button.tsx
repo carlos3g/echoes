@@ -23,7 +23,15 @@ export const TagButton: React.FC<TagButtonProps> = (props) => {
   };
 
   return (
-    <TouchableOpacity testID="toggle-tag-button" className="flex-row items-center gap-1" onPress={handleTag}>
+    <TouchableOpacity
+      testID="toggle-tag-button"
+      className="flex-row items-center gap-1"
+      onPress={handleTag}
+      accessibilityLabel="Adicionar tag"
+      accessibilityRole="button"
+      activeOpacity={0.7}
+      hitSlop={12}
+    >
       <Ionicons name={hasTags ? 'pricetag' : 'pricetag-outline'} size={19} className="text-muted-foreground" />
       <Text variant="paragraphSmall" className="text-muted-foreground">
         {formattedTags}

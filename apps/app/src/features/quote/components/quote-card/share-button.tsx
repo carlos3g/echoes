@@ -22,6 +22,8 @@ export const ShareButton: React.FC<ShareButtonProps> = (props) => {
       onPress={handleShare}
       accessibilityLabel="Compartilhar citação"
       accessibilityRole="button"
+      activeOpacity={0.7}
+      hitSlop={12}
     >
       <Ionicons name="share-social-outline" size={20} className="text-muted-foreground" />
     </TouchableOpacity>

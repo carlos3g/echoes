@@ -18,7 +18,14 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({ label, varia
     variant === 'destructive' ? 'text-destructive' : variant === 'muted' ? 'text-muted-foreground' : '';
 
   return (
-    <TouchableOpacity testID={testID} className="flex-row items-center justify-between py-4" {...rest}>
+    <TouchableOpacity
+      testID={testID}
+      className="min-h-[44px] flex-row items-center justify-between py-4"
+      accessibilityLabel={label}
+      accessibilityRole="button"
+      activeOpacity={0.7}
+      {...rest}
+    >
       <Text className={textClassName}>{label}</Text>
       <Ionicons name="chevron-forward" size={24} className={iconClassName || 'text-muted-foreground'} />
     </TouchableOpacity>

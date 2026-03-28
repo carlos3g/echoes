@@ -28,13 +28,16 @@ export default function AuthorsScreen() {
         data={authors}
         renderItem={({ item }) => (
           <TouchableOpacity
-            className="border-b border-border px-4 py-3"
+            className="min-h-[44px] border-b border-border px-4 py-4"
             onPress={() =>
               router.push({
                 pathname: '/(app)/(tabs)/(authors)/[authorUuid]',
                 params: { authorUuid: item.uuid },
               })
             }
+            accessibilityLabel={item.name}
+            accessibilityRole="button"
+            activeOpacity={0.7}
           >
             <Text variant="paragraphMedium" className="font-semibold text-foreground">
               {item.name}

@@ -60,8 +60,11 @@ export default function ManageQuotesScreen() {
                 key={category.uuid}
                 testID={`category-chip-${category.uuid}`}
                 onPress={() => handleCategoryPress(category.uuid)}
+                accessibilityLabel={category.title}
+                accessibilityRole="button"
+                activeOpacity={0.7}
                 className={cn(
-                  'rounded-full border px-3 py-1',
+                  'rounded-full border px-3 py-2',
                   selectedCategoryUuid === category.uuid ? 'border-primary bg-primary' : 'border-border bg-muted'
                 )}
               >

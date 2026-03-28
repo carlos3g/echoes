@@ -21,6 +21,8 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ data }) => {
       onPress={handleCopy}
       accessibilityLabel="Copiar citação"
       accessibilityRole="button"
+      activeOpacity={0.7}
+      hitSlop={12}
     >
       <Ionicons name="copy-outline" size={20} className="text-muted-foreground" />
     </TouchableOpacity>

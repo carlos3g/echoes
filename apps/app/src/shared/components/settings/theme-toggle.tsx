@@ -19,7 +19,7 @@ export const ThemeToggle: React.FC = () => {
         <Ionicons name={isDarkMode ? 'moon' : 'sunny'} size={20} className="text-foreground" />
         <Text>Tema escuro</Text>
       </View>
-      <Switch value={isDarkMode} onValueChange={toggleTheme} />
+      <Switch value={isDarkMode} onValueChange={toggleTheme} accessibilityLabel="Alternar tema escuro" />
     </View>
   );
 };
