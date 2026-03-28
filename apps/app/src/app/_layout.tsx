@@ -32,7 +32,7 @@ import {
 } from '@expo-google-fonts/poppins';
 import * as Sentry from '@sentry/react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { Stack, useNavigationContainerRef } from 'expo-router';
+import { Redirect, Stack, useNavigationContainerRef, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { LogBox } from 'react-native';
@@ -69,6 +69,7 @@ Sentry.init({
 const RootLayoutNav = () => {
   const ref = useNavigationContainerRef();
   const { isAuth } = useAuth();
+  const segments = useSegments();
 
   useEffect(() => {
     if (ref) {
@@ -76,15 +77,20 @@ const RootLayoutNav = () => {
     }
   }, [ref]);
 
+  const inAuthGroup = segments[0] === '(auth)';
+
+  if (!isAuth && !inAuthGroup) {
+    return <Redirect href="/(auth)/sign-in" />;
+  }
+
+  if (isAuth && inAuthGroup) {
+    return <Redirect href="/(app)/(tabs)/(quotes)" />;
+  }
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!isAuth}>
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-
-      <Stack.Protected guard={isAuth}>
-        <Stack.Screen name="(app)" />
-      </Stack.Protected>
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(app)" />
     </Stack>
   );
 };

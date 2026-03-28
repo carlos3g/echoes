@@ -28,7 +28,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './src/assets/favicon.png',
     bundler: 'metro',
   },
-  newArchEnabled: true,
   plugins: [
     'expo-router',
     'expo-font',

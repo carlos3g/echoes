@@ -36,7 +36,7 @@ export const customTwMerge = extendTailwindMerge({
       shadow: ['custom'],
     },
     theme: {
-      colors: [
+      color: [
         'primary',
         'primary-foreground',
         'background',

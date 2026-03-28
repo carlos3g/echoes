@@ -8,9 +8,7 @@ import { QuoteListItem } from './quote-list-item';
 import { QuoteListSeparator } from './quote-list-separator';
 
 // Type assertion needed due to cssInterop incompatibility
-const FlashList = RNFlashList as unknown as <T>(
-  props: FlashListProps<T> & { estimatedItemSize: number }
-) => React.ReactElement;
+const FlashList = RNFlashList as unknown as <T>(props: FlashListProps<T>) => React.ReactElement;
 
 const renderItem: ListRenderItem<Quote> = ({ item }) => <QuoteListItem item={item} />;
 
@@ -33,7 +31,6 @@ export const QuoteList: React.FC<QuoteListProps> = ({ quotes, isLoading, isRefet
   return (
     <View className="flex-1 bg-background">
       <FlashList
-        estimatedItemSize={166}
         data={isLoading ? Array(10).fill(null) : quotes}
         renderItem={isLoading ? renderItemSkeleton : renderItem}
         onEndReached={onEndReached}

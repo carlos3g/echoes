@@ -35,7 +35,7 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
         <View
           className={cn(
             'flex-row rounded-xl bg-background p-4',
-            errorMessage ? 'border-destructive border-2' : 'border-border border'
+            errorMessage ? 'border-2 border-destructive' : 'border border-border'
           )}
         >
           {LeftComponent && <View className="mr-4 justify-center">{LeftComponent}</View>}
@@ -43,7 +43,7 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
             autoCapitalize="none"
             ref={inputRef}
             placeholderTextColor={colors.mutedForeground}
-            className="text-foreground shrink grow p-0 font-poppins-regular text-paragraph-medium"
+            className="shrink grow p-0 font-poppins-regular text-paragraph-medium text-foreground"
             {...rnTextInputProps}
           />
           {RightComponent && <View className="ml-4 justify-center">{RightComponent}</View>}

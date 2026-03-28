@@ -25,7 +25,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
       <Text testID={`quote-body-${data.uuid}`} className="leading-relaxed">
         {data.body}
       </Text>
-      <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="text-muted-foreground mt-3">
+      <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="mt-3 text-muted-foreground">
         {data.author?.name}
       </Text>
 

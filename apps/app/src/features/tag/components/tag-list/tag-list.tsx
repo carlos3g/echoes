@@ -9,9 +9,7 @@ import { TagListEmpty } from './tag-list-empty';
 import { TagListSeparator } from './tag-list-separator';
 
 // Type assertion needed due to cssInterop incompatibility
-const FlashList = RNFlashList as unknown as <T>(
-  props: FlashListProps<T> & { estimatedItemSize: number }
-) => React.ReactElement;
+const FlashList = RNFlashList as unknown as <T>(props: FlashListProps<T>) => React.ReactElement;
 
 const renderItem: ListRenderItem<Tag> = ({ item }) => <TagListItem item={item} />;
 
@@ -34,7 +32,6 @@ export const TagList: React.FC<TagListProps> = ({ tags, isLoading, isRefetching,
   return (
     <View className="flex-1 bg-background">
       <FlashList
-        estimatedItemSize={56}
         data={isLoading ? Array(10).fill(null) : tags}
         renderItem={isLoading ? renderItemSkeleton : renderItem}
         onEndReached={onEndReached}

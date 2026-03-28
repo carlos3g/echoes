@@ -30,8 +30,21 @@ export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [initialized, setInitialized] = useState(false);
+  const [hydrated, setHydrated] = useState(useAuthStore.persist.hasHydrated());
   const [user, setUser] = useState<User | undefined>();
   const { refreshToken, setRefreshToken, setToken, token } = useAuthStore();
+
+  useEffect(() => {
+    const unsubscribe = useAuthStore.persist.onFinishHydration(() => {
+      setHydrated(true);
+    });
+
+    if (useAuthStore.persist.hasHydrated()) {
+      setHydrated(true);
+    }
+
+    return unsubscribe;
+  }, []);
 
   const updateUser = useCallback(async () => {
     const response = await authService.me();
@@ -39,18 +52,24 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   }, [setUser]);
 
   useEffect(() => {
+    if (!hydrated) return;
+
     const loadToken = async () => {
       httpClientService.bearerToken = token || '';
 
       if (token) {
-        await updateUser();
+        try {
+          await updateUser();
+        } catch {
+          signOut();
+        }
       }
 
       setInitialized(true);
     };
 
     void loadToken();
-  }, [token, updateUser]);
+  }, [hydrated, token, updateUser]);
 
   const handleSignIn = useCallback(
     (apiResponse: SignInOutput) => {

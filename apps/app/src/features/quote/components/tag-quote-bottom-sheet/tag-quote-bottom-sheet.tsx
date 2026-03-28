@@ -1,6 +1,7 @@
 import type { BottomSheetBackdropProps, BottomSheetFooterProps } from '@gorhom/bottom-sheet';
 import type RNBottomSheet from '@gorhom/bottom-sheet';
-import { BottomSheetBackdrop, BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetView, useBottomSheetScrollableCreator } from '@gorhom/bottom-sheet';
+import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo } from 'react';
 import { RefreshControl } from 'react-native';
@@ -13,12 +14,12 @@ import { useTagQuoteBottomSheet } from './tag-quote-bottom-sheet.context';
 import { ItemSeparatorComponent, ListEmptyComponent, renderItem, renderItemSkeleton } from './tag-list-item';
 
 const SNAP_POINTS = ['30%', '50%', '70%', '80%'];
-const ESTIMATED_ITEM_SIZE = 56;
 
 export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
   const { hide, quote } = useTagQuoteBottomSheet();
   const { colors } = useTheme();
+  const BottomSheetScrollable = useBottomSheetScrollableCreator();
 
   const router = useRouter();
 
@@ -70,8 +71,8 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
       handleIndicatorStyle={{ backgroundColor: colors.mutedForeground }}
     >
       <BottomSheetView className="flex-1">
-        <BottomSheetFlashList
-          estimatedItemSize={ESTIMATED_ITEM_SIZE}
+        <FlashList
+          renderScrollComponent={BottomSheetScrollable}
           data={isLoading ? Array(10).fill(null) : tags}
           renderItem={isLoading ? renderItemSkeleton : renderItem}
           onEndReached={fetchNextPage}
