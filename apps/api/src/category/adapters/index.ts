@@ -1,5 +1,5 @@
 import { Category } from '@app/category/entities/category.entity';
-import type { Category as PrismaCategory } from '@prisma/client';
+import type { Category as PrismaCategory } from '@generated/prisma/client';
 
 export const prismaCategoryToCategoryAdapter = (input: PrismaCategory) =>
   new Category({

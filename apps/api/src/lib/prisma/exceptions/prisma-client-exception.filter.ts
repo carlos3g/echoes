@@ -2,7 +2,7 @@ import { PrismaClientErrorCode } from '@app/lib/prisma/enums';
 import type { ArgumentsHost } from '@nestjs/common';
 import { Catch, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@generated/prisma/client';
 import type { Response } from 'express';
 
 // see: https://www.prisma.io/blog/nestjs-prisma-error-handling-7D056s1kOop2

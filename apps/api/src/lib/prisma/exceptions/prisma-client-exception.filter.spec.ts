@@ -4,7 +4,9 @@ import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Prisma } from '@generated/prisma/client';
+
+const { PrismaClientKnownRequestError } = Prisma;
 
 const mockJson = jest.fn();
 

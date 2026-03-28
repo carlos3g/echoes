@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import type { Author } from '@prisma/client';
+import type { Author } from '../../generated/prisma/client';
 import type { FactoryEntityDefinition } from '../contracts/factory.contract';
 import { FactoryContract } from '../contracts/factory.contract';
 import { createUuidV4 } from '../utils';

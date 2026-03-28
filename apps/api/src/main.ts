@@ -1,3 +1,4 @@
+import 'dotenv-expand/config';
 import type { Server } from 'net';
 import type { EnvVariables } from '@app/shared/types';
 import type { INestApplication } from '@nestjs/common';

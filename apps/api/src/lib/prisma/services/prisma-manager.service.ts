@@ -1,6 +1,6 @@
 import { PrismaService } from '@app/lib/prisma/services/prisma.service';
 import { Injectable } from '@nestjs/common';
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@generated/prisma/client';
 import { ClsService } from 'nestjs-cls';
 
 export const PRISMA_CLIENT_KEY = 'prisma';

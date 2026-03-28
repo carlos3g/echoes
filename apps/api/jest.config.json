@@ -4,14 +4,15 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "moduleNameMapper": {
     "^@app/(.*)$": "<rootDir>/src/$1",
-    "^@test/(.*)$": "<rootDir>/test/$1"
+    "^@test/(.*)$": "<rootDir>/test/$1",
+    "^@generated/(.*)$": "<rootDir>/generated/$1"
   },
-  "modulePathIgnorePatterns": ["<rootDir>/(?!src|test).*"],
+  "modulePathIgnorePatterns": ["<rootDir>/(?!src|test|generated).*"],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".*\\.spec\\.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
-  "transformIgnorePatterns": ["node_modules/(?!(@faker-js/faker|uuid)/)"]
+  "transformIgnorePatterns": ["node_modules/(?!(@faker-js/faker|uuid|@prisma/adapter-pg)/)"]
 }

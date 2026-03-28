@@ -3,7 +3,7 @@ import { PrismaTransactionScopeService } from '@app/lib/prisma/services/transact
 import { Logger } from '@nestjs/common';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@generated/prisma/client';
 import { ClsService } from 'nestjs-cls';
 
 const makePrismaManagerServiceMock = () => ({

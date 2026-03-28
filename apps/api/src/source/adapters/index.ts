@@ -1,5 +1,5 @@
 import { Source } from '@app/source/entities/source.entity';
-import type { Source as PrismaSource } from '@prisma/client';
+import type { Source as PrismaSource } from '@generated/prisma/client';
 
 export const prismaSourceToSourceAdapter = (input: PrismaSource) =>
   new Source({

@@ -1,5 +1,5 @@
 import { FileEntity } from '@app/storage/entities/file.entity';
-import type { File as PrismaFile } from '@prisma/client';
+import type { File as PrismaFile } from '@generated/prisma/client';
 
 export const prismaFileToFileAdapter = (input: PrismaFile) =>
   new FileEntity({

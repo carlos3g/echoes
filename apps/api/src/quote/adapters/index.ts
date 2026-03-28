@@ -1,5 +1,5 @@
 import { Quote } from '@app/quote/entities/quote.entity';
-import type { Quote as PrismaQuote } from '@prisma/client';
+import type { Quote as PrismaQuote } from '@generated/prisma/client';
 
 export const prismaQuoteToQuoteAdapter = (input: PrismaQuote) =>
   new Quote({

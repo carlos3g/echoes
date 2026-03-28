@@ -3,7 +3,7 @@ import { PasswordChangeRequest } from '@app/auth/entities/password-change-reques
 import type {
   EmailConfirmationToken as PrismaEmailConfirmationToken,
   PasswordChangeRequest as PrismaPasswordChangeRequest,
-} from '@prisma/client';
+} from '@generated/prisma/client';
 
 export const prismaPasswordChangeRequestToPasswordChangeRequestAdapter = (input: PrismaPasswordChangeRequest) =>
   new PasswordChangeRequest({

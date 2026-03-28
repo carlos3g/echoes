@@ -20,7 +20,7 @@ import type {
 } from '@app/quote/dtos/quote-repository-dtos';
 import type { Quote } from '@app/quote/entities/quote.entity';
 import { Injectable } from '@nestjs/common';
-import type { Quote as PrismaQuote } from '@prisma/client';
+import type { Quote as PrismaQuote } from '@generated/prisma/client';
 
 type FindManyReturn = PrismaQuote;
 

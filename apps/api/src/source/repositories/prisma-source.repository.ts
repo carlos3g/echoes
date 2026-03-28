@@ -12,7 +12,7 @@ import type {
 } from '@app/source/dtos/source-repository-dtos';
 import type { Source } from '@app/source/entities/source.entity';
 import { Injectable } from '@nestjs/common';
-import type { Source as PrismaSource } from '@prisma/client';
+import type { Source as PrismaSource } from '@generated/prisma/client';
 
 type FindManyReturn = PrismaSource;
 

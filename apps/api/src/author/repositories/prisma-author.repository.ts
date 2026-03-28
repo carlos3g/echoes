@@ -21,7 +21,7 @@ import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import { paginate } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { Injectable } from '@nestjs/common';
-import type { Author as PrismaAuthor } from '@prisma/client';
+import type { Author as PrismaAuthor } from '@generated/prisma/client';
 
 type FindManyReturn = PrismaAuthor;
 
@@ -41,9 +41,7 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
     const { search, ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const searchFilter = search
-      ? { name: { contains: search, mode: 'insensitive' as const } }
-      : {};
+    const searchFilter = search ? { name: { contains: search, mode: 'insensitive' as const } } : {};
 
     const result = await paginate<FindManyReturn, 'Author'>(
       this.prismaManager.getClient().author,

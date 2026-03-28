@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '../../generated/prisma/client';
 import { AuthorFactory } from '../factories/author.factory';
 import { QuoteFactory } from '../factories/quote.factory';
 

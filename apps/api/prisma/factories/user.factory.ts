@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import type { User } from '@prisma/client';
+import type { User } from '../../generated/prisma/client';
 import * as bcrypt from 'bcrypt';
 import type { FactoryEntityDefinition } from '../contracts/factory.contract';
 import { FactoryContract } from '../contracts/factory.contract';

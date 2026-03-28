@@ -1,5 +1,5 @@
 import { Tag } from '@app/tag/entities/tag.entity';
-import type { Tag as PrismaTag } from '@prisma/client';
+import type { Tag as PrismaTag } from '@generated/prisma/client';
 
 export const prismaTagToTagAdapter = (input: PrismaTag) =>
   new Tag({

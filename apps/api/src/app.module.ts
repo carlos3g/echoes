@@ -24,6 +24,7 @@ import { UserModule } from './user/user.module';
     ThrottlerModule.forRoot([]),
     ConfigModule.forRoot({
       isGlobal: true,
+      expandVariables: true,
     }),
     AuthModule,
     HealthModule,

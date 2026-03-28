@@ -12,7 +12,7 @@ import type { Category } from '@app/category/entities/category.entity';
 import { paginate, type PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { Injectable } from '@nestjs/common';
-import type { Category as PrismaCategory } from '@prisma/client';
+import type { Category as PrismaCategory } from '@generated/prisma/client';
 
 type FindManyReturn = PrismaCategory;
 

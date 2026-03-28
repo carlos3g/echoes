@@ -21,9 +21,10 @@
     "resolveJsonModule": true,
     "paths": {
       "@app/*": ["./src/*"],
-      "@test/*": ["./test/*"]
+      "@test/*": ["./test/*"],
+      "@generated/*": ["./generated/*"]
     }
   },
-  "include": ["src/**/*", "test/**/*", "prisma/**/*"],
+  "include": ["src/**/*", "test/**/*", "prisma/**/*", "generated/**/*"],
   "exclude": ["node_modules", "dist"]
 }

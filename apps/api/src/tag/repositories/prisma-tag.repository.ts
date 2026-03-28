@@ -12,7 +12,7 @@ import type {
 } from '@app/tag/dtos/tag-repository-dtos';
 import type { Tag } from '@app/tag/entities/tag.entity';
 import { Injectable } from '@nestjs/common';
-import type { Tag as PrismaTag } from '@prisma/client';
+import type { Tag as PrismaTag } from '@generated/prisma/client';
 
 type FindManyReturn = PrismaTag;
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { ModelDelegates } from '@app/lib/prisma/types';
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '@generated/prisma/client';
 
 export interface PaginatedResult<T> {
   data: T[];
