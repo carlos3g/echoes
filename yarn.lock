@@ -2609,8 +2609,10 @@ __metadata:
     eslint-plugin-testing-library: "npm:^7.16.2"
     expo: "npm:^55.0.0"
     expo-build-properties: "npm:~55.0.10"
+    expo-clipboard: "npm:~55.0.9"
     expo-constants: "npm:~55.0.9"
     expo-font: "npm:~55.0.4"
+    expo-haptics: "npm:~55.0.9"
     expo-linking: "npm:~55.0.9"
     expo-network: "npm:~55.0.9"
     expo-router: "npm:~55.0.8"
@@ -11979,6 +11981,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-clipboard@npm:~55.0.9":
+  version: 55.0.9
+  resolution: "expo-clipboard@npm:55.0.9"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/8810287eaf391f6ca9ccb5e5dd7c3a80308f772cd7790f45cbf8aec1fa56858d227c5b79a3be169231e7de4fa39e3cb9047790b03f65e61eb9b330b8736e0231
+  languageName: node
+  linkType: hard
+
 "expo-constants@npm:~55.0.9":
   version: 55.0.9
   resolution: "expo-constants@npm:55.0.9"
@@ -12023,6 +12036,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/91848b5040ac7a7bfe1f58e549c0bcb1af0c729b9fabee20eac439178956d8a8dad3d3a7d4bb9ec9e8e92d973b728d120248a7d826de4a0ddfa50e43a77ecf37
+  languageName: node
+  linkType: hard
+
+"expo-haptics@npm:~55.0.9":
+  version: 55.0.9
+  resolution: "expo-haptics@npm:55.0.9"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/dc0e54069095ce43b01c839914bb21cbd3e0854d9fa251d04507b2bef41a8dcdafd8a0fa0e8631765802f1b63d6807bcf9e0f2f52566fca6c942317d785ec490
   languageName: node
   linkType: hard
 

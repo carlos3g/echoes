@@ -60,6 +60,14 @@ export type MeOutput = {
   user: User;
 };
 
+export interface UpdateProfilePayload {
+  name?: string;
+  username?: string;
+  email?: string;
+}
+
+export type UpdateProfileOutput = void;
+
 export abstract class AuthServiceContract {
   public abstract signIn(payload: SignInPayload): Promise<SignInOutput>;
 
@@ -74,4 +82,6 @@ export abstract class AuthServiceContract {
   public abstract refreshToken(payload: RefreshTokenPayload): Promise<RefreshTokenOutput>;
 
   public abstract me(): Promise<MeOutput>;
+
+  public abstract updateProfile(payload: UpdateProfilePayload): Promise<UpdateProfileOutput>;
 }

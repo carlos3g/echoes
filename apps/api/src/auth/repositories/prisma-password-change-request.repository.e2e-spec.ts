@@ -27,7 +27,7 @@ describe('PrismaPasswordChangeRequestRepository', () => {
         data: userFactory(),
       });
 
-      const payload = { userId: Number(user.id), token: faker.string.uuid() };
+      const payload = { userId: Number(user.id), token: faker.string.uuid(), expiresAt: faker.date.future() };
 
       const result = await passwordChangeRequestRepository.create(payload);
 
@@ -45,7 +45,7 @@ describe('PrismaPasswordChangeRequestRepository', () => {
       });
 
       const createdPasswordChangeRequest = await prisma.passwordChangeRequest.create({
-        data: { token: faker.string.uuid(), userId: user.id },
+        data: { token: faker.string.uuid(), userId: user.id, expiresAt: faker.date.future() },
       });
 
       const result = await passwordChangeRequestRepository.findUniqueOrThrow({
@@ -74,7 +74,7 @@ describe('PrismaPasswordChangeRequestRepository', () => {
       });
 
       const createdPasswordChangeRequest = await prisma.passwordChangeRequest.create({
-        data: { token: faker.string.uuid(), userId: user.id },
+        data: { token: faker.string.uuid(), userId: user.id, expiresAt: faker.date.future() },
       });
 
       const result = await passwordChangeRequestRepository.findFirstOrThrow({
@@ -106,6 +106,7 @@ describe('PrismaPasswordChangeRequestRepository', () => {
         data: {
           token: faker.string.uuid(),
           userId: user.id,
+          expiresAt: faker.date.future(),
         },
       });
 
@@ -129,6 +130,7 @@ describe('PrismaPasswordChangeRequestRepository', () => {
           token: faker.string.uuid(),
           userId: user.id,
           usedAt: faker.date.recent(),
+          expiresAt: faker.date.future(),
         },
       });
 
@@ -150,6 +152,7 @@ describe('PrismaPasswordChangeRequestRepository', () => {
         data: {
           token: faker.string.uuid(),
           userId: user.id,
+          expiresAt: faker.date.future(),
         },
       });
 
@@ -172,8 +175,8 @@ describe('PrismaPasswordChangeRequestRepository', () => {
 
       await prisma.passwordChangeRequest.createMany({
         data: [
-          { token: 'token1', userId: user.id },
-          { token: 'token2', userId: user.id },
+          { token: 'token1', userId: user.id, expiresAt: faker.date.future() },
+          { token: 'token2', userId: user.id, expiresAt: faker.date.future() },
         ],
       });
 
@@ -198,6 +201,7 @@ describe('PrismaPasswordChangeRequestRepository', () => {
         token: faker.string.uuid(),
         userId: user.id,
         usedAt: faker.date.recent(),
+        expiresAt: faker.date.future(),
       }));
 
       await prisma.passwordChangeRequest.createMany({ data });
@@ -222,11 +226,13 @@ describe('PrismaPasswordChangeRequestRepository', () => {
       token: faker.string.uuid(),
       userId: user.id,
       usedAt: faker.date.recent(),
+      expiresAt: faker.date.future(),
     }));
 
     const unusedData = _.range(10).map(() => ({
       token: faker.string.uuid(),
       userId: user.id,
+      expiresAt: faker.date.future(),
     }));
 
     await prisma.passwordChangeRequest.createMany({ data: [...usedData, ...unusedData] });

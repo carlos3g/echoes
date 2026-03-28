@@ -1,6 +1,5 @@
 import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
 import type { TagQuoteInput } from '@app/quote/dtos/tag-quote-input';
-import { QuoteService } from '@app/quote/services/quote.service';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { ForbiddenException, Injectable } from '@nestjs/common';
@@ -9,8 +8,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 export class TagQuoteUseCase implements UseCaseHandler {
   public constructor(
     private readonly quoteRepository: QuoteRepositoryContract,
-    private readonly tagRepository: TagRepositoryContract,
-    private readonly quoteService: QuoteService
+    private readonly tagRepository: TagRepositoryContract
   ) {}
 
   public async handle(input: TagQuoteInput): Promise<void> {
@@ -37,6 +35,6 @@ export class TagQuoteUseCase implements UseCaseHandler {
       return;
     }
 
-    await this.quoteService.tag({ quoteId: quote.id, tagId: tag.id });
+    await this.quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag.id } });
   }
 }

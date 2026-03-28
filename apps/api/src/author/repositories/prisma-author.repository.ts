@@ -38,14 +38,19 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
   }
 
   public async findManyPaginated(input: AuthorRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Author>> {
-    const { ...where } = input.where || {};
+    const { search, ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
+
+    const searchFilter = search
+      ? { name: { contains: search, mode: 'insensitive' as const } }
+      : {};
 
     const result = await paginate<FindManyReturn, 'Author'>(
       this.prismaManager.getClient().author,
       {
         where: {
           ...where,
+          ...searchFilter,
         },
         orderBy: [{ createdAt: 'desc' }],
       },
@@ -59,7 +64,7 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
   }
 
   public async findMany(input?: AuthorRepositoryFindManyInput): Promise<Author[]> {
-    const { ...where } = input?.where || {};
+    const where = input?.where || {};
 
     const entities = await this.prismaManager.getClient().author.findMany({
       where: {

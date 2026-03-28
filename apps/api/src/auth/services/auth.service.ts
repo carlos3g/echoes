@@ -5,6 +5,7 @@ import { PasswordChangeRequestRepositoryContract } from '@app/auth/contracts/pas
 import type { JwtPayload } from '@app/auth/types/jwt-payload';
 import type { EnvVariables } from '@app/shared/types';
 import { createUuidV4 } from '@app/shared/utils';
+import { DateTime } from 'luxon';
 import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type { User } from '@app/user/entities/user.entity';
 import { Injectable } from '@nestjs/common';
@@ -47,6 +48,7 @@ export class AuthService implements AuthServiceContract {
     await this.passwordChangeRequestRepository.create({
       userId: args.userId,
       token: this.hashService.hash(token),
+      expiresAt: DateTime.now().plus({ hours: 1 }).toJSDate(),
     });
 
     return { token };

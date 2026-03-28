@@ -9,12 +9,16 @@ export default function SettingsScreen() {
 
   return (
     <View className="flex-1 bg-background">
-      <UserProfileHeader user={user!} />
+      {user && <UserProfileHeader user={user} />}
 
       <View className="space-y-2 px-4 py-4">
         <ThemeToggle />
 
-        <SettingsMenuItem testID="edit-profile-button" label="Editar perfil" variant="muted" />
+        <SettingsMenuItem
+          testID="edit-profile-button"
+          label="Editar perfil"
+          onPress={() => router.push('/(app)/(tabs)/(settings)/edit-profile')}
+        />
 
         <SettingsMenuItem
           testID="go-to-change-password-button"

@@ -1,9 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Text } from '@/shared/components/ui/text';
+import { EmptyState } from '@/shared/components/ui/empty-state';
 
-export const TagListEmpty: React.FC = () => (
-  <View className="items-center py-4">
-    <Text>Nenhuma tag cadastrada</Text>
-  </View>
-);
+export const TagListEmpty = React.memo(() => (
+  <EmptyState
+    icon="pricetags-outline"
+    title="Nenhuma tag cadastrada"
+    description="Crie sua primeira tag para organizar suas citações"
+  />
+));

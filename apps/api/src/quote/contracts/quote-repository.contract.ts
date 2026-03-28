@@ -49,6 +49,12 @@ abstract class QuoteRepositoryContract {
   public abstract findMany(input?: QuoteRepositoryFindManyInput): Promise<Quote[]>;
 
   public abstract delete(input: QuoteRepositoryDeleteInput): Promise<void>;
+
+  public abstract countFavoritesBatch(quoteIds: number[]): Promise<Map<number, number>>;
+
+  public abstract countTagsBatch(quoteIds: number[]): Promise<Map<number, number>>;
+
+  public abstract isFavoritedBatch(input: { quoteIds: number[]; userId: number }): Promise<Set<number>>;
 }
 
 export { QuoteRepositoryContract };

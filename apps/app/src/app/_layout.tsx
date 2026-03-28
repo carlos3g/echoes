@@ -40,6 +40,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
+import { ErrorBoundary } from '@/shared/components/error-boundary';
 
 LogBox.ignoreLogs(['ProgressiveListView: `ref` is not a prop.']);
 
@@ -132,20 +133,22 @@ const RootLayout = () => {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaProvider>
-          <AuthProvider>
-            <ThemeProvider>
-              <Host>
-                <RootLayoutNav />
-              </Host>
-              <Toaster autoWiggleOnUpdate="always" />
-            </ThemeProvider>
-          </AuthProvider>
-        </SafeAreaProvider>
-      </QueryClientProvider>
-    </GestureHandlerRootView>
+    <ErrorBoundary>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <QueryClientProvider client={queryClient}>
+          <SafeAreaProvider>
+            <AuthProvider>
+              <ThemeProvider>
+                <Host>
+                  <RootLayoutNav />
+                </Host>
+                <Toaster autoWiggleOnUpdate="always" />
+              </ThemeProvider>
+            </AuthProvider>
+          </SafeAreaProvider>
+        </QueryClientProvider>
+      </GestureHandlerRootView>
+    </ErrorBoundary>
   );
 };
 

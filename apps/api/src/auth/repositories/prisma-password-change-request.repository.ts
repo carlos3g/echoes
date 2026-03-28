@@ -40,6 +40,7 @@ export class PrismaPasswordChangeRequestRepository implements PasswordChangeRequ
       where: {
         ...input.where,
         usedAt: null,
+        expiresAt: { gt: new Date() },
       },
     });
 

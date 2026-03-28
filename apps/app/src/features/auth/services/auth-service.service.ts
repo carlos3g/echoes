@@ -13,6 +13,7 @@ import type {
   SignInPayload,
   SignUpOutput,
   SignUpPayload,
+  UpdateProfilePayload,
 } from '@/features/auth/contracts/auth-service.contract';
 import type { HttpClientServiceContract } from '@/shared/contracts/http-client-service.contract';
 
@@ -48,5 +49,9 @@ export class AuthService implements AuthServiceContract {
 
   public me(): Promise<MeOutput> {
     return this.httpClientService.get<MeOutput, unknown>('/auth/me');
+  }
+
+  public async updateProfile(payload: UpdateProfilePayload): Promise<void> {
+    return this.httpClientService.patch('/v1/auth/me', payload);
   }
 }

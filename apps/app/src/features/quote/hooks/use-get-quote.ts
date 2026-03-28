@@ -1,4 +1,5 @@
 import { quoteService } from '@/features/quote/services';
+import { queryKeys } from '@/lib/react-query/query-keys';
 import type { ApiResponseError } from '@/types/api';
 import type { Quote } from '@/types/entities';
 import type { HttpError } from '@/types/http';
@@ -10,7 +11,7 @@ interface UseGetQuoteProps {
 
 export const useGetQuote = ({ quoteUuid }: UseGetQuoteProps) => {
   return useQuery<Quote, HttpError<ApiResponseError>, Quote>({
-    queryKey: ['quote', quoteUuid],
+    queryKey: queryKeys.quotes.detail(quoteUuid),
     queryFn: () => quoteService.get(quoteUuid),
   });
 };

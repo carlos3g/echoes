@@ -1,13 +1,15 @@
 import type { PressableProps } from 'react-native';
-import { Dimensions, Pressable, View } from 'react-native';
+import { Dimensions, Pressable, TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import React from 'react';
+import { useRouter } from 'expo-router';
 import type { Quote } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
 import { ShareButton } from './share-button';
 import { FavoriteButton } from './favorite-button';
 import { TagButton } from './tag-button';
+import { CopyButton } from './copy-button';
 
 const { width: wWidth } = Dimensions.get('window');
 const SKELETON_HEIGHT = 166;
@@ -19,15 +21,35 @@ interface QuoteCardProps extends PressableProps {
 
 export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
   const { data, testID, ...rest } = props;
+  const router = useRouter();
+
+  const handleAuthorPress = () => {
+    if (data.author?.uuid) {
+      router.push({ pathname: '/(app)/(tabs)/(authors)/[authorUuid]', params: { authorUuid: data.author.uuid } });
+    }
+  };
 
   return (
     <Pressable testID={testID ?? `quote-card-${data.uuid}`} key={data.uuid} className="px-4 py-4" {...rest}>
       <Text testID={`quote-body-${data.uuid}`} className="leading-relaxed">
         {data.body}
       </Text>
-      <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="mt-3 text-muted-foreground">
-        {data.author?.name}
-      </Text>
+      {data.author?.name && (
+        <TouchableOpacity
+          onPress={handleAuthorPress}
+          accessibilityRole="link"
+          accessibilityLabel={`Ver perfil de ${data.author.name}`}
+        >
+          <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="mt-3 text-primary">
+            {data.author.name}
+          </Text>
+        </TouchableOpacity>
+      )}
+      {!data.author?.name && (
+        <Text testID={`quote-author-${data.uuid}`} variant="paragraphSmall" className="mt-3 text-muted-foreground">
+          Autor desconhecido
+        </Text>
+      )}
 
       <View className="mt-4 flex-row justify-between">
         <View className="flex-row gap-5">
@@ -36,7 +58,10 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
           <TagButton data={data} />
         </View>
 
-        <ShareButton data={data} />
+        <View className="flex-row gap-5">
+          <CopyButton data={data} />
+          <ShareButton data={data} />
+        </View>
       </View>
     </Pressable>
   );

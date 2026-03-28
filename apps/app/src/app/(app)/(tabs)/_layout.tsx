@@ -40,6 +40,27 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="favorites"
+        options={{
+          title: 'Favoritos',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'heart' : 'heart-outline'} color={color} size={24} />
+          ),
+          tabBarButtonTestID: 'favorites-tab-button',
+        }}
+      />
+      <Tabs.Screen
+        name="(authors)"
+        options={{
+          title: 'Autores',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'person' : 'person-outline'} color={color} size={24} />
+          ),
+          tabBarButtonTestID: 'authors-tab-button',
+        }}
+      />
+      <Tabs.Screen
         name="tags"
         options={{
           title: 'Gerenciar tags',

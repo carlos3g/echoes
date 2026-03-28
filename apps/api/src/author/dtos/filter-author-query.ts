@@ -1,8 +1,13 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDate, IsOptional } from 'class-validator';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 
 export class FilterAuthorQuery {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  public search?: string;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsDate()

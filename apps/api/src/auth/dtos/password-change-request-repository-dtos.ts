@@ -3,6 +3,7 @@ import type { AtLeastOne } from '@app/shared/types';
 export interface PasswordChangeRequestRepositoryCreateInput {
   token: string;
   userId: number;
+  expiresAt: Date;
 }
 
 export interface PasswordChangeRequestRepositoryFindUniqueOrThrowInput {

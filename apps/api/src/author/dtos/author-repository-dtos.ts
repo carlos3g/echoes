@@ -33,6 +33,7 @@ export interface AuthorRepositoryFindManyInput {
 
 export interface AuthorRepositoryFindManyPaginatedInput {
   where?: {
+    search?: string;
     birthDate?: Date;
     deathDate?: Date;
   };

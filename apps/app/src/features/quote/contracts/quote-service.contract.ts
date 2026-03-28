@@ -10,6 +10,9 @@ export type ListQuotesPayload = {
   filters?: {
     authorUuid?: string;
     tagUuid?: string;
+    categoryUuid?: string;
+    favoritesOnly?: boolean;
+    search?: string;
   };
 };
 

@@ -21,7 +21,7 @@ export class SignInUseCase implements UseCaseHandler {
     });
 
     if (!this.hashService.compare(input.password, user.password)) {
-      throw new UnauthorizedException('Senha incorreta');
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     return { user, ...this.authService.generateAuthTokens(user) };

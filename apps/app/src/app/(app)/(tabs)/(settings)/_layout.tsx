@@ -30,6 +30,12 @@ export default function SettingsLayout() {
         }}
       />
       <Stack.Screen
+        name="edit-profile"
+        options={{
+          title: 'Editar perfil',
+        }}
+      />
+      <Stack.Screen
         name="change-password"
         options={{
           title: 'Alterar senha',

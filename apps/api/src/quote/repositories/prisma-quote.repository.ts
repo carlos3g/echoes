@@ -40,15 +40,27 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
   }
 
   public async findManyPaginated(input: QuoteRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Quote>> {
-    const { tagId, ...where } = input.where || {};
+    const { tagId, categoryId, search, favoritedByUserId, ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
+
+    const searchFilter = search
+      ? {
+          OR: [
+            { body: { contains: search, mode: 'insensitive' as const } },
+            { author: { name: { contains: search, mode: 'insensitive' as const } } },
+          ],
+        }
+      : {};
 
     const result = await paginate<FindManyReturn, 'Quote'>(
       this.prismaManager.getClient().quote,
       {
         where: {
           ...where,
+          ...searchFilter,
           tags: tagId ? { some: { tagId } } : undefined,
+          categories: categoryId ? { some: { id: categoryId } } : undefined,
+          favoritedBy: favoritedByUserId ? { some: { userId: favoritedByUserId } } : undefined,
         },
         include: { author: true },
         orderBy: [{ createdAt: 'desc' }],
@@ -63,7 +75,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
   }
 
   public async findMany(input?: QuoteRepositoryFindManyInput): Promise<Quote[]> {
-    const { ...where } = input?.where || {};
+    const where = input?.where || {};
 
     const entities = await this.prismaManager.getClient().quote.findMany({
       where: {
@@ -161,6 +173,43 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
         tagId_quoteId: input.data,
       },
     });
+  }
+
+  public async countFavoritesBatch(quoteIds: number[]): Promise<Map<number, number>> {
+    const results = await this.prismaManager.getClient().userFavoriteQuote.groupBy({
+      by: ['quoteId'],
+      where: { quoteId: { in: quoteIds } },
+      _count: { quoteId: true },
+    });
+    const map = new Map<number, number>();
+    for (const r of results) {
+      map.set(Number(r.quoteId), r._count.quoteId);
+    }
+    return map;
+  }
+
+  public async countTagsBatch(quoteIds: number[]): Promise<Map<number, number>> {
+    const results = await this.prismaManager.getClient().tagQuote.groupBy({
+      by: ['quoteId'],
+      where: { quoteId: { in: quoteIds } },
+      _count: { quoteId: true },
+    });
+    const map = new Map<number, number>();
+    for (const r of results) {
+      map.set(Number(r.quoteId), r._count.quoteId);
+    }
+    return map;
+  }
+
+  public async isFavoritedBatch(input: { quoteIds: number[]; userId: number }): Promise<Set<number>> {
+    const results = await this.prismaManager.getClient().userFavoriteQuote.findMany({
+      where: {
+        quoteId: { in: input.quoteIds },
+        userId: input.userId,
+      },
+      select: { quoteId: true },
+    });
+    return new Set(results.map((r) => Number(r.quoteId)));
   }
 
   public async create(input: QuoteRepositoryCreateInput) {

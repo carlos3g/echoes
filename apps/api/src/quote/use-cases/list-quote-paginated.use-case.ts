@@ -1,4 +1,5 @@
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
+import { CategoryRepositoryContract } from '@app/category/contracts/category-repository.contract';
 import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
 import type { QuotePaginatedInput } from '@app/quote/dtos/quote-paginated-input';
@@ -21,17 +22,26 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
   public constructor(
     private readonly quoteRepository: QuoteRepositoryContract,
     private readonly authorRepository: AuthorRepositoryContract,
-    private readonly tagRepository: TagRepositoryContract
+    private readonly tagRepository: TagRepositoryContract,
+    private readonly categoryRepository: CategoryRepositoryContract
   ) {}
 
   public async handle(input: QuotePaginatedInput): Promise<PaginatedResult<QuoteWithMetadata>> {
     const { filters, paginate, user } = input;
 
-    const authorId = filters?.authorUuid ? await this.getAuthorId(filters.authorUuid) : undefined;
-    const tagId = filters?.tagUuid ? await this.getTagId(filters.tagUuid) : undefined;
+    const [authorId, tagId, categoryId] = await Promise.all([
+      filters?.authorUuid ? this.resolveEntityId(this.authorRepository, filters.authorUuid, 'Author') : undefined,
+      filters?.tagUuid ? this.resolveEntityId(this.tagRepository, filters.tagUuid, 'Tag') : undefined,
+      filters?.categoryUuid
+        ? this.resolveEntityId(this.categoryRepository, filters.categoryUuid, 'Category')
+        : undefined,
+    ]);
+
+    const search = filters?.search;
+    const favoritedByUserId = filters?.favoritesOnly && user ? user.id : undefined;
 
     const result = await this.quoteRepository.findManyPaginated({
-      where: { authorId, tagId },
+      where: { authorId, tagId, categoryId, search, favoritedByUserId },
       options: paginate,
     });
 
@@ -42,40 +52,34 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
   }
 
   public async enrichWithMetadata(quotes: Quote[], user?: User): Promise<QuoteWithMetadata[]> {
-    const quotesWithMetadataPromises = quotes.map(async (quote) => {
-      const [favorites, tags, favoritedByUser] = await Promise.all([
-        this.quoteRepository.countFavorites(quote.id),
-        this.quoteRepository.countTags(quote.id),
-        user ? this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: user.id } }) : false,
-      ]);
+    const quoteIds = quotes.map((q) => q.id);
 
-      return { ...quote, metadata: { favorites, tags, favoritedByUser } };
-    });
+    const [favoritesMap, tagsMap, favoritedSet] = await Promise.all([
+      this.quoteRepository.countFavoritesBatch(quoteIds),
+      this.quoteRepository.countTagsBatch(quoteIds),
+      user ? this.quoteRepository.isFavoritedBatch({ quoteIds, userId: user.id }) : new Set<number>(),
+    ]);
 
-    return Promise.all(quotesWithMetadataPromises);
+    return quotes.map((quote) => ({
+      ...quote,
+      metadata: {
+        favorites: favoritesMap.get(quote.id) || 0,
+        tags: tagsMap.get(quote.id) || 0,
+        favoritedByUser: favoritedSet.has(quote.id),
+      },
+    }));
   }
 
-  public async getAuthorId(uuid: string): Promise<number> {
+  private async resolveEntityId(
+    repo: { findUniqueOrThrow(input: { where: { uuid: string } }): Promise<{ id: number }> },
+    uuid: string,
+    entityName: string
+  ): Promise<number> {
     try {
-      const author = await this.authorRepository.findUniqueOrThrow({
-        where: { uuid },
-      });
-
-      return author.id;
+      const entity = await repo.findUniqueOrThrow({ where: { uuid } });
+      return entity.id;
     } catch {
-      throw new NotFoundException('Author not found');
-    }
-  }
-
-  public async getTagId(uuid: string): Promise<number> {
-    try {
-      const tag = await this.tagRepository.findUniqueOrThrow({
-        where: { uuid },
-      });
-
-      return tag.id;
-    } catch {
-      throw new NotFoundException('Tag not found');
+      throw new NotFoundException(`${entityName} not found`);
     }
   }
 }

@@ -9,5 +9,7 @@ export class PasswordChangeRequest {
 
   public usedAt!: Date | null;
 
+  public expiresAt!: Date;
+
   public createdAt!: Date;
 }

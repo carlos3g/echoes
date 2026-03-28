@@ -7,8 +7,8 @@ interface QuoteListItemProps {
   item: Quote;
 }
 
-export const QuoteListItem: React.FC<QuoteListItemProps> = ({ item }) => {
+export const QuoteListItem: React.FC<QuoteListItemProps> = React.memo(({ item }) => {
   const router = useRouter();
 
   return <QuoteCard data={item} onPress={() => router.push(`/(app)/(tabs)/(quotes)/${item.uuid}`)} />;
-};
+});

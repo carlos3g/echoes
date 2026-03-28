@@ -1,3 +1,4 @@
+import { IsUnguessablePassword } from '@app/shared/validators/is-unguessable-password.validator';
 import { Match } from '@app/shared/validators/match.validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, MinLength } from 'class-validator';
@@ -8,6 +9,7 @@ export class ResetPasswordRequest {
   public email!: string;
 
   @ApiProperty({ minLength: 8 })
+  @IsUnguessablePassword()
   @MinLength(8)
   public password!: string;
 

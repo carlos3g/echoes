@@ -7,7 +7,7 @@ interface TagListItemProps {
   item: Tag;
 }
 
-export const TagListItem: React.FC<TagListItemProps> = ({ item }) => {
+export const TagListItem: React.FC<TagListItemProps> = React.memo(({ item }) => {
   const router = useRouter();
 
   const onPress = () => {
@@ -18,4 +18,4 @@ export const TagListItem: React.FC<TagListItemProps> = ({ item }) => {
   };
 
   return <TagCard data={item} onPress={onPress} key={item.uuid} />;
-};
+});

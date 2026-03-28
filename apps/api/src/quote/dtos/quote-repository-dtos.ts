@@ -44,6 +44,9 @@ export interface QuoteRepositoryFindManyPaginatedInput {
   where?: {
     authorId?: number;
     tagId?: number;
+    categoryId?: number;
+    search?: string;
+    favoritedByUserId?: number;
   };
   options?: Paginate;
 }

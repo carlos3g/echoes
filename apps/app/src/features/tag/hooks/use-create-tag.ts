@@ -1,5 +1,6 @@
 import type { CreateTagOutput, CreateTagPayload } from '@/features/tag/contracts/tag-service.contract';
 import { tagService } from '@/features/tag/services';
+import { queryKeys } from '@/lib/react-query/query-keys';
 import type { ApiResponseError } from '@/types/api';
 import type { HttpError } from '@/types/http';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -16,7 +17,7 @@ export const useCreateTag = ({ onSuccess }: UseCreateTagProps) => {
     mutationFn: async (payload) => tagService.create(payload),
     onSuccess: (response) => {
       toast.success('Tag criada com sucesso!');
-      void queryClient.invalidateQueries({ queryKey: ['tags'] });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.tags.all });
       onSuccess?.(response);
     },
     onError: () => {

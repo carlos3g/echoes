@@ -1,4 +1,5 @@
 import type { InfiniteData, QueryClient, QueryKey } from '@tanstack/react-query';
+import { queryKeys } from '@/lib/react-query/query-keys';
 import type { Quote } from '@/types/entities';
 import type { ApiPaginatedResult } from '@/types/api';
 
@@ -16,7 +17,7 @@ export const updateQuotesCacheState = (
 ): UpdateQuotesCacheStateResult | null => {
   // TODO: get previousState using queryClient.getQueryData. Needs to get quotes filters first
   const queriesData = queryClient.getQueriesData<InfiniteData<ApiPaginatedResult<Quote>>>({
-    queryKey: ['quotes'],
+    queryKey: queryKeys.quotes.all,
   });
 
   const previousState = queriesData.find((qData) => {

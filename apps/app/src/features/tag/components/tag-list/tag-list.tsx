@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
 import { RefreshControl, View } from 'react-native';
-import type { ListRenderItem, FlashListProps } from '@shopify/flash-list';
-import { FlashList as RNFlashList } from '@shopify/flash-list';
+import type { ListRenderItem } from '@shopify/flash-list';
 import type { Tag } from '@/types/entities';
 import { TagCardSkeleton } from '@/features/tag/components/tag-card';
+import { FlashList } from '@/shared/components/ui/flash-list';
 import { TagListItem } from './tag-list-item';
 import { TagListEmpty } from './tag-list-empty';
 import { TagListSeparator } from './tag-list-separator';
-
-// Type assertion needed due to cssInterop incompatibility
-const FlashList = RNFlashList as unknown as <T>(props: FlashListProps<T>) => React.ReactElement;
 
 const renderItem: ListRenderItem<Tag> = ({ item }) => <TagListItem item={item} />;
 

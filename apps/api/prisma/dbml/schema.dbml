@@ -26,6 +26,7 @@ Table password_change_request {
   user users [not null]
   userId BigInt [not null]
   usedAt DateTime
+  expiresAt DateTime [not null]
   createdAt DateTime [default: `now()`, not null]
 }
 

@@ -1,6 +1,5 @@
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
 import type { TagAuthorInput } from '@app/author/dtos/tag-author-input';
-import { AuthorService } from '@app/author/services/author.service';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { ForbiddenException, Injectable } from '@nestjs/common';
@@ -9,8 +8,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 export class TagAuthorUseCase implements UseCaseHandler {
   public constructor(
     private readonly authorRepository: AuthorRepositoryContract,
-    private readonly tagRepository: TagRepositoryContract,
-    private readonly authorService: AuthorService
+    private readonly tagRepository: TagRepositoryContract
   ) {}
 
   public async handle(input: TagAuthorInput): Promise<void> {
@@ -36,6 +34,6 @@ export class TagAuthorUseCase implements UseCaseHandler {
       return;
     }
 
-    await this.authorService.tag({ authorId: author.id, tagId: tag.id });
+    await this.authorRepository.tag({ data: { authorId: author.id, tagId: tag.id } });
   }
 }

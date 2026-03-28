@@ -15,3 +15,9 @@ export const validateUsername = () =>
     .regex(/^[a-z0-9_-]+$/, {
       message: 'Username deve conter apenas letras minúsculas, números, underlines e híphens',
     });
+
+export const withPasswordConfirmation = <T extends z.ZodObject<z.ZodRawShape>>(schema: T) =>
+  schema.refine((data) => data.password === data.passwordConfirmation, {
+    message: 'As senhas inseridas devem ser iguais',
+    path: ['passwordConfirmation'],
+  });

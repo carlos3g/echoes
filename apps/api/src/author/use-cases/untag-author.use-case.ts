@@ -1,6 +1,5 @@
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
 import type { UntagAuthorInput } from '@app/author/dtos/untag-author-input';
-import { AuthorService } from '@app/author/services/author.service';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import { TagRepositoryContract } from '@app/tag/contracts/tag-repository.contract';
 import { ForbiddenException, Injectable } from '@nestjs/common';
@@ -9,8 +8,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 export class UntagAuthorUseCase implements UseCaseHandler {
   public constructor(
     private readonly authorRepository: AuthorRepositoryContract,
-    private readonly tagRepository: TagRepositoryContract,
-    private readonly authorService: AuthorService
+    private readonly tagRepository: TagRepositoryContract
   ) {}
 
   public async handle(input: UntagAuthorInput): Promise<void> {
@@ -37,6 +35,6 @@ export class UntagAuthorUseCase implements UseCaseHandler {
       return;
     }
 
-    await this.authorService.untag({ authorId: author.id, tagId: tag.id });
+    await this.authorRepository.untag({ data: { authorId: author.id, tagId: tag.id } });
   }
 }
