@@ -51,7 +51,9 @@
       "Bash(git -C /Users/carlos3g/projects/carlos/echoes status apps/app/app/ --short)",
       "Bash(timeout 2 maestro mcp:*)",
       "Bash(maestro --version:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(xargs -I {} bash -c 'echo \"\"=== {} ===\"\" && ls {}')",
+      "Bash(wc:*)"
     ]
   },
   "enabledMcpjsonServers": [

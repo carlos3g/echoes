@@ -48,6 +48,7 @@ cp apps/app/.env.example apps/app/.env
 ```
 
 **Required environment variables:**
+
 - `.env` - Docker Compose configuration (MinIO credentials, service ports)
 - `apps/api/.env` - Database connection, JWT secret, AWS/MinIO credentials
 - `apps/app/.env` - API URL (defaults to `http://localhost:3000`)
@@ -61,6 +62,7 @@ docker-compose up -d
 ```
 
 **Services started:**
+
 - PostgreSQL: `localhost:5432`
 - MinIO: `localhost:9000` (Console: `localhost:8900`)
 - Mailpit: `localhost:1025` (Web UI: `localhost:8025`)
@@ -86,6 +88,7 @@ yarn dev:app   # Mobile app only
 ```
 
 **Access the application:**
+
 - **REST API**: http://localhost:3000
 - **API Documentation**: http://localhost:3000/api (Swagger)
 - **Mobile App**: Expo DevTools in terminal
@@ -171,6 +174,7 @@ echoes/
 ## Contributing
 
 This project uses:
+
 - **Conventional Commits** - Enforced via commitlint
 - **Husky** - Git hooks for pre-commit linting
 - **Turborepo** - High-performance monorepo build system with smart caching
