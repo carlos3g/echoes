@@ -9,9 +9,11 @@ import {
   useReadingPreferencesStore,
   quoteFontConfig,
   lineHeightLabels,
+  listModeLabels,
   SIZE_OPTIONS,
   type QuoteFont,
   type LineHeightOption,
+  type ListMode,
 } from '@/lib/zustand/stores/reading-preferences.store';
 import { useReadingStyle } from '@/shared/hooks/use-reading-style';
 import { DecorativeQuoteMark } from '@/shared/components/ui/decorative-quote-mark';
@@ -20,6 +22,7 @@ const SAMPLE_QUOTE = 'The only way to do great work is to love what you do.';
 const SAMPLE_AUTHOR = 'STEVE JOBS';
 
 const fonts: QuoteFont[] = ['playfair', 'lora', 'merriweather', 'crimson'];
+const listModes: ListMode[] = ['infinite', 'paginated'];
 const LINE_HEIGHT_OPTIONS: LineHeightOption[] = ['auto', 'compact', 'normal', 'relaxed'];
 
 const FontCard: React.FC<{
@@ -79,6 +82,8 @@ export default function ReadingPreferencesScreen() {
   const setFont = useReadingPreferencesStore((s) => s.setFont);
   const setFontSize = useReadingPreferencesStore((s) => s.setFontSize);
   const setLineHeight = useReadingPreferencesStore((s) => s.setLineHeight);
+  const listMode = useReadingPreferencesStore((s) => s.listMode);
+  const setListMode = useReadingPreferencesStore((s) => s.setListMode);
 
   const config = quoteFontConfig[font];
 
@@ -182,6 +187,37 @@ export default function ReadingPreferencesScreen() {
             </Pressable>
           ))}
         </View>
+      </View>
+
+      <View className="mt-6 px-4">
+        <Text variant="paragraphSmall" semiBold className="mb-3 text-foreground">
+          Modo de listagem
+        </Text>
+        <View className="flex-row gap-2">
+          {listModes.map((mode) => (
+            <Pressable
+              key={mode}
+              onPress={() => {
+                haptics.light();
+                setListMode(mode);
+              }}
+              className={`flex-1 items-center rounded-xl border py-3 ${
+                listMode === mode ? 'bg-primary/10 border-primary' : 'border-border bg-card'
+              }`}
+            >
+              <Text
+                variant="paragraphCaptionSmall"
+                className={listMode === mode ? 'text-primary' : 'text-muted-foreground'}
+                semiBold={listMode === mode}
+              >
+                {listModeLabels[mode]}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        <Text variant="paragraphCaptionSmall" className="mt-2 text-muted-foreground">
+          A paginacao permite manter seu progresso de leitura entre sessoes.
+        </Text>
       </View>
     </ScrollView>
   );

@@ -27,6 +27,13 @@ export const quoteFontConfig: Record<QuoteFont, { label: string; family: string;
   },
 };
 
+export type ListMode = 'infinite' | 'paginated';
+
+export const listModeLabels: Record<ListMode, string> = {
+  infinite: 'Scroll infinito',
+  paginated: 'Paginacao',
+};
+
 export type LineHeightOption = 'auto' | 'compact' | 'normal' | 'relaxed';
 
 export const lineHeightMultipliers: Record<LineHeightOption, number> = {
@@ -51,9 +58,11 @@ interface ReadingPreferencesState {
   font: QuoteFont;
   fontSize: number;
   lineHeight: LineHeightOption;
+  listMode: ListMode;
   setFont: (font: QuoteFont) => void;
   setFontSize: (size: number) => void;
   setLineHeight: (lineHeight: LineHeightOption) => void;
+  setListMode: (listMode: ListMode) => void;
 }
 
 export const MIN_FONT_SIZE = 14;
@@ -68,18 +77,23 @@ export const useReadingPreferencesStore = create<ReadingPreferencesState>()(
       font: 'playfair',
       fontSize: DEFAULT_FONT_SIZE,
       lineHeight: 'auto',
+      listMode: 'infinite',
       setFont: (font) => set({ font }),
       setFontSize: (fontSize) => set({ fontSize: Math.max(MIN_FONT_SIZE, Math.min(MAX_FONT_SIZE, fontSize)) }),
       setLineHeight: (lineHeight) => set({ lineHeight }),
+      setListMode: (listMode) => set({ listMode }),
     }),
     {
       name: 'reading-preferences',
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => zustandStateStorage),
       migrate: (persisted, version) => {
         const state = persisted as Record<string, unknown>;
         if (version < 2) {
           state.lineHeight = 'auto';
+        }
+        if (version < 3) {
+          state.listMode = 'infinite';
         }
         return state as unknown as ReadingPreferencesState;
       },

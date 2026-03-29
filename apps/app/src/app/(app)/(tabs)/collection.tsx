@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { QuoteList } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { CreateTagBottomSheet } from '@/features/tag/components/create-tag-bottom-sheet';
-import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
+import { useQuoteList } from '@/features/quote/hooks/use-quote-list';
 import { useTags } from '@/features/tag/hooks/use-tags';
 import { useDebounce } from '@/shared/hooks/use-debounce';
 import { Text } from '@/shared/components/ui/text';
@@ -19,11 +19,13 @@ export default function CollectionScreen() {
   const debouncedSearch = useDebounce(searchText, 400);
 
   const { tags } = useTags();
-  const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({
-    favoritesOnly: true,
-    tagUuid: selectedTagUuid,
-    search: debouncedSearch || undefined,
-  });
+  const { isRefetching, refetch, fetchNextPage, quotes, isLoading, currentPage, lastPage, onPageChange } = useQuoteList(
+    {
+      favoritesOnly: true,
+      tagUuid: selectedTagUuid,
+      search: debouncedSearch || undefined,
+    }
+  );
 
   return (
     <View className="flex-1 bg-background">
@@ -44,6 +46,9 @@ export default function CollectionScreen() {
           isRefetching={isRefetching}
           onRefresh={refetch}
           onEndReached={fetchNextPage}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          onPageChange={onPageChange}
         />
       </TagQuoteBottomSheetProvider>
 

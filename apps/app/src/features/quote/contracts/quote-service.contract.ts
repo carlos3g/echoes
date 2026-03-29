@@ -5,15 +5,17 @@ export type GetQuotePayload = unknown;
 
 export type GetQuoteOutput = Quote;
 
+export interface QuoteFilters {
+  tagUuid?: string;
+  authorUuid?: string;
+  categoryUuid?: string;
+  favoritesOnly?: boolean;
+  search?: string;
+}
+
 export type ListQuotesPayload = {
   paginate?: Paginate;
-  filters?: {
-    authorUuid?: string;
-    tagUuid?: string;
-    categoryUuid?: string;
-    favoritesOnly?: boolean;
-    search?: string;
-  };
+  filters?: QuoteFilters;
 };
 
 export type ListQuotesOutput = ApiPaginatedResult<Quote>;

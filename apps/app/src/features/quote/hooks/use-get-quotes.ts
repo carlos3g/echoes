@@ -1,4 +1,4 @@
-import type { ListQuotesOutput } from '@/features/quote/contracts/quote-service.contract';
+import type { ListQuotesOutput, QuoteFilters } from '@/features/quote/contracts/quote-service.contract';
 import { quoteService } from '@/features/quote/services';
 import { queryKeys } from '@/lib/react-query/query-keys';
 import type { ApiResponseError } from '@/types/api';
@@ -7,17 +7,19 @@ import type { HttpError } from '@/types/http';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-interface UseGetQuotesProps {
-  tagUuid?: string;
-  authorUuid?: string;
-  categoryUuid?: string;
-  favoritesOnly?: boolean;
-  search?: string;
-}
+type UseGetQuotesProps = QuoteFilters & { enabled?: boolean };
 
-export const useGetQuotes = ({ tagUuid, authorUuid, categoryUuid, favoritesOnly, search }: UseGetQuotesProps) => {
+export const useGetQuotes = ({
+  tagUuid,
+  authorUuid,
+  categoryUuid,
+  favoritesOnly,
+  search,
+  enabled = true,
+}: UseGetQuotesProps) => {
   const query = useInfiniteQuery<ListQuotesOutput, HttpError<ApiResponseError>>({
     queryKey: queryKeys.quotes.list({ tagUuid, authorUuid, categoryUuid, favoritesOnly, search }),
+    enabled,
     queryFn: ({ pageParam }) => {
       return quoteService.list({
         paginate: { page: pageParam as number },

@@ -6,7 +6,7 @@ import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quo
 import { FeaturedAuthors } from '@/features/quote/components/explore/featured-authors';
 import { SearchResults } from '@/features/search/components/search-results';
 import { SearchHistory } from '@/features/search/components/search-history';
-import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
+import { useQuoteList } from '@/features/quote/hooks/use-quote-list';
 import { useGetCategories } from '@/features/category/hooks/use-get-categories';
 import { useSearch } from '@/features/search/hooks/use-search';
 import { useSearchHistoryStore } from '@/lib/zustand/stores/search-history.store';
@@ -30,11 +30,13 @@ export default function ExploreScreen() {
 
   const { categories } = useGetCategories();
 
-  const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({
-    tagUuid,
-    categoryUuid: selectedCategoryUuid,
-    search: !isSearchFocused && debouncedSearch ? debouncedSearch : undefined,
-  });
+  const { isRefetching, refetch, fetchNextPage, quotes, isLoading, currentPage, lastPage, onPageChange } = useQuoteList(
+    {
+      tagUuid,
+      categoryUuid: selectedCategoryUuid,
+      search: !isSearchFocused && debouncedSearch ? debouncedSearch : undefined,
+    }
+  );
 
   const { data: searchData, isLoading: isSearchLoading } = useSearch(isSearchFocused ? debouncedSearch : '');
 
@@ -93,6 +95,9 @@ export default function ExploreScreen() {
             isRefetching={isRefetching}
             onRefresh={refetch}
             onEndReached={fetchNextPage}
+            currentPage={currentPage}
+            lastPage={lastPage}
+            onPageChange={onPageChange}
           />
         </TagQuoteBottomSheetProvider>
       )}
