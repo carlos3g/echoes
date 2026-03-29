@@ -55,6 +55,14 @@ abstract class QuoteRepositoryContract {
   public abstract countTagsBatch(quoteIds: number[]): Promise<Map<number, number>>;
 
   public abstract isFavoritedBatch(input: { quoteIds: number[]; userId: number }): Promise<Set<number>>;
+
+  public abstract share(input: {
+    data: { quoteId: number; userId: number; type: string; template?: string; platform?: string };
+  }): Promise<void>;
+
+  public abstract countShares(quoteId: number): Promise<number>;
+
+  public abstract countSharesBatch(quoteIds: number[]): Promise<Map<number, number>>;
 }
 
 export { QuoteRepositoryContract };

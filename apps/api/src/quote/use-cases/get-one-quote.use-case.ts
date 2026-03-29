@@ -21,12 +21,13 @@ export class GetOneQuoteUseCase implements UseCaseHandler {
   }
 
   public async enrichWithMetadata(quote: Quote, user?: User): Promise<QuoteWithMetadata> {
-    const [favorites, tags, favoritedByUser] = await Promise.all([
+    const [favorites, tags, shares, favoritedByUser] = await Promise.all([
       this.quoteRepository.countFavorites(quote.id),
       this.quoteRepository.countTags(quote.id),
+      this.quoteRepository.countShares(quote.id),
       user ? this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: user.id } }) : false,
     ]);
 
-    return { ...quote, metadata: { favorites, tags, favoritedByUser } };
+    return { ...quote, metadata: { favorites, tags, shares, favoritedByUser } };
   }
 }

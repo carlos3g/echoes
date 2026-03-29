@@ -5,6 +5,7 @@ export interface QuoteSearchResult {
   metadata: {
     favorites: number;
     tags: number;
+    shares: number;
     favoritedByUser: boolean;
   };
   relevance: number;

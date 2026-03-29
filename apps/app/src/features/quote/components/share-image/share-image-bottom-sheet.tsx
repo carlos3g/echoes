@@ -10,6 +10,7 @@ import { Text } from '@/shared/components/ui/text';
 import { Button } from '@/shared/components/ui/button';
 import { useTheme } from '@/lib/nativewind/theme.context';
 import { haptics } from '@/shared/utils/haptics';
+import { useShareQuote } from '@/features/quote/hooks/use-share-quote';
 import { ShareImageTemplate } from './share-image-template';
 import { SharePreview } from './share-preview';
 import { shareTemplates } from './share-templates';
@@ -30,6 +31,7 @@ export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ da
   const captureRef_ = useRef<View>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<ShareTemplate>(shareTemplates[0]);
+  const { mutate: trackShare } = useShareQuote();
 
   const handleShareImage = useCallback(async () => {
     if (!data || !captureRef_.current) return;
@@ -40,20 +42,39 @@ export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ da
         quality: 1,
         result: 'tmpfile',
       });
-      await Share.open({ url: uri, type: 'image/png' });
+      const result = await Share.open({ url: uri, type: 'image/png' });
+      trackShare({
+        uuid: data.uuid,
+        payload: {
+          type: 'image',
+          template: selectedTemplate.id,
+          platform: result.message || undefined,
+        },
+      });
     } catch {
       // User cancelled
     }
     onClose();
-  }, [data, onClose]);
+  }, [data, onClose, selectedTemplate.id, trackShare]);
 
   const handleShareLink = useCallback(async () => {
     if (!data) return;
     haptics.medium();
-    const baseUrl = process.env.EXPO_PUBLIC_APP_URL || 'https://echoes.carlos3g.dev';
-    await Share.open({ url: `${baseUrl}/quotes/${data.uuid}` });
+    try {
+      const baseUrl = process.env.EXPO_PUBLIC_APP_URL || 'https://echoes.carlos3g.dev';
+      const result = await Share.open({ url: `${baseUrl}/quotes/${data.uuid}` });
+      trackShare({
+        uuid: data.uuid,
+        payload: {
+          type: 'link',
+          platform: result.message || undefined,
+        },
+      });
+    } catch {
+      // User cancelled
+    }
     onClose();
-  }, [data, onClose]);
+  }, [data, onClose, trackShare]);
 
   const handleSelectTemplate = (template: ShareTemplate) => {
     haptics.light();

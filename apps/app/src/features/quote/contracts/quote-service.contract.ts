@@ -24,6 +24,12 @@ export type IsQuoteTaggedOutput = {
   exists: boolean;
 };
 
+export type ShareQuotePayload = {
+  type: 'image' | 'link';
+  template?: string;
+  platform?: string;
+};
+
 export abstract class QuoteServiceContract {
   public abstract get(uuid: string): Promise<GetQuoteOutput>;
 
@@ -38,4 +44,6 @@ export abstract class QuoteServiceContract {
   public abstract untag(uuid: string, tagUuid: string): Promise<void>;
 
   public abstract isTagged(uuid: string, tagUuid: string): Promise<IsQuoteTaggedOutput>;
+
+  public abstract share(uuid: string, payload: ShareQuotePayload): Promise<void>;
 }

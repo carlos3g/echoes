@@ -13,6 +13,7 @@ export type QuoteWithMetadata = Quote & {
   metadata: {
     favorites: number;
     tags: number;
+    shares: number;
     favoritedByUser: boolean;
   };
 };
@@ -54,9 +55,10 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
   public async enrichWithMetadata(quotes: Quote[], user?: User): Promise<QuoteWithMetadata[]> {
     const quoteIds = quotes.map((q) => q.id);
 
-    const [favoritesMap, tagsMap, favoritedSet] = await Promise.all([
+    const [favoritesMap, tagsMap, sharesMap, favoritedSet] = await Promise.all([
       this.quoteRepository.countFavoritesBatch(quoteIds),
       this.quoteRepository.countTagsBatch(quoteIds),
+      this.quoteRepository.countSharesBatch(quoteIds),
       user ? this.quoteRepository.isFavoritedBatch({ quoteIds, userId: user.id }) : new Set<number>(),
     ]);
 
@@ -65,6 +67,7 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
       metadata: {
         favorites: favoritesMap.get(quote.id) || 0,
         tags: tagsMap.get(quote.id) || 0,
+        shares: sharesMap.get(quote.id) || 0,
         favoritedByUser: favoritedSet.has(quote.id),
       },
     }));

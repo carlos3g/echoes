@@ -10,6 +10,7 @@ import { IsQuoteTaggedUseCase } from '@app/quote/use-cases/is-quote-tagged.use-c
 import { ListQuotePaginatedUseCase } from '@app/quote/use-cases/list-quote-paginated.use-case';
 import { TagQuoteUseCase } from '@app/quote/use-cases/tag-quote.use-case';
 import { UnfavoriteQuoteUseCase } from '@app/quote/use-cases/unfavorite-quote.use-case';
+import { ShareQuoteUseCase } from '@app/quote/use-cases/share-quote.use-case';
 import { UntagQuoteUseCase } from '@app/quote/use-cases/untag-quote.use-case';
 import { TagModule } from '@app/tag/tag.module';
 import { Module } from '@nestjs/common';
@@ -29,6 +30,7 @@ import { Module } from '@nestjs/common';
     UntagQuoteUseCase,
     IsQuoteTaggedUseCase,
     UnfavoriteQuoteUseCase,
+    ShareQuoteUseCase,
   ],
   exports: [QuoteRepositoryContract],
 })

@@ -234,4 +234,27 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
 
     await this.prismaManager.getClient().quote.delete({ where });
   }
+
+  public async share(input: {
+    data: { quoteId: number; userId: number; type: string; template?: string; platform?: string };
+  }): Promise<void> {
+    await this.prismaManager.getClient().quoteShare.create({ data: input.data });
+  }
+
+  public async countShares(quoteId: number): Promise<number> {
+    return this.prismaManager.getClient().quoteShare.count({ where: { quoteId } });
+  }
+
+  public async countSharesBatch(quoteIds: number[]): Promise<Map<number, number>> {
+    const results = await this.prismaManager.getClient().quoteShare.groupBy({
+      by: ['quoteId'],
+      where: { quoteId: { in: quoteIds } },
+      _count: { quoteId: true },
+    });
+    const map = new Map<number, number>();
+    for (const r of results) {
+      map.set(Number(r.quoteId), r._count.quoteId);
+    }
+    return map;
+  }
 }

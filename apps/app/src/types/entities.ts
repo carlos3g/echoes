@@ -12,6 +12,7 @@ export class Quote {
   public metadata!: {
     favorites: number;
     tags: number;
+    shares: number;
     favoritedByUser: boolean;
   };
 }

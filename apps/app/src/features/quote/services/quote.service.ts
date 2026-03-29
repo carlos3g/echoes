@@ -5,6 +5,7 @@ import type {
   ListQuotesOutput,
   ListQuotesPayload,
   QuoteServiceContract,
+  ShareQuotePayload,
 } from '@/features/quote/contracts/quote-service.contract';
 import type { HttpClientServiceContract } from '@/shared/contracts/http-client-service.contract';
 
@@ -37,5 +38,9 @@ export class QuoteService implements QuoteServiceContract {
 
   public async isTagged(uuid: string, tagUuid: string): Promise<IsQuoteTaggedOutput> {
     return this.httpClientService.get<IsQuoteTaggedOutput, void>(`/quotes/${uuid}/tags/${tagUuid}/exists`);
+  }
+
+  public async share(uuid: string, payload: ShareQuotePayload): Promise<void> {
+    return this.httpClientService.post(`/quotes/${uuid}/share`, payload);
   }
 }
