@@ -6,24 +6,31 @@ import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quo
 import { CreateTagBottomSheet } from '@/features/tag/components/create-tag-bottom-sheet';
 import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
 import { useTags } from '@/features/tag/hooks/use-tags';
+import { useDebounce } from '@/shared/hooks/use-debounce';
 import { Text } from '@/shared/components/ui/text';
+import { SearchBar } from '@/shared/components/ui/search-bar';
 import { Fab } from '@/shared/components/ui/fab';
 import { FilterChipRow } from '@/shared/components/ui/filter-chip-row';
 
 export default function CollectionScreen() {
   const bottomSheetRef = useRef<RNBottomSheet>(null);
   const [selectedTagUuid, setSelectedTagUuid] = useState<string | undefined>(undefined);
+  const [searchText, setSearchText] = useState('');
+  const debouncedSearch = useDebounce(searchText, 400);
 
   const { tags } = useTags();
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({
     favoritesOnly: true,
     tagUuid: selectedTagUuid,
+    search: debouncedSearch || undefined,
   });
 
   return (
     <View className="flex-1 bg-background">
       <TagQuoteBottomSheetProvider>
-        <View className="flex-row items-center justify-between px-4 pb-1 pt-2">
+        <SearchBar value={searchText} onChangeText={setSearchText} placeholder="Buscar nos favoritos..." />
+
+        <View className="flex-row items-center justify-between px-4 pb-1">
           <Text variant="paragraphSmall" className="text-muted-foreground">
             {quotes.length} favoritos
           </Text>
