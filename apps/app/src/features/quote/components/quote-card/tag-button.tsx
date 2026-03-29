@@ -1,3 +1,4 @@
+import { haptics } from '@/shared/utils/haptics';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import type { Quote } from '@/types/entities';
@@ -19,6 +20,7 @@ export const TagButton: React.FC<TagButtonProps> = (props) => {
   const hasTags = (metadata?.tags ?? 0) > 0;
 
   const handleTag = () => {
+    haptics.selection();
     show(data);
   };
 

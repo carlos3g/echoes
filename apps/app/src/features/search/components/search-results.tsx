@@ -70,7 +70,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, s
                   activeOpacity={0.7}
                 >
                   <AvatarInitials name={author.name} size="sm" />
-                  <Text variant="paragraphCaptionSmall" className="mt-1 w-16 text-center text-foreground" numberOfLines={1}>
+                  <Text
+                    variant="paragraphCaptionSmall"
+                    className="mt-1 w-16 text-center text-foreground"
+                    numberOfLines={1}
+                  >
                     {author.name.split(' ')[0]}
                   </Text>
                 </TouchableOpacity>

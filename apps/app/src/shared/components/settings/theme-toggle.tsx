@@ -1,3 +1,4 @@
+import { haptics } from '@/shared/utils/haptics';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@/lib/nativewind/components';
@@ -15,7 +16,7 @@ export const ThemeToggle: React.FC = () => {
 
   return (
     <View testID="theme-switcher" className="py-4">
-      <View className="flex-row items-center gap-3 mb-3">
+      <View className="mb-3 flex-row items-center gap-3">
         <Ionicons name="color-palette-outline" size={20} className="text-foreground" />
         <Text semiBold>Tema</Text>
       </View>
@@ -25,7 +26,10 @@ export const ThemeToggle: React.FC = () => {
           return (
             <TouchableOpacity
               key={option.value}
-              onPress={() => setTheme(option.value)}
+              onPress={() => {
+                haptics.light();
+                setTheme(option.value);
+              }}
               className={`flex-1 flex-row items-center justify-center gap-2 rounded-xl py-3 ${
                 isActive ? 'bg-primary' : 'bg-muted'
               }`}

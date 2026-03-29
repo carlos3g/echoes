@@ -1,6 +1,7 @@
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import type { TouchableOpacityProps } from 'react-native';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import type { Tag } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { Ionicons } from '@/lib/nativewind/components';
@@ -19,28 +20,30 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
   const { data, icon, testID, ...rest } = props;
 
   return (
-    <TouchableOpacity
-      testID={testID ?? `tag-card-${data.uuid}`}
-      className="flex-row items-center justify-between px-4 py-4"
-      accessibilityRole="button"
-      accessibilityLabel={data.title}
-      activeOpacity={0.7}
-      {...rest}
-    >
-      <View className="flex-row items-center gap-3">
-        {icon === 'solid' ? (
-          <Ionicons name="pricetag" size={19} className="text-primary" />
-        ) : (
-          <Ionicons name="pricetag-outline" size={19} className="text-primary" />
-        )}
+    <Animated.View entering={FadeInDown.duration(300)}>
+      <TouchableOpacity
+        testID={testID ?? `tag-card-${data.uuid}`}
+        className="flex-row items-center justify-between px-4 py-4"
+        accessibilityRole="button"
+        accessibilityLabel={data.title}
+        activeOpacity={0.7}
+        {...rest}
+      >
+        <View className="flex-row items-center gap-3">
+          {icon === 'solid' ? (
+            <Ionicons name="pricetag" size={19} className="text-primary" />
+          ) : (
+            <Ionicons name="pricetag-outline" size={19} className="text-primary" />
+          )}
 
-        <Text variant="paragraphMedium">{data.title}</Text>
-      </View>
+          <Text variant="paragraphMedium">{data.title}</Text>
+        </View>
 
-      <Text variant="paragraphCaption" className="text-muted-foreground">
-        {data.metadata.totalQuotes} quotes
-      </Text>
-    </TouchableOpacity>
+        <Text variant="paragraphCaption" className="text-muted-foreground">
+          {data.metadata.totalQuotes} quotes
+        </Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 

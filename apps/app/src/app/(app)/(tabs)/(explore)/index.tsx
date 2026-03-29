@@ -33,21 +33,22 @@ export default function ExploreScreen() {
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({
     tagUuid,
     categoryUuid: selectedCategoryUuid,
-    search: (!isSearchFocused && debouncedSearch) ? debouncedSearch : undefined,
+    search: !isSearchFocused && debouncedSearch ? debouncedSearch : undefined,
   });
 
-  const { data: searchData, isLoading: isSearchLoading } = useSearch(
-    isSearchFocused ? debouncedSearch : ''
-  );
+  const { data: searchData, isLoading: isSearchLoading } = useSearch(isSearchFocused ? debouncedSearch : '');
 
   const clearFilters = () => {
     router.setParams({ tagUuid: undefined, tagTitle: undefined });
   };
 
-  const handleSearchSelect = useCallback((term: string) => {
-    setSearchText(term);
-    addSearch(term);
-  }, [addSearch]);
+  const handleSearchSelect = useCallback(
+    (term: string) => {
+      setSearchText(term);
+      addSearch(term);
+    },
+    [addSearch]
+  );
 
   const handleSearchSubmit = useCallback(() => {
     if (searchText.trim().length >= 2) {
@@ -67,16 +68,10 @@ export default function ExploreScreen() {
         onSubmit={handleSearchSubmit}
       />
 
-      {isSearchFocused && !(debouncedSearch.length >= 2) && (
-        <SearchHistory onSelect={handleSearchSelect} />
-      )}
+      {isSearchFocused && !(debouncedSearch.length >= 2) && <SearchHistory onSelect={handleSearchSelect} />}
 
       {isSearchFocused && debouncedSearch.length >= 2 && (
-        <SearchResults
-          data={searchData}
-          isLoading={isSearchLoading}
-          searchTerm={debouncedSearch}
-        />
+        <SearchResults data={searchData} isLoading={isSearchLoading} searchTerm={debouncedSearch} />
       )}
 
       {!isSearchFocused && (

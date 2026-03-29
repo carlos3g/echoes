@@ -1,8 +1,10 @@
 import { cva } from 'class-variance-authority';
 import type React from 'react';
-import type { TouchableOpacityProps } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import { Pressable } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { cn } from '@/shared/utils';
+import { haptics } from '@/shared/utils/haptics';
+import { usePressScale } from '@/shared/hooks/use-press-scale';
 import { Text } from '@/shared/components/ui/text';
 import { ActivityIndicator } from '@/shared/components/ui/activity-indicator';
 
@@ -56,37 +58,38 @@ export const buttonContentStyles = cva('', {
   },
 });
 
-export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+export interface ButtonProps {
   title: string;
   loading?: boolean;
   variant?: ButtonPreset;
   disabled?: boolean;
   className?: string;
   testID?: string;
+  onPress?: () => void;
 }
 
 export const Button: React.FC<ButtonProps> = (props) => {
-  const {
-    title,
-    loading,
-    variant = 'primary',
-    disabled,
-    className,
-    testID = 'button',
-    ...touchableOpacityProps
-  } = props;
+  const { title, loading, variant = 'primary', disabled, className, testID = 'button', onPress } = props;
 
   const state = disabled ? 'disabled' : 'default';
+  const { animatedStyle, pressHandlers } = usePressScale();
 
   return (
-    <TouchableOpacity
+    <AnimatedPressable
       testID={testID}
       disabled={disabled || loading}
+      style={animatedStyle}
+      onPressIn={() => {
+        haptics.medium();
+        pressHandlers.onPressIn();
+      }}
+      onPressOut={pressHandlers.onPressOut}
+      onPress={onPress}
       className={cn(buttonContainerStyles({ variant, state }), className)}
-      activeOpacity={0.7}
       accessibilityRole="button"
       accessibilityLabel={title}
-      {...touchableOpacityProps}
     >
       {loading ? (
         <ActivityIndicator className={buttonContentStyles({ variant, state })} />
@@ -95,6 +98,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
           {title}
         </Text>
       )}
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 };

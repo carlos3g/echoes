@@ -15,32 +15,28 @@ export const FeaturedAuthors: React.FC = () => {
 
   return (
     <View className="py-3">
-      <Text variant="paragraphSmall" semiBold className="px-4 mb-2 text-foreground">
+      <Text variant="paragraphSmall" semiBold className="mb-2 px-4 text-foreground">
         Autores em destaque
       </Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerClassName="px-4 gap-4"
-      >
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="px-4 gap-4">
         {featured.map((author) => (
-            <TouchableOpacity
-              key={author.uuid}
-              onPress={() =>
-                router.push({
-                  pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
-                  params: { authorUuid: author.uuid },
-                })
-              }
-              className="items-center"
-              activeOpacity={0.7}
-            >
-              <AvatarInitials name={author.name} size="sm" />
-              <Text variant="paragraphCaptionSmall" className="mt-1 w-16 text-center text-foreground" numberOfLines={1}>
-                {author.name.split(' ')[0]}
-              </Text>
-            </TouchableOpacity>
-          ))}
+          <TouchableOpacity
+            key={author.uuid}
+            onPress={() =>
+              router.push({
+                pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
+                params: { authorUuid: author.uuid },
+              })
+            }
+            className="items-center"
+            activeOpacity={0.7}
+          >
+            <AvatarInitials name={author.name} size="sm" />
+            <Text variant="paragraphCaptionSmall" className="mt-1 w-16 text-center text-foreground" numberOfLines={1}>
+              {author.name.split(' ')[0]}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
     </View>
   );

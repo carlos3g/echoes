@@ -23,17 +23,13 @@ export default function CollectionScreen() {
   return (
     <View className="flex-1 bg-background">
       <TagQuoteBottomSheetProvider>
-        <View className="flex-row items-center justify-between px-4 pt-2 pb-1">
+        <View className="flex-row items-center justify-between px-4 pb-1 pt-2">
           <Text variant="paragraphSmall" className="text-muted-foreground">
             {quotes.length} favoritos
           </Text>
         </View>
 
-        <FilterChipRow
-          items={tags}
-          selectedUuid={selectedTagUuid}
-          onSelect={setSelectedTagUuid}
-        />
+        <FilterChipRow items={tags} selectedUuid={selectedTagUuid} onSelect={setSelectedTagUuid} />
 
         <QuoteList
           quotes={quotes}

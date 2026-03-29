@@ -43,7 +43,16 @@ export const Fab: React.FC<FabProps> = (props) => {
       {...rest}
       style={animatedStyle}
     >
-      <View className="flex h-14 w-14 items-center justify-center rounded-full bg-primary" style={{ shadowColor: '#B5845A', shadowOpacity: 0.3, shadowRadius: 12, shadowOffset: { width: 0, height: 4 }, elevation: 8 }}>
+      <View
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-primary"
+        style={{
+          shadowColor: '#B5845A',
+          shadowOpacity: 0.3,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 4 },
+          elevation: 8,
+        }}
+      >
         <Ionicons name={iconName} className="text-primary-foreground" size={24} />
       </View>
     </AnimatedPressable>

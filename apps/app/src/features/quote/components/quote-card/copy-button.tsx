@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { haptics } from '@/shared/utils/haptics';
 import type { Quote } from '@/types/entities';
 import { Ionicons } from '@/lib/nativewind/components';
 import { toast } from 'sonner-native';
@@ -11,6 +12,7 @@ interface CopyButtonProps {
 
 export const CopyButton: React.FC<CopyButtonProps> = ({ data }) => {
   const handleCopy = useCallback(async () => {
+    haptics.success();
     await Clipboard.setStringAsync(data.body);
     toast.success('Citação copiada!');
   }, [data.body]);

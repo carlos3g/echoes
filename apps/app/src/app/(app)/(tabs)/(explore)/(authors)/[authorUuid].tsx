@@ -79,9 +79,7 @@ export default function AuthorDetailScreen() {
           <View className="flex-row items-center gap-4">
             <AuthorAvatar name={author.name} />
             <View className="flex-1">
-              <Text className="font-playfair-semi-bold text-heading-medium text-foreground">
-                {author.name}
-              </Text>
+              <Text className="font-playfair-semi-bold text-heading-medium text-foreground">{author.name}</Text>
             </View>
           </View>
 

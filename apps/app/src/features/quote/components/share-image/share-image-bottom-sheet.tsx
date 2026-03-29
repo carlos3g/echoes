@@ -70,31 +70,31 @@ export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ da
             Compartilhar
           </Text>
 
-          <TouchableOpacity
-            onPress={handleShareText}
-            className="flex-row items-center gap-4 py-3"
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity onPress={handleShareText} className="flex-row items-center gap-4 py-3" activeOpacity={0.7}>
             <View className="h-10 w-10 items-center justify-center rounded-full bg-muted">
               <Ionicons name="link-outline" size={20} color={colors.primary} />
             </View>
             <View>
-              <Text semiBold className="text-foreground">Compartilhar link</Text>
-              <Text variant="paragraphSmall" className="text-muted-foreground">Envia o link da citacao</Text>
+              <Text semiBold className="text-foreground">
+                Compartilhar link
+              </Text>
+              <Text variant="paragraphSmall" className="text-muted-foreground">
+                Envia o link da citacao
+              </Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={handleShareImage}
-            className="flex-row items-center gap-4 py-3"
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity onPress={handleShareImage} className="flex-row items-center gap-4 py-3" activeOpacity={0.7}>
             <View className="h-10 w-10 items-center justify-center rounded-full bg-muted">
               <Ionicons name="image-outline" size={20} color={colors.primary} />
             </View>
             <View>
-              <Text semiBold className="text-foreground">Compartilhar como imagem</Text>
-              <Text variant="paragraphSmall" className="text-muted-foreground">Gera uma imagem para stories</Text>
+              <Text semiBold className="text-foreground">
+                Compartilhar como imagem
+              </Text>
+              <Text variant="paragraphSmall" className="text-muted-foreground">
+                Gera uma imagem para stories
+              </Text>
             </View>
           </TouchableOpacity>
         </BottomSheetView>

@@ -2,6 +2,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 import type { TouchableOpacityProps } from 'react-native';
 import { TouchableOpacity } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import type { ComponentProps } from 'react';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
@@ -51,9 +52,11 @@ export const Badge: React.FC<React.PropsWithChildren<BadgeProps>> = (props) => {
 
   return (
     <BadgeContext.Provider value={variant}>
-      <TouchableOpacity testID={testID} className={cn(badgeVariants({ variant }), className)} {...rest}>
-        {children}
-      </TouchableOpacity>
+      <Animated.View entering={FadeIn.duration(200)}>
+        <TouchableOpacity testID={testID} className={cn(badgeVariants({ variant }), className)} {...rest}>
+          {children}
+        </TouchableOpacity>
+      </Animated.View>
     </BadgeContext.Provider>
   );
 };

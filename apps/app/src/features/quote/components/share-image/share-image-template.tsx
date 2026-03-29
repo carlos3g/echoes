@@ -19,9 +19,7 @@ export const ShareImageTemplate = React.forwardRef<View, ShareImageTemplateProps
       <View style={styles.separator} />
 
       {/* Author name */}
-      <RNText style={styles.authorName}>
-        {data.author?.name?.toUpperCase() ?? 'AUTOR DESCONHECIDO'}
-      </RNText>
+      <RNText style={styles.authorName}>{data.author?.name?.toUpperCase() ?? 'AUTOR DESCONHECIDO'}</RNText>
 
       {/* Branding */}
       <RNText style={styles.branding}>ECHOES</RNText>

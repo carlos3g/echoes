@@ -48,7 +48,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <View className="flex-row items-center gap-3 px-4 mt-3 mb-2">
+    <View className="mb-2 mt-3 flex-row items-center gap-3 px-4">
       <View className="flex-1 flex-row items-center rounded-xl bg-muted px-4 py-3">
         <Ionicons name="search-outline" size={18} color={colors.mutedForeground} />
         <RNTextInput

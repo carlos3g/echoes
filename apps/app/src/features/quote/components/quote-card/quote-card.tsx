@@ -27,30 +27,47 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
 
   const handleAuthorPress = () => {
     if (data.author?.uuid) {
-      router.push({ pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]', params: { authorUuid: data.author.uuid } });
+      router.push({
+        pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
+        params: { authorUuid: data.author.uuid },
+      });
     }
   };
 
   return (
-    <Animated.View entering={FadeInDown.delay(index * 80).duration(400).springify()}>
+    <Animated.View
+      entering={FadeInDown.delay(index * 80)
+        .duration(400)
+        .springify()}
+    >
       <Pressable
         testID={testID ?? `quote-card-${data.uuid}`}
         key={data.uuid}
         className="mx-4 my-2 rounded-2xl border border-border bg-card p-6"
-        style={{ shadowColor: '#2D2D28', shadowOpacity: 0.04, shadowRadius: 8, shadowOffset: { width: 0, height: 2 }, elevation: 4 }}
+        style={{
+          shadowColor: '#2D2D28',
+          shadowOpacity: 0.04,
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 2 },
+          elevation: 4,
+        }}
         {...rest}
       >
         {/* Decorative quote mark */}
-        <RNText style={{ fontFamily: 'PlayfairDisplay-Regular', fontSize: 40, lineHeight: 40, color: '#B5845A', opacity: 0.5 }}>
+        <RNText
+          style={{
+            fontFamily: 'PlayfairDisplay-Regular',
+            fontSize: 40,
+            lineHeight: 40,
+            color: '#B5845A',
+            opacity: 0.5,
+          }}
+        >
           {'\u201C'}
         </RNText>
 
         {/* Quote body */}
-        <Text
-          testID={`quote-body-${data.uuid}`}
-          variant="quoteMedium"
-          className="mt-1"
-        >
+        <Text testID={`quote-body-${data.uuid}`} variant="quoteMedium" className="mt-1">
           {data.body}
         </Text>
 

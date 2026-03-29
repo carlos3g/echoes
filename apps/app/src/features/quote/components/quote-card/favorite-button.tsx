@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import * as Haptics from 'expo-haptics';
+import { haptics } from '@/shared/utils/haptics';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
 import type { Quote } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
@@ -26,11 +26,8 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
   }));
 
   const handleFavorite = () => {
-    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    scale.value = withSequence(
-      withSpring(1.3, { duration: 150 }),
-      withSpring(1, { duration: 150 })
-    );
+    haptics.light();
+    scale.value = withSequence(withSpring(1.3, { duration: 150 }), withSpring(1, { duration: 150 }));
     toggleFavoriteMutation.mutate({
       uuid: data.uuid,
       isFavorited: !!metadata?.favoritedByUser,

@@ -26,9 +26,8 @@ export const ThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
     return (stored as ThemePreference) || 'system';
   });
 
-  const resolvedScheme: 'light' | 'dark' = preference === 'system'
-    ? (Appearance.getColorScheme() === 'dark' ? 'dark' : 'light')
-    : preference;
+  const resolvedScheme: 'light' | 'dark' =
+    preference === 'system' ? (Appearance.getColorScheme() === 'dark' ? 'dark' : 'light') : preference;
 
   useEffect(() => {
     setColorScheme(resolvedScheme);

@@ -1,3 +1,4 @@
+import { haptics } from '@/shared/utils/haptics';
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import type { Quote } from '@/types/entities';
@@ -16,7 +17,10 @@ export const ShareButton: React.FC<ShareButtonProps> = (props) => {
     <>
       <TouchableOpacity
         testID="share-button"
-        onPress={() => setShowSheet(true)}
+        onPress={() => {
+          haptics.medium();
+          setShowSheet(true);
+        }}
         accessibilityLabel="Compartilhar citacao"
         accessibilityRole="button"
         activeOpacity={0.7}
@@ -25,9 +29,7 @@ export const ShareButton: React.FC<ShareButtonProps> = (props) => {
         <Ionicons name="share-social-outline" size={20} className="text-muted-foreground" />
       </TouchableOpacity>
 
-      {showSheet && (
-        <ShareImageBottomSheet data={data} onClose={() => setShowSheet(false)} />
-      )}
+      {showSheet && <ShareImageBottomSheet data={data} onClose={() => setShowSheet(false)} />}
     </>
   );
 };
