@@ -19,6 +19,9 @@ export const themes = {
     '--color-success-foreground': lightThemeColors.successForeground,
     '--color-accent': lightThemeColors.accent,
     '--color-accent-foreground': lightThemeColors.accentForeground,
+    '--color-card': lightThemeColors.card,
+    '--color-secondary': lightThemeColors.secondary,
+    '--color-secondary-foreground': lightThemeColors.secondaryForeground,
   }),
   dark: vars({
     '--color-primary': darkThemeColors.primary,
@@ -35,5 +38,8 @@ export const themes = {
     '--color-success-foreground': darkThemeColors.successForeground,
     '--color-accent': darkThemeColors.accent,
     '--color-accent-foreground': darkThemeColors.accentForeground,
+    '--color-card': darkThemeColors.card,
+    '--color-secondary': darkThemeColors.secondary,
+    '--color-secondary-foreground': darkThemeColors.secondaryForeground,
   }),
 };

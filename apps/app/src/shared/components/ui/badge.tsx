@@ -9,13 +9,13 @@ import { cn } from '@/shared/utils';
 import type { TextProps } from '@/shared/components/ui/text';
 import { Text } from '@/shared/components/ui/text';
 
-const badgeVariants = cva('flex-row items-center rounded-md h-8 border border-primary px-4 gap-2', {
+const badgeVariants = cva('flex-row items-center rounded-full h-8 px-4 gap-2', {
   variants: {
     variant: {
-      default: 'border-transparent bg-primary shadow',
-      secondary: 'border-transparent bg-zinc-500',
-      destructive: 'border-transparent bg-destructive shadow',
-      outline: 'border-foreground',
+      default: 'bg-primary',
+      secondary: 'bg-secondary',
+      destructive: 'bg-destructive',
+      outline: 'border border-border bg-card',
     },
   },
   defaultVariants: {
@@ -27,7 +27,7 @@ const badgeTextVariants = cva('', {
   variants: {
     variant: {
       default: 'text-primary-foreground',
-      secondary: 'text-white',
+      secondary: 'text-secondary-foreground',
       destructive: 'text-white',
       outline: 'text-foreground',
     },
@@ -68,7 +68,7 @@ export const BadgeText: React.FC<React.PropsWithChildren<BadgeTextProps>> = (pro
   const variant = React.useContext(BadgeContext);
 
   return (
-    <Text variant="paragraphMedium" className={cn(badgeTextVariants({ variant }), className)} semiBold>
+    <Text variant="paragraphSmall" className={cn(badgeTextVariants({ variant }), className)} semiBold>
       {children}
     </Text>
   );

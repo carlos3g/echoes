@@ -47,7 +47,7 @@ export const buttonContentStyles = cva('', {
     {
       variant: 'ghost',
       state: 'default',
-      class: 'font-poppins-regular text-paragraph-small',
+      class: 'font-dm-sans-regular text-paragraph-small',
     },
   ],
   defaultVariants: {

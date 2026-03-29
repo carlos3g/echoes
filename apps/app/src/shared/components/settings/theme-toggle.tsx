@@ -1,25 +1,52 @@
 import React from 'react';
-import { Switch, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@/lib/nativewind/components';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
+const options = [
+  { value: 'system' as const, label: 'Sistema', icon: 'phone-portrait-outline' as const },
+  { value: 'light' as const, label: 'Claro', icon: 'sunny-outline' as const },
+  { value: 'dark' as const, label: 'Escuro', icon: 'moon-outline' as const },
+];
+
 export const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme();
 
-  const isDarkMode = theme === 'dark';
-
-  const toggleTheme = () => {
-    setTheme(isDarkMode ? 'light' : 'dark');
-  };
-
   return (
-    <View testID="theme-switcher" className="flex-row items-center justify-between py-4">
-      <View className="flex-row items-center gap-3">
-        <Ionicons name={isDarkMode ? 'moon' : 'sunny'} size={20} className="text-foreground" />
-        <Text>Tema escuro</Text>
+    <View testID="theme-switcher" className="py-4">
+      <View className="flex-row items-center gap-3 mb-3">
+        <Ionicons name="color-palette-outline" size={20} className="text-foreground" />
+        <Text semiBold>Tema</Text>
       </View>
-      <Switch value={isDarkMode} onValueChange={toggleTheme} accessibilityLabel="Alternar tema escuro" />
+      <View className="flex-row gap-2">
+        {options.map((option) => {
+          const isActive = theme === option.value;
+          return (
+            <TouchableOpacity
+              key={option.value}
+              onPress={() => setTheme(option.value)}
+              className={`flex-1 flex-row items-center justify-center gap-2 rounded-xl py-3 ${
+                isActive ? 'bg-primary' : 'bg-muted'
+              }`}
+              activeOpacity={0.7}
+            >
+              <Ionicons
+                name={option.icon}
+                size={16}
+                className={isActive ? 'text-primary-foreground' : 'text-muted-foreground'}
+              />
+              <Text
+                variant="paragraphSmall"
+                semiBold
+                className={isActive ? 'text-primary-foreground' : 'text-muted-foreground'}
+              >
+                {option.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
 };

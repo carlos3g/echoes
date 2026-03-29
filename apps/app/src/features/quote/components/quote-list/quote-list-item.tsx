@@ -5,10 +5,17 @@ import { QuoteCard } from '@/features/quote/components/quote-card';
 
 interface QuoteListItemProps {
   item: Quote;
+  index?: number;
 }
 
-export const QuoteListItem: React.FC<QuoteListItemProps> = React.memo(({ item }) => {
+export const QuoteListItem: React.FC<QuoteListItemProps> = React.memo(({ item, index }) => {
   const router = useRouter();
 
-  return <QuoteCard data={item} onPress={() => router.push(`/(app)/(tabs)/(quotes)/${item.uuid}`)} />;
+  return (
+    <QuoteCard
+      data={item}
+      index={index}
+      onPress={() => router.push(`/(app)/(tabs)/(quotes)/${item.uuid}`)}
+    />
+  );
 });

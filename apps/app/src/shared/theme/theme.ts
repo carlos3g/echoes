@@ -1,9 +1,9 @@
 import type { ViewStyle } from 'react-native';
 
 export const $shadowProps: ViewStyle = {
-  elevation: 10,
-  shadowColor: '#000',
-  shadowOpacity: 0.05,
-  shadowRadius: 12,
-  shadowOffset: { width: 0, height: -3 },
+  elevation: 4,
+  shadowColor: '#2D2D28',
+  shadowOpacity: 0.04,
+  shadowRadius: 8,
+  shadowOffset: { width: 0, height: 2 },
 };

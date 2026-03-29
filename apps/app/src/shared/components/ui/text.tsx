@@ -7,6 +7,8 @@ type TextVariants =
   | 'headingLarge'
   | 'headingMedium'
   | 'headingSmall'
+  | 'quoteLarge'
+  | 'quoteMedium'
   | 'paragraphLarge'
   | 'paragraphMedium'
   | 'paragraphSmall'
@@ -20,6 +22,9 @@ const textVariants = cva('text-foreground', {
       headingLarge: 'text-heading-large',
       headingMedium: 'text-heading-medium',
       headingSmall: 'text-heading-small',
+
+      quoteLarge: 'text-quote-large',
+      quoteMedium: 'text-quote-medium',
 
       paragraphLarge: 'text-paragraph-large',
       paragraphMedium: 'text-paragraph-medium',
@@ -57,6 +62,14 @@ export const Text: React.FC<React.PropsWithChildren<TextProps>> = (props) => {
 };
 
 const getFontFamilyClass = (preset: TextVariants, bold?: boolean, italic?: boolean, semiBold?: boolean) => {
+  // Quote variants always use Playfair Display
+  if (preset === 'quoteLarge' || preset === 'quoteMedium') {
+    if (bold) return $fontFamily.playfairBold;
+    if (semiBold) return $fontFamily.playfairSemiBold;
+    return $fontFamily.playfairItalic;
+  }
+
+  // Heading variants use DM Sans Bold
   if (preset === 'headingLarge' || preset === 'headingMedium' || preset === 'headingSmall') {
     return italic ? $fontFamily.boldItalic : $fontFamily.bold;
   }
@@ -69,23 +82,31 @@ const getFontFamilyClass = (preset: TextVariants, bold?: boolean, italic?: boole
     case italic:
       return $fontFamily.italic;
     case semiBold && italic:
-      return $fontFamily.mediumItalic;
+      return $fontFamily.semiBoldItalic;
     case semiBold:
-      return $fontFamily.medium;
+      return $fontFamily.semiBold;
     default:
       return $fontFamily.regular;
   }
 };
 
 export const $fontFamily = {
-  black: 'font-poppins-black',
-  blackItalic: 'font-poppins-black-italic',
-  bold: 'font-poppins-bold',
-  boldItalic: 'font-poppins-bold-italic',
-  italic: 'font-poppins-regular-italic',
-  light: 'font-poppins-light',
-  lightItalic: 'font-poppins-light-italic',
-  medium: 'font-poppins-medium',
-  mediumItalic: 'font-poppins-medium-italic',
-  regular: 'font-poppins-regular',
+  // DM Sans
+  regular: 'font-dm-sans-regular',
+  italic: 'font-dm-sans-italic',
+  medium: 'font-dm-sans-medium',
+  mediumItalic: 'font-dm-sans-medium-italic',
+  semiBold: 'font-dm-sans-semi-bold',
+  semiBoldItalic: 'font-dm-sans-semi-bold-italic',
+  bold: 'font-dm-sans-bold',
+  boldItalic: 'font-dm-sans-bold-italic',
+  // Playfair Display
+  playfairRegular: 'font-playfair-regular',
+  playfairItalic: 'font-playfair-italic',
+  playfairMedium: 'font-playfair-medium',
+  playfairMediumItalic: 'font-playfair-medium-italic',
+  playfairSemiBold: 'font-playfair-semi-bold',
+  playfairSemiBoldItalic: 'font-playfair-semi-bold-italic',
+  playfairBold: 'font-playfair-bold',
+  playfairBoldItalic: 'font-playfair-bold-italic',
 };

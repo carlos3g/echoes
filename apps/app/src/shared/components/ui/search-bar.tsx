@@ -14,10 +14,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChangeText, place
   const { colors } = useTheme();
 
   return (
-    <View className="flex-row items-center border-b border-border px-4 py-3">
-      <Ionicons name="search-outline" size={20} color={colors.mutedForeground} />
+    <View className="mx-4 mt-3 mb-2 flex-row items-center rounded-xl bg-muted px-4 py-3">
+      <Ionicons name="search-outline" size={18} color={colors.mutedForeground} />
       <RNTextInput
-        className="ml-2 flex-1 text-foreground"
+        className="ml-3 flex-1 font-dm-sans-regular text-paragraph-medium text-foreground"
         placeholder={placeholder}
         placeholderTextColor={colors.mutedForeground}
         value={value}

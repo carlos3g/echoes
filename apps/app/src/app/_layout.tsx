@@ -10,26 +10,26 @@ import { queryClient, useFocusManager } from '@/lib/react-query';
 import { useMMKVDevTools } from '@dev-plugins/react-native-mmkv';
 import { useReactQueryDevTools } from '@dev-plugins/react-query';
 import {
-  Poppins_100Thin,
-  Poppins_100Thin_Italic,
-  Poppins_200ExtraLight,
-  Poppins_200ExtraLight_Italic,
-  Poppins_300Light,
-  Poppins_300Light_Italic,
-  Poppins_400Regular,
-  Poppins_400Regular_Italic,
-  Poppins_500Medium,
-  Poppins_500Medium_Italic,
-  Poppins_600SemiBold,
-  Poppins_600SemiBold_Italic,
-  Poppins_700Bold,
-  Poppins_700Bold_Italic,
-  Poppins_800ExtraBold,
-  Poppins_800ExtraBold_Italic,
-  Poppins_900Black,
-  Poppins_900Black_Italic,
-  useFonts,
-} from '@expo-google-fonts/poppins';
+  DMSans_400Regular,
+  DMSans_400Regular_Italic,
+  DMSans_500Medium,
+  DMSans_500Medium_Italic,
+  DMSans_600SemiBold,
+  DMSans_600SemiBold_Italic,
+  DMSans_700Bold,
+  DMSans_700Bold_Italic,
+} from '@expo-google-fonts/dm-sans';
+import {
+  PlayfairDisplay_400Regular,
+  PlayfairDisplay_400Regular_Italic,
+  PlayfairDisplay_500Medium,
+  PlayfairDisplay_500Medium_Italic,
+  PlayfairDisplay_600SemiBold,
+  PlayfairDisplay_600SemiBold_Italic,
+  PlayfairDisplay_700Bold,
+  PlayfairDisplay_700Bold_Italic,
+} from '@expo-google-fonts/playfair-display';
+import { useFonts } from 'expo-font';
 import * as Sentry from '@sentry/react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Redirect, Stack, useNavigationContainerRef, useSegments } from 'expo-router';
@@ -98,24 +98,22 @@ const RootLayoutNav = () => {
 
 const RootLayout = () => {
   const [loaded, error] = useFonts({
-    'Poppins-Thin': Poppins_100Thin,
-    'Poppins-ThinItalic': Poppins_100Thin_Italic,
-    'Poppins-ExtraLight': Poppins_200ExtraLight,
-    'Poppins-ExtraLightItalic': Poppins_200ExtraLight_Italic,
-    'Poppins-Light': Poppins_300Light,
-    'Poppins-LightItalic': Poppins_300Light_Italic,
-    'Poppins-Regular': Poppins_400Regular,
-    'Poppins-RegularItalic': Poppins_400Regular_Italic,
-    'Poppins-Medium': Poppins_500Medium,
-    'Poppins-MediumItalic': Poppins_500Medium_Italic,
-    'Poppins-SemiBold': Poppins_600SemiBold,
-    'Poppins-SemiBoldItalic': Poppins_600SemiBold_Italic,
-    'Poppins-Bold': Poppins_700Bold,
-    'Poppins-BoldItalic': Poppins_700Bold_Italic,
-    'Poppins-ExtraBold': Poppins_800ExtraBold,
-    'Poppins-ExtraBoldItalic': Poppins_800ExtraBold_Italic,
-    'Poppins-Black': Poppins_900Black,
-    'Poppins-BlackItalic': Poppins_900Black_Italic,
+    'DMSans-Regular': DMSans_400Regular,
+    'DMSans-Italic': DMSans_400Regular_Italic,
+    'DMSans-Medium': DMSans_500Medium,
+    'DMSans-MediumItalic': DMSans_500Medium_Italic,
+    'DMSans-SemiBold': DMSans_600SemiBold,
+    'DMSans-SemiBoldItalic': DMSans_600SemiBold_Italic,
+    'DMSans-Bold': DMSans_700Bold,
+    'DMSans-BoldItalic': DMSans_700Bold_Italic,
+    'PlayfairDisplay-Regular': PlayfairDisplay_400Regular,
+    'PlayfairDisplay-Italic': PlayfairDisplay_400Regular_Italic,
+    'PlayfairDisplay-Medium': PlayfairDisplay_500Medium,
+    'PlayfairDisplay-MediumItalic': PlayfairDisplay_500Medium_Italic,
+    'PlayfairDisplay-SemiBold': PlayfairDisplay_600SemiBold,
+    'PlayfairDisplay-SemiBoldItalic': PlayfairDisplay_600SemiBold_Italic,
+    'PlayfairDisplay-Bold': PlayfairDisplay_700Bold,
+    'PlayfairDisplay-BoldItalic': PlayfairDisplay_700Bold_Italic,
   });
 
   useEffect(() => {

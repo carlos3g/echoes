@@ -6,16 +6,16 @@ import { QuoteCardSkeleton } from '@/features/quote/components/quote-card';
 import { EmptyState } from '@/shared/components/ui/empty-state';
 import { FlashList } from '@/shared/components/ui/flash-list';
 import { QuoteListItem } from './quote-list-item';
-import { QuoteListSeparator } from './quote-list-separator';
+import { useTheme } from '@/lib/nativewind/theme.context';
 
-const renderItem: ListRenderItem<Quote> = ({ item }) => <QuoteListItem item={item} />;
+const renderItem: ListRenderItem<Quote> = ({ item, index }) => <QuoteListItem item={item} index={index} />;
 
 const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
 
 const QuoteListEmpty = React.memo(() => (
   <EmptyState
     icon="chatbubble-outline"
-    title="Nenhuma citação encontrada"
+    title="Nenhuma citacao encontrada"
     description="Tente ajustar os filtros ou volte mais tarde"
   />
 ));
@@ -29,9 +29,11 @@ interface QuoteListProps {
 }
 
 export const QuoteList: React.FC<QuoteListProps> = ({ quotes, isLoading, isRefetching, onRefresh, onEndReached }) => {
+  const { colors } = useTheme();
+
   const refreshControl = useMemo(
-    () => <RefreshControl refreshing={isRefetching} onRefresh={onRefresh} />,
-    [isRefetching, onRefresh]
+    () => <RefreshControl refreshing={isRefetching} onRefresh={onRefresh} tintColor={colors.primary} />,
+    [isRefetching, onRefresh, colors.primary]
   );
 
   return (
@@ -42,7 +44,6 @@ export const QuoteList: React.FC<QuoteListProps> = ({ quotes, isLoading, isRefet
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         refreshControl={refreshControl}
-        ItemSeparatorComponent={QuoteListSeparator}
         ListEmptyComponent={QuoteListEmpty}
       />
     </View>

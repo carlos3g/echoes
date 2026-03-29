@@ -28,13 +28,13 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
     <View className={cn('shrink grow', boxClassName)}>
       <Pressable onPress={focusInput}>
         {label && (
-          <Text variant="paragraphMedium" className="mb-1">
+          <Text variant="paragraphMedium" semiBold className="mb-1">
             {label}
           </Text>
         )}
         <View
           className={cn(
-            'flex-row rounded-xl bg-background p-4',
+            'flex-row rounded-xl bg-card p-4',
             errorMessage ? 'border-2 border-destructive' : 'border border-border'
           )}
         >
@@ -43,7 +43,7 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
             autoCapitalize="none"
             ref={inputRef}
             placeholderTextColor={colors.mutedForeground}
-            className="shrink grow p-0 font-poppins-regular text-paragraph-medium text-foreground"
+            className="shrink grow p-0 font-dm-sans-regular text-paragraph-medium text-foreground"
             {...rnTextInputProps}
           />
           {RightComponent && <View className="ml-4 justify-center">{RightComponent}</View>}

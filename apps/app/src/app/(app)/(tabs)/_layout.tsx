@@ -13,11 +13,12 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.mutedForeground,
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.card,
           borderTopColor: colors.border,
         },
         headerTitleStyle: {
           color: colors.foreground,
+          fontFamily: 'DMSans-SemiBold',
         },
         headerStyle: {
           backgroundColor: colors.background,
