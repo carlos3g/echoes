@@ -22,4 +22,7 @@ export const queryKeys = {
   categories: {
     all: ['categories'] as const,
   },
+  search: {
+    query: (q: string) => ['search', q],
+  },
 } as const;

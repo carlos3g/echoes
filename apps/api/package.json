@@ -10,6 +10,7 @@
     "db:fresh": "yarn db:generate && yarn db:migrate && yarn db:seed",
     "db:generate": "prisma generate",
     "db:migrate": "prisma db push",
+    "db:search-indexes": "node -e \"require('dotenv-expand').expand(require('dotenv').config()); const {execSync}=require('child_process'); const u=new URL(process.env.DB_URL); u.search=''; execSync('psql \\\"'+u.toString()+'\\\" -f prisma/migrations/add-search-indexes.sql', {stdio:'inherit'})\"",
     "db:migrate:test": "dotenv -e .env.testing -- prisma db push --accept-data-loss",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",

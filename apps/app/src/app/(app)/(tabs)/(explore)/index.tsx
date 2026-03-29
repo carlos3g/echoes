@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { View } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { QuoteList, QuoteFilterBadge } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { FeaturedAuthors } from '@/features/quote/components/explore/featured-authors';
+import { SearchResults } from '@/features/search/components/search-results';
+import { SearchHistory } from '@/features/search/components/search-history';
 import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
 import { useGetCategories } from '@/features/category/hooks/use-get-categories';
+import { useSearch } from '@/features/search/hooks/use-search';
+import { useSearchHistoryStore } from '@/lib/zustand/stores/search-history.store';
 import { useDebounce } from '@/shared/hooks/use-debounce';
 import { SearchBar } from '@/shared/components/ui/search-bar';
 import { FilterChipRow } from '@/shared/components/ui/filter-chip-row';
@@ -20,55 +24,83 @@ export default function ExploreScreen() {
   const { tagUuid, tagTitle } = useLocalSearchParams<SearchParams>();
   const [searchText, setSearchText] = useState('');
   const [selectedCategoryUuid, setSelectedCategoryUuid] = useState<string | undefined>(undefined);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const debouncedSearch = useDebounce(searchText, 400);
+  const addSearch = useSearchHistoryStore((s) => s.addSearch);
 
   const { categories } = useGetCategories();
 
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading } = useGetQuotes({
     tagUuid,
     categoryUuid: selectedCategoryUuid,
-    search: debouncedSearch || undefined,
+    search: (!isSearchFocused && debouncedSearch) ? debouncedSearch : undefined,
   });
+
+  const { data: searchData, isLoading: isSearchLoading } = useSearch(
+    isSearchFocused ? debouncedSearch : ''
+  );
 
   const clearFilters = () => {
     router.setParams({ tagUuid: undefined, tagTitle: undefined });
   };
 
-  const isSearching = debouncedSearch.length > 0;
+  const handleSearchSelect = useCallback((term: string) => {
+    setSearchText(term);
+    addSearch(term);
+  }, [addSearch]);
+
+  const handleSearchSubmit = useCallback(() => {
+    if (searchText.trim().length >= 2) {
+      addSearch(searchText.trim());
+    }
+  }, [searchText, addSearch]);
 
   return (
     <View className="flex-1 bg-background">
-      <TagQuoteBottomSheetProvider>
-        <SearchBar
-          value={searchText}
-          onChangeText={setSearchText}
-          placeholder="Buscar quotes, autores..."
-          testID="search-input"
+      <SearchBar
+        value={searchText}
+        onChangeText={setSearchText}
+        placeholder="Buscar quotes, autores..."
+        testID="search-input"
+        onFocus={() => setIsSearchFocused(true)}
+        onBlur={() => setIsSearchFocused(false)}
+        onSubmit={handleSearchSubmit}
+      />
+
+      {isSearchFocused && !(debouncedSearch.length >= 2) && (
+        <SearchHistory onSelect={handleSearchSelect} />
+      )}
+
+      {isSearchFocused && debouncedSearch.length >= 2 && (
+        <SearchResults
+          data={searchData}
+          isLoading={isSearchLoading}
+          searchTerm={debouncedSearch}
         />
+      )}
 
-        {!isSearching && (
-          <>
-            <FeaturedAuthors />
+      {!isSearchFocused && (
+        <TagQuoteBottomSheetProvider>
+          <FeaturedAuthors />
 
-            <FilterChipRow
-              items={categories}
-              selectedUuid={selectedCategoryUuid}
-              onSelect={setSelectedCategoryUuid}
-              allLabel="Todas"
-            />
-          </>
-        )}
+          <FilterChipRow
+            items={categories}
+            selectedUuid={selectedCategoryUuid}
+            onSelect={setSelectedCategoryUuid}
+            allLabel="Todas"
+          />
 
-        {tagTitle && <QuoteFilterBadge tagTitle={tagTitle} onClear={clearFilters} />}
+          {tagTitle && <QuoteFilterBadge tagTitle={tagTitle} onClear={clearFilters} />}
 
-        <QuoteList
-          quotes={quotes}
-          isLoading={isLoading}
-          isRefetching={isRefetching}
-          onRefresh={refetch}
-          onEndReached={fetchNextPage}
-        />
-      </TagQuoteBottomSheetProvider>
+          <QuoteList
+            quotes={quotes}
+            isLoading={isLoading}
+            isRefetching={isRefetching}
+            onRefresh={refetch}
+            onEndReached={fetchNextPage}
+          />
+        </TagQuoteBottomSheetProvider>
+      )}
     </View>
   );
 }

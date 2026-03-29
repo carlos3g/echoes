@@ -15,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { SearchModule } from './search/search.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
@@ -36,6 +37,7 @@ import { UserModule } from './user/user.module';
     EmailModule,
     TagModule,
     StorageModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [
