@@ -41,7 +41,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
           testID="create-tag-button"
           onPress={() => {
             hide();
-            router.push('/(app)/(tabs)/tags');
+            router.push('/(app)/(tabs)/collection');
           }}
         />
       </BottomSheetFooter>

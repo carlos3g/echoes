@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
-export default function QuotesLayout() {
+export default function ProfileLayout() {
   const { colors } = useTheme();
 
   return (
@@ -10,6 +10,7 @@ export default function QuotesLayout() {
       screenOptions={{
         headerTitleStyle: {
           color: colors.foreground,
+          fontFamily: 'DMSans-SemiBold',
         },
         headerStyle: {
           backgroundColor: colors.background,
@@ -23,18 +24,9 @@ export default function QuotesLayout() {
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'Citações',
-        }}
-      />
-      <Stack.Screen
-        name="[quoteUuid]"
-        options={{
-          title: 'Citação',
-        }}
-      />
+      <Stack.Screen name="index" options={{ title: 'Perfil' }} />
+      <Stack.Screen name="edit-profile" options={{ title: 'Editar perfil' }} />
+      <Stack.Screen name="change-password" options={{ title: 'Alterar senha' }} />
     </Stack>
   );
 }

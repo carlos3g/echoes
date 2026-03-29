@@ -85,7 +85,7 @@ const RootLayoutNav = () => {
   }
 
   if (isAuth && inAuthGroup) {
-    return <Redirect href="/(app)/(tabs)/(quotes)" />;
+    return <Redirect href="/(app)/(tabs)/(explore)" />;
   }
 
   return (

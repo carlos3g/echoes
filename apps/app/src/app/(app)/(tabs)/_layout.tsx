@@ -9,7 +9,11 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontFamily: 'DMSans-Medium',
+          fontSize: 11,
+        },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.mutedForeground,
         tabBarStyle: {
@@ -30,55 +34,35 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="(quotes)"
+        name="(explore)"
         options={{
-          title: 'Echoes',
+          title: 'Explorar',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} color={color} size={24} />
+            <Ionicons name={focused ? 'compass' : 'compass-outline'} color={color} size={24} />
           ),
-          tabBarButtonTestID: 'feed-tab-button',
+          tabBarButtonTestID: 'explore-tab-button',
         }}
       />
       <Tabs.Screen
-        name="favorites"
+        name="collection"
         options={{
-          title: 'Favoritos',
+          title: 'Colecao',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'heart' : 'heart-outline'} color={color} size={24} />
+            <Ionicons name={focused ? 'bookmark' : 'bookmark-outline'} color={color} size={24} />
           ),
-          tabBarButtonTestID: 'favorites-tab-button',
+          tabBarButtonTestID: 'collection-tab-button',
         }}
       />
       <Tabs.Screen
-        name="(authors)"
+        name="(profile)"
         options={{
-          title: 'Autores',
+          title: 'Perfil',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'person' : 'person-outline'} color={color} size={24} />
           ),
-          tabBarButtonTestID: 'authors-tab-button',
-        }}
-      />
-      <Tabs.Screen
-        name="tags"
-        options={{
-          title: 'Gerenciar tags',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'pricetags' : 'pricetags-outline'} color={color} size={24} />
-          ),
-          tabBarButtonTestID: 'manage-tags-tab-button',
-        }}
-      />
-      <Tabs.Screen
-        name="(settings)"
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'settings' : 'settings-outline'} color={color} size={24} />
-          ),
-          tabBarButtonTestID: 'settings-tab-button',
+          tabBarButtonTestID: 'profile-tab-button',
         }}
       />
     </Tabs>

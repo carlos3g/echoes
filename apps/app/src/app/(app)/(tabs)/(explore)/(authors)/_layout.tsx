@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
-export default function SettingsLayout() {
+export default function AuthorsLayout() {
   const { colors } = useTheme();
 
   return (
@@ -10,6 +10,7 @@ export default function SettingsLayout() {
       screenOptions={{
         headerTitleStyle: {
           color: colors.foreground,
+          fontFamily: 'DMSans-SemiBold',
         },
         headerStyle: {
           backgroundColor: colors.background,
@@ -23,24 +24,7 @@ export default function SettingsLayout() {
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'Configurações',
-        }}
-      />
-      <Stack.Screen
-        name="edit-profile"
-        options={{
-          title: 'Editar perfil',
-        }}
-      />
-      <Stack.Screen
-        name="change-password"
-        options={{
-          title: 'Alterar senha',
-        }}
-      />
+      <Stack.Screen name="[authorUuid]" options={{ title: '' }} />
     </Stack>
   );
 }

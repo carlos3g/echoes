@@ -1,0 +1,56 @@
+import { ScrollView, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useAuth } from '@/features/auth/hooks/use-auth';
+import { ProfileStats } from '@/features/auth/components/profile-stats';
+import { ActivityFeed } from '@/features/auth/components/activity-feed';
+import { ThemeToggle } from '@/shared/components/settings/theme-toggle';
+import { SettingsMenuItem } from '@/shared/components/settings/settings-menu-item';
+import { Text } from '@/shared/components/ui/text';
+import { AvatarInitials } from '@/shared/components/ui/avatar-initials';
+
+export default function ProfileScreen() {
+  const { handleSignOut, user } = useAuth();
+  const router = useRouter();
+
+  return (
+    <ScrollView className="flex-1 bg-background" contentContainerClassName="pb-8">
+      {/* Profile header */}
+      {user && (
+        <View className="items-center border-b border-border py-6">
+          <AvatarInitials name={user.name} size="md" />
+          <Text variant="headingSmall" bold className="mt-3 text-foreground">
+            {user.name}
+          </Text>
+          <Text variant="paragraphSmall" className="text-secondary">
+            @{user.username}
+          </Text>
+        </View>
+      )}
+
+      {/* Stats */}
+      <ProfileStats />
+
+      {/* Activity feed */}
+      <ActivityFeed />
+
+      {/* Menu */}
+      <View className="px-4 pt-2">
+        <ThemeToggle />
+
+        <SettingsMenuItem
+          testID="edit-profile-button"
+          label="Editar perfil"
+          onPress={() => router.push('/(app)/(tabs)/(profile)/edit-profile')}
+        />
+
+        <SettingsMenuItem
+          testID="go-to-change-password-button"
+          label="Alterar senha"
+          onPress={() => router.push('/(app)/(tabs)/(profile)/change-password')}
+        />
+
+        <SettingsMenuItem testID="logout-button" label="Sair" variant="destructive" onPress={handleSignOut} />
+      </View>
+    </ScrollView>
+  );
+}

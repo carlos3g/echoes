@@ -15,7 +15,7 @@ export const QuoteListItem: React.FC<QuoteListItemProps> = React.memo(({ item, i
     <QuoteCard
       data={item}
       index={index}
-      onPress={() => router.push(`/(app)/(tabs)/(quotes)/${item.uuid}`)}
+      onPress={() => router.push(`/(app)/(tabs)/(explore)/${item.uuid}`)}
     />
   );
 });

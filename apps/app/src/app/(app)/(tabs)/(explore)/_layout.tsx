@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
-export default function AuthorsLayout() {
+export default function ExploreLayout() {
   const { colors } = useTheme();
 
   return (
@@ -10,6 +10,7 @@ export default function AuthorsLayout() {
       screenOptions={{
         headerTitleStyle: {
           color: colors.foreground,
+          fontFamily: 'DMSans-SemiBold',
         },
         headerStyle: {
           backgroundColor: colors.background,
@@ -23,8 +24,9 @@ export default function AuthorsLayout() {
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Autores' }} />
-      <Stack.Screen name="[authorUuid]" options={{ title: '' }} />
+      <Stack.Screen name="index" options={{ title: 'Explorar' }} />
+      <Stack.Screen name="[quoteUuid]" options={{ title: 'Citacao' }} />
+      <Stack.Screen name="(authors)" options={{ headerShown: false }} />
     </Stack>
   );
 }

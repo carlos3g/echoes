@@ -27,7 +27,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
 
   const handleAuthorPress = () => {
     if (data.author?.uuid) {
-      router.push({ pathname: '/(app)/(tabs)/(authors)/[authorUuid]', params: { authorUuid: data.author.uuid } });
+      router.push({ pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]', params: { authorUuid: data.author.uuid } });
     }
   };
 

@@ -12,7 +12,7 @@ export const TagListItem: React.FC<TagListItemProps> = React.memo(({ item }) => 
 
   const onPress = () => {
     router.push({
-      pathname: '/(app)/(tabs)/(quotes)',
+      pathname: '/(app)/(tabs)/(explore)',
       params: { tagUuid: item.uuid, tagTitle: item.title },
     });
   };
