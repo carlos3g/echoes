@@ -1,12 +1,15 @@
 import type { PressableProps } from 'react-native';
 import { Dimensions, Pressable, Text as RNText, TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import type { Quote } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
+import { useReadingStyle } from '@/shared/hooks/use-reading-style';
+import { DecorativeQuoteMark } from '@/shared/components/ui/decorative-quote-mark';
+import { $shadowProps } from '@/shared/theme/theme';
 import { ShareButton } from './share-button';
 import { FavoriteButton } from './favorite-button';
 import { TagButton } from './tag-button';
@@ -21,18 +24,20 @@ interface QuoteCardProps extends PressableProps {
   testID?: string;
 }
 
-export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
+export const QuoteCard: React.FC<QuoteCardProps> = React.memo((props) => {
   const { data, index = 0, testID, ...rest } = props;
   const router = useRouter();
+  const { quoteStyle } = useReadingStyle();
+  const { colors } = useTheme();
 
-  const handleAuthorPress = () => {
+  const handleAuthorPress = useCallback(() => {
     if (data.author?.uuid) {
       router.push({
         pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
         params: { authorUuid: data.author.uuid },
       });
     }
-  };
+  }, [data.author?.uuid, router]);
 
   return (
     <Animated.View
@@ -44,32 +49,16 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
         testID={testID ?? `quote-card-${data.uuid}`}
         key={data.uuid}
         className="mx-4 my-2 rounded-2xl border border-border bg-card p-6"
-        style={{
-          shadowColor: '#2D2D28',
-          shadowOpacity: 0.04,
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: 2 },
-          elevation: 4,
-        }}
+        style={$shadowProps}
         {...rest}
       >
         {/* Decorative quote mark */}
-        <RNText
-          style={{
-            fontFamily: 'PlayfairDisplay-Regular',
-            fontSize: 40,
-            lineHeight: 40,
-            color: '#B5845A',
-            opacity: 0.5,
-          }}
-        >
-          {'\u201C'}
-        </RNText>
+        <DecorativeQuoteMark size={40} opacity={0.5} />
 
         {/* Quote body */}
-        <Text testID={`quote-body-${data.uuid}`} variant="quoteMedium" className="mt-1">
+        <RNText testID={`quote-body-${data.uuid}`} style={[quoteStyle, { color: colors.foreground, marginTop: 4 }]}>
           {data.body}
-        </Text>
+        </RNText>
 
         {/* Terracotta separator */}
         <View className="my-4 h-[1.5px] w-10 bg-primary" />
@@ -114,7 +103,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = (props) => {
       </Pressable>
     </Animated.View>
   );
-};
+});
 
 export const QuoteCardSkeleton: React.FC = () => {
   const { colors } = useTheme();

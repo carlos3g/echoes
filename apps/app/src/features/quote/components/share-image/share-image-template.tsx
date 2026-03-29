@@ -1,77 +1,99 @@
 import React from 'react';
-import { View, Text as RNText, StyleSheet } from 'react-native';
+import { View, Text as RNText } from 'react-native';
 import type { Quote } from '@/types/entities';
+import type { ShareTemplate } from './share-templates';
+import { shareTemplates } from './share-templates';
 
 interface ShareImageTemplateProps {
   data: Quote;
+  template?: ShareTemplate;
+  scale?: number;
 }
 
-export const ShareImageTemplate = React.forwardRef<View, ShareImageTemplateProps>(({ data }, ref) => {
-  return (
-    <View ref={ref} style={styles.container} collapsable={false}>
-      {/* Decorative quote mark */}
-      <RNText style={styles.quoteMark}>{'\u201C'}</RNText>
+export const ShareImageTemplate = React.forwardRef<View, ShareImageTemplateProps>(
+  ({ data, template = shareTemplates[0], scale = 1 }, ref) => {
+    const w = 1080 * scale;
+    const h = 1920 * scale;
+    const s = scale;
 
-      {/* Quote body */}
-      <RNText style={styles.quoteBody}>{data.body}</RNText>
+    const bgColor = typeof template.background === 'string' ? template.background : template.background.colors[0];
 
-      {/* Terracotta separator */}
-      <View style={styles.separator} />
+    return (
+      <View
+        ref={ref}
+        collapsable={false}
+        style={{
+          width: w,
+          height: h,
+          backgroundColor: bgColor,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: 120 * s,
+        }}
+      >
+        {template.quoteMarkColor && (
+          <RNText
+            style={{
+              fontFamily: 'PlayfairDisplay-Regular',
+              fontSize: 120 * s,
+              lineHeight: 120 * s,
+              color: template.quoteMarkColor,
+              opacity: 0.5,
+              marginBottom: 20 * s,
+            }}
+          >
+            {'\u201C'}
+          </RNText>
+        )}
 
-      {/* Author name */}
-      <RNText style={styles.authorName}>{data.author?.name?.toUpperCase() ?? 'AUTOR DESCONHECIDO'}</RNText>
+        <RNText
+          style={{
+            fontFamily: 'PlayfairDisplay-Italic',
+            fontSize: 56 * s,
+            lineHeight: 84 * s,
+            color: template.textColor,
+            textAlign: 'center',
+          }}
+        >
+          {data.body}
+        </RNText>
 
-      {/* Branding */}
-      <RNText style={styles.branding}>ECHOES</RNText>
-    </View>
-  );
-});
+        <View
+          style={{
+            width: 100 * s,
+            height: 4 * s,
+            backgroundColor: template.separatorColor,
+            marginTop: 48 * s,
+            marginBottom: 32 * s,
+            borderRadius: 2 * s,
+          }}
+        />
 
-const styles = StyleSheet.create({
-  container: {
-    width: 1080,
-    height: 1920,
-    backgroundColor: '#F8F6F0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 120,
-  },
-  quoteMark: {
-    fontFamily: 'PlayfairDisplay-Regular',
-    fontSize: 120,
-    lineHeight: 120,
-    color: '#B5845A',
-    opacity: 0.5,
-    marginBottom: 20,
-  },
-  quoteBody: {
-    fontFamily: 'PlayfairDisplay-Italic',
-    fontSize: 56,
-    lineHeight: 84,
-    color: '#2D2D28',
-    textAlign: 'center',
-  },
-  separator: {
-    width: 100,
-    height: 4,
-    backgroundColor: '#B5845A',
-    marginTop: 48,
-    marginBottom: 32,
-    borderRadius: 2,
-  },
-  authorName: {
-    fontFamily: 'DMSans-SemiBold',
-    fontSize: 28,
-    color: '#7A8B6F',
-    letterSpacing: 6,
-    textAlign: 'center',
-  },
-  branding: {
-    fontFamily: 'DMSans-Medium',
-    fontSize: 20,
-    color: '#9B8E7E',
-    letterSpacing: 4,
-    position: 'absolute',
-    bottom: 80,
-  },
-});
+        <RNText
+          style={{
+            fontFamily: 'DMSans-SemiBold',
+            fontSize: 28 * s,
+            color: template.authorColor,
+            letterSpacing: 6 * s,
+            textAlign: 'center',
+          }}
+        >
+          {data.author?.name?.toUpperCase() ?? 'AUTOR DESCONHECIDO'}
+        </RNText>
+
+        <RNText
+          style={{
+            fontFamily: 'DMSans-Medium',
+            fontSize: 20 * s,
+            color: template.brandingColor,
+            letterSpacing: 4 * s,
+            position: 'absolute',
+            bottom: 80 * s,
+          }}
+        >
+          ECHOES
+        </RNText>
+      </View>
+    );
+  }
+);

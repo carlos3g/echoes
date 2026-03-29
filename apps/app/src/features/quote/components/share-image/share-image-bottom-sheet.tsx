@@ -1,102 +1,108 @@
-import React, { useCallback, useRef } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Pressable, TouchableOpacity, View } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Portal } from 'react-native-portalize';
 import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
-import { Ionicons } from '@expo/vector-icons';
 import type { Quote } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
+import { Button } from '@/shared/components/ui/button';
 import { useTheme } from '@/lib/nativewind/theme.context';
+import { haptics } from '@/shared/utils/haptics';
 import { ShareImageTemplate } from './share-image-template';
+import { SharePreview } from './share-preview';
+import { shareTemplates } from './share-templates';
+import type { ShareTemplate } from './share-templates';
 
 interface ShareImageBottomSheetProps {
   data: Quote | null;
   onClose: () => void;
 }
 
+const renderBackdrop = (props: any) => (
+  <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.4} />
+);
+
 export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ data, onClose }) => {
   const { colors } = useTheme();
-  const templateRef = useRef<View>(null);
+  const captureRef_ = useRef<View>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<ShareTemplate>(shareTemplates[0]);
 
-  const handleShareText = useCallback(async () => {
+  const handleShareImage = useCallback(async () => {
+    if (!data || !captureRef_.current) return;
+    haptics.medium();
+    try {
+      const uri = await captureRef(captureRef_, {
+        format: 'png',
+        quality: 1,
+        result: 'tmpfile',
+      });
+      await Share.open({ url: uri, type: 'image/png' });
+    } catch {
+      // User cancelled
+    }
+    onClose();
+  }, [data, onClose]);
+
+  const handleShareLink = useCallback(async () => {
     if (!data) return;
+    haptics.medium();
     const baseUrl = process.env.EXPO_PUBLIC_APP_URL || 'https://echoes.carlos3g.dev';
     await Share.open({ url: `${baseUrl}/quotes/${data.uuid}` });
     onClose();
   }, [data, onClose]);
 
-  const handleShareImage = useCallback(async () => {
-    if (!data || !templateRef.current) return;
-    try {
-      const uri = await captureRef(templateRef, {
-        format: 'png',
-        quality: 1,
-        result: 'tmpfile',
-      });
-      await Share.open({
-        url: uri,
-        type: 'image/png',
-      });
-    } catch {
-      // User cancelled share
-    }
-    onClose();
-  }, [data, onClose]);
+  const handleSelectTemplate = (template: ShareTemplate) => {
+    haptics.light();
+    setSelectedTemplate(template);
+  };
 
   if (!data) return null;
 
   return (
     <Portal>
-      {/* Offscreen template for capture */}
       <View style={{ position: 'absolute', left: -9999, top: -9999 }}>
-        <ShareImageTemplate ref={templateRef} data={data} />
+        <ShareImageTemplate ref={captureRef_} data={data} template={selectedTemplate} />
       </View>
 
       <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={[240]}
+        snapPoints={['65%']}
         onClose={onClose}
         enablePanDownToClose
         backgroundStyle={{ backgroundColor: colors.card }}
         handleIndicatorStyle={{ backgroundColor: colors.border }}
-        backdropComponent={(props) => (
-          <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.4} />
-        )}
+        backdropComponent={renderBackdrop}
       >
-        <BottomSheetView style={{ paddingHorizontal: 24, paddingTop: 8 }}>
-          <Text variant="headingSmall" className="mb-4 text-foreground">
+        <BottomSheetView style={{ flex: 1, paddingHorizontal: 24, paddingTop: 8 }}>
+          <Text variant="headingSmall" className="mb-4 text-center text-foreground">
             Compartilhar
           </Text>
 
-          <TouchableOpacity onPress={handleShareText} className="flex-row items-center gap-4 py-3" activeOpacity={0.7}>
-            <View className="h-10 w-10 items-center justify-center rounded-full bg-muted">
-              <Ionicons name="link-outline" size={20} color={colors.primary} />
-            </View>
-            <View>
-              <Text semiBold className="text-foreground">
-                Compartilhar link
-              </Text>
-              <Text variant="paragraphSmall" className="text-muted-foreground">
-                Envia o link da citacao
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <SharePreview data={data} template={selectedTemplate} />
 
-          <TouchableOpacity onPress={handleShareImage} className="flex-row items-center gap-4 py-3" activeOpacity={0.7}>
-            <View className="h-10 w-10 items-center justify-center rounded-full bg-muted">
-              <Ionicons name="image-outline" size={20} color={colors.primary} />
-            </View>
-            <View>
-              <Text semiBold className="text-foreground">
-                Compartilhar como imagem
-              </Text>
-              <Text variant="paragraphSmall" className="text-muted-foreground">
-                Gera uma imagem para stories
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <View className="mt-4 flex-row items-center justify-center gap-3">
+            {shareTemplates.map((t) => (
+              <Pressable
+                key={t.id}
+                onPress={() => handleSelectTemplate(t)}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  backgroundColor: t.previewDot,
+                  borderWidth: selectedTemplate.id === t.id ? 3 : 1,
+                  borderColor: selectedTemplate.id === t.id ? colors.primary : colors.border,
+                }}
+              />
+            ))}
+          </View>
+
+          <View className="mt-5 gap-3">
+            <Button title="Compartilhar imagem" onPress={handleShareImage} />
+            <Button title="Compartilhar link" variant="outline" onPress={handleShareLink} />
+          </View>
         </BottomSheetView>
       </BottomSheet>
     </Portal>

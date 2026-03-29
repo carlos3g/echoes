@@ -38,6 +38,12 @@ export default function ProfileScreen() {
         <ThemeToggle />
 
         <SettingsMenuItem
+          testID="reading-preferences-button"
+          label="Personalizar leitura"
+          onPress={() => router.push('/(app)/(tabs)/(profile)/reading-preferences')}
+        />
+
+        <SettingsMenuItem
           testID="edit-profile-button"
           label="Editar perfil"
           onPress={() => router.push('/(app)/(tabs)/(profile)/edit-profile')}

@@ -29,6 +29,9 @@ import {
   PlayfairDisplay_700Bold,
   PlayfairDisplay_700Bold_Italic,
 } from '@expo-google-fonts/playfair-display';
+import { Lora_400Regular, Lora_400Regular_Italic } from '@expo-google-fonts/lora';
+import { Merriweather_400Regular, Merriweather_400Regular_Italic } from '@expo-google-fonts/merriweather';
+import { CrimsonText_400Regular, CrimsonText_400Regular_Italic } from '@expo-google-fonts/crimson-text';
 import { useFonts } from 'expo-font';
 import * as Sentry from '@sentry/react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -114,6 +117,12 @@ const RootLayout = () => {
     'PlayfairDisplay-SemiBoldItalic': PlayfairDisplay_600SemiBold_Italic,
     'PlayfairDisplay-Bold': PlayfairDisplay_700Bold,
     'PlayfairDisplay-BoldItalic': PlayfairDisplay_700Bold_Italic,
+    'Lora-Regular': Lora_400Regular,
+    'Lora-Italic': Lora_400Regular_Italic,
+    'Merriweather-Regular': Merriweather_400Regular,
+    'Merriweather-Italic': Merriweather_400Regular_Italic,
+    'CrimsonText-Regular': CrimsonText_400Regular,
+    'CrimsonText-Italic': CrimsonText_400Regular_Italic,
   });
 
   useEffect(() => {

@@ -2537,7 +2537,10 @@ __metadata:
     "@dev-plugins/react-native-mmkv": "npm:^0.4.0"
     "@dev-plugins/react-query": "npm:^0.4.0"
     "@eslint/js": "npm:^9"
+    "@expo-google-fonts/crimson-text": "npm:^0.4.0"
     "@expo-google-fonts/dm-sans": "npm:^0.4.2"
+    "@expo-google-fonts/lora": "npm:^0.4.2"
+    "@expo-google-fonts/merriweather": "npm:^0.4.2"
     "@expo-google-fonts/playfair-display": "npm:^0.4.2"
     "@expo/log-box": "npm:55.0.8"
     "@expo/vector-icons": "npm:^15.1.1"
@@ -2790,6 +2793,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo-google-fonts/crimson-text@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@expo-google-fonts/crimson-text@npm:0.4.0"
+  checksum: 10c0/bf4923453c96984967eb5aaa1851b7e9827ba12e693ddcb10bd9f610e5fcab25784958ef3acdec0092ead510baaab49899eeb5b6a8976e5391c7e3e41b972e5f
+  languageName: node
+  linkType: hard
+
 "@expo-google-fonts/dm-sans@npm:^0.4.2":
   version: 0.4.2
   resolution: "@expo-google-fonts/dm-sans@npm:0.4.2"
@@ -2797,10 +2807,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo-google-fonts/lora@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@expo-google-fonts/lora@npm:0.4.2"
+  checksum: 10c0/0be0a4fc59b9d39c607667f2a37b09c5d05ef74997410fa1a0c4d20246e6382137302dec7cf09cae8f7247a321340d571b6c0b1b50462f5e364b6416b6d13626
+  languageName: node
+  linkType: hard
+
 "@expo-google-fonts/material-symbols@npm:^0.4.1":
   version: 0.4.27
   resolution: "@expo-google-fonts/material-symbols@npm:0.4.27"
   checksum: 10c0/f6fac427703c2639d7d1c05c46f76eeef44b9f9f2bfe3134a673296b5921c83fe89371446c83d7596eaa9e530ed9a80600d7e67f1603a220262439c238e38a35
+  languageName: node
+  linkType: hard
+
+"@expo-google-fonts/merriweather@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@expo-google-fonts/merriweather@npm:0.4.2"
+  checksum: 10c0/fa6010d4395b63c0c33db490a0670b24e3bce6fc08cb6aac4022a92621bc734af5d370eb53f2ba10125ab8b885ebb2dc91f11554047de45f7e8b84c6a2c32df6
   languageName: node
   linkType: hard
 
