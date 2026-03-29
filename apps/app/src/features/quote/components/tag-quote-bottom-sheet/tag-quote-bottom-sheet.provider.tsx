@@ -11,16 +11,21 @@ interface TagQuoteBottomSheetProviderProps {
 
 export const TagQuoteBottomSheetProvider: React.FC<TagQuoteBottomSheetProviderProps> = ({ children }) => {
   const [quote, setQuote] = useState<Quote | null>(null);
+  const [mounted, setMounted] = useState(false);
   const bottomSheetRef = useRef<RNBottomSheet>(null);
 
   const show = useCallback((q: Quote) => {
     setQuote(q);
-    bottomSheetRef.current?.expand();
+    setMounted(true);
   }, []);
 
   const hide = useCallback(() => {
-    setQuote(null);
     bottomSheetRef.current?.close();
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setQuote(null);
+    setMounted(false);
   }, []);
 
   const value = useMemo(() => ({ quote, show, hide }), [quote, show, hide]);
@@ -29,11 +34,13 @@ export const TagQuoteBottomSheetProvider: React.FC<TagQuoteBottomSheetProviderPr
     <TagQuoteBottomSheetContext.Provider value={value}>
       {children}
 
-      <Portal>
-        <TagQuoteBottomSheetContext.Provider value={value}>
-          <TagQuoteBottomSheet ref={bottomSheetRef} />
-        </TagQuoteBottomSheetContext.Provider>
-      </Portal>
+      {mounted && (
+        <Portal>
+          <TagQuoteBottomSheetContext.Provider value={value}>
+            <TagQuoteBottomSheet ref={bottomSheetRef} onDismiss={handleClose} />
+          </TagQuoteBottomSheetContext.Provider>
+        </Portal>
+      )}
     </TagQuoteBottomSheetContext.Provider>
   );
 };

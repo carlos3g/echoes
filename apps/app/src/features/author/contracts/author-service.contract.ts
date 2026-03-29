@@ -14,4 +14,10 @@ export abstract class AuthorServiceContract {
   public abstract list(payload: ListAuthorsPayload): Promise<ListAuthorsOutput>;
 
   public abstract get(uuid: string): Promise<Author>;
+
+  public abstract daily(): Promise<Author>;
+
+  public abstract favorite(uuid: string): Promise<void>;
+
+  public abstract unfavorite(uuid: string): Promise<void>;
 }

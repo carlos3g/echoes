@@ -31,7 +31,7 @@ export const MoreFromAuthor: React.FC<MoreFromAuthorProps> = ({ authorUuid, auth
         <QuoteCardMini
           key={quote.uuid}
           data={quote}
-          onPress={() => router.push(`/(app)/(tabs)/(explore)/${quote.uuid}`)}
+          onPress={() => router.push(`/(app)/(tabs)/(explore)/quote/${quote.uuid}`)}
         />
       ))}
     </View>

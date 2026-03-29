@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { QuoteList, QuoteFilterBadge } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { FeaturedAuthors } from '@/features/quote/components/explore/featured-authors';
+import { AuthorOfTheDay } from '@/features/author/components/author-of-the-day';
 import { SearchResults } from '@/features/search/components/search-results';
 import { SearchHistory } from '@/features/search/components/search-history';
 import { useQuoteList } from '@/features/quote/hooks/use-quote-list';
@@ -80,6 +81,7 @@ export default function ExploreScreen() {
 
       {!isSearchFocused && (
         <TagQuoteBottomSheetProvider>
+          <AuthorOfTheDay />
           <FeaturedAuthors />
 
           <FilterChipRow

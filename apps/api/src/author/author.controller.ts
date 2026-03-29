@@ -3,6 +3,7 @@ import { UserDecorator } from '@app/auth/decorators/user.decorator';
 import { AuthorPaginatedQuery } from '@app/author/dtos/author-paginated-query';
 import { TagAuthorRequest } from '@app/author/dtos/tag-author-request';
 import { FavoriteAuthorUseCase } from '@app/author/use-cases/favorite-author.use-case';
+import { GetDailyAuthorUseCase } from '@app/author/use-cases/get-daily-author.use-case';
 import { GetOneAuthorUseCase } from '@app/author/use-cases/get-one-author.use-case';
 import { ListAuthorPaginatedUseCase } from '@app/author/use-cases/list-author-paginated.use-case';
 import { TagAuthorUseCase } from '@app/author/use-cases/tag-author.use-case';
@@ -17,6 +18,7 @@ export class AuthorController {
   public constructor(
     private readonly listAuthorPaginatedUseCase: ListAuthorPaginatedUseCase,
     private readonly getOneAuthorUseCase: GetOneAuthorUseCase,
+    private readonly getDailyAuthorUseCase: GetDailyAuthorUseCase,
     private readonly favoriteAuthorUseCase: FavoriteAuthorUseCase,
     private readonly unfavoriteAuthorUseCase: UnfavoriteAuthorUseCase,
     private readonly tagAuthorUseCase: TagAuthorUseCase,
@@ -26,15 +28,22 @@ export class AuthorController {
   @Public()
   @Get('')
   @HttpCode(HttpStatus.OK)
-  public async index(@Query() params: AuthorPaginatedQuery) {
-    return this.listAuthorPaginatedUseCase.handle(params);
+  public async index(@Query() params: AuthorPaginatedQuery, @UserDecorator() user: User) {
+    return this.listAuthorPaginatedUseCase.handle({ ...params, user });
+  }
+
+  @Public()
+  @Get('daily')
+  @HttpCode(HttpStatus.OK)
+  public async daily(@UserDecorator() user: User) {
+    return this.getDailyAuthorUseCase.handle({ user });
   }
 
   @Public()
   @Get(':uuid')
   @HttpCode(HttpStatus.OK)
-  public async show(@Param('uuid') uuid: string) {
-    return this.getOneAuthorUseCase.handle({ uuid });
+  public async show(@Param('uuid') uuid: string, @UserDecorator() user: User) {
+    return this.getOneAuthorUseCase.handle({ uuid, user });
   }
 
   @ApiBearerAuth()

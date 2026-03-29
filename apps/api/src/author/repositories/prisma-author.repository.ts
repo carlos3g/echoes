@@ -168,4 +168,57 @@ export class PrismaAuthorRepository implements AuthorRepositoryContract {
 
     await this.prismaManager.getClient().author.delete({ where });
   }
+
+  public async count(): Promise<number> {
+    return this.prismaManager.getClient().author.count();
+  }
+
+  public async countFavorites(authorId: number): Promise<number> {
+    return this.prismaManager.getClient().userFavoriteAuthor.count({
+      where: { authorId },
+    });
+  }
+
+  public async countQuotes(authorId: number): Promise<number> {
+    return this.prismaManager.getClient().quote.count({
+      where: { authorId },
+    });
+  }
+
+  public async countFavoritesBatch(authorIds: number[]): Promise<Map<number, number>> {
+    const results = await this.prismaManager.getClient().userFavoriteAuthor.groupBy({
+      by: ['authorId'],
+      where: { authorId: { in: authorIds } },
+      _count: { authorId: true },
+    });
+    const map = new Map<number, number>();
+    for (const r of results) {
+      map.set(Number(r.authorId), r._count.authorId);
+    }
+    return map;
+  }
+
+  public async countQuotesBatch(authorIds: number[]): Promise<Map<number, number>> {
+    const results = await this.prismaManager.getClient().quote.groupBy({
+      by: ['authorId'],
+      where: { authorId: { in: authorIds } },
+      _count: { authorId: true },
+    });
+    const map = new Map<number, number>();
+    for (const r of results) {
+      map.set(Number(r.authorId!), r._count.authorId);
+    }
+    return map;
+  }
+
+  public async isFavoritedBatch(input: { authorIds: number[]; userId: number }): Promise<Set<number>> {
+    const results = await this.prismaManager.getClient().userFavoriteAuthor.findMany({
+      where: {
+        authorId: { in: input.authorIds },
+        userId: input.userId,
+      },
+      select: { authorId: true },
+    });
+    return new Set(results.map((r) => Number(r.authorId)));
+  }
 }

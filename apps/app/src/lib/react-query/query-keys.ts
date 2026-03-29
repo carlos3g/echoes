@@ -15,6 +15,7 @@ export const queryKeys = {
     all: ['authors'] as const,
     list: (filters?: { search?: string }) => ['authors', filters] as const,
     detail: (uuid: string) => ['authors', uuid] as const,
+    daily: ['authors', 'daily'] as const,
   },
   tags: {
     all: ['tags'] as const,

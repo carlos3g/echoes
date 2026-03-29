@@ -14,6 +14,8 @@ export class AuthorFactory extends FactoryContract<Entity> {
       bio: () => faker.lorem.paragraphs(2),
       birthDate: () => faker.date.birthdate(),
       deathDate: () => faker.date.recent(),
+      nationality: () => faker.location.country(),
+      wikipediaUrl: () => `https://en.wikipedia.org/wiki/${faker.person.lastName()}`,
     };
   }
 }

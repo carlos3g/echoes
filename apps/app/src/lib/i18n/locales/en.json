@@ -160,10 +160,15 @@
     "createErrorDescription": "Try again"
   },
   "author": {
+    "title": "Author",
     "readLess": "Read less",
     "readMore": "Read more",
     "quotes": "Quotes",
-    "favorited": "Favorited"
+    "favorited": "Favorited",
+    "about": "About",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites",
+    "authorOfTheDay": "Author of the Day"
   },
   "error": {
     "title": "Something went wrong",

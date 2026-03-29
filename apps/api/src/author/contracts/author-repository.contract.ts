@@ -45,6 +45,18 @@ abstract class AuthorRepositoryContract {
   public abstract findManyByTag(input: AuthorRepositoryFindManyByTagInput): Promise<Author[]>;
 
   public abstract delete(input: AuthorRepositoryDeleteInput): Promise<void>;
+
+  public abstract count(): Promise<number>;
+
+  public abstract countFavorites(authorId: number): Promise<number>;
+
+  public abstract countQuotes(authorId: number): Promise<number>;
+
+  public abstract countFavoritesBatch(authorIds: number[]): Promise<Map<number, number>>;
+
+  public abstract countQuotesBatch(authorIds: number[]): Promise<Map<number, number>>;
+
+  public abstract isFavoritedBatch(input: { authorIds: number[]; userId: number }): Promise<Set<number>>;
 }
 
 export { AuthorRepositoryContract };

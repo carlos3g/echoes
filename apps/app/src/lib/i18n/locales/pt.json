@@ -160,10 +160,15 @@
     "createErrorDescription": "Tente novamente"
   },
   "author": {
+    "title": "Autor",
     "readLess": "Ler menos",
     "readMore": "Ler mais",
     "quotes": "Citações",
-    "favorited": "Favoritado"
+    "favorited": "Favoritado",
+    "about": "Sobre",
+    "addFavorite": "Adicionar aos favoritos",
+    "removeFavorite": "Remover dos favoritos",
+    "authorOfTheDay": "Autor do Dia"
   },
   "error": {
     "title": "Algo deu errado",

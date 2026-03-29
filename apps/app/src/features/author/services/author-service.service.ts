@@ -16,4 +16,16 @@ export class AuthorService implements AuthorServiceContract {
   public get(uuid: string): Promise<Author> {
     return this.httpClientService.get<Author, void>(`/authors/${uuid}`);
   }
+
+  public daily(): Promise<Author> {
+    return this.httpClientService.get<Author, void>('/authors/daily');
+  }
+
+  public favorite(uuid: string): Promise<void> {
+    return this.httpClientService.post<void, void>(`/authors/${uuid}/favorite`);
+  }
+
+  public unfavorite(uuid: string): Promise<void> {
+    return this.httpClientService.post<void, void>(`/authors/${uuid}/unfavorite`);
+  }
 }

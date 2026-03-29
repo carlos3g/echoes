@@ -27,8 +27,8 @@ export default function ExploreLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: t('tabs.explore') }} />
-      <Stack.Screen name="[quoteUuid]" options={{ title: t('quote.title') }} />
-      <Stack.Screen name="(authors)" options={{ headerShown: false }} />
+      <Stack.Screen name="quote/[quoteUuid]" options={{ title: t('quote.title') }} />
+      <Stack.Screen name="author/[authorUuid]" options={{ title: t('author.title') }} />
     </Stack>
   );
 }

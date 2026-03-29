@@ -154,17 +154,19 @@ model Category {
 }
 
 model Author {
-  id          BigInt               @id @default(autoincrement()) @db.BigInt
-  uuid        String               @unique
-  name        String
-  birthDate   DateTime             @map("birth_date")
-  deathDate   DateTime?            @map("death_date")
-  bio         String
-  quotes      Quote[]
-  tags        TagAuthor[]
-  favoritedBy UserFavoriteAuthor[]
-  createdAt   DateTime             @default(now()) @map("created_at")
-  updatedAt   DateTime             @updatedAt @map("updated_at")
+  id           BigInt               @id @default(autoincrement()) @db.BigInt
+  uuid         String               @unique
+  name         String
+  birthDate    DateTime             @map("birth_date")
+  deathDate    DateTime?            @map("death_date")
+  bio          String
+  nationality  String?
+  wikipediaUrl String?              @map("wikipedia_url")
+  quotes       Quote[]
+  tags         TagAuthor[]
+  favoritedBy  UserFavoriteAuthor[]
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
 
   @@map("authors")
 }

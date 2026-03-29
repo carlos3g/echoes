@@ -26,7 +26,7 @@ export const QuoteCardMini: React.FC<QuoteCardMiniProps> = React.memo(({ data, o
   const handleAuthorPress = useCallback(() => {
     if (data.author?.uuid) {
       router.push({
-        pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
+        pathname: '/(app)/(tabs)/(explore)/author/[authorUuid]',
         params: { authorUuid: data.author.uuid },
       });
     }

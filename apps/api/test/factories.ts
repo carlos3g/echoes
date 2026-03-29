@@ -19,6 +19,8 @@ export const authorFactory = (): Omit<Author, 'id' | 'createdAt' | 'updatedAt'> 
   birthDate: faker.date.birthdate(),
   deathDate: faker.date.recent(),
   name: faker.person.fullName(),
+  nationality: faker.location.country(),
+  wikipediaUrl: `https://en.wikipedia.org/wiki/${faker.person.lastName()}`,
 });
 
 export const categoryFactory = (): Omit<Category, 'id' | 'createdAt' | 'updatedAt'> => ({

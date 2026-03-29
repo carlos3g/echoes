@@ -11,5 +11,7 @@ interface QuoteListItemProps {
 export const QuoteListItem: React.FC<QuoteListItemProps> = React.memo(({ item, index }) => {
   const router = useRouter();
 
-  return <QuoteCard data={item} index={index} onPress={() => router.push(`/(app)/(tabs)/(explore)/${item.uuid}`)} />;
+  return (
+    <QuoteCard data={item} index={index} onPress={() => router.push(`/(app)/(tabs)/(explore)/quote/${item.uuid}`)} />
+  );
 });

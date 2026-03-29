@@ -26,7 +26,7 @@ export const FeaturedAuthors: React.FC = () => {
             key={author.uuid}
             onPress={() =>
               router.push({
-                pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
+                pathname: '/(app)/(tabs)/(explore)/author/[authorUuid]',
                 params: { authorUuid: author.uuid },
               })
             }

@@ -132,6 +132,8 @@ Table authors {
   birthDate DateTime [not null]
   deathDate DateTime
   bio String [not null]
+  nationality String
+  wikipediaUrl String
   quotes quotes [not null]
   tags tag_authors [not null]
   favoritedBy user_favorite_authors [not null]

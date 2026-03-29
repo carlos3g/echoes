@@ -64,7 +64,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, s
                   key={author.uuid}
                   onPress={() =>
                     router.push({
-                      pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
+                      pathname: '/(app)/(tabs)/(explore)/author/[authorUuid]',
                       params: { authorUuid: author.uuid },
                     })
                   }
@@ -134,7 +134,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, s
                   updatedAt: PLACEHOLDER_DATE,
                 }}
                 index={index}
-                onPress={() => router.push(`/(app)/(tabs)/(explore)/${quote.uuid}`)}
+                onPress={() => router.push(`/(app)/(tabs)/(explore)/quote/${quote.uuid}`)}
               />
             ))}
           </View>

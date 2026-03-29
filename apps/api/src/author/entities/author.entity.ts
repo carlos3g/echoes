@@ -18,6 +18,10 @@ export class Author {
 
   public bio!: string;
 
+  public nationality!: string | null;
+
+  public wikipediaUrl!: string | null;
+
   public createdAt!: Date;
 
   public updatedAt!: Date;

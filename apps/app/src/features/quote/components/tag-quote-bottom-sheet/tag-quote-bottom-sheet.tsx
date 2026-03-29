@@ -15,7 +15,11 @@ import { ItemSeparatorComponent, ListEmptyComponent, renderItem, renderItemSkele
 
 const SNAP_POINTS = ['30%', '50%', '70%', '80%'];
 
-export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
+interface TagQuoteBottomSheetProps {
+  onDismiss?: () => void;
+}
+
+export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBottomSheetProps>(({ onDismiss }, ref) => {
   const { bottom } = useAppSafeArea();
   const { hide, quote } = useTagQuoteBottomSheet();
   const { colors } = useTheme();
@@ -60,13 +64,16 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) 
     // @ts-expect-error BottomSheet types incompatible with cssInterop
     <BottomSheet
       ref={ref}
-      index={-1}
+      index={0}
       footerComponent={renderFooter}
       backdropComponent={renderBackdrop}
       enableDynamicSizing={false}
       enablePanDownToClose
       snapPoints={SNAP_POINTS}
-      onClose={hide}
+      onClose={() => {
+        hide();
+        onDismiss?.();
+      }}
       backgroundStyle={{ backgroundColor: colors.background }}
       handleIndicatorStyle={{ backgroundColor: colors.mutedForeground }}
     >

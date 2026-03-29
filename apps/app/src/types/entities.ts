@@ -27,6 +27,16 @@ export class Author {
 
   public bio!: string;
 
+  public nationality!: string | null;
+
+  public wikipediaUrl!: string | null;
+
+  public metadata!: {
+    totalQuotes: number;
+    totalFavorites: number;
+    favoritedByUser: boolean;
+  };
+
   public createdAt!: Date;
 
   public updatedAt!: Date;

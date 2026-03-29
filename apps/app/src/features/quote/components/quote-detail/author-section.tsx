@@ -19,7 +19,7 @@ export const AuthorSection: React.FC<AuthorSectionProps> = ({ author }) => {
     <TouchableOpacity
       onPress={() =>
         router.push({
-          pathname: '/(app)/(tabs)/(explore)/(authors)/[authorUuid]',
+          pathname: '/(app)/(tabs)/(explore)/author/[authorUuid]',
           params: { authorUuid: author.uuid },
         })
       }
