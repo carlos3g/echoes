@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Pressable, RefreshControl, View } from 'react-native';
 import type { ListRenderItem } from '@shopify/flash-list';
+import { useTranslation } from 'react-i18next';
 import type { Quote } from '@/types/entities';
 import { QuoteCardSkeleton } from '@/features/quote/components/quote-card';
 import { EmptyState } from '@/shared/components/ui/empty-state';
@@ -14,13 +15,12 @@ const renderItem: ListRenderItem<Quote> = ({ item, index }) => <QuoteListItem it
 
 const renderItemSkeleton: ListRenderItem<Quote> = () => <QuoteCardSkeleton />;
 
-const QuoteListEmpty = React.memo(() => (
-  <EmptyState
-    icon="chatbubble-outline"
-    title="Nenhuma citacao encontrada"
-    description="Tente ajustar os filtros ou volte mais tarde"
-  />
-));
+const QuoteListEmpty = React.memo(() => {
+  const { t } = useTranslation();
+  return (
+    <EmptyState icon="chatbubble-outline" title={t('quote.emptyTitle')} description={t('quote.emptyDescription')} />
+  );
+});
 
 interface PaginationControlsProps {
   currentPage: number;
@@ -31,6 +31,7 @@ interface PaginationControlsProps {
 
 const PaginationControls: React.FC<PaginationControlsProps> = React.memo(
   ({ currentPage, lastPage, onPrevious, onNext }) => {
+    const { t } = useTranslation();
     const hasPrevious = currentPage > 1;
     const hasNext = currentPage < lastPage;
 
@@ -49,7 +50,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = React.memo(
             semiBold
             className={hasPrevious ? 'text-primary-foreground' : 'text-muted-foreground'}
           >
-            Anterior
+            {t('common.previous')}
           </Text>
         </Pressable>
 
@@ -70,7 +71,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = React.memo(
             semiBold
             className={hasNext ? 'text-primary-foreground' : 'text-muted-foreground'}
           >
-            Proximo
+            {t('common.next')}
           </Text>
         </Pressable>
       </View>

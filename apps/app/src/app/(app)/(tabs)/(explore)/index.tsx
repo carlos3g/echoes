@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { View } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { QuoteList, QuoteFilterBadge } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { FeaturedAuthors } from '@/features/quote/components/explore/featured-authors';
@@ -21,6 +22,7 @@ type SearchParams = {
 
 export default function ExploreScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { tagUuid, tagTitle } = useLocalSearchParams<SearchParams>();
   const [searchText, setSearchText] = useState('');
   const [selectedCategoryUuid, setSelectedCategoryUuid] = useState<string | undefined>(undefined);
@@ -63,7 +65,7 @@ export default function ExploreScreen() {
       <SearchBar
         value={searchText}
         onChangeText={setSearchText}
-        placeholder="Buscar quotes, autores..."
+        placeholder={t('explore.searchPlaceholder')}
         testID="search-input"
         onFocus={() => setIsSearchFocused(true)}
         onBlur={() => setIsSearchFocused(false)}
@@ -84,7 +86,7 @@ export default function ExploreScreen() {
             items={categories}
             selectedUuid={selectedCategoryUuid}
             onSelect={setSelectedCategoryUuid}
-            allLabel="Todas"
+            allLabel={t('common.all')}
           />
 
           {tagTitle && <QuoteFilterBadge tagTitle={tagTitle} onClear={clearFilters} />}

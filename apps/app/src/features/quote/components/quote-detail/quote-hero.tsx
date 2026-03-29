@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text as RNText, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { Quote } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { useReadingStyle } from '@/shared/hooks/use-reading-style';
@@ -15,6 +16,7 @@ interface QuoteHeroProps {
 }
 
 export const QuoteHero: React.FC<QuoteHeroProps> = ({ quote }) => {
+  const { t } = useTranslation();
   const { quoteLargeStyle } = useReadingStyle();
   const { colors } = useTheme();
 
@@ -29,7 +31,7 @@ export const QuoteHero: React.FC<QuoteHeroProps> = ({ quote }) => {
       <View className="my-5 h-[1.5px] w-[50px] bg-primary" />
 
       <Text variant="paragraphCaption" semiBold className="text-center uppercase tracking-widest text-secondary">
-        {quote.author?.name ?? 'Autor desconhecido'}
+        {quote.author?.name ?? t('quote.unknownAuthor')}
       </Text>
 
       <View className="mt-6 flex-row items-center gap-6">

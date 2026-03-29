@@ -1,9 +1,11 @@
 import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
 export default function ExploreLayout() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Stack
@@ -24,8 +26,8 @@ export default function ExploreLayout() {
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Explorar' }} />
-      <Stack.Screen name="[quoteUuid]" options={{ title: 'Citacao' }} />
+      <Stack.Screen name="index" options={{ title: t('tabs.explore') }} />
+      <Stack.Screen name="[quoteUuid]" options={{ title: t('quote.title') }} />
       <Stack.Screen name="(authors)" options={{ headerShown: false }} />
     </Stack>
   );

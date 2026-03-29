@@ -1,14 +1,14 @@
 import type { z } from 'zod';
 import type {
-  changePasswordFormSchema,
-  forgotPasswordFormSchema,
-  loginFormSchema,
-  resetPasswordFormSchema,
-  signUpFormSchema,
+  createChangePasswordFormSchema,
+  createForgotPasswordFormSchema,
+  createLoginFormSchema,
+  createResetPasswordFormSchema,
+  createSignUpFormSchema,
 } from '@/features/auth/validations';
 import type { User } from '@/types/entities';
 
-export type SignInPayload = z.infer<typeof loginFormSchema>;
+export type SignInPayload = z.infer<ReturnType<typeof createLoginFormSchema>>;
 
 export type SignInOutput = {
   accessToken: string;
@@ -16,7 +16,7 @@ export type SignInOutput = {
   user: User;
 };
 
-export type SignUpPayload = z.infer<typeof signUpFormSchema>;
+export type SignUpPayload = z.infer<ReturnType<typeof createSignUpFormSchema>>;
 
 export type SignUpOutput = {
   name: string;
@@ -26,20 +26,20 @@ export type SignUpOutput = {
   passwordConfirmation: string;
 };
 
-export type ResetPasswordPayload = z.infer<typeof resetPasswordFormSchema>;
+export type ResetPasswordPayload = z.infer<ReturnType<typeof createResetPasswordFormSchema>>;
 
 export type ResetPasswordOutput = {
   password: string;
   passwordConfirmation: string;
 };
 
-export type ForgotPasswordPayload = z.infer<typeof forgotPasswordFormSchema>;
+export type ForgotPasswordPayload = z.infer<ReturnType<typeof createForgotPasswordFormSchema>>;
 
 export type ForgotPasswordOutput = {
   email: string;
 };
 
-export type ChangePasswordPayload = z.infer<typeof changePasswordFormSchema>;
+export type ChangePasswordPayload = z.infer<ReturnType<typeof createChangePasswordFormSchema>>;
 
 export type ChangePasswordOutput = {
   currentPassword: string;

@@ -1,0 +1,187 @@
+{
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "create": "Criar",
+    "clear": "Limpar",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "all": "Todas",
+    "allMasculine": "Todos",
+    "requiredField": "Campo obrigatório",
+    "quotes": "quotes",
+    "favorites": "favoritos"
+  },
+  "tabs": {
+    "explore": "Explorar",
+    "collection": "Coleção",
+    "profile": "Perfil"
+  },
+  "auth": {
+    "signIn": {
+      "greeting": "Olá",
+      "subtitle": "Digite seu e-mail e senha para entrar",
+      "submit": "Entrar",
+      "forgotPassword": "Esqueci minha senha",
+      "createAccount": "Criar conta",
+      "errorTitle": "Opa!!",
+      "errorDescription": "E-mail ou senha inválidos"
+    },
+    "signUp": {
+      "title": "Criar nova conta",
+      "submit": "Criar conta",
+      "errorTitle": "Tivemos um problema!",
+      "errorDescription": "Tente novamente ou entre em contato com o suporte."
+    },
+    "forgotPassword": {
+      "title": "Esqueci minha senha",
+      "subtitle": "Digite seu e-mail e enviaremos as instruções para redefinição de senha",
+      "submit": "Recuperar senha",
+      "successTitle": "Confira seu email!",
+      "successDescription": "Um link para redefinir sua senha foi enviado para seu email.",
+      "errorTitle": "Tivemos um problema!",
+      "errorDescription": "Tente novamente ou entre em contato com o suporte."
+    },
+    "resetPassword": {
+      "submit": "Redefinir senha",
+      "successTitle": "Senha alterada com sucesso!",
+      "successDescription": "Faça login com sua nova senha",
+      "errorTitle": "Tivemos um problema!",
+      "errorDescription": "Tente novamente ou entre em contato com o suporte."
+    },
+    "changePassword": {
+      "submit": "Alterar senha",
+      "successTitle": "Senha alterada com sucesso!",
+      "errorTitle": "Não foi possível alterar a senha!",
+      "errorDescription": "Talvez você digitou a senha atual incorretamente?"
+    }
+  },
+  "form": {
+    "email": "E-mail",
+    "emailPlaceholder": "Digite seu e-mail",
+    "password": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "confirmPassword": "Confirmar senha",
+    "confirmPasswordPlaceholder": "Digite a mesma senha",
+    "name": "Nome",
+    "namePlaceholder": "Digite seu nome",
+    "username": "Username",
+    "usernamePlaceholder": "Escolha um username",
+    "currentPassword": "Senha atual",
+    "currentPasswordPlaceholder": "Digite sua senha atual",
+    "newPassword": "Senha nova",
+    "newPasswordPlaceholder": "Digite sua nova senha"
+  },
+  "profile": {
+    "title": "Perfil",
+    "editProfile": "Editar perfil",
+    "changePassword": "Alterar senha",
+    "readingPreferences": "Personalizar leitura",
+    "signOut": "Sair",
+    "stats": {
+      "favorites": "Favoritos",
+      "tags": "Tags",
+      "read": "Lidas"
+    },
+    "recentActivity": "Atividade recente",
+    "updateSuccess": "Perfil atualizado!",
+    "updateErrorTitle": "Erro ao atualizar perfil",
+    "updateErrorDescription": "Tente novamente"
+  },
+  "readingPreferences": {
+    "font": "Fonte",
+    "size": "Tamanho",
+    "lineSpacing": "Espaçamento entre linhas",
+    "listMode": "Modo de listagem",
+    "paginationHint": "A paginação permite manter seu progresso de leitura entre sessões.",
+    "listModes": {
+      "infinite": "Scroll infinito",
+      "paginated": "Paginação"
+    },
+    "lineHeights": {
+      "auto": "Auto",
+      "compact": "Compacto",
+      "normal": "Normal",
+      "relaxed": "Relaxado"
+    }
+  },
+  "theme": {
+    "title": "Tema",
+    "system": "Sistema",
+    "light": "Claro",
+    "dark": "Escuro"
+  },
+  "language": {
+    "title": "Idioma",
+    "pt": "Português",
+    "en": "English"
+  },
+  "explore": {
+    "searchPlaceholder": "Buscar quotes, autores...",
+    "featuredAuthors": "Autores em destaque"
+  },
+  "collection": {
+    "searchPlaceholder": "Buscar nos favoritos...",
+    "favoriteCount": "{{count}} favoritos"
+  },
+  "quote": {
+    "title": "Citação",
+    "unknownAuthor": "Autor desconhecido",
+    "copiedToast": "Citação copiada!",
+    "copyLabel": "Copiar citação",
+    "shareLabel": "Compartilhar citação",
+    "removeFavorite": "Remover dos favoritos",
+    "addFavorite": "Adicionar aos favoritos",
+    "emptyTitle": "Nenhuma citação encontrada",
+    "emptyDescription": "Tente ajustar os filtros ou volte mais tarde",
+    "viewAuthorProfile": "Ver perfil de {{name}}"
+  },
+  "search": {
+    "placeholder": "Buscar...",
+    "recentSearches": "Buscas recentes",
+    "noResults": "Nenhum resultado para \"{{term}}\"",
+    "noResultsHint": "Tente buscar com outros termos",
+    "authors": "Autores",
+    "categories": "Categorias",
+    "quotes": "Quotes"
+  },
+  "share": {
+    "title": "Compartilhar",
+    "shareImage": "Compartilhar imagem",
+    "shareLink": "Compartilhar link"
+  },
+  "tag": {
+    "emptyTitle": "Nenhuma tag cadastrada",
+    "emptyDescription": "Crie sua primeira tag para organizar suas citações",
+    "createTitle": "Título",
+    "createPlaceholder": "Digite o título da tag",
+    "createSuccess": "Tag criada com sucesso!",
+    "createErrorTitle": "Tivemos um erro :/",
+    "createErrorDescription": "Tente novamente"
+  },
+  "author": {
+    "readLess": "Ler menos",
+    "readMore": "Ler mais",
+    "quotes": "Citações",
+    "favorited": "Favoritado"
+  },
+  "error": {
+    "title": "Algo deu errado",
+    "description": "Ocorreu um erro inesperado. Tente novamente.",
+    "retry": "Tentar novamente",
+    "generic": "Erro!",
+    "tryAgain": "Tente novamente"
+  },
+  "validation": {
+    "invalid": "Inválido",
+    "passwordMin": "A senha deve ter pelo menos 8 caracteres",
+    "invalidEmail": "Email inválido",
+    "usernameMin": "Username deve ter pelo menos 3 caracteres",
+    "usernameMax": "Username deve ter no máximo 20 caracteres",
+    "usernamePattern": "Username deve conter apenas letras minúsculas, números, underlines e hífens",
+    "passwordsMustMatch": "As senhas inseridas devem ser iguais",
+    "requiredField": "Campo obrigatório",
+    "acceptTerms": "Você deve aceitar os termos de serviço",
+    "maxChars": "Máximo de {{max}} caracteres"
+  }
+}

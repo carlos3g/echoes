@@ -2,17 +2,20 @@ import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
-import { forgotPasswordFormSchema } from '@/features/auth/validations';
+import { useTranslation } from 'react-i18next';
+import { createForgotPasswordFormSchema } from '@/features/auth/validations';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { Button } from '@/shared/components/ui/button';
 import { Text } from '@/shared/components/ui/text';
 import { useForgotPassword } from '@/features/auth/hooks/use-forgot-password';
 
-type ForgotPasswordFormData = z.infer<typeof forgotPasswordFormSchema>;
+type ForgotPasswordFormData = z.infer<ReturnType<typeof createForgotPasswordFormSchema>>;
 
 export const ForgotPasswordForm: React.FC = () => {
+  const { t } = useTranslation();
+
   const form = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordFormSchema),
+    resolver: zodResolver(createForgotPasswordFormSchema()),
     defaultValues: {},
   });
 
@@ -25,17 +28,17 @@ export const ForgotPasswordForm: React.FC = () => {
   return (
     <>
       <Text variant="headingLarge" className="mb-4">
-        Esqueci minha senha
+        {t('auth.forgotPassword.title')}
       </Text>
       <Text variant="paragraphLarge" className="mb-8">
-        Digite seu e-mail e enviaremos as instruções para redefinição de senha
+        {t('auth.forgotPassword.subtitle')}
       </Text>
 
       <ControlledTextInput
         control={form.control}
         name="email"
-        label="E-mail"
-        placeholder="Digite seu e-mail"
+        label={t('form.email')}
+        placeholder={t('form.emailPlaceholder')}
         boxClassName="mb-10"
         testID="forgot-password-email-input"
       />
@@ -44,7 +47,7 @@ export const ForgotPasswordForm: React.FC = () => {
         loading={isPending}
         disabled={!form.formState.isValid}
         onPress={onSubmit}
-        title="Recuperar senha"
+        title={t('auth.forgotPassword.submit')}
         testID="forgot-password-button"
       />
     </>

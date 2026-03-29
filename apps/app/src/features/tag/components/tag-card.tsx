@@ -2,6 +2,7 @@ import ContentLoader, { Rect } from 'react-content-loader/native';
 import type { TouchableOpacityProps } from 'react-native';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import type { Tag } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { Ionicons } from '@/lib/nativewind/components';
@@ -18,6 +19,7 @@ interface TagCardProps extends TouchableOpacityProps {
 // Better use compound components here, but not worth since it's a simple component
 export const TagCard: React.FC<TagCardProps> = (props) => {
   const { data, icon, testID, ...rest } = props;
+  const { t } = useTranslation();
 
   return (
     <Animated.View entering={FadeInDown.duration(300)}>
@@ -40,7 +42,7 @@ export const TagCard: React.FC<TagCardProps> = (props) => {
         </View>
 
         <Text variant="paragraphCaption" className="text-muted-foreground">
-          {data.metadata.totalQuotes} quotes
+          {data.metadata.totalQuotes} {t('common.quotes')}
         </Text>
       </TouchableOpacity>
     </Animated.View>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useGetAuthor } from '@/features/author/hooks/use-get-author';
 import { useGetQuotes } from '@/features/quote/hooks/use-get-quotes';
 import { Text } from '@/shared/components/ui/text';
@@ -27,6 +28,7 @@ function AuthorAvatar({ name }: { name: string }) {
 
 function AuthorBio({ bio }: { bio: string }) {
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation();
   const isLong = bio.length > 150;
 
   return (
@@ -37,7 +39,7 @@ function AuthorBio({ bio }: { bio: string }) {
       {isLong && (
         <TouchableOpacity onPress={() => setExpanded(!expanded)} className="mt-1">
           <Text variant="paragraphSmall" semiBold className="text-secondary">
-            {expanded ? 'Ler menos' : 'Ler mais'}
+            {expanded ? t('author.readLess') : t('author.readMore')}
           </Text>
         </TouchableOpacity>
       )}
@@ -46,6 +48,7 @@ function AuthorBio({ bio }: { bio: string }) {
 }
 
 function AuthorStats({ quotesCount, favoritesCount }: { quotesCount: number; favoritesCount: number }) {
+  const { t } = useTranslation();
   return (
     <View className="mt-4 flex-row gap-3">
       <View className="flex-1 items-center rounded-xl bg-muted py-3">
@@ -53,7 +56,7 @@ function AuthorStats({ quotesCount, favoritesCount }: { quotesCount: number; fav
           {quotesCount}
         </Text>
         <Text variant="paragraphCaption" className="text-muted-foreground">
-          Citacoes
+          {t('author.quotes')}
         </Text>
       </View>
       <View className="flex-1 items-center rounded-xl bg-muted py-3">
@@ -61,7 +64,7 @@ function AuthorStats({ quotesCount, favoritesCount }: { quotesCount: number; fav
           {favoritesCount}
         </Text>
         <Text variant="paragraphCaption" className="text-muted-foreground">
-          Favoritado
+          {t('author.favorited')}
         </Text>
       </View>
     </View>

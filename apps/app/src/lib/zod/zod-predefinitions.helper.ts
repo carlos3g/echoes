@@ -1,23 +1,25 @@
 import validator from 'validator';
 import * as z from 'zod';
+import i18next from '@/lib/i18n';
 
-export const validateUuid = () => z.string().refine((s) => validator.isUUID(s, '4'), { message: 'Inválido' });
+export const validateUuid = () =>
+  z.string().refine((s) => validator.isUUID(s, '4'), { message: i18next.t('validation.invalid') });
 
-export const validatePassword = () => z.string().min(8, { message: 'A senha deve ter pelo menos 8 caracteres' });
+export const validatePassword = () => z.string().min(8, { message: i18next.t('validation.passwordMin') });
 
-export const validateEmail = () => z.string().email({ message: 'Email inválido' });
+export const validateEmail = () => z.string().email({ message: i18next.t('validation.invalidEmail') });
 
 export const validateUsername = () =>
   z
     .string()
-    .min(3, { message: 'Username deve ter pelo menos 3 caracteres' })
-    .max(20, { message: 'Username deve ter no máximo 20 caracteres' })
+    .min(3, { message: i18next.t('validation.usernameMin') })
+    .max(20, { message: i18next.t('validation.usernameMax') })
     .regex(/^[a-z0-9_-]+$/, {
-      message: 'Username deve conter apenas letras minúsculas, números, underlines e híphens',
+      message: i18next.t('validation.usernamePattern'),
     });
 
 export const withPasswordConfirmation = <T extends z.ZodObject<z.ZodRawShape>>(schema: T) =>
   schema.refine((data) => data.password === data.passwordConfirmation, {
-    message: 'As senhas inseridas devem ser iguais',
+    message: i18next.t('validation.passwordsMustMatch'),
     path: ['passwordConfirmation'],
   });

@@ -2579,6 +2579,7 @@ __metadata:
     expo-font: "npm:~55.0.4"
     expo-haptics: "npm:~55.0.9"
     expo-linking: "npm:~55.0.9"
+    expo-localization: "npm:^55.0.9"
     expo-network: "npm:~55.0.9"
     expo-router: "npm:~55.0.8"
     expo-splash-screen: "npm:~55.0.13"
@@ -2597,6 +2598,7 @@ __metadata:
     react-content-loader: "npm:^7.1.2"
     react-dom: "npm:19.2.0"
     react-hook-form: "npm:^7.72.0"
+    react-i18next: "npm:^17.0.1"
     react-native: "npm:0.83.2"
     react-native-gesture-handler: "npm:~2.30.0"
     react-native-mmkv: "npm:^4.3.0"
@@ -12447,6 +12449,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-localization@npm:^55.0.9":
+  version: 55.0.9
+  resolution: "expo-localization@npm:55.0.9"
+  dependencies:
+    rtl-detect: "npm:^1.0.2"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+  checksum: 10c0/bed89cb38ed6cf3288abe338cf40bf4e557114c3441902e5c28e1fe3af8a77474457fff85e8f3499d1427dc0e34e7d9b25888dbc9d86596779f5e8d2a3a0e6c6
+  languageName: node
+  linkType: hard
+
 "expo-modules-autolinking@npm:55.0.12":
   version: 55.0.12
   resolution: "expo-modules-autolinking@npm:55.0.12"
@@ -13844,6 +13858,15 @@ __metadata:
   bin:
     html-minifier: ./cli.js
   checksum: 10c0/38c2d1cab49593671b104e3bc120b1c5fdf00c75930fcb32e257322219c9d31515af6b39af76e8ecd71fdf3a77d168f8b7b7ce02beba0b72eb5631599b5561bc
+  languageName: node
+  linkType: hard
+
+"html-parse-stringify@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "html-parse-stringify@npm:3.0.1"
+  dependencies:
+    void-elements: "npm:3.1.0"
+  checksum: 10c0/159292753d48b84d216d61121054ae5a33466b3db5b446e2ffc093ac077a411a99ce6cbe0d18e55b87cf25fa3c5a86c4d8b130b9719ec9b66623259000c72c15
   languageName: node
   linkType: hard
 
@@ -20564,6 +20587,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-i18next@npm:^17.0.1":
+  version: 17.0.1
+  resolution: "react-i18next@npm:17.0.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.29.2"
+    html-parse-stringify: "npm:^3.0.1"
+    use-sync-external-store: "npm:^1.6.0"
+  peerDependencies:
+    i18next: ">= 26.0.1"
+    react: ">= 16.8.0"
+    typescript: ^5 || ^6
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+    typescript:
+      optional: true
+  checksum: 10c0/eb363db5a15cebda8e6964d3f417133372c3ff5560887233a5e937b86bad3023728362754b3c1aa7bce0fb754e8d3660804c7abbc6c6eb4e85f9f48823b6a7b0
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -21383,6 +21428,13 @@ __metadata:
     parseurl: "npm:^1.3.3"
     path-to-regexp: "npm:^8.0.0"
   checksum: 10c0/3279de7450c8eae2f6e095e9edacbdeec0abb5cb7249c6e719faa0db2dba43574b4fff5892d9220631c9abaff52dd3cad648cfea2aaace845e1a071915ac8867
+  languageName: node
+  linkType: hard
+
+"rtl-detect@npm:^1.0.2":
+  version: 1.1.2
+  resolution: "rtl-detect@npm:1.1.2"
+  checksum: 10c0/1b92888aafca1593314f837e83fdf02eb208faae3e713ab87c176804728efd3b1980d53b64f65f1fa593348087e852c5cd729b7b9372950f6e9b7be489afc0ca
   languageName: node
   linkType: hard
 
@@ -23827,7 +23879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.5.0":
+"use-sync-external-store@npm:^1.5.0, use-sync-external-store@npm:^1.6.0":
   version: 1.6.0
   resolution: "use-sync-external-store@npm:1.6.0"
   peerDependencies:
@@ -23991,7 +24043,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"void-elements@npm:^3.1.0":
+"void-elements@npm:3.1.0, void-elements@npm:^3.1.0":
   version: 3.1.0
   resolution: "void-elements@npm:3.1.0"
   checksum: 10c0/0b8686f9f9aa44012e9bd5eabf287ae0cde409b9a2854c5a2335cb83920c957668ac5876e3f0d158dd424744ac411a7270e64128556b451ed3bec875ef18534d

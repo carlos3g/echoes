@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { haptics } from '@/shared/utils/haptics';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import type { Quote } from '@/types/entities';
 import { cn, humanizeNumber } from '@/shared/utils';
 import { Text } from '@/shared/components/ui/text';
@@ -15,6 +16,7 @@ interface FavoriteButtonProps {
 export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
   const { data } = props;
   const { metadata } = data;
+  const { t } = useTranslation();
 
   const toggleFavoriteMutation = useToggleFavoriteQuote();
   const scale = useSharedValue(1);
@@ -40,7 +42,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
         testID="toggle-favorite-button"
         className="flex-row items-center gap-1"
         onPress={handleFavorite}
-        accessibilityLabel={metadata?.favoritedByUser ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+        accessibilityLabel={metadata?.favoritedByUser ? t('quote.removeFavorite') : t('quote.addFavorite')}
         accessibilityRole="button"
         activeOpacity={0.7}
         hitSlop={12}

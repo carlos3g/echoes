@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ListRenderItem } from '@shopify/flash-list';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { Tag } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
@@ -50,8 +51,11 @@ export const ItemSeparatorComponent = React.memo(() => (
   <View className="bg-border" style={{ height: StyleSheet.hairlineWidth }} />
 ));
 
-export const ListEmptyComponent = React.memo(() => (
-  <View className="items-center">
-    <Text>Nenhuma tag cadastrada</Text>
-  </View>
-));
+export const ListEmptyComponent = React.memo(() => {
+  const { t } = useTranslation();
+  return (
+    <View className="items-center">
+      <Text>{t('tag.emptyTitle')}</Text>
+    </View>
+  );
+});

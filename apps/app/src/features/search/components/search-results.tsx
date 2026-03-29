@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import type { SearchResult } from '@/features/search/contracts';
 import type { Quote } from '@/types/entities';
 import { QuoteCard } from '@/features/quote/components/quote-card';
@@ -20,6 +21,7 @@ interface SearchResultsProps {
 
 export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, searchTerm }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
@@ -37,8 +39,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, s
     return (
       <EmptyState
         icon="search-outline"
-        title={`Nenhum resultado para "${searchTerm}"`}
-        description="Tente buscar com outros termos"
+        title={t('search.noResults', { term: searchTerm })}
+        description={t('search.noResultsHint')}
       />
     );
   }
@@ -49,7 +51,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, s
         {data.authors.length > 0 && (
           <View className="py-3">
             <Text variant="paragraphSmall" semiBold className="mb-2 px-4 text-foreground">
-              Autores
+              {t('search.authors')}
             </Text>
             <ScrollView
               horizontal
@@ -86,7 +88,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, s
         {data.categories.length > 0 && (
           <View className="py-2">
             <Text variant="paragraphSmall" semiBold className="mb-2 px-4 text-foreground">
-              Categorias
+              {t('search.categories')}
             </Text>
             <ScrollView
               horizontal
@@ -118,7 +120,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ data, isLoading, s
         {data.quotes.length > 0 && (
           <View className="pt-2">
             <Text variant="paragraphSmall" semiBold className="mb-1 px-4 text-foreground">
-              Quotes
+              {t('search.quotes')}
             </Text>
             {data.quotes.map((quote, index) => (
               <QuoteCard

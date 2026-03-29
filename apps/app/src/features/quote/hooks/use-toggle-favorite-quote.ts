@@ -6,6 +6,7 @@ import type { Quote } from '@/types/entities';
 import type { HttpError } from '@/types/http';
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner-native';
 
 interface ToggleFavoriteInput {
@@ -15,6 +16,7 @@ interface ToggleFavoriteInput {
 
 export const useToggleFavoriteQuote = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   return useMutation<
     void,
@@ -56,8 +58,8 @@ export const useToggleFavoriteQuote = () => {
         queryClient.setQueryData(previousStateQuery, previousStateData);
       }
 
-      toast.error('Erro!', {
-        description: 'Tente novamente',
+      toast.error(t('error.generic'), {
+        description: t('error.tryAgain'),
       });
     },
   });

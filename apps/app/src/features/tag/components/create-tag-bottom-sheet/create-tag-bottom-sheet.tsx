@@ -6,6 +6,7 @@ import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Portal } from 'react-native-portalize';
 import type { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useAppSafeArea } from '@/shared/hooks/use-app-safe-area';
 import { Button } from '@/shared/components/ui/button';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
@@ -14,14 +15,15 @@ import { useCreateTag } from '@/features/tag/hooks/use-create-tag';
 import { useTheme } from '@/lib/nativewind/theme.context';
 import { BottomSheet, BottomSheetFooter } from '@/lib/nativewind/components';
 
-type CreateTagFormData = z.infer<typeof createTagFormSchema>;
+type CreateTagFormData = z.infer<ReturnType<typeof createTagFormSchema>>;
 
 export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref) => {
   const { bottom } = useAppSafeArea();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const form = useForm<CreateTagFormData>({
-    resolver: zodResolver(createTagFormSchema),
+    resolver: zodResolver(createTagFormSchema()),
   });
 
   const { mutate, isPending } = useCreateTag({
@@ -51,7 +53,7 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref)
           loading={isPending}
           disabled={!form.formState.isValid}
           onPress={onSubmit}
-          title="Criar"
+          title={t('common.create')}
           testID="create-tag-button"
         />
       </BottomSheetFooter>
@@ -77,8 +79,8 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref)
             control={form.control}
             autoFocus
             name="title"
-            label="Título"
-            placeholder="Digite o título da tag"
+            label={t('tag.createTitle')}
+            placeholder={t('tag.createPlaceholder')}
             testID="tag-title-input"
           />
         </BottomSheetView>

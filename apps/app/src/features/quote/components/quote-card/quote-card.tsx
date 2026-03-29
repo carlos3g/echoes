@@ -4,6 +4,7 @@ import ContentLoader, { Rect } from 'react-content-loader/native';
 import React, { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import type { Quote } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
@@ -27,6 +28,7 @@ interface QuoteCardProps extends PressableProps {
 export const QuoteCard: React.FC<QuoteCardProps> = React.memo((props) => {
   const { data, index = 0, testID, ...rest } = props;
   const router = useRouter();
+  const { t } = useTranslation();
   const { quoteStyle } = useReadingStyle();
   const { colors } = useTheme();
 
@@ -68,7 +70,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = React.memo((props) => {
           <TouchableOpacity
             onPress={handleAuthorPress}
             accessibilityRole="link"
-            accessibilityLabel={`Ver perfil de ${data.author.name}`}
+            accessibilityLabel={t('quote.viewAuthorProfile', { name: data.author.name })}
           >
             <Text
               testID={`quote-author-${data.uuid}`}
@@ -85,7 +87,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = React.memo((props) => {
             variant="paragraphCaption"
             className="uppercase tracking-widest text-muted-foreground"
           >
-            Autor desconhecido
+            {t('quote.unknownAuthor')}
           </Text>
         )}
 

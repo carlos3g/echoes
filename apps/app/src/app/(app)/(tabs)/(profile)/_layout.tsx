@@ -1,9 +1,11 @@
 import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
 export default function ProfileLayout() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Stack
@@ -24,10 +26,10 @@ export default function ProfileLayout() {
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Perfil' }} />
-      <Stack.Screen name="edit-profile" options={{ title: 'Editar perfil' }} />
-      <Stack.Screen name="change-password" options={{ title: 'Alterar senha' }} />
-      <Stack.Screen name="reading-preferences" options={{ title: 'Personalizar leitura' }} />
+      <Stack.Screen name="index" options={{ title: t('profile.title') }} />
+      <Stack.Screen name="edit-profile" options={{ title: t('profile.editProfile') }} />
+      <Stack.Screen name="change-password" options={{ title: t('profile.changePassword') }} />
+      <Stack.Screen name="reading-preferences" options={{ title: t('profile.readingPreferences') }} />
     </Stack>
   );
 }

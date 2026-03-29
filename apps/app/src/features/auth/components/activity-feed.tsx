@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
 import { useActivityStore, type ActivityItem } from '@/lib/zustand/stores/activity.store';
@@ -28,6 +29,7 @@ function ActivityItemRow({ item }: { item: ActivityItem }) {
 }
 
 export const ActivityFeed: React.FC = () => {
+  const { t } = useTranslation();
   const activities = useActivityStore((s) => s.activities);
 
   if (activities.length === 0) return null;
@@ -35,7 +37,7 @@ export const ActivityFeed: React.FC = () => {
   return (
     <View className="px-4 pt-2">
       <Text variant="paragraphSmall" semiBold className="mb-2 text-foreground">
-        Atividade recente
+        {t('profile.recentActivity')}
       </Text>
       {activities.slice(0, 10).map((item, index) => (
         <ActivityItemRow key={item.id} item={item} />

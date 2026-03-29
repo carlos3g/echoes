@@ -1,12 +1,14 @@
 import React from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useGetAuthors } from '@/features/author/hooks/use-get-authors';
 import { Text } from '@/shared/components/ui/text';
 import { AvatarInitials } from '@/shared/components/ui/avatar-initials';
 
 export const FeaturedAuthors: React.FC = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { authors } = useGetAuthors({});
 
   if (!authors.length) return null;
@@ -16,7 +18,7 @@ export const FeaturedAuthors: React.FC = () => {
   return (
     <View className="py-3">
       <Text variant="paragraphSmall" semiBold className="mb-2 px-4 text-foreground">
-        Autores em destaque
+        {t('explore.featuredAuthors')}
       </Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="px-4 gap-4">
         {featured.map((author) => (

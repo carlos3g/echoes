@@ -1,6 +1,7 @@
 import type RNBottomSheet from '@gorhom/bottom-sheet';
 import { useRef, useState } from 'react';
 import { View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { QuoteList } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { CreateTagBottomSheet } from '@/features/tag/components/create-tag-bottom-sheet';
@@ -13,6 +14,7 @@ import { Fab } from '@/shared/components/ui/fab';
 import { FilterChipRow } from '@/shared/components/ui/filter-chip-row';
 
 export default function CollectionScreen() {
+  const { t } = useTranslation();
   const bottomSheetRef = useRef<RNBottomSheet>(null);
   const [selectedTagUuid, setSelectedTagUuid] = useState<string | undefined>(undefined);
   const [searchText, setSearchText] = useState('');
@@ -30,11 +32,11 @@ export default function CollectionScreen() {
   return (
     <View className="flex-1 bg-background">
       <TagQuoteBottomSheetProvider>
-        <SearchBar value={searchText} onChangeText={setSearchText} placeholder="Buscar nos favoritos..." />
+        <SearchBar value={searchText} onChangeText={setSearchText} placeholder={t('collection.searchPlaceholder')} />
 
         <View className="flex-row items-center justify-between px-4 pb-1">
           <Text variant="paragraphSmall" className="text-muted-foreground">
-            {quotes.length} favoritos
+            {t('collection.favoriteCount', { count: quotes.length })}
           </Text>
         </View>
 

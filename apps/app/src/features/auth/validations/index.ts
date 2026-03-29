@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import i18next from '@/lib/i18n';
 import {
   validateEmail,
   validatePassword,
@@ -6,42 +7,47 @@ import {
   withPasswordConfirmation,
 } from '@/lib/zod/zod-predefinitions.helper';
 
-export const signUpFormSchema = withPasswordConfirmation(
-  z.object({
-    name: z.string().min(1, { message: 'Campo obrigatório' }),
-    email: validateEmail().optional(),
-    password: validatePassword(),
-    passwordConfirmation: validatePassword(),
-    username: validateUsername(),
-    acceptTerms: z.literal(true, {
-      error: 'Você deve aceitar os termos de serviço',
-    }),
-  })
-);
+export const createSignUpFormSchema = () =>
+  withPasswordConfirmation(
+    z.object({
+      name: z.string().min(1, { message: i18next.t('validation.requiredField') }),
+      email: validateEmail().optional(),
+      password: validatePassword(),
+      passwordConfirmation: validatePassword(),
+      username: validateUsername(),
+      acceptTerms: z.literal(true, {
+        error: i18next.t('validation.acceptTerms'),
+      }),
+    })
+  );
 
-export const loginFormSchema = z.object({
-  email: validateEmail(),
-  password: validatePassword(),
-  remember: z.boolean(),
-});
-
-export const forgotPasswordFormSchema = z.object({
-  email: validateEmail(),
-});
-
-export const resetPasswordFormSchema = withPasswordConfirmation(
+export const createLoginFormSchema = () =>
   z.object({
     email: validateEmail(),
     password: validatePassword(),
-    passwordConfirmation: validatePassword(),
-    token: z.string(),
-  })
-);
+    remember: z.boolean(),
+  });
 
-export const changePasswordFormSchema = withPasswordConfirmation(
+export const createForgotPasswordFormSchema = () =>
   z.object({
-    currentPassword: validatePassword(),
-    password: validatePassword(),
-    passwordConfirmation: validatePassword(),
-  })
-);
+    email: validateEmail(),
+  });
+
+export const createResetPasswordFormSchema = () =>
+  withPasswordConfirmation(
+    z.object({
+      email: validateEmail(),
+      password: validatePassword(),
+      passwordConfirmation: validatePassword(),
+      token: z.string(),
+    })
+  );
+
+export const createChangePasswordFormSchema = () =>
+  withPasswordConfirmation(
+    z.object({
+      currentPassword: validatePassword(),
+      password: validatePassword(),
+      passwordConfirmation: validatePassword(),
+    })
+  );

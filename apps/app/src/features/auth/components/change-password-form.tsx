@@ -3,16 +3,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import type { z } from 'zod';
-import { changePasswordFormSchema } from '@/features/auth/validations';
+import { useTranslation } from 'react-i18next';
+import { createChangePasswordFormSchema } from '@/features/auth/validations';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { Button } from '@/shared/components/ui/button';
 import { useChangePassword } from '@/features/auth/hooks/use-change-password';
 
-type ChangePasswordFormData = z.infer<typeof changePasswordFormSchema>;
+type ChangePasswordFormData = z.infer<ReturnType<typeof createChangePasswordFormSchema>>;
 
 export const ChangePasswordForm: React.FC = () => {
+  const { t } = useTranslation();
+
   const form = useForm<ChangePasswordFormData>({
-    resolver: zodResolver(changePasswordFormSchema),
+    resolver: zodResolver(createChangePasswordFormSchema()),
     defaultValues: {},
     mode: 'onChange',
   });
@@ -30,22 +33,22 @@ export const ChangePasswordForm: React.FC = () => {
           testID="current-password-input"
           control={form.control}
           name="currentPassword"
-          label="Senha atual"
-          placeholder="Digite sua senha atual"
+          label={t('form.currentPassword')}
+          placeholder={t('form.currentPasswordPlaceholder')}
         />
         <ControlledPasswordInput
           testID="new-password-input"
           control={form.control}
           name="password"
-          label="Senha nova"
-          placeholder="Digite sua nova senha"
+          label={t('form.newPassword')}
+          placeholder={t('form.newPasswordPlaceholder')}
         />
         <ControlledPasswordInput
           testID="new-password-confirmation-input"
           control={form.control}
           name="passwordConfirmation"
-          label="Confirmar senha"
-          placeholder="Digite a mesma senha"
+          label={t('form.confirmPassword')}
+          placeholder={t('form.confirmPasswordPlaceholder')}
         />
       </View>
 
@@ -54,7 +57,7 @@ export const ChangePasswordForm: React.FC = () => {
         loading={isPending}
         disabled={!form.formState.isValid}
         onPress={onSubmit}
-        title="Alterar senha"
+        title={t('auth.changePassword.submit')}
       />
     </>
   );

@@ -3,22 +3,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 import { View } from 'react-native';
-import { resetPasswordFormSchema } from '@/features/auth/validations';
+import { useTranslation } from 'react-i18next';
+import { createResetPasswordFormSchema } from '@/features/auth/validations';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { Button } from '@/shared/components/ui/button';
 import { Text } from '@/shared/components/ui/text';
 import { useResetPassword } from '@/features/auth/hooks/use-reset-password';
 
-type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>;
+type ResetPasswordFormData = z.infer<ReturnType<typeof createResetPasswordFormSchema>>;
 
 interface ResetPasswordFormProps {
   token: string;
 }
 
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ token }) => {
+  const { t } = useTranslation();
+
   const form = useForm<ResetPasswordFormData>({
-    resolver: zodResolver(resetPasswordFormSchema),
+    resolver: zodResolver(createResetPasswordFormSchema()),
     defaultValues: {
       token,
     },
@@ -33,32 +36,32 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ token }) =
   return (
     <>
       <Text variant="headingLarge" className="mb-4">
-        Esqueci minha senha
+        {t('auth.forgotPassword.title')}
       </Text>
       <Text variant="paragraphLarge" className="mb-8">
-        Digite seu e-mail e enviaremos as instruções para redefinição de senha
+        {t('auth.forgotPassword.subtitle')}
       </Text>
 
       <View className="mb-10 gap-5">
         <ControlledTextInput
           control={form.control}
           name="email"
-          label="E-mail"
-          placeholder="Digite seu e-mail"
+          label={t('form.email')}
+          placeholder={t('form.emailPlaceholder')}
           testID="reset-password-email-input"
         />
         <ControlledPasswordInput
           control={form.control}
           name="password"
-          label="Senha"
-          placeholder="Digite sua senha"
+          label={t('form.password')}
+          placeholder={t('form.passwordPlaceholder')}
           testID="reset-password-password-input"
         />
         <ControlledPasswordInput
           control={form.control}
           name="passwordConfirmation"
-          label="Confirmar senha"
-          placeholder="Digite a mesma senha"
+          label={t('form.confirmPassword')}
+          placeholder={t('form.confirmPasswordPlaceholder')}
           testID="reset-password-confirmation-input"
         />
       </View>
@@ -67,7 +70,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ token }) =
         loading={isPending}
         disabled={!form.formState.isValid}
         onPress={onSubmit}
-        title="Redefinir senha"
+        title={t('auth.resetPassword.submit')}
         testID="reset-password-button"
       />
     </>

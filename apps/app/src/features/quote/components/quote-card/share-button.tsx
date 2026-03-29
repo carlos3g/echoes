@@ -1,6 +1,7 @@
 import { haptics } from '@/shared/utils/haptics';
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { Quote } from '@/types/entities';
 import { Ionicons } from '@/lib/nativewind/components';
 import { ShareImageBottomSheet } from '@/features/quote/components/share-image/share-image-bottom-sheet';
@@ -11,6 +12,7 @@ interface ShareButtonProps {
 
 export const ShareButton: React.FC<ShareButtonProps> = (props) => {
   const { data } = props;
+  const { t } = useTranslation();
   const [showSheet, setShowSheet] = useState(false);
 
   return (
@@ -21,7 +23,7 @@ export const ShareButton: React.FC<ShareButtonProps> = (props) => {
           haptics.medium();
           setShowSheet(true);
         }}
-        accessibilityLabel="Compartilhar citacao"
+        accessibilityLabel={t('quote.shareLabel')}
         accessibilityRole="button"
         activeOpacity={0.7}
         hitSlop={12}

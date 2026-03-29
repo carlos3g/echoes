@@ -1,10 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
 export default function TabLayout() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Tabs
@@ -36,7 +38,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(explore)"
         options={{
-          title: 'Explorar',
+          title: t('tabs.explore'),
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'compass' : 'compass-outline'} color={color} size={24} />
@@ -47,7 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="collection"
         options={{
-          title: 'Colecao',
+          title: t('tabs.collection'),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'bookmark' : 'bookmark-outline'} color={color} size={24} />
           ),
@@ -57,7 +59,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(profile)"
         options={{
-          title: 'Perfil',
+          title: t('tabs.profile'),
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'person' : 'person-outline'} color={color} size={24} />

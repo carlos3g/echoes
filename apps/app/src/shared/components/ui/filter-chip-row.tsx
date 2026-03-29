@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/shared/components/ui/text';
 import { cn } from '@/shared/utils';
 import { haptics } from '@/shared/utils/haptics';
@@ -50,7 +51,10 @@ const AnimatedChip: React.FC<{ label: string; isActive: boolean; onPress: () => 
   }
 );
 
-export const FilterChipRow: React.FC<FilterChipRowProps> = ({ items, selectedUuid, onSelect, allLabel = 'Todos' }) => {
+export const FilterChipRow: React.FC<FilterChipRowProps> = ({ items, selectedUuid, onSelect, allLabel }) => {
+  const { t } = useTranslation();
+  const resolvedAllLabel = allLabel ?? t('common.allMasculine');
+
   if (items.length === 0) return null;
 
   return (
@@ -60,7 +64,7 @@ export const FilterChipRow: React.FC<FilterChipRowProps> = ({ items, selectedUui
       contentContainerClassName="px-4 py-2 gap-2"
       style={{ flexGrow: 0 }}
     >
-      <AnimatedChip label={allLabel} isActive={!selectedUuid} onPress={() => onSelect(undefined)} />
+      <AnimatedChip label={resolvedAllLabel} isActive={!selectedUuid} onPress={() => onSelect(undefined)} />
       {items.map((item) => (
         <AnimatedChip
           key={item.uuid}

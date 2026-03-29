@@ -3,20 +3,22 @@ import type { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'expo-router';
-import { loginFormSchema } from '@/features/auth/validations';
+import { useTranslation } from 'react-i18next';
+import { createLoginFormSchema } from '@/features/auth/validations';
 import { ControlledTextInput } from '@/shared/components/form/controlled-text-input';
 import { ControlledPasswordInput } from '@/shared/components/form/controlled-password-input';
 import { Text } from '@/shared/components/ui/text';
 import { Button } from '@/shared/components/ui/button';
 import { useSignIn } from '@/features/auth/hooks/use-sign-in';
 
-type LoginFormData = z.infer<typeof loginFormSchema>;
+type LoginFormData = z.infer<ReturnType<typeof createLoginFormSchema>>;
 
 export const SignInForm: React.FC = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginFormSchema),
+    resolver: zodResolver(createLoginFormSchema()),
     defaultValues: {
       remember: true,
     },
@@ -39,18 +41,18 @@ export const SignInForm: React.FC = () => {
   return (
     <>
       <Text className="mb-2" variant="headingLarge">
-        Olá
+        {t('auth.signIn.greeting')}
       </Text>
 
       <Text variant="paragraphLarge" className="mb-10">
-        Digite seu e-mail e senha para entrar
+        {t('auth.signIn.subtitle')}
       </Text>
 
       <ControlledTextInput
         control={form.control}
         name="email"
-        label="E-mail"
-        placeholder="Digite seu e-mail"
+        label={t('form.email')}
+        placeholder={t('form.emailPlaceholder')}
         boxClassName="mb-5"
         testID="signin-email-input"
       />
@@ -58,8 +60,8 @@ export const SignInForm: React.FC = () => {
       <ControlledPasswordInput
         control={form.control}
         name="password"
-        label="Senha"
-        placeholder="Digite sua senha"
+        label={t('form.password')}
+        placeholder={t('form.passwordPlaceholder')}
         boxClassName="mb-5"
         testID="signin-password-input"
       />
@@ -71,7 +73,7 @@ export const SignInForm: React.FC = () => {
         bold
         testID="go-to-forgot-password-button"
       >
-        Esqueci minha senha
+        {t('auth.signIn.forgotPassword')}
       </Text>
 
       <Button
@@ -79,7 +81,7 @@ export const SignInForm: React.FC = () => {
         disabled={!form.formState.isValid}
         onPress={onSubmit}
         className="mt-12"
-        title="Entrar"
+        title={t('auth.signIn.submit')}
         testID="signin-button"
       />
 
@@ -87,7 +89,7 @@ export const SignInForm: React.FC = () => {
         onPress={navigateToSignUpScreen}
         variant="outline"
         className="mt-3"
-        title="Criar conta"
+        title={t('auth.signIn.createAccount')}
         testID="go-to-sign-up-button"
       />
     </>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
 import { useSearchHistoryStore } from '@/lib/zustand/stores/search-history.store';
@@ -50,6 +51,7 @@ const HistoryItem: React.FC<{
 };
 
 export const SearchHistory: React.FC<SearchHistoryProps> = ({ onSelect }) => {
+  const { t } = useTranslation();
   const history = useSearchHistoryStore((s) => s.history);
   const removeSearch = useSearchHistoryStore((s) => s.removeSearch);
   const clearHistory = useSearchHistoryStore((s) => s.clearHistory);
@@ -60,11 +62,11 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({ onSelect }) => {
     <View className="flex-1 px-4 pt-4">
       <View className="mb-3 flex-row items-center justify-between">
         <Text variant="paragraphSmall" semiBold className="text-foreground">
-          Buscas recentes
+          {t('search.recentSearches')}
         </Text>
         <Pressable onPress={clearHistory}>
           <Text variant="paragraphSmall" className="text-primary">
-            Limpar
+            {t('common.clear')}
           </Text>
         </Pressable>
       </View>

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, TextInput as RNTextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
 
@@ -17,13 +18,15 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChangeText,
-  placeholder = 'Buscar...',
+  placeholder,
   testID,
   onFocus,
   onBlur,
   onSubmit,
 }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const resolvedPlaceholder = placeholder ?? t('search.placeholder');
   const inputRef = useRef<RNTextInput>(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -54,7 +57,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <RNTextInput
           ref={inputRef}
           className="ml-3 flex-1 font-dm-sans-regular text-paragraph-medium text-foreground"
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           placeholderTextColor={colors.mutedForeground}
           value={value}
           onChangeText={onChangeText}
@@ -75,7 +78,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       {isFocused && (
         <TouchableOpacity onPress={handleCancel} activeOpacity={0.7}>
           <Text variant="paragraphSmall" semiBold className="text-primary">
-            Cancelar
+            {t('common.cancel')}
           </Text>
         </TouchableOpacity>
       )}

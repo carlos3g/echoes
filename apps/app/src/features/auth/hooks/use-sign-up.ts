@@ -3,6 +3,7 @@ import { authService } from '@/features/auth/services';
 import type { ApiResponseError } from '@/types/api';
 import type { HttpError } from '@/types/http';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner-native';
 
 interface UseSignUpProps {
@@ -10,12 +11,14 @@ interface UseSignUpProps {
 }
 
 export const useSignUp = ({ onSuccess }: UseSignUpProps) => {
+  const { t } = useTranslation();
+
   return useMutation<SignUpOutput, HttpError<ApiResponseError<SignUpPayload>>, SignUpPayload>({
     mutationFn: async (payload) => authService.signUp(payload),
     onSuccess,
     onError: () => {
-      toast.error('Tivemos um problema!', {
-        description: 'Tente novamente ou entre em contato com o suporte.',
+      toast.error(t('auth.signUp.errorTitle'), {
+        description: t('auth.signUp.errorDescription'),
       });
     },
   });

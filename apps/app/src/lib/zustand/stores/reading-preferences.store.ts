@@ -29,11 +29,6 @@ export const quoteFontConfig: Record<QuoteFont, { label: string; family: string;
 
 export type ListMode = 'infinite' | 'paginated';
 
-export const listModeLabels: Record<ListMode, string> = {
-  infinite: 'Scroll infinito',
-  paginated: 'Paginacao',
-};
-
 export type LineHeightOption = 'auto' | 'compact' | 'normal' | 'relaxed';
 
 export const lineHeightMultipliers: Record<LineHeightOption, number> = {
@@ -41,13 +36,6 @@ export const lineHeightMultipliers: Record<LineHeightOption, number> = {
   compact: 1.4,
   normal: 1.6,
   relaxed: 1.9,
-};
-
-export const lineHeightLabels: Record<LineHeightOption, string> = {
-  auto: 'Auto',
-  compact: 'Compacto',
-  normal: 'Normal',
-  relaxed: 'Relaxado',
 };
 
 export function getLineHeight(fontSize: number, option: LineHeightOption): number {

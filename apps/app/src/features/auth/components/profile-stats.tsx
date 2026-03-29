@@ -1,18 +1,20 @@
 import React from 'react';
 import { View } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/shared/components/ui/text';
 import { useActivityStore } from '@/lib/zustand/stores/activity.store';
 
 export const ProfileStats: React.FC = () => {
+  const { t } = useTranslation();
   const favoritesCount = useActivityStore((s) => s.favoritesCount);
   const tagsCount = useActivityStore((s) => s.tagsCount);
   const readCount = useActivityStore((s) => s.readCount);
 
   const stats = [
-    { label: 'Favoritos', value: favoritesCount },
-    { label: 'Tags', value: tagsCount },
-    { label: 'Lidas', value: readCount },
+    { label: t('profile.stats.favorites'), value: favoritesCount },
+    { label: t('profile.stats.tags'), value: tagsCount },
+    { label: t('profile.stats.read'), value: readCount },
   ];
 
   return (

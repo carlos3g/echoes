@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Appearance } from 'react-native';
 import * as Sentry from '@sentry/react-native';
+import i18next from '@/lib/i18n';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -39,15 +40,17 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24, backgroundColor: bg }}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 8, color: text }}>Algo deu errado</Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 8, color: text }}>
+            {i18next.t('error.title')}
+          </Text>
           <Text style={{ fontSize: 14, color: muted, marginBottom: 24, textAlign: 'center' }}>
-            Ocorreu um erro inesperado. Tente novamente.
+            {i18next.t('error.description')}
           </Text>
           <TouchableOpacity
             onPress={this.handleReset}
             style={{ backgroundColor: buttonBg, paddingHorizontal: 24, paddingVertical: 12, borderRadius: 8 }}
           >
-            <Text style={{ color: buttonText, fontWeight: '600' }}>Tentar novamente</Text>
+            <Text style={{ color: buttonText, fontWeight: '600' }}>{i18next.t('error.retry')}</Text>
           </TouchableOpacity>
         </View>
       );

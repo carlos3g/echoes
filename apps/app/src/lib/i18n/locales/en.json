@@ -1,0 +1,187 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "create": "Create",
+    "clear": "Clear",
+    "previous": "Previous",
+    "next": "Next",
+    "all": "All",
+    "allMasculine": "All",
+    "requiredField": "Required field",
+    "quotes": "quotes",
+    "favorites": "favorites"
+  },
+  "tabs": {
+    "explore": "Explore",
+    "collection": "Collection",
+    "profile": "Profile"
+  },
+  "auth": {
+    "signIn": {
+      "greeting": "Hello",
+      "subtitle": "Enter your email and password to sign in",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot my password",
+      "createAccount": "Create account",
+      "errorTitle": "Oops!",
+      "errorDescription": "Invalid email or password"
+    },
+    "signUp": {
+      "title": "Create new account",
+      "submit": "Create account",
+      "errorTitle": "We had a problem!",
+      "errorDescription": "Try again or contact support."
+    },
+    "forgotPassword": {
+      "title": "Forgot my password",
+      "subtitle": "Enter your email and we'll send you password reset instructions",
+      "submit": "Recover password",
+      "successTitle": "Check your email!",
+      "successDescription": "A link to reset your password has been sent to your email.",
+      "errorTitle": "We had a problem!",
+      "errorDescription": "Try again or contact support."
+    },
+    "resetPassword": {
+      "submit": "Reset password",
+      "successTitle": "Password changed successfully!",
+      "successDescription": "Sign in with your new password",
+      "errorTitle": "We had a problem!",
+      "errorDescription": "Try again or contact support."
+    },
+    "changePassword": {
+      "submit": "Change password",
+      "successTitle": "Password changed successfully!",
+      "errorTitle": "Could not change password!",
+      "errorDescription": "Maybe you entered the current password incorrectly?"
+    }
+  },
+  "form": {
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Enter the same password",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "username": "Username",
+    "usernamePlaceholder": "Choose a username",
+    "currentPassword": "Current password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter your new password"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit profile",
+    "changePassword": "Change password",
+    "readingPreferences": "Reading preferences",
+    "signOut": "Sign out",
+    "stats": {
+      "favorites": "Favorites",
+      "tags": "Tags",
+      "read": "Read"
+    },
+    "recentActivity": "Recent activity",
+    "updateSuccess": "Profile updated!",
+    "updateErrorTitle": "Error updating profile",
+    "updateErrorDescription": "Try again"
+  },
+  "readingPreferences": {
+    "font": "Font",
+    "size": "Size",
+    "lineSpacing": "Line spacing",
+    "listMode": "List mode",
+    "paginationHint": "Pagination allows you to keep your reading progress between sessions.",
+    "listModes": {
+      "infinite": "Infinite scroll",
+      "paginated": "Pagination"
+    },
+    "lineHeights": {
+      "auto": "Auto",
+      "compact": "Compact",
+      "normal": "Normal",
+      "relaxed": "Relaxed"
+    }
+  },
+  "theme": {
+    "title": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "title": "Language",
+    "pt": "Portugues",
+    "en": "English"
+  },
+  "explore": {
+    "searchPlaceholder": "Search quotes, authors...",
+    "featuredAuthors": "Featured authors"
+  },
+  "collection": {
+    "searchPlaceholder": "Search in favorites...",
+    "favoriteCount": "{{count}} favorites"
+  },
+  "quote": {
+    "title": "Quote",
+    "unknownAuthor": "Unknown author",
+    "copiedToast": "Quote copied!",
+    "copyLabel": "Copy quote",
+    "shareLabel": "Share quote",
+    "removeFavorite": "Remove from favorites",
+    "addFavorite": "Add to favorites",
+    "emptyTitle": "No quotes found",
+    "emptyDescription": "Try adjusting the filters or come back later",
+    "viewAuthorProfile": "View {{name}}'s profile"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "recentSearches": "Recent searches",
+    "noResults": "No results for \"{{term}}\"",
+    "noResultsHint": "Try searching with different terms",
+    "authors": "Authors",
+    "categories": "Categories",
+    "quotes": "Quotes"
+  },
+  "share": {
+    "title": "Share",
+    "shareImage": "Share image",
+    "shareLink": "Share link"
+  },
+  "tag": {
+    "emptyTitle": "No tags registered",
+    "emptyDescription": "Create your first tag to organize your quotes",
+    "createTitle": "Title",
+    "createPlaceholder": "Enter the tag title",
+    "createSuccess": "Tag created successfully!",
+    "createErrorTitle": "We had an error :/",
+    "createErrorDescription": "Try again"
+  },
+  "author": {
+    "readLess": "Read less",
+    "readMore": "Read more",
+    "quotes": "Quotes",
+    "favorited": "Favorited"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Try again.",
+    "retry": "Try again",
+    "generic": "Error!",
+    "tryAgain": "Try again"
+  },
+  "validation": {
+    "invalid": "Invalid",
+    "passwordMin": "Password must be at least 8 characters",
+    "invalidEmail": "Invalid email",
+    "usernameMin": "Username must be at least 3 characters",
+    "usernameMax": "Username must be at most 20 characters",
+    "usernamePattern": "Username must contain only lowercase letters, numbers, underscores and hyphens",
+    "passwordsMustMatch": "Passwords must match",
+    "requiredField": "Required field",
+    "acceptTerms": "You must accept the terms of service",
+    "maxChars": "Maximum {{max}} characters"
+  }
+}

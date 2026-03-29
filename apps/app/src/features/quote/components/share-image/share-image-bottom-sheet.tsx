@@ -4,6 +4,7 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/botto
 import { Portal } from 'react-native-portalize';
 import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
+import { useTranslation } from 'react-i18next';
 import type { Quote } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { Button } from '@/shared/components/ui/button';
@@ -25,6 +26,7 @@ const renderBackdrop = (props: any) => (
 
 export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ data, onClose }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const captureRef_ = useRef<View>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<ShareTemplate>(shareTemplates[0]);
@@ -77,7 +79,7 @@ export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ da
       >
         <BottomSheetView style={{ flex: 1, paddingHorizontal: 24, paddingTop: 8 }}>
           <Text variant="headingSmall" className="mb-4 text-center text-foreground">
-            Compartilhar
+            {t('share.title')}
           </Text>
 
           <SharePreview data={data} template={selectedTemplate} />
@@ -100,8 +102,8 @@ export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ da
           </View>
 
           <View className="mt-5 gap-3">
-            <Button title="Compartilhar imagem" onPress={handleShareImage} />
-            <Button title="Compartilhar link" variant="outline" onPress={handleShareLink} />
+            <Button title={t('share.shareImage')} onPress={handleShareImage} />
+            <Button title={t('share.shareLink')} variant="outline" onPress={handleShareLink} />
           </View>
         </BottomSheetView>
       </BottomSheet>

@@ -2,14 +2,13 @@ import React from 'react';
 import { ScrollView, View, Pressable } from 'react-native';
 import { Text as RNText } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
 import { haptics } from '@/shared/utils/haptics';
 import {
   useReadingPreferencesStore,
   quoteFontConfig,
-  lineHeightLabels,
-  listModeLabels,
   SIZE_OPTIONS,
   type QuoteFont,
   type LineHeightOption,
@@ -75,6 +74,7 @@ const FontCard: React.FC<{
 
 export default function ReadingPreferencesScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const { quoteStyle } = useReadingStyle();
   const font = useReadingPreferencesStore((s) => s.font);
   const fontSize = useReadingPreferencesStore((s) => s.fontSize);
@@ -109,7 +109,7 @@ export default function ReadingPreferencesScreen() {
 
       <View className="mt-6 px-4">
         <Text variant="paragraphSmall" semiBold className="mb-3 text-foreground">
-          Fonte
+          {t('readingPreferences.font')}
         </Text>
         <View className="flex-row gap-2">
           {fonts.map((f) => (
@@ -128,7 +128,7 @@ export default function ReadingPreferencesScreen() {
 
       <View className="mt-6 px-4">
         <Text variant="paragraphSmall" semiBold className="mb-3 text-foreground">
-          Tamanho
+          {t('readingPreferences.size')}
         </Text>
         <View className="flex-row gap-2">
           {SIZE_OPTIONS.map((size) => (
@@ -163,7 +163,7 @@ export default function ReadingPreferencesScreen() {
       </View>
       <View className="mt-6 px-4">
         <Text variant="paragraphSmall" semiBold className="mb-3 text-foreground">
-          Espacamento entre linhas
+          {t('readingPreferences.lineSpacing')}
         </Text>
         <View className="flex-row gap-2">
           {LINE_HEIGHT_OPTIONS.map((option) => (
@@ -182,7 +182,7 @@ export default function ReadingPreferencesScreen() {
                 className={lineHeight === option ? 'text-primary' : 'text-muted-foreground'}
                 semiBold={lineHeight === option}
               >
-                {lineHeightLabels[option]}
+                {t(`readingPreferences.lineHeights.${option}`)}
               </Text>
             </Pressable>
           ))}
@@ -191,7 +191,7 @@ export default function ReadingPreferencesScreen() {
 
       <View className="mt-6 px-4">
         <Text variant="paragraphSmall" semiBold className="mb-3 text-foreground">
-          Modo de listagem
+          {t('readingPreferences.listMode')}
         </Text>
         <View className="flex-row gap-2">
           {listModes.map((mode) => (
@@ -210,13 +210,13 @@ export default function ReadingPreferencesScreen() {
                 className={listMode === mode ? 'text-primary' : 'text-muted-foreground'}
                 semiBold={listMode === mode}
               >
-                {listModeLabels[mode]}
+                {t(`readingPreferences.listModes.${mode}`)}
               </Text>
             </Pressable>
           ))}
         </View>
         <Text variant="paragraphCaptionSmall" className="mt-2 text-muted-foreground">
-          A paginacao permite manter seu progresso de leitura entre sessoes.
+          {t('readingPreferences.paginationHint')}
         </Text>
       </View>
     </ScrollView>

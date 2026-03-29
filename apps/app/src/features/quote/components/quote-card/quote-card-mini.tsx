@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Pressable, Text as RNText, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import type { Quote } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { useReadingStyle } from '@/shared/hooks/use-reading-style';
@@ -18,6 +19,7 @@ interface QuoteCardMiniProps {
 
 export const QuoteCardMini: React.FC<QuoteCardMiniProps> = React.memo(({ data, onPress }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { quoteStyle } = useReadingStyle();
   const { colors } = useTheme();
 
@@ -48,7 +50,7 @@ export const QuoteCardMini: React.FC<QuoteCardMiniProps> = React.memo(({ data, o
         </TouchableOpacity>
       ) : (
         <Text variant="paragraphCaptionSmall" className="uppercase tracking-widest text-muted-foreground">
-          Autor desconhecido
+          {t('quote.unknownAuthor')}
         </Text>
       )}
 

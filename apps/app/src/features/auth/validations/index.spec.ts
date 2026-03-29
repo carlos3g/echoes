@@ -1,9 +1,9 @@
 import {
-  changePasswordFormSchema,
-  forgotPasswordFormSchema,
-  loginFormSchema,
-  resetPasswordFormSchema,
-  signUpFormSchema,
+  createChangePasswordFormSchema,
+  createForgotPasswordFormSchema,
+  createLoginFormSchema,
+  createResetPasswordFormSchema,
+  createSignUpFormSchema,
 } from './index';
 
 describe('signUpFormSchema', () => {
@@ -17,73 +17,57 @@ describe('signUpFormSchema', () => {
   };
 
   it('should accept valid sign up data', () => {
-    const result = signUpFormSchema.safeParse(validData);
+    const result = createSignUpFormSchema().safeParse(validData);
     expect(result.success).toBe(true);
   });
 
   it('should accept sign up without email (optional)', () => {
     const { email: _, ...dataWithoutEmail } = validData;
-    const result = signUpFormSchema.safeParse(dataWithoutEmail);
+    const result = createSignUpFormSchema().safeParse(dataWithoutEmail);
     expect(result.success).toBe(true);
   });
 
   it('should reject empty name', () => {
-    const result = signUpFormSchema.safeParse({ ...validData, name: '' });
+    const result = createSignUpFormSchema().safeParse({ ...validData, name: '' });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      const nameError = result.error.issues.find((i) => i.path.includes('name'));
-      expect(nameError?.message).toBe('Campo obrigatório');
-    }
   });
 
   it('should reject invalid email format', () => {
-    const result = signUpFormSchema.safeParse({ ...validData, email: 'invalid-email' });
+    const result = createSignUpFormSchema().safeParse({ ...validData, email: 'invalid-email' });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      const emailError = result.error.issues.find((i) => i.path.includes('email'));
-      expect(emailError?.message).toBe('Email inválido');
-    }
   });
 
   it('should reject password with less than 8 characters', () => {
-    const result = signUpFormSchema.safeParse({
+    const result = createSignUpFormSchema().safeParse({
       ...validData,
       password: 'short',
       passwordConfirmation: 'short',
     });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      const passwordError = result.error.issues.find((i) => i.path.includes('password'));
-      expect(passwordError?.message).toBe('A senha deve ter pelo menos 8 caracteres');
-    }
   });
 
   it('should reject when passwords do not match', () => {
-    const result = signUpFormSchema.safeParse({
+    const result = createSignUpFormSchema().safeParse({
       ...validData,
       password: 'password123',
       passwordConfirmation: 'differentpassword',
     });
     expect(result.success).toBe(false);
     if (!result.success) {
-      const confirmError = result.error.issues.find((i) => i.path.includes('passwordConfirmation'));
-      expect(confirmError?.message).toBe('As senhas inseridas devem ser iguais');
+      const confirmError = result.error.issues.find((i: { path: PropertyKey[] }) =>
+        i.path.includes('passwordConfirmation')
+      );
+      expect(confirmError).toBeDefined();
     }
   });
 
   it('should reject invalid username format', () => {
-    const result = signUpFormSchema.safeParse({ ...validData, username: 'John Doe' });
+    const result = createSignUpFormSchema().safeParse({ ...validData, username: 'John Doe' });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      const usernameError = result.error.issues.find((i) => i.path.includes('username'));
-      expect(usernameError?.message).toBe(
-        'Username deve conter apenas letras minúsculas, números, underlines e híphens'
-      );
-    }
   });
 
   it('should reject when terms are not accepted', () => {
-    const result = signUpFormSchema.safeParse({ ...validData, acceptTerms: false });
+    const result = createSignUpFormSchema().safeParse({ ...validData, acceptTerms: false });
     expect(result.success).toBe(false);
   });
 });
@@ -96,54 +80,45 @@ describe('loginFormSchema', () => {
   };
 
   it('should accept valid login data', () => {
-    const result = loginFormSchema.safeParse(validData);
+    const result = createLoginFormSchema().safeParse(validData);
     expect(result.success).toBe(true);
   });
 
   it('should accept login with remember true', () => {
-    const result = loginFormSchema.safeParse({ ...validData, remember: true });
+    const result = createLoginFormSchema().safeParse({ ...validData, remember: true });
     expect(result.success).toBe(true);
   });
 
   it('should reject invalid email', () => {
-    const result = loginFormSchema.safeParse({ ...validData, email: 'invalid' });
+    const result = createLoginFormSchema().safeParse({ ...validData, email: 'invalid' });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].message).toBe('Email inválido');
-    }
   });
 
   it('should reject short password', () => {
-    const result = loginFormSchema.safeParse({ ...validData, password: 'short' });
+    const result = createLoginFormSchema().safeParse({ ...validData, password: 'short' });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].message).toBe('A senha deve ter pelo menos 8 caracteres');
-    }
   });
 
   it('should reject missing remember field', () => {
     const { remember: _, ...dataWithoutRemember } = validData;
-    const result = loginFormSchema.safeParse(dataWithoutRemember);
+    const result = createLoginFormSchema().safeParse(dataWithoutRemember);
     expect(result.success).toBe(false);
   });
 });
 
 describe('forgotPasswordFormSchema', () => {
   it('should accept valid email', () => {
-    const result = forgotPasswordFormSchema.safeParse({ email: 'john@example.com' });
+    const result = createForgotPasswordFormSchema().safeParse({ email: 'john@example.com' });
     expect(result.success).toBe(true);
   });
 
   it('should reject invalid email', () => {
-    const result = forgotPasswordFormSchema.safeParse({ email: 'invalid' });
+    const result = createForgotPasswordFormSchema().safeParse({ email: 'invalid' });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].message).toBe('Email inválido');
-    }
   });
 
   it('should reject empty email', () => {
-    const result = forgotPasswordFormSchema.safeParse({ email: '' });
+    const result = createForgotPasswordFormSchema().safeParse({ email: '' });
     expect(result.success).toBe(false);
   });
 });
@@ -157,30 +132,32 @@ describe('resetPasswordFormSchema', () => {
   };
 
   it('should accept valid reset password data', () => {
-    const result = resetPasswordFormSchema.safeParse(validData);
+    const result = createResetPasswordFormSchema().safeParse(validData);
     expect(result.success).toBe(true);
   });
 
   it('should reject when passwords do not match', () => {
-    const result = resetPasswordFormSchema.safeParse({
+    const result = createResetPasswordFormSchema().safeParse({
       ...validData,
       password: 'password123',
       passwordConfirmation: 'differentpassword',
     });
     expect(result.success).toBe(false);
     if (!result.success) {
-      const confirmError = result.error.issues.find((i) => i.path.includes('passwordConfirmation'));
-      expect(confirmError?.message).toBe('As senhas inseridas devem ser iguais');
+      const confirmError = result.error.issues.find((i: { path: PropertyKey[] }) =>
+        i.path.includes('passwordConfirmation')
+      );
+      expect(confirmError).toBeDefined();
     }
   });
 
   it('should reject invalid email', () => {
-    const result = resetPasswordFormSchema.safeParse({ ...validData, email: 'invalid' });
+    const result = createResetPasswordFormSchema().safeParse({ ...validData, email: 'invalid' });
     expect(result.success).toBe(false);
   });
 
   it('should reject short password', () => {
-    const result = resetPasswordFormSchema.safeParse({
+    const result = createResetPasswordFormSchema().safeParse({
       ...validData,
       password: 'short',
       passwordConfirmation: 'short',
@@ -189,7 +166,7 @@ describe('resetPasswordFormSchema', () => {
   });
 
   it('should reject empty token', () => {
-    const result = resetPasswordFormSchema.safeParse({ ...validData, token: '' });
+    const result = createResetPasswordFormSchema().safeParse({ ...validData, token: '' });
     expect(result.success).toBe(true); // token is just z.string(), no min length
   });
 });
@@ -202,30 +179,32 @@ describe('changePasswordFormSchema', () => {
   };
 
   it('should accept valid change password data', () => {
-    const result = changePasswordFormSchema.safeParse(validData);
+    const result = createChangePasswordFormSchema().safeParse(validData);
     expect(result.success).toBe(true);
   });
 
   it('should reject when new passwords do not match', () => {
-    const result = changePasswordFormSchema.safeParse({
+    const result = createChangePasswordFormSchema().safeParse({
       ...validData,
       password: 'newpassword123',
       passwordConfirmation: 'differentpassword',
     });
     expect(result.success).toBe(false);
     if (!result.success) {
-      const confirmError = result.error.issues.find((i) => i.path.includes('passwordConfirmation'));
-      expect(confirmError?.message).toBe('As senhas inseridas devem ser iguais');
+      const confirmError = result.error.issues.find((i: { path: PropertyKey[] }) =>
+        i.path.includes('passwordConfirmation')
+      );
+      expect(confirmError).toBeDefined();
     }
   });
 
   it('should reject short current password', () => {
-    const result = changePasswordFormSchema.safeParse({ ...validData, currentPassword: 'short' });
+    const result = createChangePasswordFormSchema().safeParse({ ...validData, currentPassword: 'short' });
     expect(result.success).toBe(false);
   });
 
   it('should reject short new password', () => {
-    const result = changePasswordFormSchema.safeParse({
+    const result = createChangePasswordFormSchema().safeParse({
       ...validData,
       password: 'short',
       passwordConfirmation: 'short',
@@ -234,7 +213,7 @@ describe('changePasswordFormSchema', () => {
   });
 
   it('should allow same current and new password', () => {
-    const result = changePasswordFormSchema.safeParse({
+    const result = createChangePasswordFormSchema().safeParse({
       currentPassword: 'samepassword123',
       password: 'samepassword123',
       passwordConfirmation: 'samepassword123',
