@@ -30,9 +30,9 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
   public async handle(input: QuotePaginatedInput): Promise<PaginatedResult<QuoteWithMetadata>> {
     const { filters, paginate, user } = input;
 
-    const [authorId, tagId, categoryId] = await Promise.all([
+    const [authorId, tagIds, categoryId] = await Promise.all([
       filters?.authorUuid ? this.resolveEntityId(this.authorRepository, filters.authorUuid, 'Author') : undefined,
-      filters?.tagUuid ? this.resolveEntityId(this.tagRepository, filters.tagUuid, 'Tag') : undefined,
+      filters?.tagUuids?.length ? this.resolveTagIds(filters.tagUuids) : undefined,
       filters?.categoryUuid
         ? this.resolveEntityId(this.categoryRepository, filters.categoryUuid, 'Category')
         : undefined,
@@ -42,7 +42,7 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
     const favoritedByUserId = filters?.favoritesOnly && user ? user.id : undefined;
 
     const result = await this.quoteRepository.findManyPaginated({
-      where: { authorId, tagId, categoryId, search, favoritedByUserId },
+      where: { authorId, tagIds, categoryId, search, favoritedByUserId },
       options: paginate,
     });
 
@@ -71,6 +71,10 @@ export class ListQuotePaginatedUseCase implements UseCaseHandler {
         favoritedByUser: favoritedSet.has(quote.id),
       },
     }));
+  }
+
+  private async resolveTagIds(uuids: string[]): Promise<number[]> {
+    return Promise.all(uuids.map((uuid) => this.resolveEntityId(this.tagRepository, uuid, 'Tag')));
   }
 
   private async resolveEntityId(

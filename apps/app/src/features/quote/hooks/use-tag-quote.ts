@@ -1,6 +1,7 @@
 import { quoteService } from '@/features/quote/services';
 import { updateQuotesCacheState } from '@/features/quote/utils';
 import { queryKeys } from '@/lib/react-query/query-keys';
+import { addRecentTag } from '@/lib/mmkv/recent-tags';
 import type { ApiResponseError } from '@/types/api';
 import type { Tag } from '@/types/entities';
 import type { HttpError } from '@/types/http';
@@ -18,8 +19,13 @@ export const useTagQuote = ({ tag }: useTagQuoteProps) => {
     onSuccess: async (_, quoteUuid) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.quotes.all });
 
-      await queryClient.invalidateQueries({ queryKey: queryKeys.quotes.isTagged(quoteUuid, tag.uuid) });
-      await queryClient.invalidateQueries({ queryKey: queryKeys.tags.all });
+      addRecentTag(tag.uuid);
+
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.quotes.isTagged(quoteUuid, tag.uuid) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.quotes.tags(quoteUuid) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.tags.all }),
+      ]);
 
       const newState = updateQuotesCacheState(queryClient, (quote) => {
         if (quote.uuid === quoteUuid) {

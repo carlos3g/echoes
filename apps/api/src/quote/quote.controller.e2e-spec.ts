@@ -105,7 +105,42 @@ describe('(GET) /quotes', () => {
       .get('/quotes')
       .query({
         filters: {
-          tagUuid: tag1.uuid,
+          tagUuids: [tag1.uuid],
+        },
+      });
+
+    expect(response.status).toBe(HttpStatus.OK);
+    expect(response.body).toHaveProperty('data');
+    expect(response.body).toHaveProperty('meta');
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(response.body.data).toHaveLength(1);
+    expect(response.body).toMatchObject({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      data: expect.arrayContaining([
+        expect.objectContaining({
+          uuid: quote1.uuid,
+        }),
+      ]),
+    });
+  });
+
+  it('should filter quotes by multiple tags using AND logic', async () => {
+    const tag1 = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    const tag2 = await tagRepository.create({ ...tagFactory(), userId: user.id });
+
+    const quote1 = await quoteRepository.create(quoteFactory());
+    const quote2 = await quoteRepository.create(quoteFactory());
+
+    await quoteRepository.tag({ data: { quoteId: quote1.id, tagId: tag1.id } });
+    await quoteRepository.tag({ data: { quoteId: quote1.id, tagId: tag2.id } });
+    await quoteRepository.tag({ data: { quoteId: quote2.id, tagId: tag1.id } });
+
+    const response = await request(server)
+      .get('/quotes')
+      .query({
+        filters: {
+          tagUuids: [tag1.uuid, tag2.uuid],
         },
       });
 
@@ -236,6 +271,63 @@ describe('(GET) /quotes/:uuid/untag', () => {
 
     expect(response.status).toBe(HttpStatus.FORBIDDEN);
     await expect(quoteRepository.isTagged({ where: { quoteId: quote.id, tagId: tag.id } })).resolves.toBeTruthy();
+  });
+});
+
+describe('(GET) /quotes/:uuid/tags', () => {
+  it('should respond unauthorized if not authenticated', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const response = await request(server).get(`/quotes/${quote.uuid}/tags`).send();
+    expect(response.status).toEqual(HttpStatus.UNAUTHORIZED);
+  });
+
+  it('should return tags applied to a quote by the authenticated user', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const tag1 = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    const tag2 = await tagRepository.create({ ...tagFactory(), userId: user.id });
+    const unusedTag = await tagRepository.create({ ...tagFactory(), userId: user.id });
+
+    await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag1.id } });
+    await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag2.id } });
+
+    const response = await request(server)
+      .get(`/quotes/${quote.uuid}/tags`)
+      .auth(token, { type: 'bearer' })
+      .send();
+
+    expect(response.status).toBe(HttpStatus.OK);
+    expect(response.body).toHaveLength(2);
+    const uuids = response.body.map((t: { uuid: string }) => t.uuid);
+    expect(uuids).toContain(tag1.uuid);
+    expect(uuids).toContain(tag2.uuid);
+    expect(uuids).not.toContain(unusedTag.uuid);
+  });
+
+  it('should not return tags from another user', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+    const anotherUser = await userRepository.create(userFactory());
+    const otherTag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
+    await prisma.tagQuote.create({ data: { quoteId: quote.id, tagId: otherTag.id } });
+
+    const response = await request(server)
+      .get(`/quotes/${quote.uuid}/tags`)
+      .auth(token, { type: 'bearer' })
+      .send();
+
+    expect(response.status).toBe(HttpStatus.OK);
+    expect(response.body).toHaveLength(0);
+  });
+
+  it('should return empty array when quote has no tags', async () => {
+    const quote = await quoteRepository.create(quoteFactory());
+
+    const response = await request(server)
+      .get(`/quotes/${quote.uuid}/tags`)
+      .auth(token, { type: 'bearer' })
+      .send();
+
+    expect(response.status).toBe(HttpStatus.OK);
+    expect(response.body).toHaveLength(0);
   });
 });
 

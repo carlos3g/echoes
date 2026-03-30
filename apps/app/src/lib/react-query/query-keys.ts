@@ -2,7 +2,7 @@ export const queryKeys = {
   quotes: {
     all: ['quotes'] as const,
     list: (filters?: {
-      tagUuid?: string;
+      tagUuids?: string[];
       authorUuid?: string;
       categoryUuid?: string;
       favoritesOnly?: boolean;
@@ -10,6 +10,7 @@ export const queryKeys = {
     }) => ['quotes', filters] as const,
     detail: (uuid: string) => ['quotes', uuid] as const,
     isTagged: (quoteUuid: string, tagUuid: string) => ['quotes', 'is-tagged', quoteUuid, tagUuid] as const,
+    tags: (quoteUuid: string) => ['quotes', quoteUuid, 'tags'] as const,
   },
   authors: {
     all: ['authors'] as const,

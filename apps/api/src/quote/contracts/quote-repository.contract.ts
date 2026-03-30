@@ -8,6 +8,7 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryFindTagsByQuoteAndUserInput,
   QuoteRepositoryIsFavoritedInput,
   QuoteRepositoryIsTaggedInput,
   QuoteRepositoryTagInput,
@@ -16,6 +17,7 @@ import type {
   QuoteRepositoryUpdateInput,
 } from '@app/quote/dtos/quote-repository-dtos';
 import type { Quote } from '@app/quote/entities/quote.entity';
+import type { Tag } from '@app/tag/entities/tag.entity';
 
 abstract class QuoteRepositoryContract {
   public abstract create(input: QuoteRepositoryCreateInput): Promise<Quote>;
@@ -63,6 +65,8 @@ abstract class QuoteRepositoryContract {
   public abstract countShares(quoteId: number): Promise<number>;
 
   public abstract countSharesBatch(quoteIds: number[]): Promise<Map<number, number>>;
+
+  public abstract findTagsByQuoteAndUser(input: QuoteRepositoryFindTagsByQuoteAndUserInput): Promise<Tag[]>;
 }
 
 export { QuoteRepositoryContract };

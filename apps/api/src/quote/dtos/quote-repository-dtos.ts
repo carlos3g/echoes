@@ -43,7 +43,7 @@ export interface QuoteRepositoryFindManyByTagInput {
 export interface QuoteRepositoryFindManyPaginatedInput {
   where?: {
     authorId?: number;
-    tagId?: number;
+    tagIds?: number[];
     categoryId?: number;
     search?: string;
     favoritedByUserId?: number;
@@ -98,4 +98,9 @@ export interface QuoteRepositoryIsTaggedInput {
     tagId: number;
     quoteId: number;
   };
+}
+
+export interface QuoteRepositoryFindTagsByQuoteAndUserInput {
+  quoteId: number;
+  userId: number;
 }

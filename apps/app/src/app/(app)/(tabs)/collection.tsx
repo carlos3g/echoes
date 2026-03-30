@@ -1,5 +1,5 @@
 import type RNBottomSheet from '@gorhom/bottom-sheet';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { QuoteList } from '@/features/quote/components/quote-list';
@@ -7,6 +7,7 @@ import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quo
 import { CreateTagBottomSheet } from '@/features/tag/components/create-tag-bottom-sheet';
 import { useQuoteList } from '@/features/quote/hooks/use-quote-list';
 import { useTags } from '@/features/tag/hooks/use-tags';
+import { useTagContextMenu } from '@/features/tag/hooks/use-tag-context-menu';
 import { useDebounce } from '@/shared/hooks/use-debounce';
 import { Text } from '@/shared/components/ui/text';
 import { SearchBar } from '@/shared/components/ui/search-bar';
@@ -16,15 +17,21 @@ import { FilterChipRow } from '@/shared/components/ui/filter-chip-row';
 export default function CollectionScreen() {
   const { t } = useTranslation();
   const bottomSheetRef = useRef<RNBottomSheet>(null);
-  const [selectedTagUuid, setSelectedTagUuid] = useState<string | undefined>(undefined);
+  const [selectedTagUuids, setSelectedTagUuids] = useState<string[]>([]);
   const [searchText, setSearchText] = useState('');
   const debouncedSearch = useDebounce(searchText, 400);
+
+  const handleTagDeleted = useCallback(
+    (uuid: string) => setSelectedTagUuids((prev) => prev.filter((id) => id !== uuid)),
+    []
+  );
+  const { showContextMenu } = useTagContextMenu({ onDelete: handleTagDeleted });
 
   const { tags } = useTags();
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading, currentPage, lastPage, onPageChange } = useQuoteList(
     {
       favoritesOnly: true,
-      tagUuid: selectedTagUuid,
+      tagUuids: selectedTagUuids.length > 0 ? selectedTagUuids : undefined,
       search: debouncedSearch || undefined,
     }
   );
@@ -40,7 +47,7 @@ export default function CollectionScreen() {
           </Text>
         </View>
 
-        <FilterChipRow items={tags} selectedUuid={selectedTagUuid} onSelect={setSelectedTagUuid} />
+        <FilterChipRow items={tags} selectedUuids={selectedTagUuids} onSelect={setSelectedTagUuids} onLongPress={showContextMenu} />
 
         <QuoteList
           quotes={quotes}

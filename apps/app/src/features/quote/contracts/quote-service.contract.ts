@@ -1,12 +1,12 @@
 import type { ApiPaginatedResult, Paginate } from '@/types/api';
-import type { Quote } from '@/types/entities';
+import type { Quote, Tag } from '@/types/entities';
 
 export type GetQuotePayload = unknown;
 
 export type GetQuoteOutput = Quote;
 
 export interface QuoteFilters {
-  tagUuid?: string;
+  tagUuids?: string[];
   authorUuid?: string;
   categoryUuid?: string;
   favoritesOnly?: boolean;
@@ -23,6 +23,8 @@ export type ListQuotesOutput = ApiPaginatedResult<Quote>;
 export type IsQuoteTaggedOutput = {
   exists: boolean;
 };
+
+export type ListQuoteTagsOutput = Tag[];
 
 export type ShareQuotePayload = {
   type: 'image' | 'link';
@@ -46,4 +48,6 @@ export abstract class QuoteServiceContract {
   public abstract isTagged(uuid: string, tagUuid: string): Promise<IsQuoteTaggedOutput>;
 
   public abstract share(uuid: string, payload: ShareQuotePayload): Promise<void>;
+
+  public abstract listTags(quoteUuid: string): Promise<ListQuoteTagsOutput>;
 }

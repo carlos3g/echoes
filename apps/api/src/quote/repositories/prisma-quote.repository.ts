@@ -11,6 +11,7 @@ import type {
   QuoteRepositoryFindManyInput,
   QuoteRepositoryFindManyPaginatedInput,
   QuoteRepositoryFindUniqueOrThrowInput,
+  QuoteRepositoryFindTagsByQuoteAndUserInput,
   QuoteRepositoryIsFavoritedInput,
   QuoteRepositoryIsTaggedInput,
   QuoteRepositoryTagInput,
@@ -19,6 +20,8 @@ import type {
   QuoteRepositoryUpdateInput,
 } from '@app/quote/dtos/quote-repository-dtos';
 import type { Quote } from '@app/quote/entities/quote.entity';
+import { prismaTagToTagAdapter } from '@app/tag/adapters';
+import type { Tag } from '@app/tag/entities/tag.entity';
 import { Injectable } from '@nestjs/common';
 import type { Quote as PrismaQuote } from '@generated/prisma/client';
 
@@ -40,7 +43,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
   }
 
   public async findManyPaginated(input: QuoteRepositoryFindManyPaginatedInput): Promise<PaginatedResult<Quote>> {
-    const { tagId, categoryId, search, favoritedByUserId, ...where } = input.where || {};
+    const { tagIds, categoryId, search, favoritedByUserId, ...where } = input.where || {};
     const { perPage = 20, page = 1 } = input.options || {};
 
     const searchFilter = search
@@ -52,13 +55,16 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
         }
       : {};
 
+    const tagFilter =
+      tagIds?.length ? { AND: tagIds.map((tagId) => ({ tags: { some: { tagId } } })) } : {};
+
     const result = await paginate<FindManyReturn, 'Quote'>(
       this.prismaManager.getClient().quote,
       {
         where: {
           ...where,
           ...searchFilter,
-          tags: tagId ? { some: { tagId } } : undefined,
+          ...tagFilter,
           categories: categoryId ? { some: { id: categoryId } } : undefined,
           favoritedBy: favoritedByUserId ? { some: { userId: favoritedByUserId } } : undefined,
         },
@@ -256,5 +262,17 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
       map.set(Number(r.quoteId), r._count.quoteId);
     }
     return map;
+  }
+
+  public async findTagsByQuoteAndUser(input: QuoteRepositoryFindTagsByQuoteAndUserInput): Promise<Tag[]> {
+    const tagQuotes = await this.prismaManager.getClient().tagQuote.findMany({
+      where: {
+        quoteId: input.quoteId,
+        tag: { userId: input.userId },
+      },
+      include: { tag: true },
+    });
+
+    return tagQuotes.map((tq) => prismaTagToTagAdapter(tq.tag));
   }
 }

@@ -10,7 +10,9 @@
     "allMasculine": "All",
     "requiredField": "Required field",
     "quotes": "quotes",
-    "favorites": "favorites"
+    "favorites": "favorites",
+    "rename": "Rename",
+    "delete": "Delete"
   },
   "tabs": {
     "explore": "Explore",
@@ -157,7 +159,18 @@
     "createPlaceholder": "Enter the tag title",
     "createSuccess": "Tag created successfully!",
     "createErrorTitle": "We had an error :/",
-    "createErrorDescription": "Try again"
+    "createErrorDescription": "Try again",
+    "searchPlaceholder": "Search tags...",
+    "recents": "Recent",
+    "updateSuccess": "Tag updated",
+    "updateErrorTitle": "Error updating tag",
+    "updateErrorDescription": "Please try again later",
+    "deleteSuccess": "Tag removed",
+    "deleteErrorTitle": "Error removing tag",
+    "deleteErrorDescription": "Please try again later",
+    "renameTitle": "Rename tag",
+    "deleteConfirmTitle": "Remove tag",
+    "deleteConfirmMessage": "Remove \"{{title}}\"? Quotes will not be deleted."
   },
   "author": {
     "title": "Author",

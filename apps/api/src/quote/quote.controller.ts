@@ -7,6 +7,7 @@ import { FavoriteQuoteUseCase } from '@app/quote/use-cases/favorite-quote.use-ca
 import { GetOneQuoteUseCase } from '@app/quote/use-cases/get-one-quote.use-case';
 import { IsQuoteTaggedUseCase } from '@app/quote/use-cases/is-quote-tagged.use-case';
 import { ListQuotePaginatedUseCase } from '@app/quote/use-cases/list-quote-paginated.use-case';
+import { ListQuoteTagsUseCase } from '@app/quote/use-cases/list-quote-tags.use-case';
 import { ShareQuoteUseCase } from '@app/quote/use-cases/share-quote.use-case';
 import { TagQuoteUseCase } from '@app/quote/use-cases/tag-quote.use-case';
 import { UnfavoriteQuoteUseCase } from '@app/quote/use-cases/unfavorite-quote.use-case';
@@ -25,7 +26,8 @@ export class QuoteController {
     private readonly tagQuoteUseCase: TagQuoteUseCase,
     private readonly untagQuoteUseCase: UntagQuoteUseCase,
     private readonly isQuoteTaggedUseCase: IsQuoteTaggedUseCase,
-    private readonly shareQuoteUseCase: ShareQuoteUseCase
+    private readonly shareQuoteUseCase: ShareQuoteUseCase,
+    private readonly listQuoteTagsUseCase: ListQuoteTagsUseCase
   ) {}
 
   @Public()
@@ -75,6 +77,13 @@ export class QuoteController {
   @HttpCode(HttpStatus.OK)
   public async share(@Param('uuid') uuid: string, @UserDecorator() user: User, @Body() input: ShareQuoteRequest) {
     return this.shareQuoteUseCase.handle({ quoteUuid: uuid, user, ...input });
+  }
+
+  @ApiBearerAuth()
+  @Get(':uuid/tags')
+  @HttpCode(HttpStatus.OK)
+  public async listTags(@Param('uuid') uuid: string, @UserDecorator() user: User) {
+    return this.listQuoteTagsUseCase.handle({ quoteUuid: uuid, user });
   }
 
   @ApiBearerAuth()

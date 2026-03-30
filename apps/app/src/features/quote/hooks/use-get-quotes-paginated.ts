@@ -9,15 +9,15 @@ import { useState, useCallback } from 'react';
 type UseGetQuotesPaginatedProps = QuoteFilters & { enabled?: boolean };
 
 export const useGetQuotesPaginated = (props: UseGetQuotesPaginatedProps) => {
-  const { tagUuid, authorUuid, categoryUuid, favoritesOnly, search, enabled = true } = props;
+  const { tagUuids, authorUuid, categoryUuid, favoritesOnly, search, enabled = true } = props;
   const [page, setPage] = useState(1);
 
   const query = useQuery<ListQuotesOutput, HttpError<ApiResponseError>>({
-    queryKey: [...queryKeys.quotes.list({ tagUuid, authorUuid, categoryUuid, favoritesOnly, search }), 'page', page],
+    queryKey: [...queryKeys.quotes.list({ tagUuids, authorUuid, categoryUuid, favoritesOnly, search }), 'page', page],
     queryFn: () =>
       quoteService.list({
         paginate: { page },
-        filters: { tagUuid, authorUuid, categoryUuid, favoritesOnly, search },
+        filters: { tagUuids, authorUuid, categoryUuid, favoritesOnly, search },
       }),
     enabled,
     placeholderData: keepPreviousData,

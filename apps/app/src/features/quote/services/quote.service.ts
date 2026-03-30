@@ -2,6 +2,7 @@ import type {
   GetQuoteOutput,
   GetQuotePayload,
   IsQuoteTaggedOutput,
+  ListQuoteTagsOutput,
   ListQuotesOutput,
   ListQuotesPayload,
   QuoteServiceContract,
@@ -42,5 +43,9 @@ export class QuoteService implements QuoteServiceContract {
 
   public async share(uuid: string, payload: ShareQuotePayload): Promise<void> {
     return this.httpClientService.post(`/quotes/${uuid}/share`, payload);
+  }
+
+  public async listTags(quoteUuid: string): Promise<ListQuoteTagsOutput> {
+    return this.httpClientService.get<ListQuoteTagsOutput, void>(`/quotes/${quoteUuid}/tags`);
   }
 }

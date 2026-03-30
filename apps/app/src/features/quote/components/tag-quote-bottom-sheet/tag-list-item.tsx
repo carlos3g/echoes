@@ -1,35 +1,31 @@
-import React from 'react';
-import type { ListRenderItem } from '@shopify/flash-list';
-import { StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import type { Tag } from '@/types/entities';
-import { Text } from '@/shared/components/ui/text';
 import { TagCard, TagCardSkeleton } from '@/features/tag/components/tag-card';
+import { useTagQuoteBottomSheet } from '@/features/quote/components/tag-quote-bottom-sheet/tag-quote-bottom-sheet.context';
 import { useTagQuote } from '@/features/quote/hooks/use-tag-quote';
 import { useUntagQuote } from '@/features/quote/hooks/use-untag-quote';
-import { useIsQuoteTagged } from '@/features/quote/hooks/use-is-quote-tagged';
-import { useTagQuoteBottomSheet } from './tag-quote-bottom-sheet.context';
+import { useTagContextMenu } from '@/features/tag/hooks/use-tag-context-menu';
+import type { Tag } from '@/types/entities';
+import React from 'react';
 
-const TagListItem: React.FC<{ item: Tag }> = ({ item: tag }) => {
+interface TagListItemProps {
+  item: Tag;
+  isTagged: boolean;
+}
+
+export const TagListItem: React.FC<TagListItemProps> = React.memo(({ item: tag, isTagged }) => {
   const { quote } = useTagQuoteBottomSheet();
+  const { showContextMenu } = useTagContextMenu();
 
   const tagMutation = useTagQuote({ tag });
   const untagMutation = useUntagQuote({ tag });
-  const isTaggedQuery = useIsQuoteTagged({ quoteUuid: quote?.uuid ?? '', tagUuid: tag.uuid });
-
-  const isTagged = isTaggedQuery.data?.exists;
 
   const handleTag = () => {
-    if (!quote) {
-      return;
-    }
+    if (!quote) return;
 
     if (isTagged) {
       untagMutation.mutate(quote.uuid);
-      return;
+    } else {
+      tagMutation.mutate(quote.uuid);
     }
-
-    tagMutation.mutate(quote.uuid);
   };
 
   return (
@@ -37,25 +33,11 @@ const TagListItem: React.FC<{ item: Tag }> = ({ item: tag }) => {
       data={tag}
       key={tag.uuid}
       onPress={handleTag}
+      onLongPress={() => showContextMenu(tag)}
       icon={isTagged ? 'solid' : 'outline'}
       disabled={tagMutation.isPending || untagMutation.isPending}
     />
   );
-};
-
-export const renderItem: ListRenderItem<Tag> = ({ item }) => <TagListItem item={item} />;
-
-export const renderItemSkeleton: ListRenderItem<Tag> = () => <TagCardSkeleton />;
-
-export const ItemSeparatorComponent = React.memo(() => (
-  <View className="bg-border" style={{ height: StyleSheet.hairlineWidth }} />
-));
-
-export const ListEmptyComponent = React.memo(() => {
-  const { t } = useTranslation();
-  return (
-    <View className="items-center">
-      <Text>{t('tag.emptyTitle')}</Text>
-    </View>
-  );
 });
+
+export const TagListItemSkeleton: React.FC = () => <TagCardSkeleton />;

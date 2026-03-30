@@ -7,51 +7,63 @@ import { cn } from '@/shared/utils';
 import { haptics } from '@/shared/utils/haptics';
 import { usePressScale } from '@/shared/hooks/use-press-scale';
 
-interface FilterChipItem {
+export interface FilterChipItem {
   uuid: string;
   title: string;
 }
 
 interface FilterChipRowProps {
   items: FilterChipItem[];
-  selectedUuid: string | undefined;
-  onSelect: (uuid: string | undefined) => void;
+  selectedUuids: string[];
+  onSelect: (uuids: string[]) => void;
+  onLongPress?: (item: FilterChipItem) => void;
   allLabel?: string;
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const AnimatedChip: React.FC<{ label: string; isActive: boolean; onPress: () => void }> = React.memo(
-  ({ label, isActive, onPress }) => {
-    const { animatedStyle, pressHandlers } = usePressScale(0.92);
+export const AnimatedChip: React.FC<{
+  label: string;
+  isActive: boolean;
+  onPress: () => void;
+  onLongPress?: () => void;
+}> = React.memo(({ label, isActive, onPress, onLongPress }) => {
+  const { animatedStyle, pressHandlers } = usePressScale(0.92);
 
-    return (
-      <AnimatedPressable
-        style={animatedStyle}
-        onPressIn={pressHandlers.onPressIn}
-        onPressOut={pressHandlers.onPressOut}
-        onPress={() => {
-          haptics.light();
-          onPress();
-        }}
-        className={cn(
-          'rounded-full border px-3 py-2',
-          isActive ? 'border-primary bg-primary' : 'border-border bg-muted'
-        )}
+  return (
+    <AnimatedPressable
+      style={animatedStyle}
+      onPressIn={pressHandlers.onPressIn}
+      onPressOut={pressHandlers.onPressOut}
+      onPress={() => {
+        haptics.light();
+        onPress();
+      }}
+      onLongPress={
+        onLongPress
+          ? () => {
+              haptics.light();
+              onLongPress();
+            }
+          : undefined
+      }
+      className={cn(
+        'rounded-full border px-3 py-2',
+        isActive ? 'border-primary bg-primary' : 'border-border bg-muted'
+      )}
+    >
+      <Text
+        variant="paragraphSmall"
+        semiBold
+        className={cn(isActive ? 'text-primary-foreground' : 'text-foreground')}
       >
-        <Text
-          variant="paragraphSmall"
-          semiBold
-          className={cn(isActive ? 'text-primary-foreground' : 'text-foreground')}
-        >
-          {label}
-        </Text>
-      </AnimatedPressable>
-    );
-  }
-);
+        {label}
+      </Text>
+    </AnimatedPressable>
+  );
+});
 
-export const FilterChipRow: React.FC<FilterChipRowProps> = ({ items, selectedUuid, onSelect, allLabel }) => {
+export const FilterChipRow: React.FC<FilterChipRowProps> = ({ items, selectedUuids, onSelect, onLongPress, allLabel }) => {
   const { t } = useTranslation();
   const resolvedAllLabel = allLabel ?? t('common.allMasculine');
 
@@ -64,13 +76,20 @@ export const FilterChipRow: React.FC<FilterChipRowProps> = ({ items, selectedUui
       contentContainerClassName="px-4 py-2 gap-2"
       style={{ flexGrow: 0 }}
     >
-      <AnimatedChip label={resolvedAllLabel} isActive={!selectedUuid} onPress={() => onSelect(undefined)} />
+      <AnimatedChip label={resolvedAllLabel} isActive={selectedUuids.length === 0} onPress={() => onSelect([])} />
       {items.map((item) => (
         <AnimatedChip
           key={item.uuid}
           label={item.title}
-          isActive={selectedUuid === item.uuid}
-          onPress={() => onSelect(selectedUuid === item.uuid ? undefined : item.uuid)}
+          isActive={selectedUuids.includes(item.uuid)}
+          onPress={() => {
+            if (selectedUuids.includes(item.uuid)) {
+              onSelect(selectedUuids.filter((uuid) => uuid !== item.uuid));
+            } else {
+              onSelect([...selectedUuids, item.uuid]);
+            }
+          }}
+          onLongPress={onLongPress ? () => onLongPress(item) : undefined}
         />
       ))}
     </ScrollView>

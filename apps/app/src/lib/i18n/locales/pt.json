@@ -10,7 +10,9 @@
     "allMasculine": "Todos",
     "requiredField": "Campo obrigatório",
     "quotes": "quotes",
-    "favorites": "favoritos"
+    "favorites": "favoritos",
+    "rename": "Renomear",
+    "delete": "Excluir"
   },
   "tabs": {
     "explore": "Explorar",
@@ -157,7 +159,18 @@
     "createPlaceholder": "Digite o título da tag",
     "createSuccess": "Tag criada com sucesso!",
     "createErrorTitle": "Tivemos um erro :/",
-    "createErrorDescription": "Tente novamente"
+    "createErrorDescription": "Tente novamente",
+    "searchPlaceholder": "Buscar tags...",
+    "recents": "Recentes",
+    "updateSuccess": "Tag atualizada",
+    "updateErrorTitle": "Erro ao atualizar tag",
+    "updateErrorDescription": "Tente novamente mais tarde",
+    "deleteSuccess": "Tag removida",
+    "deleteErrorTitle": "Erro ao remover tag",
+    "deleteErrorDescription": "Tente novamente mais tarde",
+    "renameTitle": "Renomear tag",
+    "deleteConfirmTitle": "Remover tag",
+    "deleteConfirmMessage": "Remover \"{{title}}\"? As citações não serão deletadas."
   },
   "author": {
     "title": "Autor",

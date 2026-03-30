@@ -18,8 +18,11 @@ export const useUntagQuote = ({ tag }: UseUntagQuoteProps) => {
     onSuccess: async (_, quoteUuid) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.quotes.all });
 
-      await queryClient.invalidateQueries({ queryKey: queryKeys.quotes.isTagged(quoteUuid, tag.uuid) });
-      await queryClient.invalidateQueries({ queryKey: queryKeys.tags.all });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.quotes.isTagged(quoteUuid, tag.uuid) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.quotes.tags(quoteUuid) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.tags.all }),
+      ]);
 
       const newState = updateQuotesCacheState(queryClient, (quote) => {
         if (quote.uuid === quoteUuid) {

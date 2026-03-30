@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 type UseGetQuotesProps = QuoteFilters & { enabled?: boolean };
 
 export const useGetQuotes = ({
-  tagUuid,
+  tagUuids,
   authorUuid,
   categoryUuid,
   favoritesOnly,
@@ -18,12 +18,12 @@ export const useGetQuotes = ({
   enabled = true,
 }: UseGetQuotesProps) => {
   const query = useInfiniteQuery<ListQuotesOutput, HttpError<ApiResponseError>>({
-    queryKey: queryKeys.quotes.list({ tagUuid, authorUuid, categoryUuid, favoritesOnly, search }),
+    queryKey: queryKeys.quotes.list({ tagUuids, authorUuid, categoryUuid, favoritesOnly, search }),
     enabled,
     queryFn: ({ pageParam }) => {
       return quoteService.list({
         paginate: { page: pageParam as number },
-        filters: { tagUuid, authorUuid, categoryUuid, favoritesOnly, search },
+        filters: { tagUuids, authorUuid, categoryUuid, favoritesOnly, search },
       });
     },
     initialPageParam: 1,

@@ -17,14 +17,16 @@ import { SearchBar } from '@/shared/components/ui/search-bar';
 import { FilterChipRow } from '@/shared/components/ui/filter-chip-row';
 
 type SearchParams = {
-  tagUuid?: string;
-  tagTitle?: string;
+  tagUuids?: string;
+  tagTitles?: string;
 };
 
 export default function ExploreScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { tagUuid, tagTitle } = useLocalSearchParams<SearchParams>();
+  const { tagUuids: tagUuidsParam, tagTitles: tagTitlesParam } = useLocalSearchParams<SearchParams>();
+  const tagUuids = tagUuidsParam ? tagUuidsParam.split(',').filter(Boolean) : [];
+  const tagTitles = tagTitlesParam ? tagTitlesParam.split(',').filter(Boolean) : [];
   const [searchText, setSearchText] = useState('');
   const [selectedCategoryUuid, setSelectedCategoryUuid] = useState<string | undefined>(undefined);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -35,7 +37,7 @@ export default function ExploreScreen() {
 
   const { isRefetching, refetch, fetchNextPage, quotes, isLoading, currentPage, lastPage, onPageChange } = useQuoteList(
     {
-      tagUuid,
+      tagUuids: tagUuids.length > 0 ? tagUuids : undefined,
       categoryUuid: selectedCategoryUuid,
       search: !isSearchFocused && debouncedSearch ? debouncedSearch : undefined,
     }
@@ -44,7 +46,7 @@ export default function ExploreScreen() {
   const { data: searchData, isLoading: isSearchLoading } = useSearch(isSearchFocused ? debouncedSearch : '');
 
   const clearFilters = () => {
-    router.setParams({ tagUuid: undefined, tagTitle: undefined });
+    router.setParams({ tagUuids: undefined, tagTitles: undefined });
   };
 
   const handleSearchSelect = useCallback(
@@ -86,12 +88,12 @@ export default function ExploreScreen() {
 
           <FilterChipRow
             items={categories}
-            selectedUuid={selectedCategoryUuid}
-            onSelect={setSelectedCategoryUuid}
+            selectedUuids={selectedCategoryUuid ? [selectedCategoryUuid] : []}
+            onSelect={(uuids) => setSelectedCategoryUuid(uuids[uuids.length - 1])}
             allLabel={t('common.all')}
           />
 
-          {tagTitle && <QuoteFilterBadge tagTitle={tagTitle} onClear={clearFilters} />}
+          {tagTitles.length > 0 && <QuoteFilterBadge tagTitles={tagTitles} onClear={clearFilters} />}
 
           <QuoteList
             quotes={quotes}

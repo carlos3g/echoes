@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsArray, IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class FilterQuoteQuery {
   @ApiPropertyOptional()
@@ -8,10 +8,12 @@ export class FilterQuoteQuery {
   @IsUUID()
   public authorUuid?: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: [String] })
   @IsOptional()
-  @IsUUID()
-  public tagUuid?: string;
+  @IsArray()
+  @IsUUID('4', { each: true })
+  @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
+  public tagUuids?: string[];
 
   @ApiPropertyOptional()
   @IsOptional()
