@@ -47,7 +47,12 @@ export default function CollectionScreen() {
           </Text>
         </View>
 
-        <FilterChipRow items={tags} selectedUuids={selectedTagUuids} onSelect={setSelectedTagUuids} onLongPress={showContextMenu} />
+        <FilterChipRow
+          items={tags}
+          selectedUuids={selectedTagUuids}
+          onSelect={setSelectedTagUuids}
+          onLongPress={showContextMenu}
+        />
 
         <QuoteList
           quotes={quotes}

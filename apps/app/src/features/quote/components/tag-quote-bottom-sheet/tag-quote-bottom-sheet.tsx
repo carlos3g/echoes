@@ -1,6 +1,11 @@
 import type { BottomSheetBackdropProps, BottomSheetFooterProps } from '@gorhom/bottom-sheet';
 import type RNBottomSheet from '@gorhom/bottom-sheet';
-import { BottomSheetBackdrop, BottomSheetTextInput, BottomSheetView, useBottomSheetScrollableCreator } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetTextInput,
+  BottomSheetView,
+  useBottomSheetScrollableCreator,
+} from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -44,17 +49,11 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBotto
     enabled: !!quote,
   });
 
-  const appliedTagUuids = useMemo(
-    () => new Set((appliedTags ?? []).map((tag) => tag.uuid)),
-    [appliedTags]
-  );
+  const appliedTagUuids = useMemo(() => new Set((appliedTags ?? []).map((tag) => tag.uuid)), [appliedTags]);
 
   const recentTagUuids = useMemo(() => getRecentTagUuids(), [quote?.uuid]);
   const recentTagUuidSet = useMemo(() => new Set(recentTagUuids), [recentTagUuids]);
-  const recentTags = useMemo(
-    () => tags.filter((tag) => recentTagUuidSet.has(tag.uuid)),
-    [tags, recentTagUuidSet]
-  );
+  const recentTags = useMemo(() => tags.filter((tag) => recentTagUuidSet.has(tag.uuid)), [tags, recentTagUuidSet]);
 
   const queryClient = useQueryClient();
 
@@ -111,18 +110,13 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBotto
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: Tag }) => (
-      <TagListItem item={item} isTagged={appliedTagUuids.has(item.uuid)} />
-    ),
+    ({ item }: { item: Tag }) => <TagListItem item={item} isTagged={appliedTagUuids.has(item.uuid)} />,
     [appliedTagUuids]
   );
 
   const renderItemSkeleton = useCallback(() => <TagListItemSkeleton />, []);
 
-  const ItemSeparatorComponent = useCallback(
-    () => <View className="bg-border" style={{ height: 1 }} />,
-    []
-  );
+  const ItemSeparatorComponent = useCallback(() => <View className="bg-border" style={{ height: 1 }} />, []);
 
   const ListEmptyComponent = useCallback(
     () => (
@@ -162,7 +156,13 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBotto
               onChangeText={setSearchText}
               placeholder={t('tag.searchPlaceholder')}
               placeholderTextColor={colors.mutedForeground}
-              style={{ flex: 1, marginLeft: 12, color: colors.foreground, fontFamily: 'DMSans_400Regular', fontSize: 16 }}
+              style={{
+                flex: 1,
+                marginLeft: 12,
+                color: colors.foreground,
+                fontFamily: 'DMSans_400Regular',
+                fontSize: 16,
+              }}
             />
           </View>
         </View>
@@ -170,7 +170,7 @@ export const TagQuoteBottomSheet = React.forwardRef<RNBottomSheet, TagQuoteBotto
         {/* Recents */}
         {!searchText && recentTags.length > 0 && (
           <View className="pb-2">
-            <Text variant="paragraphCaption" className="text-muted-foreground px-4 pb-1">
+            <Text variant="paragraphCaption" className="px-4 pb-1 text-muted-foreground">
               {t('tag.recents')}
             </Text>
             <ScrollView

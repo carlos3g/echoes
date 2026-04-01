@@ -25,6 +25,7 @@ model User {
   favoriteQuotes          UserFavoriteQuote[]
   favoriteAuthors         UserFavoriteAuthor[]
   quoteShares             QuoteShare[]
+  quoteViews              QuoteView[]
   createdAt               DateTime                 @default(now()) @map("created_at")
   updatedAt               DateTime                 @updatedAt @map("updated_at")
   avatarId                BigInt?                  @unique @map("avatar_id") @db.BigInt
@@ -69,6 +70,7 @@ model Quote {
   favoritedBy UserFavoriteQuote[]
   tags        TagQuote[]
   shares      QuoteShare[]
+  views       QuoteView[]
   createdAt   DateTime            @default(now()) @map("created_at")
   updatedAt   DateTime            @updatedAt @map("updated_at")
 
@@ -212,4 +214,18 @@ model QuoteShare {
   @@index([quoteId])
   @@index([userId])
   @@map("quote_shares")
+}
+
+model QuoteView {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  userId    BigInt   @db.BigInt
+  quoteId   BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quote Quote @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([quoteId])
+  @@map("quote_views")
 }

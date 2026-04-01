@@ -160,10 +160,7 @@ describe('(DELETE) /tags/:uuid', () => {
   it('should delete a tag', async () => {
     const tag = await tagRepository.create({ ...tagFactory(), userId: user.id });
 
-    const response = await request(server)
-      .delete(`/tags/${tag.uuid}`)
-      .auth(token, { type: 'bearer' })
-      .send();
+    const response = await request(server).delete(`/tags/${tag.uuid}`).auth(token, { type: 'bearer' }).send();
 
     expect(response.status).toBe(HttpStatus.NO_CONTENT);
 
@@ -177,10 +174,7 @@ describe('(DELETE) /tags/:uuid', () => {
     const quote = await quoteRepository.create(quoteFactory());
     await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag.id } });
 
-    const response = await request(server)
-      .delete(`/tags/${tag.uuid}`)
-      .auth(token, { type: 'bearer' })
-      .send();
+    const response = await request(server).delete(`/tags/${tag.uuid}`).auth(token, { type: 'bearer' }).send();
 
     expect(response.status).toBe(HttpStatus.NO_CONTENT);
   });
@@ -189,10 +183,7 @@ describe('(DELETE) /tags/:uuid', () => {
     const anotherUser = await userRepository.create(userFactory());
     const tag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
 
-    const response = await request(server)
-      .delete(`/tags/${tag.uuid}`)
-      .auth(token, { type: 'bearer' })
-      .send();
+    const response = await request(server).delete(`/tags/${tag.uuid}`).auth(token, { type: 'bearer' }).send();
 
     expect(response.status).toBe(HttpStatus.FORBIDDEN);
   });

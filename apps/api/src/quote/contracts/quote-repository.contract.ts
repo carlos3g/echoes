@@ -67,6 +67,8 @@ abstract class QuoteRepositoryContract {
   public abstract countSharesBatch(quoteIds: number[]): Promise<Map<number, number>>;
 
   public abstract findTagsByQuoteAndUser(input: QuoteRepositoryFindTagsByQuoteAndUserInput): Promise<Tag[]>;
+
+  public abstract recordView(input: { userId: number; quoteId: number }): Promise<void>;
 }
 
 export { QuoteRepositoryContract };

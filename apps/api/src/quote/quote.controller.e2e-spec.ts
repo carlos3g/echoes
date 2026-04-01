@@ -290,10 +290,7 @@ describe('(GET) /quotes/:uuid/tags', () => {
     await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag1.id } });
     await quoteRepository.tag({ data: { quoteId: quote.id, tagId: tag2.id } });
 
-    const response = await request(server)
-      .get(`/quotes/${quote.uuid}/tags`)
-      .auth(token, { type: 'bearer' })
-      .send();
+    const response = await request(server).get(`/quotes/${quote.uuid}/tags`).auth(token, { type: 'bearer' }).send();
 
     expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toHaveLength(2);
@@ -309,10 +306,7 @@ describe('(GET) /quotes/:uuid/tags', () => {
     const otherTag = await tagRepository.create({ ...tagFactory(), userId: anotherUser.id });
     await prisma.tagQuote.create({ data: { quoteId: quote.id, tagId: otherTag.id } });
 
-    const response = await request(server)
-      .get(`/quotes/${quote.uuid}/tags`)
-      .auth(token, { type: 'bearer' })
-      .send();
+    const response = await request(server).get(`/quotes/${quote.uuid}/tags`).auth(token, { type: 'bearer' }).send();
 
     expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toHaveLength(0);
@@ -321,10 +315,7 @@ describe('(GET) /quotes/:uuid/tags', () => {
   it('should return empty array when quote has no tags', async () => {
     const quote = await quoteRepository.create(quoteFactory());
 
-    const response = await request(server)
-      .get(`/quotes/${quote.uuid}/tags`)
-      .auth(token, { type: 'bearer' })
-      .send();
+    const response = await request(server).get(`/quotes/${quote.uuid}/tags`).auth(token, { type: 'bearer' }).send();
 
     expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toHaveLength(0);

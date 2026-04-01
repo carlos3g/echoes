@@ -30,6 +30,7 @@ export default function ProfileLayout() {
       <Stack.Screen name="edit-profile" options={{ title: t('profile.editProfile') }} />
       <Stack.Screen name="change-password" options={{ title: t('profile.changePassword') }} />
       <Stack.Screen name="reading-preferences" options={{ title: t('profile.readingPreferences') }} />
+      <Stack.Screen name="insights" options={{ title: t('insights.title') }} />
     </Stack>
   );
 }

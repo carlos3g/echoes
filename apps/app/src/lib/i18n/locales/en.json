@@ -86,6 +86,7 @@
       "read": "Read"
     },
     "recentActivity": "Recent activity",
+    "insights": "My Month",
     "updateSuccess": "Profile updated!",
     "updateErrorTitle": "Error updating profile",
     "updateErrorDescription": "Try again"
@@ -189,6 +190,35 @@
     "retry": "Try again",
     "generic": "Error!",
     "tryAgain": "Try again"
+  },
+  "insights": {
+    "title": "My Month",
+    "quotesRead": "Read",
+    "quotesFavorited": "Favorited",
+    "quotesShared": "Shared",
+    "authorsFavorited": "Authors fav.",
+    "tagsCreated": "Tags created",
+    "uniqueAuthors": "Authors read",
+    "daysActive": "Active days",
+    "dailyActivity": "Daily activity",
+    "weeklyActivity": "Weeks of the month",
+    "topCategories": "Top categories",
+    "sharesByPlatform": "Shares",
+    "categoriesAndPlatforms": "Categories & Platforms",
+    "topAuthors": "Top authors of the month",
+    "readingProfile": "Reading profile",
+    "reads": "Reads",
+    "favorites": "Favorites",
+    "week": "Wk {{number}}",
+    "less": "Less",
+    "more": "More",
+    "exploration": "Exploration",
+    "collection": "Collection",
+    "sharing": "Sharing",
+    "consistency": "Consistency",
+    "depth": "Depth",
+    "others": "Others",
+    "quotes": "quotes"
   },
   "validation": {
     "invalid": "Invalid",

@@ -42,6 +42,12 @@ export default function ProfileScreen() {
         <LanguageSelector />
 
         <SettingsMenuItem
+          testID="insights-button"
+          label={t('profile.insights')}
+          onPress={() => router.push('/(app)/(tabs)/(profile)/insights')}
+        />
+
+        <SettingsMenuItem
           testID="reading-preferences-button"
           label={t('profile.readingPreferences')}
           onPress={() => router.push('/(app)/(tabs)/(profile)/reading-preferences')}

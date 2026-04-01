@@ -86,6 +86,7 @@
       "read": "Lidas"
     },
     "recentActivity": "Atividade recente",
+    "insights": "Meu Mês",
     "updateSuccess": "Perfil atualizado!",
     "updateErrorTitle": "Erro ao atualizar perfil",
     "updateErrorDescription": "Tente novamente"
@@ -189,6 +190,35 @@
     "retry": "Tentar novamente",
     "generic": "Erro!",
     "tryAgain": "Tente novamente"
+  },
+  "insights": {
+    "title": "Meu Mês",
+    "quotesRead": "Lidas",
+    "quotesFavorited": "Favoritas",
+    "quotesShared": "Compartilhadas",
+    "authorsFavorited": "Autores fav.",
+    "tagsCreated": "Tags criadas",
+    "uniqueAuthors": "Autores lidos",
+    "daysActive": "Dias ativos",
+    "dailyActivity": "Atividade diária",
+    "weeklyActivity": "Semanas do mês",
+    "topCategories": "Top categorias",
+    "sharesByPlatform": "Compartilhamentos",
+    "categoriesAndPlatforms": "Categorias & Plataformas",
+    "topAuthors": "Top autores do mês",
+    "readingProfile": "Perfil de leitura",
+    "reads": "Leituras",
+    "favorites": "Favoritos",
+    "week": "Sem {{number}}",
+    "less": "Menos",
+    "more": "Mais",
+    "exploration": "Exploração",
+    "collection": "Coleção",
+    "sharing": "Compartilhar",
+    "consistency": "Consistência",
+    "depth": "Profundidade",
+    "others": "Outros",
+    "quotes": "quotes"
   },
   "validation": {
     "invalid": "Inválido",

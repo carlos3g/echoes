@@ -47,23 +47,22 @@ export const AnimatedChip: React.FC<{
             }
           : undefined
       }
-      className={cn(
-        'rounded-full border px-3 py-2',
-        isActive ? 'border-primary bg-primary' : 'border-border bg-muted'
-      )}
+      className={cn('rounded-full border px-3 py-2', isActive ? 'border-primary bg-primary' : 'border-border bg-muted')}
     >
-      <Text
-        variant="paragraphSmall"
-        semiBold
-        className={cn(isActive ? 'text-primary-foreground' : 'text-foreground')}
-      >
+      <Text variant="paragraphSmall" semiBold className={cn(isActive ? 'text-primary-foreground' : 'text-foreground')}>
         {label}
       </Text>
     </AnimatedPressable>
   );
 });
 
-export const FilterChipRow: React.FC<FilterChipRowProps> = ({ items, selectedUuids, onSelect, onLongPress, allLabel }) => {
+export const FilterChipRow: React.FC<FilterChipRowProps> = ({
+  items,
+  selectedUuids,
+  onSelect,
+  onLongPress,
+  allLabel,
+}) => {
   const { t } = useTranslation();
   const resolvedAllLabel = allLabel ?? t('common.allMasculine');
 

@@ -4,10 +4,12 @@ import type { Quote } from '@app/quote/entities/quote.entity';
 import type { QuoteWithMetadata } from '@app/quote/use-cases/list-quote-paginated.use-case';
 import type { UseCaseHandler } from '@app/shared/interfaces';
 import type { User } from '@app/user/entities/user.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class GetOneQuoteUseCase implements UseCaseHandler {
+  private readonly logger = new Logger(GetOneQuoteUseCase.name);
+
   public constructor(private readonly quoteRepository: QuoteRepositoryContract) {}
 
   public async handle(input: GetOneQuoteInput): Promise<QuoteWithMetadata> {
@@ -16,6 +18,11 @@ export class GetOneQuoteUseCase implements UseCaseHandler {
     const result = await this.quoteRepository.findUniqueOrThrow({
       where: { uuid },
     });
+
+    if (user) {
+      this.quoteRepository.recordView({ userId: user.id, quoteId: result.id })
+        .catch((err) => this.logger.warn('Failed to record quote view', err));
+    }
 
     return this.enrichWithMetadata(result, user);
   }

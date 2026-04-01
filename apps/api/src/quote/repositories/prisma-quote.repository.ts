@@ -55,8 +55,7 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
         }
       : {};
 
-    const tagFilter =
-      tagIds?.length ? { AND: tagIds.map((tagId) => ({ tags: { some: { tagId } } })) } : {};
+    const tagFilter = tagIds?.length ? { AND: tagIds.map((tagId) => ({ tags: { some: { tagId } } })) } : {};
 
     const result = await paginate<FindManyReturn, 'Quote'>(
       this.prismaManager.getClient().quote,
@@ -262,6 +261,12 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
       map.set(Number(r.quoteId), r._count.quoteId);
     }
     return map;
+  }
+
+  public async recordView(input: { userId: number; quoteId: number }): Promise<void> {
+    await this.prismaManager.getClient().quoteView.create({
+      data: { userId: input.userId, quoteId: input.quoteId },
+    });
   }
 
   public async findTagsByQuoteAndUser(input: QuoteRepositoryFindTagsByQuoteAndUserInput): Promise<Tag[]> {

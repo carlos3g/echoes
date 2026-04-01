@@ -27,4 +27,7 @@ export const queryKeys = {
   search: {
     query: (q: string) => ['search', q],
   },
+  insights: {
+    monthly: (month: string) => ['insights', month] as const,
+  },
 } as const;
