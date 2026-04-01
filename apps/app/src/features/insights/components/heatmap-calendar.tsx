@@ -17,7 +17,6 @@ const COLUMNS = 7;
 const DAY_LABELS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 const INTENSITY_OPACITIES = [0.08, 0.3, 0.55, 0.85];
 
-
 export const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ heatmap, month }) => {
   const { t } = useTranslation();
   const { colors } = useTheme();

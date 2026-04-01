@@ -220,6 +220,16 @@
     "others": "Others",
     "quotes": "quotes"
   },
+  "activity": {
+    "title": "Activity",
+    "favoritedQuote": "You favorited a quote",
+    "favoritedAuthor": "You favorited an author",
+    "sharedOn": "You shared on {{platform}}",
+    "createdTag": "You created the tag \"{{title}}\"",
+    "loadMore": "Load more",
+    "emptyTitle": "No activity yet",
+    "emptyDescription": "Your actions will appear here as you use the app"
+  },
   "validation": {
     "invalid": "Invalid",
     "passwordMin": "Password must be at least 8 characters",

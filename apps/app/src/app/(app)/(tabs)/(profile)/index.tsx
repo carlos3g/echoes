@@ -48,6 +48,12 @@ export default function ProfileScreen() {
         />
 
         <SettingsMenuItem
+          testID="activity-button"
+          label={t('activity.title')}
+          onPress={() => router.push('/(app)/(tabs)/(profile)/activity')}
+        />
+
+        <SettingsMenuItem
           testID="reading-preferences-button"
           label={t('profile.readingPreferences')}
           onPress={() => router.push('/(app)/(tabs)/(profile)/reading-preferences')}

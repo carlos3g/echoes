@@ -30,4 +30,7 @@ export const queryKeys = {
   insights: {
     monthly: (month: string) => ['insights', month] as const,
   },
+  activity: {
+    all: ['activity'] as const,
+  },
 } as const;

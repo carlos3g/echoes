@@ -220,6 +220,16 @@
     "others": "Outros",
     "quotes": "quotes"
   },
+  "activity": {
+    "title": "Atividade",
+    "favoritedQuote": "Você favoritou uma citação",
+    "favoritedAuthor": "Você favoritou um autor",
+    "sharedOn": "Você compartilhou no {{platform}}",
+    "createdTag": "Você criou a tag \"{{title}}\"",
+    "loadMore": "Carregar mais",
+    "emptyTitle": "Nenhuma atividade ainda",
+    "emptyDescription": "Suas ações aparecerão aqui conforme você usar o app"
+  },
   "validation": {
     "invalid": "Inválido",
     "passwordMin": "A senha deve ter pelo menos 8 caracteres",

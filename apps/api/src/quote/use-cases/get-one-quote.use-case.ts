@@ -20,7 +20,8 @@ export class GetOneQuoteUseCase implements UseCaseHandler {
     });
 
     if (user) {
-      this.quoteRepository.recordView({ userId: user.id, quoteId: result.id })
+      this.quoteRepository
+        .recordView({ userId: user.id, quoteId: result.id })
         .catch((err) => this.logger.warn('Failed to record quote view', err));
     }
 
