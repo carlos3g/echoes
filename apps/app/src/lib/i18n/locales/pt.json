@@ -218,7 +218,35 @@
     "consistency": "Consistência",
     "depth": "Profundidade",
     "others": "Outros",
-    "quotes": "quotes"
+    "quotes": "quotes",
+    "tabs": {
+      "resumo": "Resumo",
+      "tendencias": "Tendências",
+      "profundidade": "Profundidade"
+    },
+    "export": "Exportar",
+    "exportTitle": "Exportar dados",
+    "exportCsv": "Exportar como CSV",
+    "exportPdf": "Exportar como PDF",
+    "streak": {
+      "title": "Sequência de leitura",
+      "current": "Atual",
+      "record": "Recorde",
+      "days": "dias seguidos",
+      "newRecord": "Novo recorde!"
+    },
+    "annualEvolution": "Evolução anual",
+    "diversityIndex": "Índice de diversidade",
+    "monthComparison": "Comparativo entre meses",
+    "hourlyHeatmap": "Quando você lê",
+    "sessionMetrics": "Sessões",
+    "avgDuration": "Tempo médio",
+    "quotesPerSession": "Frases/sessão",
+    "totalSessions": "Total sessões",
+    "rereadRate": "Taxa de releitura",
+    "authorBubbles": "Mapa de autores",
+    "shares": "Compartilhamentos",
+    "noDataYet": "Sem dados ainda"
   },
   "activity": {
     "title": "Atividade",

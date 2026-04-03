@@ -1,4 +1,4 @@
-import { InsightRepositoryContract } from '@app/insight/contracts/insight-repository.contract';
+import type { InsightRepositoryContract } from '@app/insight/contracts/insight-repository.contract';
 import { GetMonthlyInsightsUseCase } from '@app/insight/use-cases/get-monthly-insights.use-case';
 import type { User } from '@app/user/entities/user.entity';
 
@@ -16,6 +16,14 @@ const makeRepositoryMock = () => ({
   getSharesByPlatform: jest.fn(),
   getRereadCount: jest.fn(),
   getAvgQuotesPerAuthor: jest.fn(),
+  getHourlyHeatmap: jest.fn(),
+  getSessionMetrics: jest.fn(),
+  getTopRereads: jest.fn(),
+  getAuthorBubbles: jest.fn(),
+  getCurrentStreak: jest.fn(),
+  getLongestStreak: jest.fn(),
+  updateLongestStreak: jest.fn(),
+  getDiversityScore: jest.fn(),
 });
 
 const makeUser = (): User =>
@@ -45,6 +53,19 @@ const setupAllZeros = (mockRepository: ReturnType<typeof makeRepositoryMock>) =>
   mockRepository.getSharesByPlatform.mockResolvedValue([]);
   mockRepository.getRereadCount.mockResolvedValue(0);
   mockRepository.getAvgQuotesPerAuthor.mockResolvedValue(0);
+  mockRepository.getHourlyHeatmap.mockResolvedValue([]);
+  mockRepository.getSessionMetrics.mockResolvedValue({
+    avgDuration: 0,
+    avgQuotes: 0,
+    total: 0,
+    distribution: { under1: 0, from1to5: 0, from5to15: 0, over15: 0 },
+  });
+  mockRepository.getTopRereads.mockResolvedValue([]);
+  mockRepository.getAuthorBubbles.mockResolvedValue([]);
+  mockRepository.getCurrentStreak.mockResolvedValue(0);
+  mockRepository.getLongestStreak.mockResolvedValue(0);
+  mockRepository.updateLongestStreak.mockResolvedValue(undefined);
+  mockRepository.getDiversityScore.mockResolvedValue(0);
 };
 
 describe('GetMonthlyInsightsUseCase', () => {
@@ -115,19 +136,19 @@ describe('GetMonthlyInsightsUseCase', () => {
 
     it('computes heatmap intensity correctly', async () => {
       setupAllZeros(mockRepository);
-      mockRepository.getHeatmap.mockResolvedValue([
-        { date: '2026-03-01', count: 0 },
-        { date: '2026-03-02', count: 1 },
-        { date: '2026-03-03', count: 3 },
-        { date: '2026-03-04', count: 6 },
+      mockRepository.getDailyActivity.mockResolvedValue([
+        { date: '2026-03-01', reads: 0, favorites: 0, shares: 0 },
+        { date: '2026-03-02', reads: 1, favorites: 0, shares: 0 },
+        { date: '2026-03-03', reads: 3, favorites: 0, shares: 0 },
+        { date: '2026-03-04', reads: 6, favorites: 0, shares: 0 },
       ]);
 
       const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
 
-      expect(result.heatmap[0].intensity).toBe(0); // count 0 → 0
-      expect(result.heatmap[1].intensity).toBe(1); // count 1 → 1
-      expect(result.heatmap[2].intensity).toBe(2); // count 3 → 2
-      expect(result.heatmap[3].intensity).toBe(3); // count 6 → 3
+      expect(result.heatmap[0].intensity).toBe(0); // reads 0 → 0
+      expect(result.heatmap[1].intensity).toBe(1); // reads 1 → 1
+      expect(result.heatmap[2].intensity).toBe(2); // reads 3 → 2
+      expect(result.heatmap[3].intensity).toBe(3); // reads 6 → 3
     });
 
     it('computes reading profile exploration score correctly', async () => {
@@ -178,31 +199,31 @@ describe('GetMonthlyInsightsUseCase', () => {
 
     it('groups overflow categories into "Outros"', async () => {
       setupAllZeros(mockRepository);
+      // Use case fetches top 3 categories from repo; total reads = 30
+      // Top 3 sum = 10+9+8 = 27; Outros = 30 - 27 = 3
+      mockRepository.countQuoteViews.mockResolvedValue(30);
       mockRepository.getTopCategories.mockResolvedValue([
         { title: 'Cat1', count: 10 },
         { title: 'Cat2', count: 9 },
         { title: 'Cat3', count: 8 },
-        { title: 'Cat4', count: 7 },
-        { title: 'Cat5', count: 6 },
-        { title: 'Cat6', count: 5 },
-        { title: 'Cat7', count: 4 },
       ]);
 
       const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
 
       const titles = result.topCategories.map((c: any) => c.title);
       expect(titles).toContain('Cat1');
-      expect(titles).toContain('Cat5');
-      expect(titles).not.toContain('Cat6');
-      expect(titles).not.toContain('Cat7');
+      expect(titles).toContain('Cat2');
+      expect(titles).toContain('Cat3');
       expect(titles).toContain('Outros');
 
       const outros = result.topCategories.find((c: any) => c.title === 'Outros');
-      expect(outros.count).toBe(9); // 5 + 4
+      expect(outros.count).toBe(3); // 30 - 27
     });
 
-    it('does not add "Outros" when there are 5 or fewer categories', async () => {
+    it('does not add "Outros" when total reads equal category sum', async () => {
       setupAllZeros(mockRepository);
+      // Total reads = 15, category sum = 10+5 = 15, so no overflow
+      mockRepository.countQuoteViews.mockResolvedValue(15);
       mockRepository.getTopCategories.mockResolvedValue([
         { title: 'Cat1', count: 10 },
         { title: 'Cat2', count: 5 },

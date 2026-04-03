@@ -26,6 +26,8 @@ model User {
   favoriteAuthors         UserFavoriteAuthor[]
   quoteShares             QuoteShare[]
   quoteViews              QuoteView[]
+  sessions                UserSession[]
+  longestStreak           Int                      @default(0) @map("longest_streak")
   createdAt               DateTime                 @default(now()) @map("created_at")
   updatedAt               DateTime                 @updatedAt @map("updated_at")
   avatarId                BigInt?                  @unique @map("avatar_id") @db.BigInt
@@ -228,4 +230,17 @@ model QuoteView {
   @@index([userId, createdAt])
   @@index([quoteId])
   @@map("quote_views")
+}
+
+model UserSession {
+  id           BigInt   @id @default(autoincrement()) @db.BigInt
+  userId       BigInt   @db.BigInt
+  startedAt    DateTime @map("started_at")
+  endedAt      DateTime @map("ended_at")
+  quotesViewed Int      @default(0) @map("quotes_viewed")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+  @@map("user_sessions")
 }

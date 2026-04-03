@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -7,10 +8,17 @@ import { AuthorSection } from '@/features/quote/components/quote-detail/author-s
 import { MoreFromAuthor } from '@/features/quote/components/quote-detail/more-from-author';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { useGetQuote } from '@/features/quote/hooks/use-get-quote';
+import { notifyQuoteViewed } from '@/features/session/session-tracker';
 
 export default function QuoteScreen() {
   const { quoteUuid } = useLocalSearchParams<{ quoteUuid: string }>();
   const { data: quote, isLoading } = useGetQuote({ quoteUuid });
+
+  useEffect(() => {
+    if (quote) {
+      notifyQuoteViewed();
+    }
+  }, [quote?.uuid]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading || !quote) {
     return (

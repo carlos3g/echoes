@@ -5,7 +5,7 @@ import type { FactoryEntityDefinition } from '../contracts/factory.contract';
 import { FactoryContract } from '../contracts/factory.contract';
 import { createUuidV4 } from '../utils';
 
-type Entity = Omit<User, 'id' | 'avatarId' | 'createdAt' | 'updatedAt'>;
+type Entity = Omit<User, 'id' | 'avatarId' | 'createdAt' | 'updatedAt' | 'longestStreak'>;
 
 export class UserFactory extends FactoryContract<Entity> {
   public static password = 'p@ss9ord1!';

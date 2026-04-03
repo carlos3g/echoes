@@ -17,6 +17,8 @@ Table users {
   favoriteAuthors user_favorite_authors [not null]
   quoteShares quote_shares [not null]
   quoteViews quote_views [not null]
+  sessions user_sessions [not null]
+  longestStreak Int [not null, default: 0]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   avatarId BigInt [unique]
@@ -189,6 +191,15 @@ Table quote_views {
   quote quotes [not null]
 }
 
+Table user_sessions {
+  id BigInt [pk, increment]
+  userId BigInt [not null]
+  startedAt DateTime [not null]
+  endedAt DateTime [not null]
+  quotesViewed Int [not null, default: 0]
+  user users [not null]
+}
+
 Table CategoryToQuote {
   categoriesId BigInt [ref: > categories.id]
   quotesId BigInt [ref: > quotes.id]
@@ -229,3 +240,5 @@ Ref: quote_shares.quoteId > quotes.id [delete: Cascade]
 Ref: quote_views.userId > users.id [delete: Cascade]
 
 Ref: quote_views.quoteId > quotes.id [delete: Cascade]
+
+Ref: user_sessions.userId > users.id [delete: Cascade]

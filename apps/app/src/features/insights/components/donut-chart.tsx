@@ -43,7 +43,14 @@ export const DonutChart: React.FC<DonutChartProps> = ({ title, data, colors, siz
       </Text>
 
       <View className="items-center">
-        <Canvas style={{ width: size, height: size }}>
+        <Canvas
+          style={{ width: size, height: size }}
+          accessibilityLabel={
+            title +
+            ': ' +
+            arcs.map((s) => s.label + ' ' + (total > 0 ? Math.round((s.value / total) * 100) : 0) + '%').join(', ')
+          }
+        >
           {arcs.map((segment, index) =>
             segment.path ? (
               <Path

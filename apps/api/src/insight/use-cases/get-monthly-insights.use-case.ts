@@ -32,6 +32,19 @@ export type GetMonthlyInsightsOutput = {
   };
   topAuthors: Array<{ name: string; quotesRead: number; uuid: string }>;
   sharesByPlatform: Array<{ platform: string; count: number }>;
+  streak: { current: number; record: number };
+  hourlyHeatmap: Array<{ dayOfWeek: number; hour: number; count: number }>;
+  sessions: {
+    avgDuration: number;
+    avgQuotes: number;
+    total: number;
+    distribution: { under1: number; from1to5: number; from5to15: number; over15: number };
+  };
+  rereadRate: {
+    percentage: number;
+    topRereads: Array<{ quoteUuid: string; content: string; author: string; count: number }>;
+  };
+  authorBubbles: Array<{ uuid: string; name: string; quotesRead: number; engagementRate: number }>;
 };
 
 @Injectable()
@@ -73,6 +86,12 @@ export class GetMonthlyInsightsUseCase implements UseCaseHandler {
       sharesByPlatform,
       rereadCount,
       avgQuotesPerAuthor,
+      hourlyHeatmap,
+      sessionMetrics,
+      topRereads,
+      authorBubbles,
+      currentStreak,
+      longestStreak,
     ] = await Promise.all([
       this.insightRepository.countQuoteViews(user.id, currentRange),
       this.insightRepository.countQuoteViews(user.id, previousRange),
@@ -92,7 +111,17 @@ export class GetMonthlyInsightsUseCase implements UseCaseHandler {
       this.insightRepository.getSharesByPlatform(user.id, currentRange),
       this.insightRepository.getRereadCount(user.id, currentRange),
       this.insightRepository.getAvgQuotesPerAuthor(user.id, currentRange),
+      this.insightRepository.getHourlyHeatmap(user.id, currentRange),
+      this.insightRepository.getSessionMetrics(user.id, currentRange),
+      this.insightRepository.getTopRereads(user.id, currentRange, 5),
+      this.insightRepository.getAuthorBubbles(user.id, currentRange, 3),
+      this.insightRepository.getCurrentStreak(user.id),
+      this.insightRepository.getLongestStreak(user.id),
     ]);
+
+    if (currentStreak > longestStreak) {
+      await this.insightRepository.updateLongestStreak(user.id, currentStreak);
+    }
 
     const summary = {
       quotesRead: { current: currentReads, previous: previousReads },
@@ -184,6 +213,8 @@ export class GetMonthlyInsightsUseCase implements UseCaseHandler {
       };
     }
 
+    const rereadPercentage = currentReads > 0 ? Math.round((rereadCount / currentReads) * 100) : 0;
+
     return {
       month,
       previousMonth,
@@ -195,6 +226,14 @@ export class GetMonthlyInsightsUseCase implements UseCaseHandler {
       readingProfile,
       topAuthors,
       sharesByPlatform,
+      streak: { current: currentStreak, record: Math.max(currentStreak, longestStreak) },
+      hourlyHeatmap,
+      sessions: sessionMetrics,
+      rereadRate: {
+        percentage: rereadPercentage,
+        topRereads,
+      },
+      authorBubbles,
     };
   }
 }

@@ -38,6 +38,39 @@ abstract class InsightRepositoryContract {
   public abstract getRereadCount(userId: number, range: InsightRepositoryDateRange): Promise<number>;
 
   public abstract getAvgQuotesPerAuthor(userId: number, range: InsightRepositoryDateRange): Promise<number>;
+
+  public abstract getCurrentStreak(userId: number): Promise<number>;
+  public abstract getLongestStreak(userId: number): Promise<number>;
+  public abstract updateLongestStreak(userId: number, streak: number): Promise<void>;
+
+  public abstract getHourlyHeatmap(
+    userId: number,
+    range: InsightRepositoryDateRange
+  ): Promise<Array<{ dayOfWeek: number; hour: number; count: number }>>;
+
+  public abstract getSessionMetrics(
+    userId: number,
+    range: InsightRepositoryDateRange
+  ): Promise<{
+    avgDuration: number;
+    avgQuotes: number;
+    total: number;
+    distribution: { under1: number; from1to5: number; from5to15: number; over15: number };
+  }>;
+
+  public abstract getTopRereads(
+    userId: number,
+    range: InsightRepositoryDateRange,
+    limit: number
+  ): Promise<Array<{ quoteUuid: string; content: string; author: string; count: number }>>;
+
+  public abstract getAuthorBubbles(
+    userId: number,
+    range: InsightRepositoryDateRange,
+    minReads: number
+  ): Promise<Array<{ uuid: string; name: string; quotesRead: number; engagementRate: number }>>;
+
+  public abstract getDiversityScore(userId: number, range: InsightRepositoryDateRange): Promise<number>;
 }
 
 export { InsightRepositoryContract };

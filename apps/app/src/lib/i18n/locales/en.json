@@ -218,7 +218,35 @@
     "consistency": "Consistency",
     "depth": "Depth",
     "others": "Others",
-    "quotes": "quotes"
+    "quotes": "quotes",
+    "tabs": {
+      "resumo": "Summary",
+      "tendencias": "Trends",
+      "profundidade": "Depth"
+    },
+    "export": "Export",
+    "exportTitle": "Export data",
+    "exportCsv": "Export as CSV",
+    "exportPdf": "Export as PDF",
+    "streak": {
+      "title": "Reading streak",
+      "current": "Current",
+      "record": "Record",
+      "days": "days in a row",
+      "newRecord": "New record!"
+    },
+    "annualEvolution": "Annual evolution",
+    "diversityIndex": "Diversity index",
+    "monthComparison": "Month comparison",
+    "hourlyHeatmap": "When you read",
+    "sessionMetrics": "Sessions",
+    "avgDuration": "Avg. duration",
+    "quotesPerSession": "Quotes/session",
+    "totalSessions": "Total sessions",
+    "rereadRate": "Reread rate",
+    "authorBubbles": "Author map",
+    "shares": "Shares",
+    "noDataYet": "No data yet"
   },
   "activity": {
     "title": "Activity",

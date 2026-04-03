@@ -86,7 +86,14 @@ export const ReadingProfileRadar: React.FC<ReadingProfileRadarProps> = ({ readin
       <View className="rounded-xl bg-card p-3.5">
         <View className="items-center">
           <View style={{ width: CANVAS_SIZE, height: CANVAS_SIZE, position: 'relative' }}>
-            <Canvas style={{ width: CANVAS_SIZE, height: CANVAS_SIZE }}>
+            <Canvas
+              style={{ width: CANVAS_SIZE, height: CANVAS_SIZE }}
+              accessibilityLabel={
+                t('insights.readingProfile') +
+                ': ' +
+                DIMENSIONS.map((dim) => t(`insights.${dim}`) + ' ' + readingProfile[dim]).join(', ')
+              }
+            >
               {/* Grid pentagons */}
               {gridPaths.map((path, index) => (
                 <Path key={`grid-${index}`} path={path} color="rgba(0, 0, 0, 0.05)" style="stroke" strokeWidth={1} />

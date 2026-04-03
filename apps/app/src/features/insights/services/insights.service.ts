@@ -1,4 +1,8 @@
 import type {
+  AnnualInsightsResponse,
+  CompareMonthsPayload,
+  CompareMonthsResponse,
+  GetAnnualInsightsPayload,
   GetInsightsPayload,
   InsightsResponse,
   InsightsServiceContract,
@@ -10,5 +14,13 @@ export class InsightsService implements InsightsServiceContract {
 
   public get(payload: GetInsightsPayload): Promise<InsightsResponse> {
     return this.httpClientService.get<InsightsResponse, GetInsightsPayload>('/insights', payload);
+  }
+
+  public getAnnual(payload: GetAnnualInsightsPayload): Promise<AnnualInsightsResponse> {
+    return this.httpClientService.get<AnnualInsightsResponse, GetAnnualInsightsPayload>('/insights/annual', payload);
+  }
+
+  public compare(payload: CompareMonthsPayload): Promise<CompareMonthsResponse> {
+    return this.httpClientService.get<CompareMonthsResponse, CompareMonthsPayload>('/insights/compare', payload);
   }
 }

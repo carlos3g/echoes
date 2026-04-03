@@ -29,6 +29,8 @@ export const queryKeys = {
   },
   insights: {
     monthly: (month: string) => ['insights', month] as const,
+    annual: (year: string) => ['insights', 'annual', year] as const,
+    compare: (monthA: string, monthB: string) => ['insights', 'compare', monthA, monthB] as const,
   },
   activity: {
     all: ['activity'] as const,

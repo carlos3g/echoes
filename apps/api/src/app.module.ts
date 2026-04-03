@@ -17,6 +17,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ActivityModule } from '@app/activity/activity.module';
 import { InsightModule } from '@app/insight/insight.module';
+import { SessionModule } from '@app/session/session.module';
 import { SearchModule } from './search/search.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
@@ -42,6 +43,7 @@ import { UserModule } from './user/user.module';
     SearchModule,
     InsightModule,
     ActivityModule,
+    SessionModule,
   ],
   controllers: [],
   providers: [
