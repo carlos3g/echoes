@@ -20,7 +20,9 @@ function getDeviceLanguage(): AppLanguage {
 
 function getStoredLanguage(): AppLanguage | null {
   try {
-    const value = require('@/lib/react-native-mmkv').storage.getString(LANGUAGE_STORAGE_KEY);
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const mmkv = require('@/lib/react-native-mmkv') as { storage: { getString: (key: string) => string | undefined } };
+    const value = mmkv.storage.getString(LANGUAGE_STORAGE_KEY);
     if (value === 'pt' || value === 'en') return value;
   } catch {
     // storage not ready

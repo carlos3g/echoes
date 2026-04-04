@@ -20,7 +20,7 @@ interface ExportBottomSheetProps {
   month: string;
 }
 
-const renderBackdrop = (props: any) => (
+const renderBackdrop = (props: React.ComponentProps<typeof BottomSheetBackdrop>) => (
   <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.4} />
 );
 

@@ -24,7 +24,7 @@ import { EmailModule } from '@app/email/email.module';
 import { PrismaModule } from '@app/lib/prisma/prisma.module';
 import type { EnvVariables } from '@app/shared/types';
 import { UserModule } from '@app/user/user.module';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule, JwtService } from '@nestjs/jwt';
@@ -40,7 +40,7 @@ import { AuthController } from './auth.controller';
         secret: configService.get('JWT_SECRET'),
       }),
     }),
-    UserModule,
+    forwardRef(() => UserModule),
     PrismaModule,
     EmailModule,
   ],

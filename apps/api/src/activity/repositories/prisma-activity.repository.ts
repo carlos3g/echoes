@@ -40,20 +40,20 @@ export class PrismaActivityRepository implements ActivityRepositoryContract {
     type Row = {
       type: string;
       timestamp: Date;
-      quote_uuid: string | null;
-      quote_content: string | null;
-      author_name: string | null;
-      author_uuid: string | null;
-      tag_uuid: string | null;
-      tag_title: string | null;
+      quoteUuid: string | null;
+      quoteContent: string | null;
+      authorName: string | null;
+      authorUuid: string | null;
+      tagUuid: string | null;
+      tagTitle: string | null;
       platform: string | null;
     };
 
     const rows = await this.prismaManager.getClient().$queryRawUnsafe<Row[]>(
       `SELECT * FROM (
         SELECT 'favorite_quote' as type, ufq.created_at as timestamp,
-               q.uuid as quote_uuid, q.body as quote_content, a.name as author_name,
-               NULL::text as author_uuid, NULL::text as tag_uuid, NULL::text as tag_title, NULL::text as platform
+               q.uuid as "quoteUuid", q.body as "quoteContent", a.name as "authorName",
+               NULL::text as "authorUuid", NULL::text as "tagUuid", NULL::text as "tagTitle", NULL::text as platform
         FROM ${this.userFavoriteQuotes} ufq
         JOIN ${this.quotes} q ON q.id = ufq."quoteId"
         LEFT JOIN ${this.authors} a ON a.id = q."authorId"
@@ -97,12 +97,12 @@ export class PrismaActivityRepository implements ActivityRepositoryContract {
     const data: ActivityItem[] = rows.slice(0, perPage).map((row) => ({
       type: row.type as ActivityItem['type'],
       timestamp: row.timestamp,
-      quoteUuid: row.quote_uuid,
-      quoteContent: row.quote_content,
-      authorName: row.author_name,
-      authorUuid: row.author_uuid,
-      tagUuid: row.tag_uuid,
-      tagTitle: row.tag_title,
+      quoteUuid: row.quoteUuid,
+      quoteContent: row.quoteContent,
+      authorName: row.authorName,
+      authorUuid: row.authorUuid,
+      tagUuid: row.tagUuid,
+      tagTitle: row.tagTitle,
       platform: row.platform,
     }));
 

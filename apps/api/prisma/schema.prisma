@@ -27,6 +27,12 @@ model User {
   quoteShares             QuoteShare[]
   quoteViews              QuoteView[]
   sessions                UserSession[]
+  folders                 Folder[]
+  folderMemberships       FolderMember[]
+  folderFollows           FolderFollow[]
+  folderQuotesAdded       FolderQuote[]            @relation("FolderQuoteAddedBy")
+  folderInviteLinks       FolderInviteLink[]
+  feedEvents              FeedEvent[]
   longestStreak           Int                      @default(0) @map("longest_streak")
   createdAt               DateTime                 @default(now()) @map("created_at")
   updatedAt               DateTime                 @updatedAt @map("updated_at")
@@ -62,19 +68,21 @@ model EmailConfirmationToken {
 }
 
 model Quote {
-  id          BigInt              @id @default(autoincrement()) @db.BigInt
-  uuid        String              @unique
-  body        String
-  author      Author?             @relation(fields: [authorId], references: [id])
-  authorId    BigInt?             @db.BigInt
-  sources     Source[]
-  categories  Category[]
-  favoritedBy UserFavoriteQuote[]
-  tags        TagQuote[]
-  shares      QuoteShare[]
-  views       QuoteView[]
-  createdAt   DateTime            @default(now()) @map("created_at")
-  updatedAt   DateTime            @updatedAt @map("updated_at")
+  id           BigInt              @id @default(autoincrement()) @db.BigInt
+  uuid         String              @unique
+  body         String
+  author       Author?             @relation(fields: [authorId], references: [id])
+  authorId     BigInt?             @db.BigInt
+  sources      Source[]
+  categories   Category[]
+  favoritedBy  UserFavoriteQuote[]
+  tags         TagQuote[]
+  shares       QuoteShare[]
+  views        QuoteView[]
+  folderQuotes FolderQuote[]
+  feedEvents   FeedEvent[]
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
 
   @@index([authorId])
   @@map("quotes")
@@ -243,4 +251,117 @@ model UserSession {
 
   @@index([userId, startedAt])
   @@map("user_sessions")
+}
+
+enum FolderVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum FolderMemberRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+model Folder {
+  id          BigInt           @id @default(autoincrement()) @db.BigInt
+  uuid        String           @unique
+  name        String
+  description String?
+  color       String?
+  visibility  FolderVisibility @default(PUBLIC)
+  position    Int              @default(0)
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      BigInt           @db.BigInt
+  quotes      FolderQuote[]
+  members     FolderMember[]
+  follows     FolderFollow[]
+  inviteLinks FolderInviteLink[]
+  feedEvents  FeedEvent[]
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("folders")
+}
+
+model FolderQuote {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt   @db.BigInt
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId   BigInt   @db.BigInt
+  position  Int      @default(0)
+  addedBy   User     @relation("FolderQuoteAddedBy", fields: [addedById], references: [id], onDelete: Cascade)
+  addedById BigInt   @map("added_by_id") @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([folderId, quoteId])
+  @@index([folderId])
+  @@index([quoteId])
+  @@map("folder_quotes")
+}
+
+model FolderMember {
+  id        BigInt           @id @default(autoincrement()) @db.BigInt
+  folder    Folder           @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt           @db.BigInt
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt           @db.BigInt
+  role      FolderMemberRole
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  @@unique([folderId, userId])
+  @@index([folderId])
+  @@index([userId])
+  @@map("folder_members")
+}
+
+model FolderFollow {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt   @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([folderId, userId])
+  @@index([folderId])
+  @@index([userId])
+  @@map("folder_follows")
+}
+
+model FolderInviteLink {
+  id          BigInt           @id @default(autoincrement()) @db.BigInt
+  uuid        String           @unique
+  folder      Folder           @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId    BigInt           @db.BigInt
+  role        FolderMemberRole
+  createdBy   User             @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdById BigInt           @map("created_by_id") @db.BigInt
+  expiresAt   DateTime?        @map("expires_at")
+  maxUses     Int?             @map("max_uses")
+  usedCount   Int              @default(0) @map("used_count")
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  @@index([folderId])
+  @@map("folder_invite_links")
+}
+
+model FeedEvent {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  type      String
+  actor     User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  actorId   BigInt   @map("actor_id") @db.BigInt
+  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt?  @map("folder_id") @db.BigInt
+  quote     Quote?   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId   BigInt?  @map("quote_id") @db.BigInt
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([actorId])
+  @@map("feed_events")
 }

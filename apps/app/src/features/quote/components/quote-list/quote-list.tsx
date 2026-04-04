@@ -104,19 +104,19 @@ export const QuoteList: React.FC<QuoteListProps> = ({
   const isPaginated = currentPage !== undefined && lastPage !== undefined && onPageChange !== undefined;
 
   const handlePrevious = useCallback(() => {
-    if (isPaginated) onPageChange!(currentPage! - 1);
+    if (isPaginated) onPageChange(currentPage - 1);
   }, [isPaginated, onPageChange, currentPage]);
 
   const handleNext = useCallback(() => {
-    if (isPaginated) onPageChange!(currentPage! + 1);
+    if (isPaginated) onPageChange(currentPage + 1);
   }, [isPaginated, onPageChange, currentPage]);
 
   const footer = useMemo(() => {
     if (!isPaginated || isLoading || quotes.length === 0) return undefined;
     return (
       <PaginationControls
-        currentPage={currentPage!}
-        lastPage={lastPage!}
+        currentPage={currentPage}
+        lastPage={lastPage}
         onPrevious={handlePrevious}
         onNext={handleNext}
       />

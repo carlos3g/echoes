@@ -12,7 +12,7 @@ export const getRecentTagUuids = (): string[] => {
   const raw = storage.getString(RECENT_TAGS_KEY);
   if (!raw) return [];
 
-  const entries: RecentTagEntry[] = JSON.parse(raw);
+  const entries = JSON.parse(raw) as RecentTagEntry[];
   return entries
     .sort((a, b) => b.timestamp - a.timestamp)
     .slice(0, MAX_RECENT_TAGS)
@@ -21,7 +21,7 @@ export const getRecentTagUuids = (): string[] => {
 
 export const addRecentTag = (uuid: string): void => {
   const raw = storage.getString(RECENT_TAGS_KEY);
-  const entries: RecentTagEntry[] = raw ? JSON.parse(raw) : [];
+  const entries: RecentTagEntry[] = raw ? (JSON.parse(raw) as RecentTagEntry[]) : [];
 
   const filtered = entries.filter((e) => e.uuid !== uuid);
   filtered.unshift({ uuid, timestamp: Date.now() });

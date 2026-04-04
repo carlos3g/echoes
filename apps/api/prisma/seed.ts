@@ -4,6 +4,7 @@ import { PrismaClient } from '../generated/prisma/client';
 import { UsersSeeder } from './seeders/users.seed';
 import { QuotesSeeder } from './seeders/quotes.seed';
 import { InsightsSeeder } from './seeders/insights.seed';
+import { FoldersSeeder } from './seeders/folders.seed';
 
 const connectionString = process.env.DB_URL!;
 const schema = new URL(connectionString).searchParams.get('schema') || undefined;
@@ -15,6 +16,7 @@ async function main() {
     await QuotesSeeder.run(tx);
     await UsersSeeder.run(tx);
     await InsightsSeeder.run(tx);
+    await FoldersSeeder.run(tx);
   });
 }
 

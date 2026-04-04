@@ -50,6 +50,8 @@ abstract class QuoteRepositoryContract {
 
   public abstract findMany(input?: QuoteRepositoryFindManyInput): Promise<Quote[]>;
 
+  public abstract findManyByUuids(uuids: string[]): Promise<Quote[]>;
+
   public abstract delete(input: QuoteRepositoryDeleteInput): Promise<void>;
 
   public abstract countFavoritesBatch(quoteIds: number[]): Promise<Map<number, number>>;

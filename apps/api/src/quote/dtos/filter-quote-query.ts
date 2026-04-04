@@ -12,7 +12,7 @@ export class FilterQuoteQuery {
   @IsOptional()
   @IsArray()
   @IsUUID('4', { each: true })
-  @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
+  @Transform(({ value }: { value: unknown }) => (Array.isArray(value) ? (value as string[]) : [value as string]))
   public tagUuids?: string[];
 
   @ApiPropertyOptional()

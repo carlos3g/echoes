@@ -41,9 +41,11 @@ const FontCard: React.FC<{
     <Animated.View style={animatedStyle} className="flex-1">
       <Pressable
         onPressIn={() => {
+          // eslint-disable-next-line react-hooks/immutability
           scale.value = withSpring(0.95, { duration: 100 });
         }}
         onPressOut={() => {
+          // eslint-disable-next-line react-hooks/immutability
           scale.value = withSpring(1, { duration: 200 });
         }}
         onPress={onSelect}

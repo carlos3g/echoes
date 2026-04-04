@@ -29,6 +29,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = (props) => {
 
   const handleFavorite = () => {
     haptics.light();
+    // eslint-disable-next-line react-hooks/immutability
     scale.value = withSequence(withSpring(1.3, { duration: 150 }), withSpring(1, { duration: 150 }));
     toggleFavoriteMutation.mutate({
       uuid: data.uuid,

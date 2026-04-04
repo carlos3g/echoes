@@ -86,18 +86,6 @@ export const AuthContext = createContext<AuthContextValue | null>(null);
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { token, refreshToken, setToken, setRefreshToken, user, setUser, initialized, setInitialized } = useAuthStore();
 
-  useEffect(() => {
-    const unsubscribe = useAuthStore.persist.onFinishHydration(() => {
-      initialize();
-    });
-
-    if (useAuthStore.persist.hasHydrated()) {
-      initialize();
-    }
-
-    return unsubscribe;
-  }, []);
-
   const initialize = useCallback(async () => {
     const currentToken = useAuthStore.getState().token;
     httpClientService.bearerToken = currentToken || '';
@@ -114,6 +102,18 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
     useAuthStore.getState().setInitialized(true);
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = useAuthStore.persist.onFinishHydration(() => {
+      void initialize();
+    });
+
+    if (useAuthStore.persist.hasHydrated()) {
+      void initialize();
+    }
+
+    return unsubscribe;
+  }, [initialize]);
 
   const updateUser = useCallback(async () => {
     const response = await authService.me();

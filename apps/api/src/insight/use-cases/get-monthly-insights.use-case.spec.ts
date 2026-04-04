@@ -81,7 +81,7 @@ describe('GetMonthlyInsightsUseCase', () => {
     it('returns all zeros when repository returns zeros for everything', async () => {
       setupAllZeros(mockRepository);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
       expect(result.summary.quotesRead.current).toBe(0);
       expect(result.summary.quotesRead.previous).toBe(0);
@@ -100,7 +100,7 @@ describe('GetMonthlyInsightsUseCase', () => {
     it('computes previousMonth correctly for a mid-year month', async () => {
       setupAllZeros(mockRepository);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
       expect(result.previousMonth).toBe('2026-02');
     });
@@ -108,7 +108,7 @@ describe('GetMonthlyInsightsUseCase', () => {
     it('computes previousMonth correctly at year boundary (January → December)', async () => {
       setupAllZeros(mockRepository);
 
-      const result = (await useCase.handle({ month: '2026-01', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-01', user: makeUser() });
 
       expect(result.previousMonth).toBe('2025-12');
     });
@@ -123,11 +123,11 @@ describe('GetMonthlyInsightsUseCase', () => {
         { date: '2026-03-22', reads: 5, favorites: 3, shares: 2 }, // week 4
       ]);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
-      const week1 = result.weeklyActivity.find((w: any) => w.week === 1);
-      const week2 = result.weeklyActivity.find((w: any) => w.week === 2);
-      const week4 = result.weeklyActivity.find((w: any) => w.week === 4);
+      const week1 = result.weeklyActivity.find((w) => w.week === 1);
+      const week2 = result.weeklyActivity.find((w) => w.week === 2);
+      const week4 = result.weeklyActivity.find((w) => w.week === 4);
 
       expect(week1).toEqual({ week: 1, reads: 3, favorites: 1, shares: 1 });
       expect(week2).toEqual({ week: 2, reads: 4, favorites: 2, shares: 0 });
@@ -143,7 +143,7 @@ describe('GetMonthlyInsightsUseCase', () => {
         { date: '2026-03-04', reads: 6, favorites: 0, shares: 0 },
       ]);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
       expect(result.heatmap[0].intensity).toBe(0); // reads 0 → 0
       expect(result.heatmap[1].intensity).toBe(1); // reads 1 → 1
@@ -158,7 +158,7 @@ describe('GetMonthlyInsightsUseCase', () => {
       mockRepository.countUniqueAuthorsRead.mockResolvedValue(5);
       mockRepository.getDailyActivity.mockResolvedValue([{ date: '2026-03-01', reads: 10, favorites: 0, shares: 0 }]);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
       expect(result.readingProfile.exploration).toBe(100);
     });
@@ -176,7 +176,7 @@ describe('GetMonthlyInsightsUseCase', () => {
       }));
       mockRepository.getDailyActivity.mockResolvedValue(dailyDates);
 
-      const result = (await useCase.handle({ month: '2026-02', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-02', user: makeUser() });
 
       // daysActive=14, daysInMonth=28 → consistency = round(14/28 * 100) = 50
       expect(result.readingProfile.consistency).toBe(50);
@@ -186,7 +186,7 @@ describe('GetMonthlyInsightsUseCase', () => {
       setupAllZeros(mockRepository);
       mockRepository.countQuoteViews.mockResolvedValue(0);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
       expect(result.readingProfile).toEqual({
         exploration: 0,
@@ -208,16 +208,16 @@ describe('GetMonthlyInsightsUseCase', () => {
         { title: 'Cat3', count: 8 },
       ]);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
-      const titles = result.topCategories.map((c: any) => c.title);
+      const titles = result.topCategories.map((c) => c.title);
       expect(titles).toContain('Cat1');
       expect(titles).toContain('Cat2');
       expect(titles).toContain('Cat3');
       expect(titles).toContain('Outros');
 
-      const outros = result.topCategories.find((c: any) => c.title === 'Outros');
-      expect(outros.count).toBe(3); // 30 - 27
+      const outros = result.topCategories.find((c) => c.title === 'Outros');
+      expect(outros!.count).toBe(3); // 30 - 27
     });
 
     it('does not add "Outros" when total reads equal category sum', async () => {
@@ -229,9 +229,9 @@ describe('GetMonthlyInsightsUseCase', () => {
         { title: 'Cat2', count: 5 },
       ]);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
-      const titles = result.topCategories.map((c: any) => c.title);
+      const titles = result.topCategories.map((c) => c.title);
       expect(titles).not.toContain('Outros');
       expect(result.topCategories).toHaveLength(2);
     });
@@ -241,7 +241,7 @@ describe('GetMonthlyInsightsUseCase', () => {
       // countQuoteViews is called twice: once for current range, once for previous range
       mockRepository.countQuoteViews.mockResolvedValueOnce(42).mockResolvedValueOnce(17);
 
-      const result = (await useCase.handle({ month: '2026-03', user: makeUser() })) as any;
+      const result = await useCase.handle({ month: '2026-03', user: makeUser() });
 
       expect(result.summary.quotesRead.current).toBe(42);
       expect(result.summary.quotesRead.previous).toBe(17);

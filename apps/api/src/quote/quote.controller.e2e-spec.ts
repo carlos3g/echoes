@@ -294,7 +294,7 @@ describe('(GET) /quotes/:uuid/tags', () => {
 
     expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toHaveLength(2);
-    const uuids = response.body.map((t: { uuid: string }) => t.uuid);
+    const uuids = (response.body as Array<{ uuid: string }>).map((t) => t.uuid);
     expect(uuids).toContain(tag1.uuid);
     expect(uuids).toContain(tag2.uuid);
     expect(uuids).not.toContain(unusedTag.uuid);

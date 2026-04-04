@@ -92,6 +92,14 @@ export class PrismaQuoteRepository implements QuoteRepositoryContract {
     return entities.map(prismaQuoteToQuoteAdapter);
   }
 
+  public async findManyByUuids(uuids: string[]): Promise<Quote[]> {
+    const entities = await this.prismaManager.getClient().quote.findMany({
+      where: { uuid: { in: uuids } },
+    });
+
+    return entities.map(prismaQuoteToQuoteAdapter);
+  }
+
   public async findManyFavoritedByUser(input: QuoteRepositoryFindManyFavoritedByUserInput): Promise<Quote[]> {
     const entities = await this.prismaManager.getClient().quote.findMany({
       where: {

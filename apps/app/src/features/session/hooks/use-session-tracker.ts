@@ -113,7 +113,7 @@ export function useSessionTracker() {
 
     timeoutRef.current = setTimeout(() => {
       finishSession();
-      syncPendingSessions();
+      void syncPendingSessions();
     }, INACTIVITY_TIMEOUT_MS);
   }, [clearInactivityTimeout, finishSession]);
 
@@ -133,11 +133,11 @@ export function useSessionTracker() {
       if (nextState === 'active') {
         clearInactivityTimeout();
         startSession();
-        syncPendingSessions();
+        void syncPendingSessions();
       } else {
         clearInactivityTimeout();
         finishSession();
-        syncPendingSessions();
+        void syncPendingSessions();
       }
     };
 
@@ -158,7 +158,7 @@ export function useSessionTracker() {
       setCurrentSession(null);
     }
 
-    syncPendingSessions();
+    void syncPendingSessions();
     startSession();
     resetInactivityTimeout();
 

@@ -166,7 +166,7 @@ describe('(DELETE) /tags/:uuid', () => {
 
     // Verify tag is deleted
     const listResponse = await request(server).get('/tags').auth(token, { type: 'bearer' }).send();
-    expect(listResponse.body.meta.total).toBe(0);
+    expect((listResponse.body as { meta: { total: number } }).meta.total).toBe(0);
   });
 
   it('should cascade delete tag-quote associations', async () => {

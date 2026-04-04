@@ -4,7 +4,9 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { QuoteList, QuoteFilterBadge } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
+import { AddToFolderBottomSheetProvider } from '@/features/folder/components/add-to-folder-bottom-sheet';
 import { FeaturedAuthors } from '@/features/quote/components/explore/featured-authors';
+import { DiscoverFolders } from '@/features/folder/components/discover-folders';
 import { AuthorOfTheDay } from '@/features/author/components/author-of-the-day';
 import { SearchResults } from '@/features/search/components/search-results';
 import { SearchHistory } from '@/features/search/components/search-history';
@@ -83,28 +85,31 @@ export default function ExploreScreen() {
 
       {!isSearchFocused && (
         <TagQuoteBottomSheetProvider>
-          <AuthorOfTheDay />
-          <FeaturedAuthors />
+          <AddToFolderBottomSheetProvider>
+            <AuthorOfTheDay />
+            <FeaturedAuthors />
+            <DiscoverFolders />
 
-          <FilterChipRow
-            items={categories}
-            selectedUuids={selectedCategoryUuid ? [selectedCategoryUuid] : []}
-            onSelect={(uuids) => setSelectedCategoryUuid(uuids[uuids.length - 1])}
-            allLabel={t('common.all')}
-          />
+            <FilterChipRow
+              items={categories}
+              selectedUuids={selectedCategoryUuid ? [selectedCategoryUuid] : []}
+              onSelect={(uuids) => setSelectedCategoryUuid(uuids[uuids.length - 1])}
+              allLabel={t('common.all')}
+            />
 
-          {tagTitles.length > 0 && <QuoteFilterBadge tagTitles={tagTitles} onClear={clearFilters} />}
+            {tagTitles.length > 0 && <QuoteFilterBadge tagTitles={tagTitles} onClear={clearFilters} />}
 
-          <QuoteList
-            quotes={quotes}
-            isLoading={isLoading}
-            isRefetching={isRefetching}
-            onRefresh={refetch}
-            onEndReached={fetchNextPage}
-            currentPage={currentPage}
-            lastPage={lastPage}
-            onPageChange={onPageChange}
-          />
+            <QuoteList
+              quotes={quotes}
+              isLoading={isLoading}
+              isRefetching={isRefetching}
+              onRefresh={refetch}
+              onEndReached={fetchNextPage}
+              currentPage={currentPage}
+              lastPage={lastPage}
+              onPageChange={onPageChange}
+            />
+          </AddToFolderBottomSheetProvider>
         </TagQuoteBottomSheetProvider>
       )}
     </View>

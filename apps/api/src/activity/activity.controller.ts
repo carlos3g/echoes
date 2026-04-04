@@ -1,6 +1,8 @@
 import { UserDecorator } from '@app/auth/decorators/user.decorator';
 import { ListActivityPaginatedQuery } from '@app/activity/dtos/list-activity-paginated.dto';
+import { ListFeedPaginatedQuery } from '@app/activity/dtos/list-feed-paginated.dto';
 import { ListActivityPaginatedUseCase } from '@app/activity/use-cases/list-activity-paginated.use-case';
+import { ListFeedPaginatedUseCase } from '@app/activity/use-cases/list-feed-paginated.use-case';
 import type { User } from '@app/user/entities/user.entity';
 import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -8,7 +10,10 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @ApiBearerAuth()
 @Controller({ path: 'activity', version: '1' })
 export class ActivityController {
-  public constructor(private readonly listActivityPaginatedUseCase: ListActivityPaginatedUseCase) {}
+  public constructor(
+    private readonly listActivityPaginatedUseCase: ListActivityPaginatedUseCase,
+    private readonly listFeedPaginatedUseCase: ListFeedPaginatedUseCase
+  ) {}
 
   @Get('')
   @HttpCode(HttpStatus.OK)
@@ -18,5 +23,11 @@ export class ActivityController {
       perPage: params.paginate?.perPage ?? 20,
       user,
     });
+  }
+
+  @Get('feed')
+  @HttpCode(HttpStatus.OK)
+  public async feed(@Query() params: ListFeedPaginatedQuery, @UserDecorator() user: User) {
+    return this.listFeedPaginatedUseCase.handle({ user, paginate: params.paginate });
   }
 }

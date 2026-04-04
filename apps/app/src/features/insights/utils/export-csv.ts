@@ -13,8 +13,8 @@ export async function exportResumoCsv(data: InsightsResponse, month: string) {
   const rows = data.dailyActivity.map((d) => [d.date, String(d.reads), String(d.favorites), String(d.shares)]);
   const csv = toCsv(headers, rows);
   const file = new File(Paths.cache, `resumo-${month}.csv`);
-  await file.create({ overwrite: true });
-  await file.write(csv);
+  file.create({ overwrite: true });
+  file.write(csv);
   await Sharing.shareAsync(file.uri, { mimeType: 'text/csv' });
 }
 
@@ -23,7 +23,7 @@ export async function exportProfundidadeCsv(data: InsightsResponse, month: strin
   const rows = data.hourlyHeatmap.map((h) => [String(h.dayOfWeek), String(h.hour), String(h.count)]);
   const csv = toCsv(headers, rows);
   const file = new File(Paths.cache, `profundidade-${month}.csv`);
-  await file.create({ overwrite: true });
-  await file.write(csv);
+  file.create({ overwrite: true });
+  file.write(csv);
   await Sharing.shareAsync(file.uri, { mimeType: 'text/csv' });
 }

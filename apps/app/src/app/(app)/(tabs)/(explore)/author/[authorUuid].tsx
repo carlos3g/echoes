@@ -11,6 +11,7 @@ import { Text } from '@/shared/components/ui/text';
 import { AvatarInitials } from '@/shared/components/ui/avatar-initials';
 import { QuoteList } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
+import { AddToFolderBottomSheetProvider } from '@/features/folder/components/add-to-folder-bottom-sheet';
 import { useTheme } from '@/lib/nativewind/theme.context';
 import { haptics } from '@/shared/utils/haptics';
 import type { Author } from '@/types/entities';
@@ -28,6 +29,7 @@ function AuthorHeader({ author }: { author: Author }) {
 
   const handleFavorite = () => {
     haptics.light();
+    // eslint-disable-next-line react-hooks/immutability
     scale.value = withSequence(withSpring(1.3, { duration: 150 }), withSpring(1, { duration: 150 }));
     toggleFavorite.mutate({
       uuid: author.uuid,
@@ -147,7 +149,9 @@ export default function AuthorDetailScreen() {
       )}
 
       <TagQuoteBottomSheetProvider>
-        <AuthorQuotes authorUuid={authorUuid} />
+        <AddToFolderBottomSheetProvider>
+          <AuthorQuotes authorUuid={authorUuid} />
+        </AddToFolderBottomSheetProvider>
       </TagQuoteBottomSheetProvider>
     </View>
   );

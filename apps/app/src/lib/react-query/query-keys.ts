@@ -35,4 +35,17 @@ export const queryKeys = {
   activity: {
     all: ['activity'] as const,
   },
+  folders: {
+    all: ['folders'] as const,
+    detail: (uuid: string) => ['folders', uuid] as const,
+    quotes: (uuid: string) => ['folders', uuid, 'quotes'] as const,
+    members: (uuid: string) => ['folders', uuid, 'members'] as const,
+    followers: (uuid: string) => ['folders', uuid, 'followers'] as const,
+    search: (q: string) => ['folders', 'search', q] as const,
+    popular: ['folders', 'popular'] as const,
+    userPublic: (username: string) => ['folders', 'user', username] as const,
+  },
+  feed: {
+    all: ['feed'] as const,
+  },
 } as const;

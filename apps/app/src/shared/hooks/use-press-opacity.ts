@@ -9,9 +9,11 @@ export function usePressOpacity(target = 0.6) {
 
   const pressHandlers = {
     onPressIn: () => {
+      // eslint-disable-next-line react-hooks/immutability
       opacity.value = withTiming(target, { duration: 100 });
     },
     onPressOut: () => {
+      // eslint-disable-next-line react-hooks/immutability
       opacity.value = withTiming(1, { duration: 150 });
     },
   };

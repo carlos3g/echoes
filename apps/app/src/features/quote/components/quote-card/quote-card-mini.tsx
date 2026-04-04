@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Pressable, Text as RNText, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -23,14 +23,14 @@ export const QuoteCardMini: React.FC<QuoteCardMiniProps> = React.memo(({ data, o
   const { quoteStyle } = useReadingStyle();
   const { colors } = useTheme();
 
-  const handleAuthorPress = useCallback(() => {
+  const handleAuthorPress = () => {
     if (data.author?.uuid) {
       router.push({
         pathname: '/(app)/(tabs)/(explore)/author/[authorUuid]',
         params: { authorUuid: data.author.uuid },
       });
     }
-  }, [data.author?.uuid, router]);
+  };
 
   return (
     <Pressable

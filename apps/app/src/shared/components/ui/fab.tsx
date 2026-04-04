@@ -35,6 +35,7 @@ export const Fab: React.FC<FabProps> = (props) => {
     <AnimatedPressable
       testID={testID}
       onPress={(e) => {
+        // eslint-disable-next-line react-hooks/immutability
         progress.value = withSequence(withSpring(1, { duration: 300 }), withSpring(0, { duration: 200 }));
         onPress?.(e);
       }}

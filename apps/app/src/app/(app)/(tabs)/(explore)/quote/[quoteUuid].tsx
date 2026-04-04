@@ -7,6 +7,7 @@ import { QuoteHero } from '@/features/quote/components/quote-detail/quote-hero';
 import { AuthorSection } from '@/features/quote/components/quote-detail/author-section';
 import { MoreFromAuthor } from '@/features/quote/components/quote-detail/more-from-author';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
+import { AddToFolderBottomSheetProvider } from '@/features/folder/components/add-to-folder-bottom-sheet';
 import { useGetQuote } from '@/features/quote/hooks/use-get-quote';
 import { notifyQuoteViewed } from '@/features/session/session-tracker';
 
@@ -30,29 +31,31 @@ export default function QuoteScreen() {
 
   return (
     <TagQuoteBottomSheetProvider>
-      <Animated.View entering={FadeIn.duration(300)} className="flex-1 bg-background">
-        <ScrollView contentContainerClassName="pb-8">
-          <QuoteHero quote={quote} />
+      <AddToFolderBottomSheetProvider>
+        <Animated.View entering={FadeIn.duration(300)} className="flex-1 bg-background">
+          <ScrollView contentContainerClassName="pb-8">
+            <QuoteHero quote={quote} />
 
-          {quote.author && (
-            <AuthorSection
-              author={{
-                uuid: quote.author.uuid,
-                name: quote.author.name,
-                bio: quote.author.bio,
-              }}
-            />
-          )}
+            {quote.author && (
+              <AuthorSection
+                author={{
+                  uuid: quote.author.uuid,
+                  name: quote.author.name,
+                  bio: quote.author.bio,
+                }}
+              />
+            )}
 
-          {quote.author?.uuid && (
-            <MoreFromAuthor
-              authorUuid={quote.author.uuid}
-              authorName={quote.author.name}
-              excludeQuoteUuid={quote.uuid}
-            />
-          )}
-        </ScrollView>
-      </Animated.View>
+            {quote.author?.uuid && (
+              <MoreFromAuthor
+                authorUuid={quote.author.uuid}
+                authorName={quote.author.name}
+                excludeQuoteUuid={quote.uuid}
+              />
+            )}
+          </ScrollView>
+        </Animated.View>
+      </AddToFolderBottomSheetProvider>
     </TagQuoteBottomSheetProvider>
   );
 }

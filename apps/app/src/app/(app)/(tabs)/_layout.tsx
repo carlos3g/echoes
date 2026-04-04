@@ -47,6 +47,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="(feed)"
+        options={{
+          title: t('tabs.feed'),
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'newspaper' : 'newspaper-outline'} color={color} size={24} />
+          ),
+          tabBarButtonTestID: 'feed-tab-button',
+        }}
+      />
+      <Tabs.Screen
         name="collection"
         options={{
           title: t('tabs.collection'),

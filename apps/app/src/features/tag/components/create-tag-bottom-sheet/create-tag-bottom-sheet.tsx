@@ -2,7 +2,7 @@ import type { BottomSheetBackdropProps, BottomSheetFooterProps } from '@gorhom/b
 import type RNBottomSheet from '@gorhom/bottom-sheet';
 import { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Portal } from 'react-native-portalize';
 import type { z } from 'zod';
@@ -36,29 +36,23 @@ export const CreateTagBottomSheet = React.forwardRef<RNBottomSheet>((props, ref)
     mutate(data);
   });
 
-  const renderBackdrop = useCallback(
-    (backdropProps: BottomSheetBackdropProps) => <BottomSheetBackdrop {...backdropProps} />,
-    []
-  );
+  const renderBackdrop = (backdropProps: BottomSheetBackdropProps) => <BottomSheetBackdrop {...backdropProps} />;
 
-  const renderFooter = useCallback(
-    (footerProps: BottomSheetFooterProps) => (
-      <BottomSheetFooter
-        {...footerProps}
-        bottomInset={bottom + 16}
-        className="px-4"
-        style={{ backgroundColor: colors.background }}
-      >
-        <Button
-          loading={isPending}
-          disabled={!form.formState.isValid}
-          onPress={onSubmit}
-          title={t('common.create')}
-          testID="create-tag-button"
-        />
-      </BottomSheetFooter>
-    ),
-    [bottom, isPending, onSubmit, form.formState.isValid, colors.background]
+  const renderFooter = (footerProps: BottomSheetFooterProps) => (
+    <BottomSheetFooter
+      {...footerProps}
+      bottomInset={bottom + 16}
+      className="px-4"
+      style={{ backgroundColor: colors.background }}
+    >
+      <Button
+        loading={isPending}
+        disabled={!form.formState.isValid}
+        onPress={onSubmit}
+        title={t('common.create')}
+        testID="create-tag-button"
+      />
+    </BottomSheetFooter>
   );
 
   return (

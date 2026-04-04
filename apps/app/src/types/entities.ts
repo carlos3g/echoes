@@ -84,3 +84,62 @@ export class Tag {
     totalQuotes: number;
   };
 }
+
+export class Folder {
+  public uuid!: string;
+
+  public name!: string;
+
+  public description!: string | null;
+
+  public color!: string | null;
+
+  public visibility!: 'PUBLIC' | 'PRIVATE';
+
+  public position!: number;
+
+  public metadata!: {
+    totalQuotes: number;
+    totalFollowers: number;
+    isFollowedByUser?: boolean;
+    memberRole?: string | null;
+  };
+
+  public createdAt!: Date;
+
+  public updatedAt!: Date;
+}
+
+export class FolderMember {
+  public role!: 'OWNER' | 'EDITOR' | 'VIEWER';
+
+  public user!: {
+    uuid: string;
+    name: string;
+    username: string;
+  };
+
+  public createdAt!: Date;
+}
+
+export class FeedEvent {
+  public type!: string;
+
+  public actor!: {
+    uuid: string;
+    name: string;
+    username: string;
+  };
+
+  public folder?: {
+    uuid: string;
+    name: string;
+  };
+
+  public quote?: {
+    uuid: string;
+    body: string;
+  };
+
+  public createdAt!: Date;
+}

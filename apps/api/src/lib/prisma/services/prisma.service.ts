@@ -1,7 +1,7 @@
 import type { OnModuleInit } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Prisma, PrismaClient } from '@generated/prisma/client';
+import { PrismaClient } from '@generated/prisma/client';
 
 const TABLE_NAMES = [
   'users',

@@ -21,7 +21,7 @@ interface ShareImageBottomSheetProps {
   onClose: () => void;
 }
 
-const renderBackdrop = (props: any) => (
+const renderBackdrop = (props: React.ComponentProps<typeof BottomSheetBackdrop>) => (
   <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.4} />
 );
 
@@ -61,7 +61,7 @@ export const ShareImageBottomSheet: React.FC<ShareImageBottomSheetProps> = ({ da
     if (!data) return;
     haptics.medium();
     try {
-      const baseUrl = process.env.EXPO_PUBLIC_APP_URL || 'https://echoes.carlos3g.dev';
+      const baseUrl = (process.env.EXPO_PUBLIC_APP_URL as string | undefined) || 'https://echoes.carlos3g.dev';
       const result = await Share.open({ url: `${baseUrl}/quotes/${data.uuid}` });
       trackShare({
         uuid: data.uuid,

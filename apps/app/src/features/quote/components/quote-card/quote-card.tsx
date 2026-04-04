@@ -1,7 +1,7 @@
 import type { PressableProps } from 'react-native';
 import { Dimensions, Pressable, Text as RNText, TouchableOpacity, View } from 'react-native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useRouter } from 'expo-router';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,7 @@ import { $shadowProps } from '@/shared/theme/theme';
 import { ShareButton } from './share-button';
 import { FavoriteButton } from './favorite-button';
 import { TagButton } from './tag-button';
+import { FolderButton } from './folder-button';
 import { CopyButton } from './copy-button';
 
 const { width: wWidth } = Dimensions.get('window');
@@ -32,14 +33,14 @@ export const QuoteCard: React.FC<QuoteCardProps> = React.memo((props) => {
   const { quoteStyle } = useReadingStyle();
   const { colors } = useTheme();
 
-  const handleAuthorPress = useCallback(() => {
+  const handleAuthorPress = () => {
     if (data.author?.uuid) {
       router.push({
         pathname: '/(app)/(tabs)/(explore)/author/[authorUuid]',
         params: { authorUuid: data.author.uuid },
       });
     }
-  }, [data.author?.uuid, router]);
+  };
 
   return (
     <Animated.View
@@ -96,6 +97,7 @@ export const QuoteCard: React.FC<QuoteCardProps> = React.memo((props) => {
           <View className="flex-row gap-5">
             <FavoriteButton data={data} />
             <TagButton data={data} />
+            <FolderButton data={data} />
           </View>
           <View className="flex-row gap-5">
             <CopyButton data={data} />

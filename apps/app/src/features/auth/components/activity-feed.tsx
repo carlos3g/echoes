@@ -7,7 +7,7 @@ import { useTheme } from '@/lib/nativewind/theme.context';
 import { useActivityStore, type ActivityItem } from '@/lib/zustand/stores/activity.store';
 import { formatRelativeTime } from '@/shared/utils';
 
-function ActivityItemRow({ item }: { item: ActivityItem }) {
+const ActivityItemRow = ({ item }: { item: ActivityItem }) => {
   const { colors } = useTheme();
 
   const icon = item.type === 'favorite' ? 'heart' : 'pricetag';
@@ -26,7 +26,7 @@ function ActivityItemRow({ item }: { item: ActivityItem }) {
       </View>
     </View>
   );
-}
+};
 
 export const ActivityFeed: React.FC = () => {
   const { t } = useTranslation();

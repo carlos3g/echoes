@@ -1,5 +1,6 @@
 import { AuthorRepositoryContract } from '@app/author/contracts/author-repository.contract';
 import { CategoryRepositoryContract } from '@app/category/contracts/category-repository.contract';
+import type { GetMonthlyInsightsOutput } from '@app/insight/use-cases/get-monthly-insights.use-case';
 import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
 import { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type { Category } from '@app/category/entities/category.entity';
@@ -41,6 +42,8 @@ beforeEach(async () => {
 
 const getInsights = (authToken: string, month: string) =>
   request(server).get('/insights').auth(authToken, { type: 'bearer' }).query({ month });
+
+const body = (response: request.Response): GetMonthlyInsightsOutput => response.body as GetMonthlyInsightsOutput;
 
 const createView = (userId: number, quoteId: number, isoDate: string) =>
   prisma.quoteView.create({ data: { userId, quoteId, createdAt: new Date(isoDate) } });
@@ -128,12 +131,12 @@ describe('(GET) /insights', () => {
         },
         readingProfile: { exploration: 0, collection: 0, sharing: 0, consistency: 0, depth: 0 },
       });
-      expect(response.body.dailyActivity).toEqual([]);
-      expect(response.body.weeklyActivity).toEqual([]);
-      expect(response.body.topCategories).toEqual([]);
-      expect(response.body.topAuthors).toEqual([]);
-      expect(response.body.sharesByPlatform).toEqual([]);
-      expect(response.body.heatmap).toEqual([]);
+      expect(body(response).dailyActivity).toEqual([]);
+      expect(body(response).weeklyActivity).toEqual([]);
+      expect(body(response).topCategories).toEqual([]);
+      expect(body(response).topAuthors).toEqual([]);
+      expect(body(response).sharesByPlatform).toEqual([]);
+      expect(body(response).heatmap).toEqual([]);
     });
   });
 
@@ -150,7 +153,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesRead.current).toBe(2);
+      expect(body(response).summary.quotesRead.current).toBe(2);
     });
 
     it('should count quote favorites correctly for the month', async () => {
@@ -163,7 +166,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesFavorited.current).toBe(2);
+      expect(body(response).summary.quotesFavorited.current).toBe(2);
     });
 
     it('should count author favorites correctly for the month', async () => {
@@ -176,7 +179,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.authorsFavorited.current).toBe(2);
+      expect(body(response).summary.authorsFavorited.current).toBe(2);
     });
 
     it('should count shares correctly for the month', async () => {
@@ -189,7 +192,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesShared.current).toBe(3);
+      expect(body(response).summary.quotesShared.current).toBe(3);
     });
 
     it('should count tags created correctly for the month', async () => {
@@ -213,7 +216,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.tagsCreated.current).toBe(2);
+      expect(body(response).summary.tagsCreated.current).toBe(2);
     });
 
     it('should count unique authors read correctly (2 quotes from same author = 1 unique)', async () => {
@@ -227,7 +230,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.uniqueAuthors.current).toBe(1);
+      expect(body(response).summary.uniqueAuthors.current).toBe(1);
     });
 
     it('should include previous month comparison values', async () => {
@@ -243,8 +246,8 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesRead.current).toBe(2);
-      expect(response.body.summary.quotesRead.previous).toBe(1);
+      expect(body(response).summary.quotesRead.current).toBe(2);
+      expect(body(response).summary.quotesRead.previous).toBe(1);
     });
   });
 
@@ -260,7 +263,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesRead.current).toBe(0);
+      expect(body(response).summary.quotesRead.current).toBe(0);
     });
 
     it('should not include other users favorites', async () => {
@@ -272,7 +275,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesFavorited.current).toBe(0);
+      expect(body(response).summary.quotesFavorited.current).toBe(0);
     });
 
     it('should not include data from other months (April data not visible when querying March)', async () => {
@@ -284,7 +287,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesRead.current).toBe(1);
+      expect(body(response).summary.quotesRead.current).toBe(1);
     });
   });
 
@@ -308,8 +311,8 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const day10 = response.body.dailyActivity.find((d: { date: string }) => d.date === '2026-03-10');
-      const day20 = response.body.dailyActivity.find((d: { date: string }) => d.date === '2026-03-20');
+      const day10 = body(response).dailyActivity.find((d) => d.date === '2026-03-10');
+      const day20 = body(response).dailyActivity.find((d) => d.date === '2026-03-20');
 
       expect(day10).toBeDefined();
       expect(day10).toMatchObject({ reads: 2, favorites: 1, shares: 1 });
@@ -326,8 +329,8 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.dailyActivity).toHaveLength(1);
-      expect(response.body.dailyActivity[0].date).toBe('2026-03-15');
+      expect(body(response).dailyActivity).toHaveLength(1);
+      expect(body(response).dailyActivity[0].date).toBe('2026-03-15');
     });
   });
 
@@ -352,7 +355,7 @@ describe('(GET) /insights', () => {
       expect(response.status).toBe(HttpStatus.OK);
 
       const weekly: Array<{ week: number; reads: number; favorites: number; shares: number }> =
-        response.body.weeklyActivity;
+        body(response).weeklyActivity;
 
       const w1 = weekly.find((w) => w.week === 1);
       const w2 = weekly.find((w) => w.week === 2);
@@ -392,7 +395,7 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const topCategories: Array<{ title: string; count: number; percentage: number }> = response.body.topCategories;
+      const topCategories: Array<{ title: string; count: number; percentage: number }> = body(response).topCategories;
 
       expect(topCategories.length).toBeGreaterThanOrEqual(2);
       expect(topCategories[0].count).toBeGreaterThanOrEqual(topCategories[1].count);
@@ -417,7 +420,7 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const topCategories: Array<{ title: string; count: number }> = response.body.topCategories;
+      const topCategories: Array<{ title: string; count: number }> = body(response).topCategories;
       const outros = topCategories.find((c) => c.title === 'Outros');
 
       expect(outros).toBeDefined();
@@ -431,7 +434,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.topCategories).toEqual([]);
+      expect(body(response).topCategories).toEqual([]);
     });
 
     it('should include percentage for each category', async () => {
@@ -444,7 +447,7 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const topCategories: Array<{ title: string; count: number; percentage: number }> = response.body.topCategories;
+      const topCategories: Array<{ title: string; count: number; percentage: number }> = body(response).topCategories;
 
       expect(topCategories[0].percentage).toBe(100);
     });
@@ -461,10 +464,10 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const entry = response.body.heatmap.find((h: { date: string }) => h.date === '2026-03-10');
+      const entry = body(response).heatmap.find((h) => h.date === '2026-03-10');
       expect(entry).toBeDefined();
-      expect(entry.count).toBe(1);
-      expect(entry.intensity).toBe(1);
+      expect(entry!.count).toBe(1);
+      expect(entry!.intensity).toBe(1);
     });
 
     it('should return heatmap with intensity 2 for 3-5 reads', async () => {
@@ -480,10 +483,10 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const entry = response.body.heatmap.find((h: { date: string }) => h.date === '2026-03-15');
+      const entry = body(response).heatmap.find((h) => h.date === '2026-03-15');
       expect(entry).toBeDefined();
-      expect(entry.count).toBe(4);
-      expect(entry.intensity).toBe(2);
+      expect(entry!.count).toBe(4);
+      expect(entry!.intensity).toBe(2);
     });
 
     it('should return heatmap with intensity 3 for 6+ reads', async () => {
@@ -501,17 +504,17 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const entry = response.body.heatmap.find((h: { date: string }) => h.date === '2026-03-20');
+      const entry = body(response).heatmap.find((h) => h.date === '2026-03-20');
       expect(entry).toBeDefined();
-      expect(entry.count).toBe(6);
-      expect(entry.intensity).toBe(3);
+      expect(entry!.count).toBe(6);
+      expect(entry!.intensity).toBe(3);
     });
 
     it('should return empty heatmap when there are no reads', async () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.heatmap).toEqual([]);
+      expect(body(response).heatmap).toEqual([]);
     });
   });
 
@@ -534,7 +537,7 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const topAuthors: Array<{ name: string; quotesRead: number; uuid: string }> = response.body.topAuthors;
+      const topAuthors: Array<{ name: string; quotesRead: number; uuid: string }> = body(response).topAuthors;
 
       expect(topAuthors).toHaveLength(2);
       expect(topAuthors[0].quotesRead).toBeGreaterThanOrEqual(topAuthors[1].quotesRead);
@@ -548,7 +551,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.topAuthors).toHaveLength(0);
+      expect(body(response).topAuthors).toHaveLength(0);
     });
 
     it('should return the correct uuid for each author', async () => {
@@ -560,7 +563,7 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const topAuthors: Array<{ name: string; quotesRead: number; uuid: string }> = response.body.topAuthors;
+      const topAuthors: Array<{ name: string; quotesRead: number; uuid: string }> = body(response).topAuthors;
 
       expect(topAuthors).toHaveLength(1);
       expect(topAuthors[0].uuid).toBe(author.uuid);
@@ -582,7 +585,7 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const sharesByPlatform: Array<{ platform: string; count: number }> = response.body.sharesByPlatform;
+      const sharesByPlatform: Array<{ platform: string; count: number }> = body(response).sharesByPlatform;
 
       const instagram = sharesByPlatform.find((s) => s.platform === 'instagram');
       const twitter = sharesByPlatform.find((s) => s.platform === 'twitter');
@@ -598,7 +601,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.sharesByPlatform).toEqual([]);
+      expect(body(response).sharesByPlatform).toEqual([]);
     });
   });
 
@@ -609,7 +612,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.readingProfile).toEqual({
+      expect(body(response).readingProfile).toEqual({
         exploration: 0,
         collection: 0,
         sharing: 0,
@@ -631,7 +634,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.readingProfile.exploration).toBeGreaterThan(0);
+      expect(body(response).readingProfile.exploration).toBeGreaterThan(0);
     });
 
     it('should compute consistency score as fraction of days active in month', async () => {
@@ -646,7 +649,7 @@ describe('(GET) /insights', () => {
 
       expect(response.status).toBe(HttpStatus.OK);
 
-      const { consistency } = response.body.readingProfile;
+      const { consistency } = body(response).readingProfile;
       // daysActive=3, daysInMonth=31 → Math.round(3/31*100) = 10
       expect(consistency).toBe(Math.round((3 / 31) * 100));
     });
@@ -660,7 +663,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.readingProfile.collection).toBeGreaterThan(0);
+      expect(body(response).readingProfile.collection).toBeGreaterThan(0);
     });
 
     it('should compute a non-zero sharing score when shares exist', async () => {
@@ -672,7 +675,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.readingProfile.sharing).toBeGreaterThan(0);
+      expect(body(response).readingProfile.sharing).toBeGreaterThan(0);
     });
   });
 
@@ -683,16 +686,16 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-01');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.month).toBe('2026-01');
-      expect(response.body.previousMonth).toBe('2025-12');
+      expect(body(response).month).toBe('2026-01');
+      expect(body(response).previousMonth).toBe('2025-12');
     });
 
     it('should handle December correctly (previous month is November)', async () => {
       const response = await getInsights(token, '2026-12');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.month).toBe('2026-12');
-      expect(response.body.previousMonth).toBe('2026-11');
+      expect(body(response).month).toBe('2026-12');
+      expect(body(response).previousMonth).toBe('2026-11');
     });
 
     it('should work correctly for February (shorter month — 28 days in 2026)', async () => {
@@ -708,9 +711,9 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-02');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesRead.current).toBe(28);
+      expect(body(response).summary.quotesRead.current).toBe(28);
       // Active all 28 days → consistency = 100
-      expect(response.body.readingProfile.consistency).toBe(100);
+      expect(body(response).readingProfile.consistency).toBe(100);
     });
 
     it('should include data exactly at the start of the month boundary', async () => {
@@ -721,7 +724,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesRead.current).toBe(1);
+      expect(body(response).summary.quotesRead.current).toBe(1);
     });
 
     it('should exclude data exactly at the start of the following month boundary', async () => {
@@ -732,7 +735,7 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary.quotesRead.current).toBe(0);
+      expect(body(response).summary.quotesRead.current).toBe(0);
     });
   });
 
@@ -759,23 +762,23 @@ describe('(GET) /insights', () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.summary).toHaveProperty('quotesRead');
-      expect(response.body.summary).toHaveProperty('quotesFavorited');
-      expect(response.body.summary).toHaveProperty('quotesShared');
-      expect(response.body.summary).toHaveProperty('authorsFavorited');
-      expect(response.body.summary).toHaveProperty('tagsCreated');
-      expect(response.body.summary).toHaveProperty('uniqueAuthors');
+      expect(body(response).summary).toHaveProperty('quotesRead');
+      expect(body(response).summary).toHaveProperty('quotesFavorited');
+      expect(body(response).summary).toHaveProperty('quotesShared');
+      expect(body(response).summary).toHaveProperty('authorsFavorited');
+      expect(body(response).summary).toHaveProperty('tagsCreated');
+      expect(body(response).summary).toHaveProperty('uniqueAuthors');
     });
 
     it('should include all readingProfile sub-keys', async () => {
       const response = await getInsights(token, '2026-03');
 
       expect(response.status).toBe(HttpStatus.OK);
-      expect(response.body.readingProfile).toHaveProperty('exploration');
-      expect(response.body.readingProfile).toHaveProperty('collection');
-      expect(response.body.readingProfile).toHaveProperty('sharing');
-      expect(response.body.readingProfile).toHaveProperty('consistency');
-      expect(response.body.readingProfile).toHaveProperty('depth');
+      expect(body(response).readingProfile).toHaveProperty('exploration');
+      expect(body(response).readingProfile).toHaveProperty('collection');
+      expect(body(response).readingProfile).toHaveProperty('sharing');
+      expect(body(response).readingProfile).toHaveProperty('consistency');
+      expect(body(response).readingProfile).toHaveProperty('depth');
     });
   });
 });
