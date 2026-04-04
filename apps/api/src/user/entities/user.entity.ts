@@ -16,6 +16,8 @@ export class User {
 
   public username!: string;
 
+  public bio!: string | null;
+
   @Exclude()
   public password!: string;
 

@@ -7,6 +7,7 @@ import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quo
 import { AddToFolderBottomSheetProvider } from '@/features/folder/components/add-to-folder-bottom-sheet';
 import { FeaturedAuthors } from '@/features/quote/components/explore/featured-authors';
 import { DiscoverFolders } from '@/features/folder/components/discover-folders';
+import { DiscoverUsers } from '@/features/user/components/discover-users';
 import { AuthorOfTheDay } from '@/features/author/components/author-of-the-day';
 import { SearchResults } from '@/features/search/components/search-results';
 import { SearchHistory } from '@/features/search/components/search-history';
@@ -89,6 +90,7 @@ export default function ExploreScreen() {
             <AuthorOfTheDay />
             <FeaturedAuthors />
             <DiscoverFolders />
+            <DiscoverUsers />
 
             <FilterChipRow
               items={categories}

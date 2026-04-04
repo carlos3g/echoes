@@ -90,7 +90,9 @@
     "insights": "Meu Mês",
     "updateSuccess": "Perfil atualizado!",
     "updateErrorTitle": "Erro ao atualizar perfil",
-    "updateErrorDescription": "Tente novamente"
+    "updateErrorDescription": "Tente novamente",
+    "bio": "Bio",
+    "bioPlaceholder": "Conte-nos sobre você..."
   },
   "readingPreferences": {
     "font": "Fonte",
@@ -188,7 +190,15 @@
     "memberRemoveError": "Erro ao remover membro",
     "roleOwner": "Dono",
     "roleEditor": "Editor",
-    "roleViewer": "Visualizador"
+    "roleViewer": "Visualizador",
+    "saved": "Salvo",
+    "save": "Salvar",
+    "follow": "Seguir",
+    "following": "Seguindo",
+    "followSuccess": "Seguindo folder!",
+    "followError": "Erro ao seguir folder",
+    "unfollowSuccess": "Deixou de seguir",
+    "unfollowError": "Erro ao deixar de seguir"
   },
   "feed": {
     "title": "Feed",
@@ -326,6 +336,26 @@
     "loadMore": "Carregar mais",
     "emptyTitle": "Nenhuma atividade ainda",
     "emptyDescription": "Suas ações aparecerão aqui conforme você usar o app"
+  },
+  "user": {
+    "follow": "Seguir",
+    "unfollow": "Deixar de seguir",
+    "followers": "Seguidores",
+    "following": "Seguindo",
+    "followSuccess": "Seguindo usuário!",
+    "followError": "Erro ao seguir usuário",
+    "unfollowSuccess": "Deixou de seguir",
+    "unfollowError": "Erro ao deixar de seguir",
+    "publicFolders": "Pastas públicas",
+    "emptyList": "Nenhum usuário encontrado",
+    "searchPlaceholder": "Buscar por nome ou username...",
+    "suggestedTitle": "Sugestões",
+    "saveFolderSuccess": "Pasta salva!",
+    "saveFolderError": "Erro ao salvar pasta",
+    "unsaveFolderSuccess": "Pasta removida dos salvos",
+    "unsaveFolderError": "Erro ao remover pasta",
+    "discoverTitle": "Pessoas",
+    "seeAll": "Ver todos"
   },
   "validation": {
     "invalid": "Inválido",

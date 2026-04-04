@@ -34,6 +34,10 @@ export default function ExploreLayout() {
       <Stack.Screen name="folder/popular" options={{ title: t('folder.popularTitle') }} />
       <Stack.Screen name="folder/user-[username]" options={{ title: t('folder.userFoldersTitle') }} />
       <Stack.Screen name="folder/members" options={{ title: t('folder.membersTitle') }} />
+      <Stack.Screen name="user/[username]" options={{ title: t('profile.title') }} />
+      <Stack.Screen name="user/followers" options={{ title: t('user.followers') }} />
+      <Stack.Screen name="user/following" options={{ title: t('user.following') }} />
+      <Stack.Screen name="user/search" options={{ title: t('user.discoverTitle') }} />
     </Stack>
   );
 }

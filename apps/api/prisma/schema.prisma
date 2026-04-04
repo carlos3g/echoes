@@ -18,6 +18,7 @@ model User {
   email                   String                   @unique
   username                String                   @unique
   password                String
+  bio                     String?
   emailVerifiedAt         DateTime?                @map("email_verified_at")
   passwordChangeRequests  PasswordChangeRequest[]
   emailConfirmationTokens EmailConfirmationToken[]
@@ -33,6 +34,9 @@ model User {
   folderQuotesAdded       FolderQuote[]            @relation("FolderQuoteAddedBy")
   folderInviteLinks       FolderInviteLink[]
   feedEvents              FeedEvent[]
+  followers               UserFollow[]             @relation("UserFollowers")
+  following               UserFollow[]             @relation("UserFollowing")
+  savedFolders            SavedFolder[]
   longestStreak           Int                      @default(0) @map("longest_streak")
   createdAt               DateTime                 @default(now()) @map("created_at")
   updatedAt               DateTime                 @updatedAt @map("updated_at")
@@ -279,6 +283,7 @@ model Folder {
   follows     FolderFollow[]
   inviteLinks FolderInviteLink[]
   feedEvents  FeedEvent[]
+  savedBy     SavedFolder[]
   createdAt   DateTime         @default(now()) @map("created_at")
   updatedAt   DateTime         @updatedAt @map("updated_at")
 
@@ -364,4 +369,32 @@ model FeedEvent {
   @@index([createdAt])
   @@index([actorId])
   @@map("feed_events")
+}
+
+model UserFollow {
+  id          BigInt   @id @default(autoincrement()) @db.BigInt
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  BigInt   @map("follower_id") @db.BigInt
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId BigInt   @map("following_id") @db.BigInt
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("user_follows")
+}
+
+model SavedFolder {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, folderId])
+  @@index([userId])
+  @@index([folderId])
+  @@map("saved_folders")
 }

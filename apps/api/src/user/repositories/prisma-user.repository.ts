@@ -1,9 +1,13 @@
+import { calcSkip, getMeta } from '@app/lib/prisma/helpers/pagination';
+import type { PaginatedResult } from '@app/lib/prisma/helpers/pagination';
 import { PrismaManagerService } from '@app/lib/prisma/services/prisma-manager.service';
 import { prismaUserToUserAdapter } from '@app/user/adapters';
 import type { UserRepositoryContract } from '@app/user/contracts/user-repository.contract';
 import type {
   UserRepositoryCreateInput,
   UserRepositoryFindUniqueOrThrowInput,
+  UserRepositorySearchPaginatedInput,
+  UserRepositorySuggestedUsersInput,
   UserRepositoryUpdateInput,
 } from '@app/user/dtos/user-repository-dtos';
 import type { User } from '@app/user/entities/user.entity';
@@ -52,5 +56,56 @@ export class PrismaUserRepository implements UserRepositoryContract {
     }
 
     return prismaUserToUserAdapter(entity);
+  }
+
+  public async searchPaginated(input: UserRepositorySearchPaginatedInput): Promise<PaginatedResult<User>> {
+    const page = input.options?.page ?? 1;
+    const perPage = input.options?.perPage ?? 20;
+
+    const where = {
+      OR: [
+        { name: { contains: input.query, mode: 'insensitive' as const } },
+        { username: { contains: input.query, mode: 'insensitive' as const } },
+      ],
+    };
+
+    const [total, users] = await Promise.all([
+      this.prismaManager.getClient().user.count({ where }),
+      this.prismaManager.getClient().user.findMany({
+        where,
+        orderBy: { name: 'asc' },
+        take: perPage,
+        skip: calcSkip(page, perPage),
+      }),
+    ]);
+
+    return {
+      data: users.map(prismaUserToUserAdapter),
+      meta: getMeta(total, page, perPage),
+    };
+  }
+
+  public async suggestedUsers(input: UserRepositorySuggestedUsersInput): Promise<PaginatedResult<User>> {
+    const page = input.options?.page ?? 1;
+    const perPage = input.options?.perPage ?? 20;
+
+    const where = input.excludeUserId ? { id: { not: input.excludeUserId } } : {};
+
+    const [total, users] = await Promise.all([
+      this.prismaManager.getClient().user.count({ where }),
+      this.prismaManager.getClient().user.findMany({
+        where,
+        orderBy: {
+          followers: { _count: 'desc' },
+        },
+        take: perPage,
+        skip: calcSkip(page, perPage),
+      }),
+    ]);
+
+    return {
+      data: users.map(prismaUserToUserAdapter),
+      meta: getMeta(total, page, perPage),
+    };
   }
 }

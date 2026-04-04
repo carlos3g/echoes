@@ -5,13 +5,21 @@ import type {
   Folder as PrismaFolder,
   FolderMember as PrismaFolderMember,
   FolderInviteLink as PrismaFolderInviteLink,
+  User as PrismaUser,
 } from '@generated/prisma/client';
 
-export const prismaFolderToFolderAdapter = (input: PrismaFolder) =>
+export const prismaFolderToFolderAdapter = (input: PrismaFolder & { user?: PrismaUser | null }) =>
   new Folder({
     ...input,
     id: Number(input.id),
     userId: Number(input.userId),
+    owner: input.user
+      ? {
+          uuid: input.user.uuid,
+          name: input.user.name,
+          username: input.user.username,
+        }
+      : undefined,
   });
 
 export const prismaFolderMemberToFolderMemberAdapter = (input: PrismaFolderMember) =>

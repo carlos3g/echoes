@@ -64,6 +64,7 @@ export interface UpdateProfilePayload {
   name?: string;
   username?: string;
   email?: string;
+  bio?: string;
 }
 
 export type UpdateProfileOutput = void;

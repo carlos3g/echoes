@@ -48,4 +48,11 @@ export const queryKeys = {
   feed: {
     all: ['feed'] as const,
   },
+  users: {
+    profile: (username: string) => ['users', username, 'profile'] as const,
+    followers: (username: string) => ['users', username, 'followers'] as const,
+    following: (username: string) => ['users', username, 'following'] as const,
+    search: (q: string) => ['users', 'search', q] as const,
+    suggested: ['users', 'suggested'] as const,
+  },
 } as const;

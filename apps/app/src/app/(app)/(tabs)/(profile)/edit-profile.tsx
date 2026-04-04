@@ -15,6 +15,7 @@ const createEditProfileSchema = () =>
     name: z.string().min(1),
     username: validateUsername(),
     email: validateEmail(),
+    bio: z.string().max(300).optional(),
   });
 
 type EditProfileForm = z.infer<ReturnType<typeof createEditProfileSchema>>;
@@ -31,6 +32,7 @@ export default function EditProfileScreen() {
       name: user?.name || '',
       username: user?.username || '',
       email: user?.email || '',
+      bio: user?.bio || '',
     },
   });
 
@@ -55,6 +57,16 @@ export default function EditProfileScreen() {
         label={t('form.username')}
         autoCapitalize="none"
         testID="edit-profile-username"
+      />
+
+      <ControlledTextInput<EditProfileForm>
+        control={control}
+        name="bio"
+        label={t('profile.bio')}
+        placeholder={t('profile.bioPlaceholder')}
+        multiline
+        maxLength={300}
+        testID="edit-profile-bio"
       />
 
       <ControlledTextInput<EditProfileForm>

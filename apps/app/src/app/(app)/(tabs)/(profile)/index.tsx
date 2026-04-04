@@ -1,7 +1,8 @@
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useUserProfile } from '@/features/user/hooks/use-user-profile';
 import { ProfileStats } from '@/features/auth/components/profile-stats';
 import { ActivityFeed } from '@/features/auth/components/activity-feed';
 import { ThemeToggle } from '@/shared/components/settings/theme-toggle';
@@ -14,6 +15,7 @@ export default function ProfileScreen() {
   const { handleSignOut, user } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
+  const { data: profile } = useUserProfile(user?.username ?? '');
 
   return (
     <ScrollView className="flex-1 bg-background" contentContainerClassName="pb-8">
@@ -27,6 +29,44 @@ export default function ProfileScreen() {
           <Text variant="paragraphSmall" className="text-secondary">
             @{user.username}
           </Text>
+
+          {profile ? (
+            <View className="mt-3 flex-row gap-6">
+              <Pressable
+                className="items-center"
+                onPress={() =>
+                  router.push({
+                    pathname: '/(app)/(tabs)/(explore)/user/followers',
+                    params: { username: user.username },
+                  })
+                }
+              >
+                <Text variant="paragraphMedium" bold>
+                  {profile.followersCount}
+                </Text>
+                <Text variant="paragraphCaptionSmall" className="text-muted-foreground">
+                  {t('user.followers')}
+                </Text>
+              </Pressable>
+
+              <Pressable
+                className="items-center"
+                onPress={() =>
+                  router.push({
+                    pathname: '/(app)/(tabs)/(explore)/user/following',
+                    params: { username: user.username },
+                  })
+                }
+              >
+                <Text variant="paragraphMedium" bold>
+                  {profile.followingCount}
+                </Text>
+                <Text variant="paragraphCaptionSmall" className="text-muted-foreground">
+                  {t('user.following')}
+                </Text>
+              </Pressable>
+            </View>
+          ) : null}
         </View>
       )}
 

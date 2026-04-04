@@ -20,6 +20,7 @@ export interface UserRepositoryUpdateInput {
     name: string;
     email: string;
     password: string;
+    bio: string | null;
     avatarId?: number | null;
     emailVerifiedAt?: Date | null;
   }>;
@@ -32,4 +33,14 @@ export interface UserRepositoryFindUniqueOrThrowInput {
     email: string;
     username: string;
   }>;
+}
+
+export interface UserRepositorySearchPaginatedInput {
+  query: string;
+  options?: { page?: number; perPage?: number };
+}
+
+export interface UserRepositorySuggestedUsersInput {
+  excludeUserId?: number;
+  options?: { page?: number; perPage?: number };
 }

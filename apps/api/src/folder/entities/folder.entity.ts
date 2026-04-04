@@ -23,11 +23,18 @@ export class Folder {
   @Exclude()
   public userId!: number;
 
+  public owner?: {
+    uuid: string;
+    name: string;
+    username: string;
+  };
+
   public metadata?: {
     totalQuotes?: number;
     totalFollowers?: number;
     isFollowedByUser?: boolean;
     memberRole?: 'OWNER' | 'EDITOR' | 'VIEWER' | null;
+    isSaved?: boolean;
   };
 
   public createdAt!: Date;

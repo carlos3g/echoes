@@ -6,6 +6,10 @@ import { FolderMetaBadges } from '@/features/folder/components/folder-meta-badge
 import { useFolderDetail } from '@/features/folder/hooks/use-folder-detail';
 import { useFolderQuotes } from '@/features/folder/hooks/use-folder-quotes';
 import { useLeaveFolder } from '@/features/folder/hooks/use-leave-folder';
+import { useFollowFolder } from '@/features/folder/hooks/use-follow-folder';
+import { useUnfollowFolder } from '@/features/folder/hooks/use-unfollow-folder';
+import { useSaveFolder } from '@/features/user/hooks/use-save-folder';
+import { useUnsaveFolder } from '@/features/user/hooks/use-unsave-folder';
 import { QuoteList } from '@/features/quote/components/quote-list';
 import { TagQuoteBottomSheetProvider } from '@/features/quote/components/tag-quote-bottom-sheet';
 import { AddToFolderBottomSheetProvider } from '@/features/folder/components/add-to-folder-bottom-sheet';
@@ -20,10 +24,17 @@ function FolderHeader({ folder, folderUuid }: { folder: Folder; folderUuid: stri
   const router = useRouter();
   const folderColor = folder.color || colors.primary;
   const memberRole = folder.metadata?.memberRole;
+  const isFollowed = folder.metadata?.isFollowedByUser;
+  const isSaved = folder.metadata?.isSaved;
+  const isPublic = folder.visibility === 'PUBLIC';
 
   const { mutate: leave } = useLeaveFolder({
     onSuccess: () => router.back(),
   });
+  const { mutate: followFolder, isPending: isFollowPending } = useFollowFolder(folderUuid);
+  const { mutate: unfollowFolder, isPending: isUnfollowPending } = useUnfollowFolder(folderUuid);
+  const { mutate: saveFolder, isPending: isSavePending } = useSaveFolder();
+  const { mutate: unsaveFolder, isPending: isUnsavePending } = useUnsaveFolder();
 
   const handleLeave = () => {
     Alert.alert(t('folder.leaveTitle'), t('folder.leaveMessage'), [
@@ -52,8 +63,41 @@ function FolderHeader({ folder, folderUuid }: { folder: Folder; folderUuid: stri
       </View>
 
       {/* Action buttons */}
-      {memberRole && (
-        <View className="mt-3 flex-row items-center gap-3">
+      <View className="mt-3 flex-row items-center gap-3">
+        {/* Follow/unfollow (public folders, non-members) */}
+        {isPublic && !memberRole && (
+          <TouchableOpacity
+            className="flex-row items-center gap-1 rounded-lg border border-border px-3 py-1.5"
+            disabled={isFollowPending || isUnfollowPending}
+            onPress={() => (isFollowed ? unfollowFolder() : followFolder())}
+          >
+            <Ionicons
+              name={isFollowed ? 'heart' : 'heart-outline'}
+              size={16}
+              color={isFollowed ? colors.primary : colors.foreground}
+            />
+            <Text variant="paragraphCaption">{isFollowed ? t('folder.following') : t('folder.follow')}</Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Save/unsave (public folders, non-owners) */}
+        {isPublic && memberRole !== 'OWNER' && (
+          <TouchableOpacity
+            className="flex-row items-center gap-1 rounded-lg border border-border px-3 py-1.5"
+            disabled={isSavePending || isUnsavePending}
+            onPress={() => (isSaved ? unsaveFolder(folderUuid) : saveFolder(folderUuid))}
+          >
+            <Ionicons
+              name={isSaved ? 'bookmark' : 'bookmark-outline'}
+              size={16}
+              color={isSaved ? colors.primary : colors.foreground}
+            />
+            <Text variant="paragraphCaption">{isSaved ? t('folder.saved') : t('folder.save')}</Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Members (only for members) */}
+        {memberRole && (
           <TouchableOpacity
             className="flex-row items-center gap-1 rounded-lg border border-border px-3 py-1.5"
             onPress={() =>
@@ -66,18 +110,19 @@ function FolderHeader({ folder, folderUuid }: { folder: Folder; folderUuid: stri
             <Ionicons name="people-outline" size={16} color={colors.foreground} />
             <Text variant="paragraphCaption">{t('folder.members')}</Text>
           </TouchableOpacity>
+        )}
 
-          {memberRole !== 'OWNER' && (
-            <TouchableOpacity
-              className="flex-row items-center gap-1 rounded-lg border border-border px-3 py-1.5"
-              onPress={handleLeave}
-            >
-              <Ionicons name="exit-outline" size={16} color={colors.foreground} />
-              <Text variant="paragraphCaption">{t('folder.leave')}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
+        {/* Leave (members who aren't owner) */}
+        {memberRole && memberRole !== 'OWNER' && (
+          <TouchableOpacity
+            className="flex-row items-center gap-1 rounded-lg border border-border px-3 py-1.5"
+            onPress={handleLeave}
+          >
+            <Ionicons name="exit-outline" size={16} color={colors.foreground} />
+            <Text variant="paragraphCaption">{t('folder.leave')}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }

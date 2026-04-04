@@ -90,7 +90,9 @@
     "insights": "My Month",
     "updateSuccess": "Profile updated!",
     "updateErrorTitle": "Error updating profile",
-    "updateErrorDescription": "Try again"
+    "updateErrorDescription": "Try again",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself..."
   },
   "readingPreferences": {
     "font": "Font",
@@ -188,7 +190,15 @@
     "memberRemoveError": "Error removing member",
     "roleOwner": "Owner",
     "roleEditor": "Editor",
-    "roleViewer": "Viewer"
+    "roleViewer": "Viewer",
+    "saved": "Saved",
+    "save": "Save",
+    "follow": "Follow",
+    "following": "Following",
+    "followSuccess": "Following folder!",
+    "followError": "Error following folder",
+    "unfollowSuccess": "Unfollowed folder",
+    "unfollowError": "Error unfollowing folder"
   },
   "feed": {
     "title": "Feed",
@@ -326,6 +336,26 @@
     "loadMore": "Load more",
     "emptyTitle": "No activity yet",
     "emptyDescription": "Your actions will appear here as you use the app"
+  },
+  "user": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "followers": "Followers",
+    "following": "Following",
+    "followSuccess": "Following user!",
+    "followError": "Error following user",
+    "unfollowSuccess": "Unfollowed user",
+    "unfollowError": "Error unfollowing user",
+    "publicFolders": "Public folders",
+    "emptyList": "No users found",
+    "searchPlaceholder": "Search by name or username...",
+    "suggestedTitle": "Suggested",
+    "saveFolderSuccess": "Folder saved!",
+    "saveFolderError": "Error saving folder",
+    "unsaveFolderSuccess": "Folder removed from saved",
+    "unsaveFolderError": "Error removing folder",
+    "discoverTitle": "People",
+    "seeAll": "See all"
   },
   "validation": {
     "invalid": "Invalid",

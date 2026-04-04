@@ -52,6 +52,7 @@ export class UserService {
         email: rest.email,
         name: rest.name,
         password: hashedPassword,
+        bio: rest.bio,
       },
     });
 

@@ -52,6 +52,8 @@ export class User {
 
   public username!: string;
 
+  public bio!: string | null;
+
   public password!: string;
 
   public emailVerifiedAt!: Date | null;
@@ -98,16 +100,41 @@ export class Folder {
 
   public position!: number;
 
+  public owner?: {
+    uuid: string;
+    name: string;
+    username: string;
+  };
+
   public metadata!: {
     totalQuotes: number;
     totalFollowers: number;
     isFollowedByUser?: boolean;
     memberRole?: string | null;
+    isSaved?: boolean;
   };
 
   public createdAt!: Date;
 
   public updatedAt!: Date;
+}
+
+export class UserProfile {
+  public uuid!: string;
+
+  public name!: string;
+
+  public username!: string;
+
+  public bio!: string | null;
+
+  public followersCount!: number;
+
+  public followingCount!: number;
+
+  public isFollowedByUser?: boolean;
+
+  public createdAt!: Date;
 }
 
 export class FolderMember {

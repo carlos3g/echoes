@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import type { Folder } from '@/types/entities';
 import { Text } from '@/shared/components/ui/text';
 import { useTheme } from '@/lib/nativewind/theme.context';
@@ -16,6 +17,7 @@ interface FolderCardProps {
 
 export const FolderCard: React.FC<FolderCardProps> = React.memo(({ data, index = 0, testID }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { colors } = useTheme();
 
   const folderColor = data.color || colors.primary;
@@ -39,6 +41,14 @@ export const FolderCard: React.FC<FolderCardProps> = React.memo(({ data, index =
       >
         <View style={{ backgroundColor: folderColor, height: 4 }} />
 
+        {data.metadata?.isSaved ? (
+          <View className="absolute right-3 top-3">
+            <Text variant="paragraphCaptionSmall" className="text-secondary">
+              {t('folder.saved')}
+            </Text>
+          </View>
+        ) : null}
+
         <View className="p-4">
           <Text variant="paragraphMedium" semiBold numberOfLines={1}>
             {data.name}
@@ -53,6 +63,22 @@ export const FolderCard: React.FC<FolderCardProps> = React.memo(({ data, index =
           <View className="mt-3">
             <FolderMetaBadges folder={data} />
           </View>
+
+          {data.owner ? (
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: '/(app)/(tabs)/(explore)/user/[username]',
+                  params: { username: data.owner!.username },
+                });
+              }}
+              hitSlop={8}
+            >
+              <Text variant="paragraphCaptionSmall" className="mt-2 text-secondary">
+                @{data.owner.username}
+              </Text>
+            </Pressable>
+          ) : null}
         </View>
       </Pressable>
     </Animated.View>

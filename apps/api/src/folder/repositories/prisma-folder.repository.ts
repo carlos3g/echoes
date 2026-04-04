@@ -18,9 +18,10 @@ import type {
 } from '@app/folder/dtos/folder-repository-dtos';
 import type { Folder } from '@app/folder/entities/folder.entity';
 import { Injectable } from '@nestjs/common';
-import type { Folder as PrismaFolder } from '@generated/prisma/client';
+import type { Folder as PrismaFolder, User as PrismaUser } from '@generated/prisma/client';
 
 type FindManyReturn = PrismaFolder;
+type FindManyWithUserReturn = PrismaFolder & { user: PrismaUser | null };
 
 @Injectable()
 export class PrismaFolderRepository implements FolderRepositoryContract {
@@ -125,7 +126,7 @@ export class PrismaFolderRepository implements FolderRepositoryContract {
   public async searchPaginated(input: FolderRepositorySearchPaginatedInput): Promise<PaginatedResult<Folder>> {
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const result = await paginate<FindManyReturn, 'Folder'>(
+    const result = await paginate<FindManyWithUserReturn, 'Folder'>(
       this.prismaManager.getClient().folder,
       {
         where: {
@@ -134,6 +135,7 @@ export class PrismaFolderRepository implements FolderRepositoryContract {
           ...(input.excludeUserId ? { userId: { not: input.excludeUserId } } : {}),
         },
         orderBy: [{ createdAt: 'desc' }],
+        include: { user: true },
       },
       { page, perPage }
     );
@@ -147,7 +149,7 @@ export class PrismaFolderRepository implements FolderRepositoryContract {
   public async popularPaginated(input: FolderRepositoryPopularPaginatedInput): Promise<PaginatedResult<Folder>> {
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const result = await paginate<FindManyReturn, 'Folder'>(
+    const result = await paginate<FindManyWithUserReturn, 'Folder'>(
       this.prismaManager.getClient().folder,
       {
         where: {
@@ -155,6 +157,7 @@ export class PrismaFolderRepository implements FolderRepositoryContract {
           ...(input.excludeUserId ? { userId: { not: input.excludeUserId } } : {}),
         },
         orderBy: { follows: { _count: 'desc' } },
+        include: { user: true },
       },
       { page, perPage }
     );
@@ -168,7 +171,7 @@ export class PrismaFolderRepository implements FolderRepositoryContract {
   public async userPublicPaginated(input: FolderRepositoryUserPublicPaginatedInput): Promise<PaginatedResult<Folder>> {
     const { perPage = 20, page = 1 } = input.options || {};
 
-    const result = await paginate<FindManyReturn, 'Folder'>(
+    const result = await paginate<FindManyWithUserReturn, 'Folder'>(
       this.prismaManager.getClient().folder,
       {
         where: {
@@ -176,6 +179,7 @@ export class PrismaFolderRepository implements FolderRepositoryContract {
           visibility: 'PUBLIC',
         },
         orderBy: [{ position: 'asc' }, { createdAt: 'desc' }],
+        include: { user: true },
       },
       { page, perPage }
     );
