@@ -1,0 +1,65 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Verify explore screen is visible
+- assertVisible: 'Explorar'
+- assertVisible:
+    id: 'search-input'
+
+# Test search functionality
+- tapOn:
+    id: 'search-input'
+- inputText: ${output.SEARCH_QUERY}
+- hideKeyboard
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Clear search
+- tapOn:
+    id: 'search-input'
+- eraseText: 100
+- hideKeyboard
+
+# Test scrolling quotes list
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Test category filter chips
+- assertVisible: 'Todos'
+- tapOn: 'Todos'
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Test quote interaction buttons
+- tapOn:
+    id: 'toggle-favorite-button'
+    index: 0
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 500
+- tapOn:
+    id: 'toggle-favorite-button'
+    index: 0
+    optional: true

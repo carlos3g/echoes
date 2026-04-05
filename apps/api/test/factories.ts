@@ -46,6 +46,7 @@ export const userFactory = (): Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'qu
   emailVerifiedAt: faker.date.recent(),
   username: faker.internet.username().toLowerCase(),
   bio: faker.lorem.sentence(),
+  isAdmin: false,
 });
 
 export const fileFactory = (): Omit<FileEntity, 'id'> => ({

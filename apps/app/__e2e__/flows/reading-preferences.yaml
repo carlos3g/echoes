@@ -1,0 +1,85 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to profile tab
+- tapOn: 'Perfil'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Navigate to reading preferences
+- tapOn:
+    id: 'reading-preferences-button'
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Verify section headers are visible
+- assertVisible:
+    text: 'Fonte'
+    optional: true
+
+# Test font selection - tap different fonts
+- tapOn:
+    text: 'Lora'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 300
+- tapOn:
+    text: 'Merriweather'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 300
+- tapOn:
+    text: 'Playfair'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 300
+
+# Scroll down to see more options
+- swipe:
+    direction: UP
+    duration: 500
+
+# Test line spacing options
+- tapOn:
+    text: 'Compacto'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 300
+- tapOn:
+    text: 'Normal'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 300
+- tapOn:
+    text: 'Relaxado'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 300
+- tapOn:
+    text: 'Auto'
+    optional: true
+
+# Test list mode
+- tapOn:
+    text: 'Paginado'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 300
+- tapOn:
+    text: 'Infinito'
+    optional: true
+
+# Go back
+- back

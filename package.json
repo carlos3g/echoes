@@ -11,6 +11,7 @@
     "dev": "turbo run dev",
     "dev:api": "turbo run dev --filter=@echoes/api",
     "dev:app": "turbo run start --filter=@echoes/app",
+    "dev:admin": "turbo run dev --filter=@echoes/admin",
     "style": "turbo run style",
     "lint": "turbo run lint",
     "format": "turbo run format",

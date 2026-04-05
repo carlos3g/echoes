@@ -10,6 +10,7 @@ Table users {
   username String [unique, not null]
   password String [not null]
   bio String
+  isAdmin Boolean [not null, default: false]
   emailVerifiedAt DateTime
   passwordChangeRequests password_change_request [not null]
   emailConfirmationTokens email_confirmation_token [not null]

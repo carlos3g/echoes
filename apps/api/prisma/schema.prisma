@@ -19,6 +19,7 @@ model User {
   username                String                   @unique
   password                String
   bio                     String?
+  isAdmin                 Boolean                  @default(false) @map("is_admin")
   emailVerifiedAt         DateTime?                @map("email_verified_at")
   passwordChangeRequests  PasswordChangeRequest[]
   emailConfirmationTokens EmailConfirmationToken[]

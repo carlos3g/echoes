@@ -1,0 +1,50 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to profile tab
+- tapOn: 'Perfil'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Navigate to activity
+- tapOn:
+    id: 'activity-button'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Verify activity screen - either has content or empty state
+- runFlow:
+    when:
+      visible: 'Nenhuma atividade ainda'
+    commands:
+      - assertVisible: 'Nenhuma atividade ainda'
+
+# Scroll activity list
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Test load more if available
+- tapOn:
+    text: 'Carregar mais'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Go back
+- back

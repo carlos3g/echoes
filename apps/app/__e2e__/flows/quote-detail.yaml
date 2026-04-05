@@ -1,0 +1,50 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Wait for explore screen to load
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Test copy button on a quote
+- tapOn:
+    id: 'copy-button'
+    index: 0
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 500
+
+# Test share button
+- tapOn:
+    id: 'share-button'
+    index: 0
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Test add to folder button
+- tapOn:
+    id: 'add-to-folder-button'
+    index: 0
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Scroll to see more quotes
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500

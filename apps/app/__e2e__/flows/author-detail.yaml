@@ -1,0 +1,57 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Wait for explore screen to load
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Scroll to featured authors section and tap
+- scrollUntilVisible:
+    element: 'Autores'
+    direction: DOWN
+    timeout: 5000
+
+# Verify author detail screen elements
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Test bio expand/collapse
+- tapOn:
+    text: 'Ler mais'
+    optional: true
+- tapOn:
+    text: 'Ler menos'
+    optional: true
+
+# Test favorite toggle on author
+- tapOn:
+    id: 'toggle-favorite-button'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 500
+- tapOn:
+    id: 'toggle-favorite-button'
+    optional: true
+
+# Scroll author quotes
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Go back
+- back

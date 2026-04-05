@@ -24,3 +24,17 @@ output.FORGOT_PASSWORD_EMAIL = 'test@gmail.com';
 
 // Tags test data
 output.TAG_TITLE = 'Test Tag ' + Date.now();
+
+// Folder test data
+output.FOLDER_NAME = 'Test Folder ' + Date.now();
+output.FOLDER_DESCRIPTION = 'Folder criada para testes automatizados';
+
+// Edit profile test data
+output.EDIT_NAME = 'Test User Edited';
+output.EDIT_USERNAME = 'testedited' + Date.now();
+output.EDIT_BIO = 'Bio de teste automatizado';
+output.EDIT_EMAIL = 'edited' + Date.now() + '@gmail.com';
+
+// Search test data
+output.SEARCH_QUERY = 'amor';
+output.USER_SEARCH_QUERY = 'test';

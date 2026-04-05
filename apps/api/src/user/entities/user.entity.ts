@@ -18,6 +18,8 @@ export class User {
 
   public bio!: string | null;
 
+  public isAdmin!: boolean;
+
   @Exclude()
   public password!: string;
 

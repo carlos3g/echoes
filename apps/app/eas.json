@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "version": ">= 18.5.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "node": "20.19.0",
+      "corepack": true,
+      "env": {
+        "HUSKY": "0"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "node": "20.19.0",
+      "corepack": true,
+      "env": {
+        "HUSKY": "0"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "node": "20.19.0",
+      "corepack": true,
+      "env": {
+        "HUSKY": "0"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

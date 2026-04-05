@@ -1,5 +1,6 @@
 import '@app/lib/prisma/helpers/big-int-polyfill';
 
+import { AdminModule } from '@app/admin/admin.module';
 import { AuthorModule } from '@app/author/author.module';
 import { CategoryModule } from '@app/category/category.module';
 import { EmailModule } from '@app/email/email.module';
@@ -31,6 +32,7 @@ import { UserModule } from './user/user.module';
       isGlobal: true,
       expandVariables: true,
     }),
+    AdminModule,
     AuthModule,
     HealthModule,
     AuthorModule,
