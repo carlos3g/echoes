@@ -46,7 +46,8 @@
       "persistent": true
     },
     "db:generate": {
-      "cache": false
+      "cache": false,
+      "env": ["DB_URL"]
     },
     "db:migrate": {
       "cache": false
