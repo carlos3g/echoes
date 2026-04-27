@@ -1,6 +1,5 @@
-import type { Config } from '@jest/types';
-
-const config: Config.InitialOptions = {
+/** @type {import('jest').Config} */
+module.exports = {
   preset: 'jest-expo',
   setupFiles: ['<rootDir>/src/test/jest-setup.ts'],
   setupFilesAfterEnv: ['<rootDir>/src/test/jest-setup-after-env.ts'],
@@ -29,5 +28,3 @@ const config: Config.InitialOptions = {
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|expo-router|@sentry/react-native|native-base|react-native-svg)',
   ],
 };
-
-export default config;
