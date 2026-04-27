@@ -15,7 +15,7 @@ export class ChangePasswordUseCase implements UseCaseHandler {
     const { user, passwordConfirmation: _, currentPassword: __, ...rest } = input;
 
     if (!this.hashService.compare(input.currentPassword, user.password)) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Invalid current password');
     }
 
     await this.userService.update({

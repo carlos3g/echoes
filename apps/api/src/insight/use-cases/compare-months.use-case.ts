@@ -35,8 +35,8 @@ function computeDelta(a: number, b: number): number {
 
 function parseMonthRange(month: string): { start: Date; end: Date } {
   const [year, monthNum] = month.split('-').map(Number) as [number, number];
-  const start = new Date(year, monthNum - 1, 1);
-  const end = new Date(year, monthNum, 1);
+  const start = new Date(Date.UTC(year, monthNum - 1, 1));
+  const end = new Date(Date.UTC(year, monthNum, 1));
 
   return { start, end };
 }

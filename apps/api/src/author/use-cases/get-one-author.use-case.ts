@@ -27,6 +27,6 @@ export class GetOneAuthorUseCase implements UseCaseHandler {
       user ? this.authorRepository.isFavorited({ where: { authorId: author.id, userId: user.id } }) : false,
     ]);
 
-    return { ...author, metadata: { totalQuotes, totalFavorites, favoritedByUser } };
+    return Object.assign(author, { metadata: { totalQuotes, totalFavorites, favoritedByUser } });
   }
 }

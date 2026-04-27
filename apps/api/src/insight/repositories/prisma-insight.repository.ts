@@ -134,16 +134,17 @@ export class PrismaInsightRepository implements InsightRepositoryContract {
     range: InsightRepositoryDateRange
   ): Promise<Map<string, number>> {
     type DayRow = { date: string; count: bigint };
+    // Use UTC explicitly so date bucketing doesn't shift with DB session timezone.
     const rows = await this.prismaManager.getClient().$queryRawUnsafe<DayRow[]>(
-      `SELECT DATE(created_at) as date, COUNT(*) as count
+      `SELECT to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD') as date, COUNT(*) as count
        FROM ${table}
        WHERE "userId" = $1 AND created_at >= $2 AND created_at < $3
-       GROUP BY DATE(created_at)`,
+       GROUP BY to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD')`,
       uid,
       range.start,
       range.end
     );
-    return new Map(rows.map((r) => [String(r.date), Number(r.count)]));
+    return new Map(rows.map((r) => [r.date, Number(r.count)]));
   }
 
   public async getTopCategories(

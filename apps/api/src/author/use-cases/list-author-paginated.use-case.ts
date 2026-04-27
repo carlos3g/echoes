@@ -34,13 +34,14 @@ export class ListAuthorPaginatedUseCase implements UseCaseHandler {
       user ? this.authorRepository.isFavoritedBatch({ authorIds, userId: user.id }) : new Set<number>(),
     ]);
 
-    return authors.map((author) => ({
-      ...author,
-      metadata: {
-        totalQuotes: quotesMap.get(author.id) || 0,
-        totalFavorites: favoritesMap.get(author.id) || 0,
-        favoritedByUser: favoritedSet.has(author.id),
-      },
-    }));
+    return authors.map((author) =>
+      Object.assign(author, {
+        metadata: {
+          totalQuotes: quotesMap.get(author.id) || 0,
+          totalFavorites: favoritesMap.get(author.id) || 0,
+          favoritedByUser: favoritedSet.has(author.id),
+        },
+      })
+    );
   }
 }

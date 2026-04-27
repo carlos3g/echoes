@@ -56,13 +56,14 @@ export class GetMonthlyInsightsUseCase implements UseCaseHandler {
 
     const [year, monthNum] = month.split('-').map(Number) as [number, number];
 
-    const currentStart = new Date(year, monthNum - 1, 1);
-    const currentEnd = new Date(year, monthNum, 1);
+    // Build month boundaries in UTC so the query window is timezone-independent.
+    const currentStart = new Date(Date.UTC(year, monthNum - 1, 1));
+    const currentEnd = new Date(Date.UTC(year, monthNum, 1));
 
-    const previousStart = new Date(year, monthNum - 2, 1);
-    const previousEnd = new Date(year, monthNum - 1, 1);
+    const previousStart = new Date(Date.UTC(year, monthNum - 2, 1));
+    const previousEnd = new Date(Date.UTC(year, monthNum - 1, 1));
 
-    const previousMonth = `${String(previousStart.getFullYear())}-${String(previousStart.getMonth() + 1).padStart(2, '0')}`;
+    const previousMonth = `${String(previousStart.getUTCFullYear())}-${String(previousStart.getUTCMonth() + 1).padStart(2, '0')}`;
 
     const currentRange = { start: currentStart, end: currentEnd };
     const previousRange = { start: previousStart, end: previousEnd };
@@ -106,7 +107,7 @@ export class GetMonthlyInsightsUseCase implements UseCaseHandler {
       this.insightRepository.countUniqueAuthorsRead(user.id, currentRange),
       this.insightRepository.countUniqueAuthorsRead(user.id, previousRange),
       this.insightRepository.getDailyActivity(user.id, currentRange),
-      this.insightRepository.getTopCategories(user.id, currentRange, 3),
+      this.insightRepository.getTopCategories(user.id, currentRange, 5),
       this.insightRepository.getTopAuthors(user.id, currentRange, 5),
       this.insightRepository.getSharesByPlatform(user.id, currentRange),
       this.insightRepository.getRereadCount(user.id, currentRange),
@@ -180,7 +181,7 @@ export class GetMonthlyInsightsUseCase implements UseCaseHandler {
       percentage: totalCategoryCount > 0 ? Math.round((c.count / totalCategoryCount) * 100) : 0,
     }));
 
-    if (othersCount > 0) {
+    if (othersCount > 0 && topCategoriesRaw.length > 0) {
       topCategories.push({
         title: 'Outros',
         count: othersCount,

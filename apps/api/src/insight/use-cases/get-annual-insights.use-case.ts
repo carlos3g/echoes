@@ -30,8 +30,8 @@ export class GetAnnualInsightsUseCase implements UseCaseHandler {
     const monthPromises = Array.from({ length: 12 }, (_, i) => {
       const monthNum = i + 1;
       const monthLabel = `${year}-${String(monthNum).padStart(2, '0')}`;
-      const start = new Date(yearNum, i, 1);
-      const end = new Date(yearNum, i + 1, 1);
+      const start = new Date(Date.UTC(yearNum, i, 1));
+      const end = new Date(Date.UTC(yearNum, i + 1, 1));
       const range = { start, end };
 
       return Promise.all([
