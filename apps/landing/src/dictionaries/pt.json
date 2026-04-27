@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "title": "Echoes — Onde palavras encontram pessoas",
+    "description": "Descubra, colecione e compartilhe citações que ressoam. Crie pastas colaborativas, siga curadores e construa sua biblioteca pessoal de ideias."
+  },
+  "nav": {
+    "manifesto": "Manifesto",
+    "features": "Recursos",
+    "folders": "Pastas",
+    "download": "Baixar app"
+  },
+  "hero": {
+    "eyebrow": "Citações que ressoam",
+    "title": "Onde palavras",
+    "titleAccent": "encontram pessoas.",
+    "subtitle": "Echoes é o lugar para descobrir, colecionar e compartilhar citações. Crie pastas colaborativas, siga curadores e construa sua biblioteca pessoal de ideias.",
+    "ctaPrimary": "Baixar para iOS",
+    "ctaSecondary": "Baixar para Android",
+    "featuredQuote": "A vida é curta demais para ser pequena.",
+    "featuredAuthor": "Benjamin Disraeli"
+  },
+  "manifesto": {
+    "label": "Nosso manifesto",
+    "title": "Citações merecem mais do que uma captura de tela.",
+    "body": "Toda frase que tocou você é parte de quem você é. Echoes nasceu para que essas palavras não se percam em screenshots esquecidos — e sim virem coleções vivas, compartilhadas com quem importa."
+  },
+  "features": {
+    "label": "Recursos",
+    "title": "Tudo que você precisa para curar palavras.",
+    "items": [
+      {
+        "title": "Descubra",
+        "body": "Explore um catálogo crescente de citações por tema, autor e categoria. Filtros precisos e busca semântica."
+      },
+      {
+        "title": "Colecione",
+        "body": "Salve em favoritos ou organize em pastas temáticas. Sem limite de quotes, sem limite de pastas."
+      },
+      {
+        "title": "Colabore",
+        "body": "Convide amigos para co-criar pastas. Defina papéis: dono, editor ou somente leitura."
+      },
+      {
+        "title": "Compartilhe",
+        "body": "Cards elegantes prontos para Instagram, WhatsApp e Twitter. Sua estética, sem marca d'água."
+      },
+      {
+        "title": "Siga",
+        "body": "Acompanhe curadores e amigos. Veja o que estão adicionando às pastas públicas em tempo real."
+      },
+      {
+        "title": "Descubra de novo",
+        "body": "Pastas populares, sugestões por afinidade e perfis em alta. Sempre algo novo para guardar."
+      }
+    ]
+  },
+  "folders": {
+    "label": "Pastas",
+    "title": "Coleções vivas, no estilo Pinterest.",
+    "subtitle": "Pastas colaborativas com capa gerada, ordem personalizada e contexto social. Públicas ou privadas, com ou sem co-autores.",
+    "samples": [
+      { "title": "Estoicismo diário", "author": "@maria.rosa", "count": "47 citações" },
+      { "title": "Feminismo radical", "author": "@bell.hooks", "count": "112 citações" },
+      { "title": "Filosofia da técnica", "author": "@flusser", "count": "23 citações" },
+      { "title": "Poesia em português", "author": "@drummond", "count": "89 citações" },
+      { "title": "Zen & cotidiano", "author": "@watts", "count": "34 citações" },
+      { "title": "Notas de leitura 2026", "author": "@você", "count": "12 citações" }
+    ]
+  },
+  "showcase": {
+    "label": "O app",
+    "title": "Pensado em cada detalhe.",
+    "subtitle": "Tipografia editorial, paleta terracota e sage, modo escuro nativo. Construído com React Native — leve, rápido, offline-first."
+  },
+  "stats": {
+    "quotes": "citações",
+    "folders": "pastas criadas",
+    "users": "leitores ativos",
+    "languages": "idiomas"
+  },
+  "cta": {
+    "title": "Comece a colecionar hoje.",
+    "subtitle": "Grátis, sem anúncios. iOS e Android.",
+    "ios": "App Store",
+    "android": "Google Play"
+  },
+  "footer": {
+    "tagline": "Onde palavras encontram pessoas.",
+    "product": "Produto",
+    "company": "Empresa",
+    "legal": "Legal",
+    "links": {
+      "features": "Recursos",
+      "folders": "Pastas",
+      "download": "Baixar",
+      "about": "Sobre",
+      "blog": "Blog",
+      "contact": "Contato",
+      "privacy": "Privacidade",
+      "terms": "Termos"
+    },
+    "rights": "© 2026 Echoes. Todos os direitos reservados.",
+    "madeWith": "Feito com café no Brasil."
+  },
+  "language": {
+    "switch": "EN",
+    "current": "PT"
+  }
+}

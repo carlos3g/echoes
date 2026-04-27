@@ -20,6 +20,8 @@
     "eas:build:prod": "eas build --profile production",
     "eas:submit": "eas submit --profile production",
     "eas:update": "eas update",
+    "build-submit:prod:ios": "eas build --platform ios --auto-submit",
+    "build-submit:prod:android": "eas build --platform android --auto-submit",
     "eas:doctor": "npx expo-doctor",
     "nuke": "rm -rf ./node_modules ./ios ./android .expo"
   },
