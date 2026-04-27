@@ -1,0 +1,86 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to collection tab
+- tapOn:
+    text: 'Coleção'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Verify favorites tab is active by default
+- assertVisible: 'Favoritos'
+- assertVisible: 'Folders'
+
+# Scroll favorites list
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Switch to folders tab
+- tapOn: 'Folders'
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Test create folder FAB
+- tapOn:
+    id: 'create-folder-fab'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 500
+
+# Fill folder creation form
+- tapOn:
+    id: 'folder-name-input'
+    optional: true
+- inputText: ${output.FOLDER_NAME}
+- hideKeyboard
+- tapOn:
+    id: 'folder-description-input'
+    optional: true
+- inputText: ${output.FOLDER_DESCRIPTION}
+- hideKeyboard
+
+# Create folder
+- tapOn:
+    text: 'Criar'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Switch back to favorites tab
+- tapOn: 'Favoritos'
+
+# Test create tag FAB
+- tapOn:
+    id: 'collection-fab'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 500
+
+# Fill tag creation
+- tapOn:
+    id: 'tag-title-input'
+    optional: true
+- inputText: ${output.TAG_TITLE}
+- hideKeyboard
+- tapOn:
+    id: 'create-tag-button'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000

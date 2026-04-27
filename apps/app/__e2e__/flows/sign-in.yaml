@@ -1,0 +1,47 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Verify initial state - button should be disabled
+- assertVisible:
+    id: 'signin-button'
+- assertTrue: 'signin-button.enabled == false'
+
+# Test invalid credentials
+- tapOn:
+    id: 'signin-email-input'
+- inputText: ${output.INVALID_EMAIL}
+- tapOn:
+    id: 'signin-password-input'
+- inputText: ${output.INVALID_PASSWORD}
+- hideKeyboard
+- tapOn:
+    id: 'signin-button'
+- assertVisible: 'Opa!!'
+- assertVisible: 'E-mail ou senha inválidos'
+
+# Clear inputs
+- tapOn:
+    id: 'signin-email-input'
+- eraseText: 100
+- tapOn:
+    id: 'signin-password-input'
+- eraseText: 100
+
+# Test valid credentials
+- tapOn:
+    id: 'signin-email-input'
+- inputText: ${output.EMAIL}
+- tapOn:
+    id: 'signin-password-input'
+- inputText: ${output.PASSWORD}
+- hideKeyboard
+- tapOn:
+    id: 'signin-button'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible: 'Echoes'

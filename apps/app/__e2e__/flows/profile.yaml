@@ -1,0 +1,71 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to profile tab
+- tapOn: 'Perfil'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Verify profile screen elements
+- assertVisible:
+    id: 'user-avatar'
+    optional: true
+- assertVisible:
+    id: 'user-name'
+    optional: true
+- assertVisible:
+    id: 'user-username'
+    optional: true
+
+# Verify profile stats
+- assertVisible:
+    text: 'Favoritos'
+    optional: true
+- assertVisible:
+    text: 'Seguidores'
+    optional: true
+- assertVisible:
+    text: 'Seguindo'
+    optional: true
+
+# Scroll to settings menu
+- swipe:
+    direction: UP
+    duration: 500
+
+# Verify settings menu items
+- assertVisible:
+    id: 'insights-button'
+    optional: true
+- assertVisible:
+    id: 'activity-button'
+    optional: true
+- assertVisible:
+    id: 'reading-preferences-button'
+    optional: true
+- assertVisible:
+    id: 'edit-profile-button'
+    optional: true
+- assertVisible:
+    id: 'go-to-change-password-button'
+    optional: true
+- assertVisible:
+    id: 'logout-button'
+    optional: true
+
+# Scroll back up
+- swipe:
+    direction: DOWN
+    duration: 500

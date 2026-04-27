@@ -1,0 +1,401 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+model User {
+  id                      BigInt                   @id @default(autoincrement()) @db.BigInt
+  uuid                    String                   @unique
+  name                    String
+  email                   String                   @unique
+  username                String                   @unique
+  password                String
+  bio                     String?
+  isAdmin                 Boolean                  @default(false) @map("is_admin")
+  emailVerifiedAt         DateTime?                @map("email_verified_at")
+  passwordChangeRequests  PasswordChangeRequest[]
+  emailConfirmationTokens EmailConfirmationToken[]
+  tags                    Tag[]
+  favoriteQuotes          UserFavoriteQuote[]
+  favoriteAuthors         UserFavoriteAuthor[]
+  quoteShares             QuoteShare[]
+  quoteViews              QuoteView[]
+  sessions                UserSession[]
+  folders                 Folder[]
+  folderMemberships       FolderMember[]
+  folderFollows           FolderFollow[]
+  folderQuotesAdded       FolderQuote[]            @relation("FolderQuoteAddedBy")
+  folderInviteLinks       FolderInviteLink[]
+  feedEvents              FeedEvent[]
+  followers               UserFollow[]             @relation("UserFollowers")
+  following               UserFollow[]             @relation("UserFollowing")
+  savedFolders            SavedFolder[]
+  longestStreak           Int                      @default(0) @map("longest_streak")
+  createdAt               DateTime                 @default(now()) @map("created_at")
+  updatedAt               DateTime                 @updatedAt @map("updated_at")
+  avatarId                BigInt?                  @unique @map("avatar_id") @db.BigInt
+  avatar                  File?                    @relation("UsersAvatars", fields: [avatarId], references: [id], onDelete: Cascade)
+
+  @@map("users")
+}
+
+model PasswordChangeRequest {
+  token     String    @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt    @db.BigInt
+  usedAt    DateTime? @map("used_at")
+  expiresAt DateTime  @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("password_change_request")
+}
+
+model EmailConfirmationToken {
+  token     String    @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt    @db.BigInt
+  usedAt    DateTime? @map("used_at")
+  expiresAt DateTime  @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("email_confirmation_token")
+}
+
+model Quote {
+  id           BigInt              @id @default(autoincrement()) @db.BigInt
+  uuid         String              @unique
+  body         String
+  author       Author?             @relation(fields: [authorId], references: [id])
+  authorId     BigInt?             @db.BigInt
+  sources      Source[]
+  categories   Category[]
+  favoritedBy  UserFavoriteQuote[]
+  tags         TagQuote[]
+  shares       QuoteShare[]
+  views        QuoteView[]
+  folderQuotes FolderQuote[]
+  feedEvents   FeedEvent[]
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  @@index([authorId])
+  @@map("quotes")
+}
+
+model UserFavoriteQuote {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId   BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, quoteId])
+  @@index([userId])
+  @@index([quoteId])
+  @@map("user_favorite_quotes")
+}
+
+model UserFavoriteAuthor {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  author    Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, authorId])
+  @@index([userId])
+  @@index([authorId])
+  @@map("user_favorite_authors")
+}
+
+model TagQuote {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId     BigInt   @db.BigInt
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId   BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([tagId, quoteId])
+  @@index([tagId])
+  @@index([quoteId])
+  @@map("tag_quotes")
+}
+
+model TagAuthor {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId     BigInt   @db.BigInt
+  author    Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([tagId, authorId])
+  @@index([tagId])
+  @@index([authorId])
+  @@map("tag_authors")
+}
+
+model Source {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  uuid      String   @unique
+  title     String
+  quote     Quote    @relation(fields: [quoteId], references: [id])
+  quoteId   BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("sources")
+}
+
+model Category {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  uuid      String   @unique
+  title     String
+  quotes    Quote[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Author {
+  id           BigInt               @id @default(autoincrement()) @db.BigInt
+  uuid         String               @unique
+  name         String
+  birthDate    DateTime             @map("birth_date")
+  deathDate    DateTime?            @map("death_date")
+  bio          String
+  nationality  String?
+  wikipediaUrl String?              @map("wikipedia_url")
+  quotes       Quote[]
+  tags         TagAuthor[]
+  favoritedBy  UserFavoriteAuthor[]
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
+
+  @@map("authors")
+}
+
+model Tag {
+  id        BigInt      @id @default(autoincrement()) @db.BigInt
+  uuid      String      @unique
+  title     String
+  user      User        @relation(fields: [userId], references: [id])
+  userId    BigInt      @db.BigInt
+  tags      TagQuote[]
+  authors   TagAuthor[]
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("tags")
+}
+
+model File {
+  id     BigInt @id @default(autoincrement()) @db.BigInt
+  bucket String
+  key    String
+  users  User[] @relation("UsersAvatars")
+
+  @@unique([bucket, key])
+  @@map("files")
+}
+
+model QuoteShare {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId   BigInt   @db.BigInt
+  type      String
+  template  String?
+  platform  String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([quoteId])
+  @@index([userId])
+  @@map("quote_shares")
+}
+
+model QuoteView {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  userId    BigInt   @db.BigInt
+  quoteId   BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quote Quote @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([quoteId])
+  @@map("quote_views")
+}
+
+model UserSession {
+  id           BigInt   @id @default(autoincrement()) @db.BigInt
+  userId       BigInt   @db.BigInt
+  startedAt    DateTime @map("started_at")
+  endedAt      DateTime @map("ended_at")
+  quotesViewed Int      @default(0) @map("quotes_viewed")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+  @@map("user_sessions")
+}
+
+enum FolderVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum FolderMemberRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+model Folder {
+  id          BigInt           @id @default(autoincrement()) @db.BigInt
+  uuid        String           @unique
+  name        String
+  description String?
+  color       String?
+  visibility  FolderVisibility @default(PUBLIC)
+  position    Int              @default(0)
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      BigInt           @db.BigInt
+  quotes      FolderQuote[]
+  members     FolderMember[]
+  follows     FolderFollow[]
+  inviteLinks FolderInviteLink[]
+  feedEvents  FeedEvent[]
+  savedBy     SavedFolder[]
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("folders")
+}
+
+model FolderQuote {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt   @db.BigInt
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId   BigInt   @db.BigInt
+  position  Int      @default(0)
+  addedBy   User     @relation("FolderQuoteAddedBy", fields: [addedById], references: [id], onDelete: Cascade)
+  addedById BigInt   @map("added_by_id") @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([folderId, quoteId])
+  @@index([folderId])
+  @@index([quoteId])
+  @@map("folder_quotes")
+}
+
+model FolderMember {
+  id        BigInt           @id @default(autoincrement()) @db.BigInt
+  folder    Folder           @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt           @db.BigInt
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt           @db.BigInt
+  role      FolderMemberRole
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  @@unique([folderId, userId])
+  @@index([folderId])
+  @@index([userId])
+  @@map("folder_members")
+}
+
+model FolderFollow {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt   @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([folderId, userId])
+  @@index([folderId])
+  @@index([userId])
+  @@map("folder_follows")
+}
+
+model FolderInviteLink {
+  id          BigInt           @id @default(autoincrement()) @db.BigInt
+  uuid        String           @unique
+  folder      Folder           @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId    BigInt           @db.BigInt
+  role        FolderMemberRole
+  createdBy   User             @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdById BigInt           @map("created_by_id") @db.BigInt
+  expiresAt   DateTime?        @map("expires_at")
+  maxUses     Int?             @map("max_uses")
+  usedCount   Int              @default(0) @map("used_count")
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  @@index([folderId])
+  @@map("folder_invite_links")
+}
+
+model FeedEvent {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  type      String
+  actor     User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  actorId   BigInt   @map("actor_id") @db.BigInt
+  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt?  @map("folder_id") @db.BigInt
+  quote     Quote?   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId   BigInt?  @map("quote_id") @db.BigInt
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([actorId])
+  @@map("feed_events")
+}
+
+model UserFollow {
+  id          BigInt   @id @default(autoincrement()) @db.BigInt
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  BigInt   @map("follower_id") @db.BigInt
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId BigInt   @map("following_id") @db.BigInt
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("user_follows")
+}
+
+model SavedFolder {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    BigInt   @db.BigInt
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId  BigInt   @db.BigInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, folderId])
+  @@index([userId])
+  @@index([folderId])
+  @@map("saved_folders")
+}

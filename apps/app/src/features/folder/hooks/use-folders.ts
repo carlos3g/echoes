@@ -1,0 +1,22 @@
+import type { ListFoldersOutput } from '@/features/folder/contracts/folder-service.contract';
+import { folderService } from '@/features/folder/services';
+import { queryKeys } from '@/lib/react-query/query-keys';
+import type { Folder } from '@/types/entities';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+
+export const useFolders = () => {
+  const query = useInfiniteQuery<ListFoldersOutput>({
+    queryKey: queryKeys.folders.all,
+    queryFn: ({ pageParam }) => folderService.list({ paginate: { page: pageParam as number } }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.meta.next,
+    getPreviousPageParam: (lastPage) => lastPage.meta.prev,
+  });
+
+  const { data } = query;
+
+  const folders: Folder[] = useMemo(() => data?.pages.map((page) => page.data).flat() ?? [], [data]);
+
+  return { ...query, folders };
+};

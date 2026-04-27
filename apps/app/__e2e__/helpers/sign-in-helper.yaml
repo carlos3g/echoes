@@ -1,0 +1,13 @@
+appId: com.carlos3g.echoes
+---
+- tapOn:
+    id: 'signin-email-input'
+- inputText: ${EMAIL}
+- tapOn:
+    id: 'signin-password-input'
+- inputText: ${PASSWORD}
+- hideKeyboard
+- tapOn:
+    id: 'signin-button'
+- waitForAnimationToEnd:
+    timeout: 2000

@@ -13,9 +13,9 @@
       "runtimeArgs": [
         "exec",
         "--scope",
-        "api",
+        "@echoes/api",
         "--",
-        "pnpm",
+        "yarn",
         "start:debug",
         "--",
         "--inspect-brk"

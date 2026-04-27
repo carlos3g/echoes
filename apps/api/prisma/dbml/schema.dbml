@@ -1,0 +1,418 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  name String [not null]
+  email String [unique, not null]
+  username String [unique, not null]
+  password String [not null]
+  bio String
+  isAdmin Boolean [not null, default: false]
+  emailVerifiedAt DateTime
+  passwordChangeRequests password_change_request [not null]
+  emailConfirmationTokens email_confirmation_token [not null]
+  tags tags [not null]
+  favoriteQuotes user_favorite_quotes [not null]
+  favoriteAuthors user_favorite_authors [not null]
+  quoteShares quote_shares [not null]
+  quoteViews quote_views [not null]
+  sessions user_sessions [not null]
+  folders folders [not null]
+  folderMemberships folder_members [not null]
+  folderFollows folder_follows [not null]
+  folderQuotesAdded folder_quotes [not null]
+  folderInviteLinks folder_invite_links [not null]
+  feedEvents feed_events [not null]
+  followers user_follows [not null]
+  following user_follows [not null]
+  savedFolders saved_folders [not null]
+  longestStreak Int [not null, default: 0]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  avatarId BigInt [unique]
+  avatar files
+}
+
+Table password_change_request {
+  token String [pk]
+  user users [not null]
+  userId BigInt [not null]
+  usedAt DateTime
+  expiresAt DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table email_confirmation_token {
+  token String [pk]
+  user users [not null]
+  userId BigInt [not null]
+  usedAt DateTime
+  expiresAt DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table quotes {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  body String [not null]
+  author authors
+  authorId BigInt
+  sources sources [not null]
+  categories categories [not null]
+  favoritedBy user_favorite_quotes [not null]
+  tags tag_quotes [not null]
+  shares quote_shares [not null]
+  views quote_views [not null]
+  folderQuotes folder_quotes [not null]
+  feedEvents feed_events [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table user_favorite_quotes {
+  id BigInt [pk, increment]
+  user users [not null]
+  userId BigInt [not null]
+  quote quotes [not null]
+  quoteId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (userId, quoteId) [unique]
+  }
+}
+
+Table user_favorite_authors {
+  id BigInt [pk, increment]
+  user users [not null]
+  userId BigInt [not null]
+  author authors [not null]
+  authorId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (userId, authorId) [unique]
+  }
+}
+
+Table tag_quotes {
+  id BigInt [pk, increment]
+  tag tags [not null]
+  tagId BigInt [not null]
+  quote quotes [not null]
+  quoteId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (tagId, quoteId) [unique]
+  }
+}
+
+Table tag_authors {
+  id BigInt [pk, increment]
+  tag tags [not null]
+  tagId BigInt [not null]
+  author authors [not null]
+  authorId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (tagId, authorId) [unique]
+  }
+}
+
+Table sources {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  title String [not null]
+  quote quotes [not null]
+  quoteId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table categories {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  title String [not null]
+  quotes quotes [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table authors {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  name String [not null]
+  birthDate DateTime [not null]
+  deathDate DateTime
+  bio String [not null]
+  nationality String
+  wikipediaUrl String
+  quotes quotes [not null]
+  tags tag_authors [not null]
+  favoritedBy user_favorite_authors [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table tags {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  title String [not null]
+  user users [not null]
+  userId BigInt [not null]
+  tags tag_quotes [not null]
+  authors tag_authors [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table files {
+  id BigInt [pk, increment]
+  bucket String [not null]
+  key String [not null]
+  users users [not null]
+
+  indexes {
+    (bucket, key) [unique]
+  }
+}
+
+Table quote_shares {
+  id BigInt [pk, increment]
+  user users [not null]
+  userId BigInt [not null]
+  quote quotes [not null]
+  quoteId BigInt [not null]
+  type String [not null]
+  template String
+  platform String
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table quote_views {
+  id BigInt [pk, increment]
+  userId BigInt [not null]
+  quoteId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+  user users [not null]
+  quote quotes [not null]
+}
+
+Table user_sessions {
+  id BigInt [pk, increment]
+  userId BigInt [not null]
+  startedAt DateTime [not null]
+  endedAt DateTime [not null]
+  quotesViewed Int [not null, default: 0]
+  user users [not null]
+}
+
+Table folders {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  name String [not null]
+  description String
+  color String
+  visibility FolderVisibility [not null, default: 'PUBLIC']
+  position Int [not null, default: 0]
+  user users [not null]
+  userId BigInt [not null]
+  quotes folder_quotes [not null]
+  members folder_members [not null]
+  follows folder_follows [not null]
+  inviteLinks folder_invite_links [not null]
+  feedEvents feed_events [not null]
+  savedBy saved_folders [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table folder_quotes {
+  id BigInt [pk, increment]
+  folder folders [not null]
+  folderId BigInt [not null]
+  quote quotes [not null]
+  quoteId BigInt [not null]
+  position Int [not null, default: 0]
+  addedBy users [not null]
+  addedById BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (folderId, quoteId) [unique]
+  }
+}
+
+Table folder_members {
+  id BigInt [pk, increment]
+  folder folders [not null]
+  folderId BigInt [not null]
+  user users [not null]
+  userId BigInt [not null]
+  role FolderMemberRole [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (folderId, userId) [unique]
+  }
+}
+
+Table folder_follows {
+  id BigInt [pk, increment]
+  folder folders [not null]
+  folderId BigInt [not null]
+  user users [not null]
+  userId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (folderId, userId) [unique]
+  }
+}
+
+Table folder_invite_links {
+  id BigInt [pk, increment]
+  uuid String [unique, not null]
+  folder folders [not null]
+  folderId BigInt [not null]
+  role FolderMemberRole [not null]
+  createdBy users [not null]
+  createdById BigInt [not null]
+  expiresAt DateTime
+  maxUses Int
+  usedCount Int [not null, default: 0]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table feed_events {
+  id BigInt [pk, increment]
+  type String [not null]
+  actor users [not null]
+  actorId BigInt [not null]
+  folder folders
+  folderId BigInt
+  quote quotes
+  quoteId BigInt
+  metadata Json
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table user_follows {
+  id BigInt [pk, increment]
+  follower users [not null]
+  followerId BigInt [not null]
+  following users [not null]
+  followingId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (followerId, followingId) [unique]
+  }
+}
+
+Table saved_folders {
+  id BigInt [pk, increment]
+  user users [not null]
+  userId BigInt [not null]
+  folder folders [not null]
+  folderId BigInt [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (userId, folderId) [unique]
+  }
+}
+
+Table CategoryToQuote {
+  categoriesId BigInt [ref: > categories.id]
+  quotesId BigInt [ref: > quotes.id]
+}
+
+Enum FolderVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+Enum FolderMemberRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+Ref: users.avatarId > files.id [delete: Cascade]
+
+Ref: password_change_request.userId > users.id [delete: Cascade]
+
+Ref: email_confirmation_token.userId > users.id [delete: Cascade]
+
+Ref: quotes.authorId > authors.id
+
+Ref: user_favorite_quotes.userId > users.id [delete: Cascade]
+
+Ref: user_favorite_quotes.quoteId > quotes.id [delete: Cascade]
+
+Ref: user_favorite_authors.userId > users.id [delete: Cascade]
+
+Ref: user_favorite_authors.authorId > authors.id [delete: Cascade]
+
+Ref: tag_quotes.tagId > tags.id [delete: Cascade]
+
+Ref: tag_quotes.quoteId > quotes.id [delete: Cascade]
+
+Ref: tag_authors.tagId > tags.id [delete: Cascade]
+
+Ref: tag_authors.authorId > authors.id [delete: Cascade]
+
+Ref: sources.quoteId > quotes.id
+
+Ref: tags.userId > users.id
+
+Ref: quote_shares.userId > users.id [delete: Cascade]
+
+Ref: quote_shares.quoteId > quotes.id [delete: Cascade]
+
+Ref: quote_views.userId > users.id [delete: Cascade]
+
+Ref: quote_views.quoteId > quotes.id [delete: Cascade]
+
+Ref: user_sessions.userId > users.id [delete: Cascade]
+
+Ref: folders.userId > users.id [delete: Cascade]
+
+Ref: folder_quotes.folderId > folders.id [delete: Cascade]
+
+Ref: folder_quotes.quoteId > quotes.id [delete: Cascade]
+
+Ref: folder_quotes.addedById > users.id [delete: Cascade]
+
+Ref: folder_members.folderId > folders.id [delete: Cascade]
+
+Ref: folder_members.userId > users.id [delete: Cascade]
+
+Ref: folder_follows.folderId > folders.id [delete: Cascade]
+
+Ref: folder_follows.userId > users.id [delete: Cascade]
+
+Ref: folder_invite_links.folderId > folders.id [delete: Cascade]
+
+Ref: folder_invite_links.createdById > users.id [delete: Cascade]
+
+Ref: feed_events.actorId > users.id [delete: Cascade]
+
+Ref: feed_events.folderId > folders.id [delete: Cascade]
+
+Ref: feed_events.quoteId > quotes.id [delete: Cascade]
+
+Ref: user_follows.followerId > users.id [delete: Cascade]
+
+Ref: user_follows.followingId > users.id [delete: Cascade]
+
+Ref: saved_folders.userId > users.id [delete: Cascade]
+
+Ref: saved_folders.folderId > folders.id [delete: Cascade]

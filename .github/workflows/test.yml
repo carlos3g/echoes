@@ -1,0 +1,37 @@
+name: Run Unit Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Generate prisma client
+        env:
+          # Prisma 7 reads env() during config load even for `generate`. The URL is not
+          # used during codegen, but it must be present to pass strict validation.
+          DB_URL: "postgresql://placeholder:placeholder@localhost:5432/placeholder?schema=public"
+        run: yarn turbo run db:generate
+
+      - name: Run unit tests
+        run: yarn turbo run test

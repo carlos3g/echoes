@@ -1,0 +1,172 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #F8F6F0;
+  --foreground: #2D2D28;
+  --card: #FFFFFF;
+  --card-foreground: #2D2D28;
+  --popover: #FFFFFF;
+  --popover-foreground: #2D2D28;
+  --primary: #B5845A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #7A8B6F;
+  --secondary-foreground: #FFFFFF;
+  --muted: #E8E4DC;
+  --muted-foreground: #9B8E7E;
+  --accent: #7A8B6F;
+  --accent-foreground: #FFFFFF;
+  --destructive: #C45D4A;
+  --destructive-foreground: #FFFFFF;
+  --success: #7A8B6F;
+  --success-foreground: #FFFFFF;
+  --border: #D9CEBC;
+  --input: #D9CEBC;
+  --ring: #B5845A;
+  --radius: 0.5rem;
+  --sidebar-background: #FAF8F5;
+  --sidebar-foreground: #4A3F32;
+  --sidebar-primary: #B5845A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E8E4DC;
+  --sidebar-accent-foreground: #2D2D28;
+  --sidebar-border: #D9CEBC;
+  --sidebar-ring: #B5845A;
+  --chart-1: #B5845A;
+  --chart-2: #7A8B6F;
+  --chart-3: #9B8E7E;
+  --chart-4: #C49468;
+  --chart-5: #8B9B7F;
+}
+
+.dark {
+  --background: #1A1B18;
+  --foreground: #F0EDE5;
+  --card: #232420;
+  --card-foreground: #F0EDE5;
+  --popover: #232420;
+  --popover-foreground: #F0EDE5;
+  --primary: #C49468;
+  --primary-foreground: #1A1B18;
+  --secondary: #8B9B7F;
+  --secondary-foreground: #FFFFFF;
+  --muted: #2A2B26;
+  --muted-foreground: #8A8478;
+  --accent: #8B9B7F;
+  --accent-foreground: #FFFFFF;
+  --destructive: #D4634F;
+  --destructive-foreground: #FFFFFF;
+  --success: #8B9B7F;
+  --success-foreground: #FFFFFF;
+  --border: #3A3B35;
+  --input: #3A3B35;
+  --ring: #C49468;
+  --sidebar-background: #1A1B18;
+  --sidebar-foreground: #F0EDE5;
+  --sidebar-primary: #C49468;
+  --sidebar-primary-foreground: #1A1B18;
+  --sidebar-accent: #2A2B26;
+  --sidebar-accent-foreground: #F0EDE5;
+  --sidebar-border: #3A3B35;
+  --sidebar-ring: #C49468;
+  --chart-1: #C49468;
+  --chart-2: #8B9B7F;
+  --chart-3: #8A8478;
+  --chart-4: #B5845A;
+  --chart-5: #5C6B50;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar-background: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      'DM Sans',
+      ui-sans-serif,
+      system-ui,
+      sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family:
+      'Playfair Display',
+      ui-serif,
+      Georgia,
+      serif;
+  }
+
+  button,
+  [role='button'],
+  a[href] {
+    cursor: pointer;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

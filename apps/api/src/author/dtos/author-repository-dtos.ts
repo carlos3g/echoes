@@ -1,0 +1,102 @@
+import type { Paginate } from '@app/shared/dtos/paginate';
+import type { AtLeastOne } from '@app/shared/types';
+
+export interface AuthorRepositoryCreateInput {
+  uuid: string;
+  name: string;
+  birthDate: Date;
+  deathDate?: Date | null;
+  bio: string;
+}
+
+export interface AuthorRepositoryUpdateInput {
+  where: AtLeastOne<{
+    id: number;
+    uuid: string;
+  }>;
+  data: Partial<{ name: string; birthDate: Date; deathDate: Date; bio: string }>;
+}
+
+export interface AuthorRepositoryFindUniqueOrThrowInput {
+  where: AtLeastOne<{
+    id: number;
+    uuid: string;
+  }>;
+}
+
+export interface AuthorRepositoryFindManyInput {
+  where?: {
+    birthDate?: Date;
+    deathDate?: Date;
+  };
+}
+
+export interface AuthorRepositoryFindManyPaginatedInput {
+  where?: {
+    search?: string;
+    birthDate?: Date;
+    deathDate?: Date;
+  };
+  options?: Paginate;
+}
+
+export interface AuthorRepositoryFindManyFavoritedByUserInput {
+  where: {
+    userId: number;
+  };
+}
+
+export interface AuthorRepositoryFindManyByTagInput {
+  where: {
+    tagId: number;
+  };
+}
+
+export interface AuthorRepositoryDeleteInput {
+  where: AtLeastOne<{
+    id?: number;
+    uuid?: string;
+  }>;
+}
+
+export interface AuthorRepositoryFavoriteInput {
+  data: {
+    userId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryUnfavoriteInput {
+  data: {
+    userId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryIsFavoritedInput {
+  where: {
+    userId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryTagInput {
+  data: {
+    tagId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryUntagInput {
+  data: {
+    tagId: number;
+    authorId: number;
+  };
+}
+
+export interface AuthorRepositoryIsTaggedInput {
+  where: {
+    tagId: number;
+    authorId: number;
+  };
+}

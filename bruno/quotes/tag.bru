@@ -1,0 +1,25 @@
+meta {
+  name: Tag Quote
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/v1/quotes/:uuid/tag
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: quote-uuid-here
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "tagUuid": "tag-uuid-here"
+  }
+}

@@ -1,0 +1,94 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to explore
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Scroll down to discover users section
+- scrollUntilVisible:
+    element: 'Pessoas'
+    direction: DOWN
+    timeout: 5000
+
+# Navigate to user search
+- tapOn:
+    text: 'Ver todos'
+    index: 1
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Test user search
+- tapOn:
+    id: 'search-input'
+    optional: true
+- inputText: ${output.USER_SEARCH_QUERY}
+- hideKeyboard
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Clear search to see suggested users
+- tapOn:
+    id: 'search-input'
+    optional: true
+- eraseText: 100
+- hideKeyboard
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Go back
+- back
+
+# Navigate to own profile to test followers/following
+- tapOn: 'Perfil'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Tap on followers count
+- tapOn:
+    text: 'Seguidores'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Scroll followers list
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Go back
+- back
+
+# Tap on following count
+- tapOn:
+    text: 'Seguindo'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Scroll following list
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Go back
+- back

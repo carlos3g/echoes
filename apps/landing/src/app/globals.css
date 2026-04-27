@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  /* Clay & Sage palette */
+  --color-clay-50: #faf7f2;
+  --color-clay-100: #f8f6f0;
+  --color-clay-200: #efe8db;
+  --color-clay-300: #e8e4dc;
+  --color-clay-400: #d9cebc;
+  --color-clay-500: #c9b693;
+  --color-clay-600: #b5845a;
+  --color-clay-700: #9a6e47;
+  --color-clay-800: #6f4f33;
+  --color-clay-900: #3d2c1c;
+
+  --color-sage-50: #f4f6f1;
+  --color-sage-100: #e6ebde;
+  --color-sage-200: #c9d3bc;
+  --color-sage-300: #a5b596;
+  --color-sage-400: #7a8b6f;
+  --color-sage-500: #647258;
+  --color-sage-600: #4f5944;
+  --color-sage-700: #3d4636;
+  --color-sage-800: #2d3328;
+
+  --color-stone-ink: #2d2d28;
+  --color-stone-muted: #9b8e7e;
+  --color-stone-line: #d9cebc;
+
+  /* Semantic */
+  --color-background: var(--color-clay-100);
+  --color-surface: #ffffff;
+  --color-foreground: var(--color-stone-ink);
+  --color-muted: var(--color-stone-muted);
+  --color-border: var(--color-stone-line);
+  --color-primary: var(--color-clay-600);
+  --color-primary-foreground: #ffffff;
+  --color-accent: var(--color-sage-400);
+  --color-accent-foreground: #ffffff;
+
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 20px;
+  --radius-pill: 9999px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  ::selection {
+    background: var(--color-clay-600);
+    color: #fff;
+  }
+}
+
+/* Subtle paper grain — adds warmth without dark mode */
+.bg-grain {
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(181, 132, 90, 0.04), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(122, 139, 111, 0.04), transparent 40%);
+}
+
+.quote-mark {
+  font-family: var(--font-serif);
+  font-style: italic;
+  line-height: 0.8;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}

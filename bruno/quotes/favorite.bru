@@ -1,0 +1,19 @@
+meta {
+  name: Favorite Quote
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/v1/quotes/:uuid/favorite
+  body: none
+  auth: bearer
+}
+
+params:path {
+  uuid: quote-uuid-here
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

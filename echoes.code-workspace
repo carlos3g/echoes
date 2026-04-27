@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".",
+    },
+    {
+      "name": "api",
+      "path": "apps/api",
+    },
+    {
+      "name": "app",
+      "path": "apps/app",
+    },
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": ["webapp", "root"],
+    "jest.pathToJest": "yarn test",
+  },
+}

@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "echoes: run tests",
+      "label": "root: run tests",
       "command": "./scripts/test.sh",
       "group": "test",
       "type": "shell",
@@ -20,6 +20,60 @@
         "color": "terminal.ansiGreen",
         "id": "beaker"
       }
+    },
+    {
+      "label": "root: start docker containers",
+      "type": "shell",
+      "command": "docker-compose up -d",
+      "problemMatcher": [],
+      "group": "none",
+      "icon": {
+        "color": "terminal.ansiBlue",
+        "id": "server-environment"
+      }
+    },
+    {
+      "label": "app: init expo server",
+      "type": "shell",
+      "command": "cd apps/app && yarn start",
+      "problemMatcher": [],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true,
+        "clear": false
+      },
+      "icon": {
+        "color": "terminal.ansiCyan",
+        "id": "rocket"
+      }
+    },
+    {
+      "label": "app: build dev app",
+      "type": "shell",
+      "command": "cd apps/app && yarn run ${input:platform}",
+      "problemMatcher": [],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true,
+        "clear": false
+      },
+      "icon": {
+        "color": "terminal.ansiGreen",
+        "id": "code-oss"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "type": "pickString",
+      "id": "platform",
+      "description": "Select platform to build for",
+      "options": ["ios", "android"],
+      "default": "ios"
     }
   ]
 }

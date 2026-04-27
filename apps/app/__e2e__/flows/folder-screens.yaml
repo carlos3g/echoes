@@ -1,0 +1,80 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to collection tab
+- tapOn:
+    text: 'Coleção'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Switch to folders tab
+- tapOn: 'Folders'
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Scroll to see folders
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Navigate to explore to find public folders
+- tapOn: 'Explorar'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Scroll down to discover folders section
+- scrollUntilVisible:
+    element: 'Folders'
+    direction: DOWN
+    timeout: 5000
+
+# Navigate to see all folders
+- tapOn:
+    text: 'Ver todos'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Test folder search
+- tapOn:
+    id: 'search-input'
+    optional: true
+- inputText: 'test'
+- hideKeyboard
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Clear and go back
+- tapOn:
+    id: 'search-input'
+    optional: true
+- eraseText: 100
+- hideKeyboard
+- back
+
+# Scroll folders
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: DOWN
+    duration: 500
+
+# Go back to explore
+- back

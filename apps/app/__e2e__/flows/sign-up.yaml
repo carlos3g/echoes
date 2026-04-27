@@ -1,0 +1,50 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Navigate to sign up screen
+- tapOn:
+    id: 'go-to-sign-up-button'
+
+# Verify initial state
+- assertVisible: 'Criar nova conta'
+- assertVisible:
+    id: 'signup-button'
+- assertTrue: 'signup-button.enabled == false'
+
+# Fill in sign up form
+- tapOn:
+    id: 'signup-name-input'
+- inputText: ${output.SIGNUP_NAME}
+- hideKeyboard
+
+- tapOn:
+    id: 'signup-username-input'
+- inputText: ${output.SIGNUP_USERNAME}
+- hideKeyboard
+
+- tapOn:
+    id: 'signup-email-input'
+- inputText: ${output.SIGNUP_EMAIL}
+- hideKeyboard
+
+- tapOn:
+    id: 'signup-password-input'
+- inputText: ${output.SIGNUP_PASSWORD}
+- hideKeyboard
+
+- tapOn:
+    id: 'signup-password-confirmation-input'
+- inputText: ${output.SIGNUP_PASSWORD_CONFIRMATION}
+- hideKeyboard
+
+# Submit form
+- tapOn:
+    id: 'signup-button'
+
+# Verify redirect to sign in screen
+- assertVisible: 'Digite seu e-mail e senha para entrar'

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "format": {
+      "cache": false
+    },
+    "check": {
+      "dependsOn": ["^build"]
+    },
+    "style": {
+      "dependsOn": ["format", "lint", "check"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"],
+      "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"],
+      "cache": false
+    },
+    "test:cov": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"],
+      "cache": false
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:generate": {
+      "cache": false,
+      "env": ["DB_URL"]
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:migrate:test": {
+      "cache": false
+    },
+    "db:seed": {
+      "cache": false
+    },
+    "db:fresh": {
+      "dependsOn": ["db:generate", "db:migrate", "db:seed"],
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

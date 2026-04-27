@@ -1,0 +1,17 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts", "tsx"],
+  "setupFiles": ["<rootDir>/test/setup-tests.ts"],
+  "rootDir": "..",
+  "modulePathIgnorePatterns": ["<rootDir>/(?!src|test|generated).*"],
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)sx?$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@app/(.*)$": "<rootDir>/src/$1",
+    "^@test/(.*)$": "<rootDir>/test/$1",
+    "^@generated/(.*)$": "<rootDir>/generated/$1"
+  },
+  "transformIgnorePatterns": ["node_modules/(?!(@faker-js/faker|uuid|@prisma/adapter-pg)/)"]
+}

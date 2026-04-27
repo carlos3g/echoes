@@ -1,0 +1,41 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- tapOn:
+    id: 'signin-email-input'
+- inputText: ${output.EMAIL}
+- tapOn:
+    id: 'signin-password-input'
+- inputText: ${output.PASSWORD}
+- hideKeyboard
+- tapOn:
+    id: 'signin-button'
+
+# Navigate to settings screen
+- tapOn:
+    id: 'settings-tab-button'
+
+# Verify user info is displayed
+- assertVisible:
+    id: 'user-avatar'
+- assertVisible:
+    id: 'user-name'
+- assertVisible:
+    id: 'user-username'
+
+# Logout
+- tapOn:
+    id: 'logout-button'
+
+# Verify redirect to sign in screen
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible: 'Digite seu e-mail e senha para entrar'
+- assertVisible:
+    id: 'signin-button'

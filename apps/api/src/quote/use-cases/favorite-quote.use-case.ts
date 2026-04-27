@@ -1,0 +1,25 @@
+import { QuoteRepositoryContract } from '@app/quote/contracts/quote-repository.contract';
+import type { FavoriteQuoteInput } from '@app/quote/dtos/favorite-quote-input';
+import type { UseCaseHandler } from '@app/shared/interfaces';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class FavoriteQuoteUseCase implements UseCaseHandler {
+  public constructor(private readonly quoteRepository: QuoteRepositoryContract) {}
+
+  public async handle(input: FavoriteQuoteInput): Promise<void> {
+    const { quoteUuid, user } = input;
+
+    const quote = await this.quoteRepository.findUniqueOrThrow({
+      where: {
+        uuid: quoteUuid,
+      },
+    });
+
+    if (await this.quoteRepository.isFavorited({ where: { quoteId: quote.id, userId: user.id } })) {
+      return;
+    }
+
+    await this.quoteRepository.favorite({ data: { quoteId: quote.id, userId: user.id } });
+  }
+}

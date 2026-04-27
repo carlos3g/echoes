@@ -1,0 +1,59 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to profile tab
+- tapOn: 'Perfil'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Navigate to insights
+- tapOn:
+    id: 'insights-button'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Verify insights tabs are visible
+- assertVisible:
+    text: 'Resumo'
+    optional: true
+
+# Test tab switching
+- tapOn:
+    text: 'Tendencias'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 1000
+
+- tapOn:
+    text: 'Profundidade'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 1000
+
+- tapOn:
+    text: 'Resumo'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Test export button
+- tapOn:
+    text: 'Exportar'
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Go back
+- back

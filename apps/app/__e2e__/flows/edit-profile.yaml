@@ -1,0 +1,63 @@
+appId: com.carlos3g.echoes
+---
+- runFlow:
+    file: ../setup-app.yaml
+
+- runScript:
+    file: ../scripts/env.js
+
+# Sign in first
+- runFlow:
+    file: ../helpers/sign-in-helper.yaml
+    env:
+      EMAIL: ${output.EMAIL}
+      PASSWORD: ${output.PASSWORD}
+
+# Navigate to profile tab
+- tapOn: 'Perfil'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Navigate to edit profile
+- tapOn:
+    id: 'edit-profile-button'
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# Verify form fields are visible
+- assertVisible:
+    id: 'edit-profile-name'
+- assertVisible:
+    id: 'edit-profile-username'
+- assertVisible:
+    id: 'edit-profile-bio'
+- assertVisible:
+    id: 'edit-profile-email'
+- assertVisible:
+    id: 'edit-profile-submit'
+
+# Edit bio field
+- tapOn:
+    id: 'edit-profile-bio'
+- eraseText: 500
+- inputText: ${output.EDIT_BIO}
+- hideKeyboard
+
+# Submit changes
+- tapOn:
+    id: 'edit-profile-submit'
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Revert bio
+- tapOn:
+    id: 'edit-profile-bio'
+    optional: true
+- eraseText: 500
+- hideKeyboard
+- tapOn:
+    id: 'edit-profile-submit'
+    optional: true
+
+# Go back
+- back

@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "title": "Echoes — Where words meet people",
+    "description": "Discover, collect, and share quotes that resonate. Build collaborative folders, follow curators, and grow your personal library of ideas."
+  },
+  "nav": {
+    "manifesto": "Manifesto",
+    "features": "Features",
+    "folders": "Folders",
+    "download": "Download"
+  },
+  "hero": {
+    "eyebrow": "Quotes that resonate",
+    "title": "Where words",
+    "titleAccent": "meet people.",
+    "subtitle": "Echoes is the place to discover, collect, and share quotes. Build collaborative folders, follow curators, and grow your personal library of ideas.",
+    "ctaPrimary": "Download for iOS",
+    "ctaSecondary": "Download for Android",
+    "featuredQuote": "Life is too short to be small.",
+    "featuredAuthor": "Benjamin Disraeli"
+  },
+  "manifesto": {
+    "label": "Our manifesto",
+    "title": "Quotes deserve more than a screenshot.",
+    "body": "Every line that touched you is part of who you are. Echoes was born so those words don't get lost in forgotten screenshots — but turn into living collections, shared with the people who matter."
+  },
+  "features": {
+    "label": "Features",
+    "title": "Everything you need to curate words.",
+    "items": [
+      {
+        "title": "Discover",
+        "body": "Explore a growing catalog of quotes by theme, author, and category. Sharp filters and semantic search."
+      },
+      {
+        "title": "Collect",
+        "body": "Favorite or organize into themed folders. No quote limits, no folder limits."
+      },
+      {
+        "title": "Collaborate",
+        "body": "Invite friends to co-create folders. Set roles: owner, editor, or read-only."
+      },
+      {
+        "title": "Share",
+        "body": "Elegant cards ready for Instagram, WhatsApp, and Twitter. Your aesthetic, no watermark."
+      },
+      {
+        "title": "Follow",
+        "body": "Keep up with curators and friends. See what they're adding to public folders in real time."
+      },
+      {
+        "title": "Discover again",
+        "body": "Popular folders, affinity suggestions, trending profiles. Always something new to save."
+      }
+    ]
+  },
+  "folders": {
+    "label": "Folders",
+    "title": "Living collections, Pinterest-style.",
+    "subtitle": "Collaborative folders with generated covers, custom order, and social context. Public or private, solo or with co-authors.",
+    "samples": [
+      { "title": "Daily stoicism", "author": "@maria.rosa", "count": "47 quotes" },
+      { "title": "Radical feminism", "author": "@bell.hooks", "count": "112 quotes" },
+      { "title": "Philosophy of tech", "author": "@flusser", "count": "23 quotes" },
+      { "title": "Portuguese poetry", "author": "@drummond", "count": "89 quotes" },
+      { "title": "Zen & everyday", "author": "@watts", "count": "34 quotes" },
+      { "title": "Reading notes 2026", "author": "@you", "count": "12 quotes" }
+    ]
+  },
+  "showcase": {
+    "label": "The app",
+    "title": "Crafted in every detail.",
+    "subtitle": "Editorial typography, terracotta and sage palette, native dark mode. Built with React Native — light, fast, offline-first."
+  },
+  "stats": {
+    "quotes": "quotes",
+    "folders": "folders created",
+    "users": "active readers",
+    "languages": "languages"
+  },
+  "cta": {
+    "title": "Start collecting today.",
+    "subtitle": "Free, no ads. iOS and Android.",
+    "ios": "App Store",
+    "android": "Google Play"
+  },
+  "footer": {
+    "tagline": "Where words meet people.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "links": {
+      "features": "Features",
+      "folders": "Folders",
+      "download": "Download",
+      "about": "About",
+      "blog": "Blog",
+      "contact": "Contact",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    },
+    "rights": "© 2026 Echoes. All rights reserved.",
+    "madeWith": "Made with coffee in Brazil."
+  },
+  "language": {
+    "switch": "PT",
+    "current": "EN"
+  }
+}

@@ -1,0 +1,20 @@
+meta {
+  name: List Tags
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v1/tags
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~page: 1
+  ~perPage: 10
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}

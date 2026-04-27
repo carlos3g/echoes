@@ -1,0 +1,21 @@
+meta {
+  name: List Quotes
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v1/quotes
+  body: none
+  auth: none
+}
+
+params:query {
+  ~page: 1
+  ~perPage: 10
+  ~search:
+  ~authorUuid:
+  ~categoryUuid:
+  ~tagUuid:
+  ~favorites: false
+}
