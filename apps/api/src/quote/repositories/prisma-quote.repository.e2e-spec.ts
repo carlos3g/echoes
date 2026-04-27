@@ -55,14 +55,19 @@ const createQuotesTagged = async (args: { tagId: number; count: number }) => {
 
 describe('PrismaQuoteRepository', () => {
   let quoteRepository: PrismaQuoteRepository;
+  let module: TestingModule;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [PrismaModule],
       providers: [PrismaQuoteRepository],
     }).compile();
 
     quoteRepository = module.get<PrismaQuoteRepository>(PrismaQuoteRepository);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   describe('create', () => {

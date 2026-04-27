@@ -9,9 +9,10 @@ import * as _ from 'lodash';
 
 describe('PrismaPasswordChangeRequestRepository', () => {
   let passwordChangeRequestRepository: PrismaPasswordChangeRequestRepository;
+  let module: TestingModule;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [PrismaModule],
       providers: [PrismaPasswordChangeRequestRepository],
     }).compile();
@@ -19,6 +20,10 @@ describe('PrismaPasswordChangeRequestRepository', () => {
     passwordChangeRequestRepository = module.get<PrismaPasswordChangeRequestRepository>(
       PrismaPasswordChangeRequestRepository
     );
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   describe('create', () => {

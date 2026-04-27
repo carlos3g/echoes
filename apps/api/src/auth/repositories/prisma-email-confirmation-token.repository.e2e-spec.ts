@@ -9,9 +9,10 @@ import * as _ from 'lodash';
 
 describe('PrismaEmailConfirmationTokenRepository', () => {
   let emailConfirmationTokenRepository: PrismaEmailConfirmationTokenRepository;
+  let module: TestingModule;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [PrismaModule],
       providers: [PrismaEmailConfirmationTokenRepository],
     }).compile();
@@ -19,6 +20,10 @@ describe('PrismaEmailConfirmationTokenRepository', () => {
     emailConfirmationTokenRepository = module.get<PrismaEmailConfirmationTokenRepository>(
       PrismaEmailConfirmationTokenRepository
     );
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   describe('create', () => {

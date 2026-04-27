@@ -23,8 +23,10 @@ const TABLE_NAMES = [
 export class PrismaService extends PrismaClient implements OnModuleInit {
   public constructor() {
     const connectionString = process.env.DB_URL!;
-    const schema = new URL(connectionString).searchParams.get('schema') || undefined;
-    const adapter = new PrismaPg(connectionString, { schema });
+    const url = new URL(connectionString);
+    const schema = url.searchParams.get('schema') || undefined;
+    const connectionLimit = Number(url.searchParams.get('connection_limit')) || undefined;
+    const adapter = new PrismaPg({ connectionString, max: connectionLimit }, { schema });
     super({ adapter });
   }
 

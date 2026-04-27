@@ -56,14 +56,19 @@ const createAuthorsTagged = async (args: { tagId: number; count: number }) => {
 
 describe('PrismaAuthorRepository', () => {
   let authorRepository: AuthorRepositoryContract;
+  let module: TestingModule;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [PrismaModule],
       providers: [PrismaAuthorRepository],
     }).compile();
 
     authorRepository = module.get<AuthorRepositoryContract>(PrismaAuthorRepository);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   describe('create', () => {

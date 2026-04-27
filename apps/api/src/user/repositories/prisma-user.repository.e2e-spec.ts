@@ -8,14 +8,19 @@ import { prisma } from '@test/server';
 
 describe('PrismaUserRepository', () => {
   let userRepository: PrismaUserRepository;
+  let module: TestingModule;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [PrismaModule],
       providers: [PrismaUserRepository],
     }).compile();
 
     userRepository = module.get<PrismaUserRepository>(PrismaUserRepository);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   describe('create', () => {

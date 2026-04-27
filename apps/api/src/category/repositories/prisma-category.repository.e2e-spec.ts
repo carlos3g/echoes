@@ -9,14 +9,19 @@ import * as _ from 'lodash';
 
 describe('PrismaCategoryRepository', () => {
   let categoryRepository: PrismaCategoryRepository;
+  let module: TestingModule;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [PrismaModule],
       providers: [PrismaCategoryRepository],
     }).compile();
 
     categoryRepository = module.get<PrismaCategoryRepository>(PrismaCategoryRepository);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   describe('create', () => {
