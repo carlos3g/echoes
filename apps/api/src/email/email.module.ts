@@ -1,37 +1,11 @@
-import * as path from 'path';
-import { MjmlAdapter } from '@app/email/adapters/mjml.adapter';
 import { EmailServiceContract } from '@app/email/contracts/email-service.contract';
 import { EmailService } from '@app/email/services/email-service.service';
-import type { EnvVariables } from '@app/shared/types';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { resendClientProvider } from '@app/email/services/resend-client.provider';
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [
-    MailerModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService<EnvVariables>) => ({
-        transport: {
-          pool: false,
-          host: configService.get('MAIL_HOST'),
-          port: Number(configService.get('MAIL_PORT')),
-          auth: {
-            user: configService.get('MAIL_USER'),
-            pass: configService.get('MAIL_PASS'),
-          },
-        },
-        template: {
-          dir: path.join(__dirname, 'templates'),
-          adapter: new MjmlAdapter('pug', { inlineCssEnabled: false }),
-          options: {
-            strict: true,
-          },
-        },
-      }),
-    }),
-  ],
   providers: [
+    resendClientProvider,
     {
       provide: EmailServiceContract,
       useClass: EmailService,

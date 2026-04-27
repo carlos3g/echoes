@@ -174,6 +174,7 @@ src/
   - Cache stored in `.turbo/` directory (gitignored)
 - **Package Manager**: Yarn v4 (Berry) - do not use npm
 - **Commits**: Conventional commits enforced via commitlint and husky pre-commit hooks
-- **Docker**: docker-compose.yaml in project root sets up PostgreSQL, MinIO, and Mailpit for local development
-- **Environment**: API requires database connection and JWT secret; check `.env.example` files for required variables
+- **Docker**: docker-compose.yaml in project root sets up PostgreSQL and MinIO for local development
+- **Emails**: React Email components in `apps/api/src/email/templates/*.tsx` rendered via Resend SDK. Run `yarn email:dev` (port 3002) for visual preview; use a Resend test API key for runtime sends in dev
+- **Environment**: API requires database connection, JWT secret, and `RESEND_API_KEY`; check `.env.example` files for required variables
 - **API Versioning**: All endpoints use URI versioning (e.g., `/v1/quotes`). Default version is v1.

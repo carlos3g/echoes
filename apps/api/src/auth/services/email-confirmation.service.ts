@@ -7,7 +7,7 @@ import type { EnvVariables } from '@app/shared/types';
 import { createUuidV4 } from '@app/shared/utils';
 import type { User } from '@app/user/entities/user.entity';
 import { UserService } from '@app/user/services/user.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DateTime } from 'luxon';
 
@@ -25,8 +25,16 @@ export class EmailConfirmationService {
   public async confirmEmail(payload: { token: string; user: User }): Promise<void> {
     const { token, user } = payload;
 
+    const stored = await this.emailConfirmationTokenRepository.findFirstValidOrThrow({
+      where: { userId: user.id },
+    });
+
+    if (!this.hashService.compare(token, stored.token)) {
+      throw new UnauthorizedException();
+    }
+
     await this.emailConfirmationTokenRepository.update({
-      where: { token },
+      where: { token: stored.token },
       data: { usedAt: DateTime.now().toJSDate() },
     });
     await this.userService.markEmailAsVerified({ userId: user.id });

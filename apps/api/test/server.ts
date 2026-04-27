@@ -1,16 +1,35 @@
 import type { Server } from 'net';
 import { AppModule } from '@app/app.module';
+import { EmailServiceContract } from '@app/email/contracts/email-service.contract';
 import { PrismaService } from '@app/lib/prisma/services/prisma.service';
+import { StorageServiceContract } from '@app/storage/contracts/storage-service.contract';
 import type { INestApplication } from '@nestjs/common';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import * as qs from 'qs';
 
+export const emailServiceMock = {
+  send: jest.fn().mockResolvedValue(undefined),
+};
+
+// AWS SDK middleware uses dynamic imports that don't work in Jest's CJS runtime
+// (ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG). Stubbing avoids the issue and keeps
+// e2e tests focused on app behavior, not S3 transport.
+export const storageServiceMock = {
+  get: jest.fn().mockResolvedValue(Buffer.from('')),
+  set: jest.fn().mockImplementation(({ key }: { key: string }) => Promise.resolve({ key })),
+  delete: jest.fn().mockResolvedValue(undefined),
+};
+
 const createTestingModule = async () => {
   const moduleFixture = Test.createTestingModule({
     imports: [AppModule],
-  });
+  })
+    .overrideProvider(EmailServiceContract)
+    .useValue(emailServiceMock)
+    .overrideProvider(StorageServiceContract)
+    .useValue(storageServiceMock);
 
   const compiled = await moduleFixture.compile();
 
@@ -50,6 +69,10 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await prisma.clearDatabase();
+  emailServiceMock.send.mockClear();
+  storageServiceMock.get.mockClear();
+  storageServiceMock.set.mockClear();
+  storageServiceMock.delete.mockClear();
 });
 
 afterAll(async () => {

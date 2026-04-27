@@ -22,6 +22,7 @@ jest.mock('@app/shared/utils', () => ({
 const makeUserRepositoryMock = () => ({});
 const makeHashServiceMock = () => ({
   hash: jest.fn(),
+  compare: jest.fn(),
 });
 const makeEmailServiceMock = () => ({
   send: jest.fn(),
@@ -33,6 +34,7 @@ const makeEmailConfirmationTokenRepositoryMock = () => ({
   update: jest.fn(),
   deleteMany: jest.fn(),
   create: jest.fn(),
+  findFirstValidOrThrow: jest.fn(),
 });
 const makeTransactionScopeMock = () => ({
   run: jest.fn().mockImplementation((fn: () => void) => fn()),
@@ -93,18 +95,50 @@ describe('EmailConfirmationService', () => {
   });
 
   describe('confirmEmail', () => {
-    it('should mark the email as verified and update the token', async () => {
+    it('should mark the email as verified and update the token when hash matches', async () => {
       const token = faker.string.uuid();
+      const stored = `${token}-stored`;
       const user = { id: faker.number.int(), email: faker.internet.email() } as User;
+
+      hashService.compare.mockReturnValue(true);
+      emailConfirmationTokenRepository.findFirstValidOrThrow.mockResolvedValue({
+        userId: user.id,
+        token: stored,
+        expiresAt: new Date(Date.now() + 60_000),
+        usedAt: null,
+      } as EmailConfirmationToken);
 
       await service.confirmEmail({ token, user });
 
+      expect(emailConfirmationTokenRepository.findFirstValidOrThrow).toHaveBeenCalledWith({
+        where: { userId: user.id },
+      });
+      expect(hashService.compare).toHaveBeenCalledWith(token, stored);
       expect(emailConfirmationTokenRepository.update).toHaveBeenCalledWith({
-        where: { token },
+        where: { token: stored },
         data: { usedAt: expect.any(Date) as Date },
       });
       expect(userService.markEmailAsVerified).toHaveBeenCalledWith({ userId: user.id });
       expect(emailService.send).toHaveBeenCalledWith(emailConfirmedPreset({ to: user.email }));
+    });
+
+    it('should throw UnauthorizedException when hash does not match', async () => {
+      const token = faker.string.uuid();
+      const user = { id: faker.number.int(), email: faker.internet.email() } as User;
+
+      hashService.compare.mockReturnValue(false);
+      emailConfirmationTokenRepository.findFirstValidOrThrow.mockResolvedValue({
+        userId: user.id,
+        token: 'stored-hash',
+        expiresAt: new Date(Date.now() + 60_000),
+        usedAt: null,
+      } as EmailConfirmationToken);
+
+      await expect(service.confirmEmail({ token, user })).rejects.toThrow();
+
+      expect(emailConfirmationTokenRepository.update).not.toHaveBeenCalled();
+      expect(userService.markEmailAsVerified).not.toHaveBeenCalled();
+      expect(emailService.send).not.toHaveBeenCalled();
     });
   });
 

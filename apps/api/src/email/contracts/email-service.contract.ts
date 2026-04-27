@@ -1,8 +1,9 @@
+import type { ReactElement } from 'react';
+
 export interface EmailServiceSendInput {
   to: string | string[];
   subject: string;
-  template: string;
-  context: Record<string, unknown>;
+  react: ReactElement;
 }
 
 abstract class EmailServiceContract {

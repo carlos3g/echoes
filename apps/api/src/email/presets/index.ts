@@ -1,44 +1,27 @@
 import type { EmailServiceSendInput } from '@app/email/contracts/email-service.contract';
+import { EmailConfirmationEmail, EmailConfirmedEmail, ForgotPasswordEmail } from '@app/email/templates';
+import * as React from 'react';
 
 export const forgotPasswordTokenPreset = (input: {
   to: string;
-  context: {
-    token: string;
-  };
-}): EmailServiceSendInput => {
-  const { context, to } = input;
-
-  return {
-    subject: 'Código de redefinição de senha',
-    template: 'forgot-password-token',
-    to,
-    context,
-  };
-};
+  context: { token: string };
+}): EmailServiceSendInput => ({
+  subject: 'Código de redefinição de senha',
+  to: input.to,
+  react: React.createElement(ForgotPasswordEmail, { token: input.context.token }),
+});
 
 export const emailConfirmationTokenPreset = (input: {
   to: string;
-  context: {
-    link: string;
-  };
-}): EmailServiceSendInput => {
-  const { context, to } = input;
+  context: { link: string };
+}): EmailServiceSendInput => ({
+  subject: 'Confirme seu email',
+  to: input.to,
+  react: React.createElement(EmailConfirmationEmail, { link: input.context.link }),
+});
 
-  return {
-    subject: 'Confirmação de email',
-    template: 'email-confirmation-token',
-    to,
-    context,
-  };
-};
-
-export const emailConfirmedPreset = (input: { to: string }): EmailServiceSendInput => {
-  const { to } = input;
-
-  return {
-    subject: 'Email Confirmado',
-    template: 'email-confirmed',
-    to,
-    context: {},
-  };
-};
+export const emailConfirmedPreset = (input: { to: string }): EmailServiceSendInput => ({
+  subject: 'Bem-vindo ao Echoes',
+  to: input.to,
+  react: React.createElement(EmailConfirmedEmail),
+});
