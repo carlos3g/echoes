@@ -359,6 +359,8 @@
   },
   "validation": {
     "invalid": "Invalid",
+    "invalidType": "Invalid type",
+    "invalidUrl": "Invalid URL",
     "passwordMin": "Password must be at least 8 characters",
     "invalidEmail": "Invalid email",
     "usernameMin": "Username must be at least 3 characters",
@@ -367,6 +369,15 @@
     "passwordsMustMatch": "Passwords must match",
     "requiredField": "Required field",
     "acceptTerms": "You must accept the terms of service",
-    "maxChars": "Maximum {{max}} characters"
+    "maxChars": "Maximum {{max}} characters",
+    "tooSmallString": "Must be at least {{min}} characters",
+    "tooSmallNumber": "Must be greater than or equal to {{min}}",
+    "tooSmallArray": "Must have at least {{min}} items",
+    "tooSmall": "Minimum size: {{min}}",
+    "tooBigString": "Must be at most {{max}} characters",
+    "tooBigNumber": "Must be less than or equal to {{max}}",
+    "tooBigArray": "Must have at most {{max}} items",
+    "tooBig": "Maximum size: {{max}}",
+    "unrecognizedKeys": "Unrecognized keys: {{keys}}"
   }
 }

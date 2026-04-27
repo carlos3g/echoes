@@ -359,6 +359,8 @@
   },
   "validation": {
     "invalid": "Inválido",
+    "invalidType": "Tipo inválido",
+    "invalidUrl": "URL inválida",
     "passwordMin": "A senha deve ter pelo menos 8 caracteres",
     "invalidEmail": "Email inválido",
     "usernameMin": "Username deve ter pelo menos 3 caracteres",
@@ -367,6 +369,15 @@
     "passwordsMustMatch": "As senhas inseridas devem ser iguais",
     "requiredField": "Campo obrigatório",
     "acceptTerms": "Você deve aceitar os termos de serviço",
-    "maxChars": "Máximo de {{max}} caracteres"
+    "maxChars": "Máximo de {{max}} caracteres",
+    "tooSmallString": "Deve ter pelo menos {{min}} caracteres",
+    "tooSmallNumber": "Deve ser maior ou igual a {{min}}",
+    "tooSmallArray": "Deve ter pelo menos {{min}} itens",
+    "tooSmall": "Tamanho mínimo: {{min}}",
+    "tooBigString": "Deve ter no máximo {{max}} caracteres",
+    "tooBigNumber": "Deve ser menor ou igual a {{max}}",
+    "tooBigArray": "Deve ter no máximo {{max}} itens",
+    "tooBig": "Tamanho máximo: {{max}}",
+    "unrecognizedKeys": "Campos não reconhecidos: {{keys}}"
   }
 }

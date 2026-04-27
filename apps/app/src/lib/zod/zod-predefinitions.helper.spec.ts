@@ -124,7 +124,7 @@ describe('validateUsername', () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues[0].message).toBe(
-        'Username deve conter apenas letras minúsculas, números, underlines e híphens'
+        'Username deve conter apenas letras minúsculas, números, underlines e hífens'
       );
     }
   });
@@ -137,7 +137,7 @@ describe('validateUsername', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.issues[0].message).toBe(
-          'Username deve conter apenas letras minúsculas, números, underlines e híphens'
+          'Username deve conter apenas letras minúsculas, números, underlines e hífens'
         );
       }
     });

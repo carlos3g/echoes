@@ -11,9 +11,14 @@ describe('createTagFormSchema', () => {
     expect(result.success).toBe(true);
   });
 
-  it('should accept long titles', () => {
-    const result = createTagFormSchema().safeParse({ title: 'A'.repeat(100) });
+  it('should accept titles up to 50 characters', () => {
+    const result = createTagFormSchema().safeParse({ title: 'A'.repeat(50) });
     expect(result.success).toBe(true);
+  });
+
+  it('should reject titles longer than 50 characters', () => {
+    const result = createTagFormSchema().safeParse({ title: 'A'.repeat(51) });
+    expect(result.success).toBe(false);
   });
 
   it('should accept titles with special characters', () => {
@@ -25,9 +30,9 @@ describe('createTagFormSchema', () => {
     });
   });
 
-  it('should accept empty string (no min validation)', () => {
+  it('should reject empty string', () => {
     const result = createTagFormSchema().safeParse({ title: '' });
-    expect(result.success).toBe(true);
+    expect(result.success).toBe(false);
   });
 
   it('should reject non-string title', () => {

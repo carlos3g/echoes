@@ -6,6 +6,15 @@ const config: Config.InitialOptions = {
   setupFilesAfterEnv: ['<rootDir>/src/test/jest-setup-after-env.ts'],
   moduleDirectories: ['node_modules', './src/test'],
   modulePathIgnorePatterns: ['.*/mockedData/.*'],
+  // react-native-css-interop only lands in apps/app/node_modules under our Yarn 4 hoisting
+  // strategy, but expo-modules-core (at root node_modules) imports its jsx-runtime. Map it
+  // explicitly so Jest can resolve it from the app workspace.
+  moduleNameMapper: {
+    '^react-native-css-interop/jsx-runtime$':
+      '<rootDir>/node_modules/react-native-css-interop/dist/runtime/jsx-runtime.js',
+    '^react-native-css-interop/jsx-dev-runtime$':
+      '<rootDir>/node_modules/react-native-css-interop/dist/runtime/jsx-dev-runtime.js',
+  },
   testTimeout: 15000,
   collectCoverage: true,
   collectCoverageFrom: [
